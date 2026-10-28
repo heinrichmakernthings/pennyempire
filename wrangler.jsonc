@@ -1,0 +1,7 @@
+{
+  // Static SPA hosting on Cloudflare (Workers Assets). Server-authoritative APIs arrive in a later milestone
+  // as a Worker (+ Durable Objects) in worker/ — nothing economic is deployed from this client build.
+  "name": "pennyempire",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./dist", "not_found_handling": "single-page-application" }
+}
