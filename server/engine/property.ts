@@ -17,6 +17,7 @@ export function syncLease(db: Sql, ctx: TickCtx, cfg: EngineConfig, companyId: s
   const c = db.get<{ owner_kind: string; property_minor: number; premises_tier: number; plot_id: string | null; lot_id: string | null }>('SELECT owner_kind, property_minor, premises_tier, plot_id, lot_id FROM companies WHERE id = ?', companyId);
   if (!c || c.owner_kind === 'state') return;
   const cur = activeLease(db, companyId);
+  if (c.property_minor === 0) { if (cur) db.run("UPDATE leases SET status = 'ended', end_tick = ?, note = COALESCE(note,'') || ' [company closed]' WHERE id = ?", ctx.tick, cur.id); return; }
   if (cur && cur.kind === 'owned') { if (cur.base_rent_minor !== c.property_minor) db.run('UPDATE leases SET base_rent_minor = ? WHERE id = ?', c.property_minor, cur.id); return; }
   if (cur && cur.base_rent_minor === c.property_minor && cur.tier === c.premises_tier) return;
   if (cur) db.run("UPDATE leases SET status = 'ended', end_tick = ? WHERE id = ?", ctx.tick, cur.id);

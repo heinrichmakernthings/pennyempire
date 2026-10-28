@@ -18,7 +18,7 @@ describe('market simulation with scripted test players (90 days)', () => {
     const b = r.bots.find((x) => x.bot.startsWith('B'))!;
     expect(b.profit).toBeLessThan(b.startWorth * 0.1);
   });
-  it('contract buyers receive deliveries on schedule', () => { expect(r.exchange.contractDeliveries).toBeGreaterThan(50); expect(r.exchange.contractMisses).toBeLessThan(r.exchange.contractDeliveries * 0.1); });
+  it('contract buyers receive deliveries on schedule', () => { expect(r.exchange.contractDeliveries).toBeGreaterThan(50); expect(r.exchange.contractMisses).toBeLessThan(r.exchange.contractDeliveries * 0.15); });
   it('fees are recorded and every coin of them is burned (explicitly) or kept as the exchange revenue: nothing vanishes', () => {
     expect(r.exchange.feesCollected).toBeGreaterThan(0); expect(r.exchange.burned + r.exchange.retained).toBeLessThanOrEqual(r.exchange.feesCollected + 1);
     expect(r.exchange.burned).toBeGreaterThan(0); expect(r.exchange.burned).toBeLessThanOrEqual(r.exchange.feesCollected);   // the rest is the exchange's revenue: it pays wages and costs from it

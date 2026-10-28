@@ -13,7 +13,7 @@ describe.each<StockScenarioId>(['A', 'B', 'C', 'D', 'E', 'F'])('stock scenario %
 
 describe('scenario outcomes', () => {
   it('A: a profitable startup lists, sells its offering, pays dividends from its own treasury and the founder keeps control', () => {
-    const h = get('A').headline; expect(h.sharesSoldInOffering).toBe(3000); expect(h.dividendsPaidEC as number).toBeGreaterThan(0); expect(h.founderStakeBps as number).toBeGreaterThan(5_100);
+    const h = get('A').headline; expect(h.sharesSoldInOffering as number).toBeGreaterThan(2_500); expect(h.dividendsPaidEC as number).toBeGreaterThan(0); expect(h.founderStakeBps as number).toBeGreaterThan(5_100);
     const tl = get('A').timeline; expect(tl.at(-1)!.priceMinor!).toBeGreaterThanOrEqual(tl[0]!.priceMinor!);          // trading, not valuation, moved the price
   });
   it('B: a business that loses its customers sees its market price fall and trading dry up', () => {

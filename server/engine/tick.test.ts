@@ -66,7 +66,7 @@ describe('ticks', () => {
     const issuers = db.all<{ memo: string }>("SELECT DISTINCT memo FROM ledger_transactions WHERE kind = 'issuance' AND tick > 0");
     expect(issuers.map((i) => i.memo)).toEqual(['NPC citizen income grant']);
     const sinks = db.all<{ memo: string }>("SELECT DISTINCT memo FROM ledger_transactions WHERE kind IN ('sink','sink_fee') ORDER BY memo").map((r) => r.memo.replace(/ on trade \d+/, ''));
-    expect([...new Set(sinks)].every((m) => m.startsWith('Penny Exchange fee burn') || m.startsWith('infrastructure upkeep') || m.startsWith('incorporation licence'))).toBe(true);
+    expect([...new Set(sinks)].every((m) => m.startsWith('Penny Exchange fee burn') || m.startsWith('infrastructure upkeep') || m.includes('infrastructure wear (explicit burn)') || m.startsWith('incorporation licence'))).toBe(true);
     expect(balance(db, BURN)).toBe(supply(db).destroyed);
   });
   it('transfers to state companies are not sinks: rent, energy and advertising stay in circulation', () => {
@@ -154,7 +154,7 @@ describe('company financials come from real state', () => {
   });
   it('operating expenses reduce pre-tax profit one-for-one', () => {
     const a = memWorld(), b = memWorld();
-    b.run("UPDATE companies SET property_minor = property_minor + 50000 WHERE id = 'co-mad-slices'");
+    b.run("UPDATE companies SET property_minor = property_minor + 50000 WHERE id = 'co-mad-slices'"); b.run("UPDATE leases SET base_rent_minor = base_rent_minor + 50000 WHERE company_id = 'co-mad-slices' AND status = 'active'");
     advance(a, 1); advance(b, 1);
     const q = (db: typeof a) => one<{ rev: number; pre: number; prop: number }>(db, "SELECT revenue_minor rev, net_profit_minor + tax_minor pre, property_minor prop FROM company_tick_stats WHERE tick = 1 AND company_id = 'co-mad-slices'");
     const pa = q(a), pb = q(b);
