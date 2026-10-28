@@ -1,3 +1,4 @@
+import { depositsTotal } from './bank';
 import type { Sql } from '../db/sql';
 import type { EngineConfig } from './config';
 import {
@@ -178,7 +179,9 @@ function runDividendPolicy(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
     const cap = dividendCapacity(db, cfg, s.company_id); if (cap.eligibleShares <= 0) continue;
     const reserveDays = db.get<{ r: number }>('SELECT reserve_days r FROM npc_profiles WHERE company_id = ?', s.company_id)?.r ?? cfg.npcReserveTicks;
     const extra = Math.max(0, reserveDays - cfg.dividendReserveDays) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + (c.owner_kind === 'state' ? cfg.enterpriseReserveMinor : 200_000);
-    const spendable = Math.max(0, cap.capacityMinor - extra);
+    // The National Bank's lending capital and its depositors' money are never distributed: only cash above them (i.e. real earnings) can be paid out.
+    const bankHold = s.company_id === 'co-national-bank' ? cfg.bankSeedMinor + depositsTotal(db) : 0;
+    const spendable = Math.max(0, cap.capacityMinor - extra - bankHold);
     const per = Math.floor((spendable * cfg.holderPayoutBps) / 10_000 / cap.eligibleShares);
     if (per < 1) continue;
     try { declareDividend(db, ctx, cfg, `divpol:${s.company_id}:${ctx.tick}`, s.company_id, per, `policy:${c.owner_kind}`); } catch { /* not eligible today */ }

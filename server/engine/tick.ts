@@ -16,6 +16,9 @@ import { logEvent, logFailure, takeSnapshot } from './stats';
 import { closeEnergyDay, drawEnergy, startEnergyDay } from './energy';
 import { currentMods } from './economyState';
 import { runLogistics } from './logistics';
+import { payDepositInterest, runLoans, runNpcCredit } from './bank';
+import { liquidityOps, reviewPolicy } from './centralBank';
+import { recordCpi, recordMonetaryStats } from './inflation';
 import { awarenessTarget, runCampaigns } from './ads';
 import { rentCharge, syncLease } from './property';
 import { burnServiceWear, recordPaidService, type ServiceKind } from './stateServices';
@@ -88,6 +91,10 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     if (stipend > 0) issue(db, ctx, key('stipend'), city.households_account_id, stipend, 'NPC citizen income grant');
     pay('state_payment', city.treasury_account_id, city.households_account_id, Math.floor((available(db, city.treasury_account_id) * cfg.civilPayrollBps) / 10_000), 'civil service payroll');
 
+    /* A1. Penny Central Bank: rule-based rate review and liquidity operations, each logged with the data it used. */
+    phase('central_bank');
+    safe('central_bank', 'penny-central-bank', () => { reviewPolicy(db, ctx, cfg); liquidityOps(db, ctx, cfg); });
+
     /* B. State provisioner: bounded fallback stock, created from nothing but sold for coins that go to the treasury. */
     phase('state_supply');
     if (provisions) for (const c of STATE_SUPPLIED) {
@@ -139,6 +146,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     safe('npc_decisions', 'npc', () => { runNpcDecisions(db, ctx, cfg, exitMark); });
     db.run("INSERT INTO meta (key, value) VALUES ('npc_last_exit', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(exitMark.tick));
     safe('npc_entry', 'npc', () => { runNpcEntry(db, ctx, cfg); });
+    safe('npc_credit', 'npc', () => { runNpcCredit(db, ctx, cfg, safe); });
     phase('share_decisions');
     safe('share_decisions', 'shares', () => { runShareDecisions(db, ctx, cfg); });
 
@@ -279,6 +287,9 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const rivalSpend = (industry: string, exclude: string) => db.get<{ s: number }>('SELECT COALESCE(SUM(t.marketing_minor),0) s FROM company_tick_stats t JOIN companies c ON c.id = t.company_id WHERE t.tick = ? AND c.industry_id = ? AND t.company_id <> ?', n - 1, industry, exclude)!.s;
     const ads = runCampaigns(db, ctx, cfg, rivalSpend);
     for (const [id, amount] of ads.spent) { st(id).marketing += amount; st('co-bristol-media').revenue += amount; }
+    // National Bank: instalments (interest and principal separately), late fees, defaults, then savings interest.
+    safe('loans', 'national-bank', () => { runLoans(db, ctx, cfg, { onInterest: (b, amt) => { st(b).fees += amt; st('co-national-bank').revenue += amt; } }); });
+    safe('deposit_interest', 'national-bank', () => { payDepositInterest(db, ctx, cfg, { onBankCost: (amt) => { st('co-national-bank').maintenance += amt; } }); });
     // Corporation tax on positive net profit and an idle-cash levy above the operating reserve: both are transfers to the treasury (which the state
     // pays back out as civil payroll). They recycle money that would otherwise pool in company accounts and starve consumer demand.
     for (const c of order) {
@@ -363,6 +374,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
+    recordCpi(db, n);
+    recordMonetaryStats(db, ctx, cfg, { consumerSpend, tradeValue, creditIssued: db.get<{ a: number }>("SELECT COALESCE(SUM(amount_minor),0) a FROM monetary_ops WHERE tick = ? AND kind = 'liquidity_issue'", n)!.a });
     phase('share_closing');
     safe('share_closing', 'shares', () => { runShareClosing(db, ctx, cfg); });
     phase('standings');
