@@ -13,10 +13,10 @@ if (dbPath !== ':memory:') mkdirSync(dirname(dbPath), { recursive: true });
 
 switch (cmd) {
   case 'migrate': { const db = openNodeSqlite(dbPath); console.log('applied:', migrate(db)); break; }
-  case 'seed': { const db = openNodeSqlite(dbPath); migrate(db); console.log(seedBristol(db)); break; }
+  case 'seed': { const db = openNodeSqlite(dbPath); migrate(db); console.log(seedBristol(db, {}, process.env.PENNY_PROFILE === 'demo' ? 'demo' : 'new')); break; }
   case 'reset': for (const f of [dbPath, `${dbPath}-wal`, `${dbPath}-shm`]) if (existsSync(f)) rmSync(f); console.log('removed', dbPath); break;
-  case 'tick': { const db = openWorld(dbPath); const r = advance(db, Number(arg ?? 1)); console.log(`ran ${r.length} tick(s)`); break; }
-  case 'reconcile': { const db = openWorld(dbPath); console.log(reconcile(db)); break; }
+  case 'tick': { const db = openWorld(dbPath, {}, process.env.PENNY_PROFILE === 'demo' ? 'demo' : 'new'); const r = advance(db, Number(arg ?? 1)); console.log(`ran ${r.length} tick(s)`); break; }
+  case 'reconcile': { const db = openWorld(dbPath, {}, process.env.PENNY_PROFILE === 'demo' ? 'demo' : 'new'); console.log(reconcile(db)); break; }
   case 'sim': { const days = Number(arg ?? 360); const report = runSimulation(days); console.log(formatReport(report)); process.exit(report.anomalies.length ? 1 : 0); break; }
   default: console.log('usage: tsx server/cli.ts <migrate|seed|reset|tick N|reconcile|sim DAYS>   (PENNY_DB=path)');
 }

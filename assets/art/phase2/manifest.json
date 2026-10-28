@@ -1,0 +1,3597 @@
+{
+  "version": 2,
+  "tile": [
+    128,
+    64
+  ],
+  "assets": [
+    {
+      "id": "pizza-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        123,
+        71,
+        431,
+        515
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "pizza",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        2,
+        224,
+        265
+      ],
+      "contentRect": [
+        1,
+        0,
+        222,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase2/source/retail-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "pizza-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        724,
+        63,
+        453,
+        532
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "pizza",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        2,
+        224,
+        265
+      ],
+      "contentRect": [
+        0,
+        2,
+        224,
+        263
+      ],
+      "sourceArtwork": "assets/art/phase2/source/retail-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "cafe-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        129,
+        670,
+        433,
+        521
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "cafe",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        2,
+        224,
+        285
+      ],
+      "contentRect": [
+        0,
+        15,
+        224,
+        270
+      ],
+      "sourceArtwork": "assets/art/phase2/source/retail-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "cafe-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        733,
+        683,
+        454,
+        535
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "cafe",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        2,
+        224,
+        285
+      ],
+      "contentRect": [
+        0,
+        21,
+        224,
+        264
+      ],
+      "sourceArtwork": "assets/art/phase2/source/retail-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "mill-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        60,
+        77,
+        553,
+        550
+      ],
+      "logicalSize": [
+        288,
+        285
+      ],
+      "pivot": [
+        144,
+        285
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "mill",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        291,
+        288,
+        285
+      ],
+      "contentRect": [
+        0,
+        0,
+        287,
+        285
+      ],
+      "sourceArtwork": "assets/art/phase2/source/processing-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "mill-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        645,
+        77,
+        582,
+        574
+      ],
+      "logicalSize": [
+        288,
+        285
+      ],
+      "pivot": [
+        144,
+        285
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "mill",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        291,
+        288,
+        285
+      ],
+      "contentRect": [
+        0,
+        1,
+        288,
+        284
+      ],
+      "sourceArtwork": "assets/art/phase2/source/processing-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        53,
+        741,
+        538,
+        455
+      ],
+      "logicalSize": [
+        256,
+        225
+      ],
+      "pivot": [
+        128,
+        225
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "dairy",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        291,
+        256,
+        225
+      ],
+      "contentRect": [
+        0,
+        8,
+        256,
+        217
+      ],
+      "sourceArtwork": "assets/art/phase2/source/processing-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        636,
+        739,
+        577,
+        460
+      ],
+      "logicalSize": [
+        256,
+        225
+      ],
+      "pivot": [
+        128,
+        225
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "dairy",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        291,
+        256,
+        225
+      ],
+      "contentRect": [
+        0,
+        21,
+        256,
+        204
+      ],
+      "sourceArtwork": "assets/art/phase2/source/processing-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        35,
+        124,
+        569,
+        467
+      ],
+      "logicalSize": [
+        256,
+        222
+      ],
+      "pivot": [
+        128,
+        222
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "farm",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        580,
+        256,
+        222
+      ],
+      "contentRect": [
+        0,
+        12,
+        256,
+        210
+      ],
+      "sourceArtwork": "assets/art/phase2/source/resource-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        661,
+        95,
+        557,
+        493
+      ],
+      "logicalSize": [
+        256,
+        222
+      ],
+      "pivot": [
+        128,
+        222
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "farm",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        580,
+        256,
+        222
+      ],
+      "contentRect": [
+        2,
+        0,
+        251,
+        222
+      ],
+      "sourceArtwork": "assets/art/phase2/source/resource-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-t2",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        40,
+        714,
+        564,
+        444
+      ],
+      "logicalSize": [
+        256,
+        209
+      ],
+      "pivot": [
+        128,
+        209
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "timber",
+      "tier": 2,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        580,
+        256,
+        209
+      ],
+      "contentRect": [
+        0,
+        7,
+        256,
+        202
+      ],
+      "sourceArtwork": "assets/art/phase2/source/resource-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-t3",
+      "source": "assets/art/phase2/runtime/building-atlas.png",
+      "sourceSize": [
+        1168,
+        867
+      ],
+      "crop": [
+        659,
+        708,
+        560,
+        450
+      ],
+      "logicalSize": [
+        256,
+        209
+      ],
+      "pivot": [
+        128,
+        209
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "dimensionReference": "timber",
+      "tier": 3,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        580,
+        256,
+        209
+      ],
+      "contentRect": [
+        0,
+        3,
+        256,
+        206
+      ],
+      "sourceArtwork": "assets/art/phase2/source/resource-upgrades.png",
+      "productionCertified": false
+    },
+    {
+      "id": "penny-energy",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        54,
+        126,
+        449,
+        356
+      ],
+      "logicalSize": [
+        224,
+        194
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "utility",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        2,
+        224,
+        194
+      ],
+      "contentRect": [
+        0,
+        16,
+        224,
+        178
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "penny-ads",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        553,
+        60,
+        442,
+        437
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "warehouse",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        2,
+        288,
+        283
+      ],
+      "contentRect": [
+        1,
+        0,
+        286,
+        283
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "penny-logistics",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        1034,
+        94,
+        460,
+        408
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "warehouse",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        2,
+        288,
+        283
+      ],
+      "contentRect": [
+        0,
+        28,
+        288,
+        255
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "central-property",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        54,
+        536,
+        413,
+        453
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "cafe",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        2,
+        224,
+        285
+      ],
+      "contentRect": [
+        0,
+        39,
+        224,
+        246
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "national-bank",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        581,
+        551,
+        376,
+        415
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "cafe",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        291,
+        224,
+        285
+      ],
+      "contentRect": [
+        0,
+        38,
+        224,
+        247
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "penny-exchange",
+      "source": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceSize": [
+        1168,
+        578
+      ],
+      "crop": [
+        1053,
+        535,
+        433,
+        459
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "state",
+      "dimensionReference": "warehouse",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        291,
+        288,
+        283
+      ],
+      "contentRect": [
+        10,
+        0,
+        267,
+        283
+      ],
+      "sourceArtwork": "assets/art/phase2/source/state-infrastructure.png",
+      "productionCertified": false
+    },
+    {
+      "id": "shop-module",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        51,
+        21,
+        303,
+        403
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "environment",
+      "dimensionReference": "pizza",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        2,
+        224,
+        265
+      ],
+      "contentRect": [
+        12,
+        0,
+        199,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "warehouse-module",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        432,
+        29,
+        368,
+        398
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "environment",
+      "dimensionReference": "warehouse",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        2,
+        288,
+        283
+      ],
+      "contentRect": [
+        13,
+        0,
+        262,
+        283
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "terrace-module",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        816,
+        14,
+        360,
+        430
+      ],
+      "logicalSize": [
+        224,
+        234
+      ],
+      "pivot": [
+        112,
+        234
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "environment",
+      "dimensionReference": "terraces",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        2,
+        224,
+        234
+      ],
+      "contentRect": [
+        14,
+        0,
+        196,
+        234
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "park-tree",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        1234,
+        64,
+        264,
+        345
+      ],
+      "logicalSize": [
+        80,
+        89
+      ],
+      "pivot": [
+        40,
+        89
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "tree",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        2,
+        80,
+        89
+      ],
+      "contentRect": [
+        6,
+        0,
+        68,
+        89
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "street-ad",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        116,
+        444,
+        157,
+        283
+      ],
+      "logicalSize": [
+        22,
+        83
+      ],
+      "pivot": [
+        11,
+        83
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "lamp",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        289,
+        22,
+        83
+      ],
+      "contentRect": [
+        0,
+        43,
+        22,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "roof-billboard",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        458,
+        444,
+        315,
+        307
+      ],
+      "logicalSize": [
+        64,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "railing",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        289,
+        64,
+        49
+      ],
+      "contentRect": [
+        7,
+        0,
+        50,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "digital-sign",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        905,
+        493,
+        115,
+        220
+      ],
+      "logicalSize": [
+        22,
+        83
+      ],
+      "pivot": [
+        11,
+        83
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "lamp",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        289,
+        22,
+        83
+      ],
+      "contentRect": [
+        0,
+        41,
+        22,
+        42
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "park-gate",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        1199,
+        465,
+        307,
+        265
+      ],
+      "logicalSize": [
+        64,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "railing",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        878,
+        289,
+        64,
+        49
+      ],
+      "contentRect": [
+        3,
+        0,
+        57,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "rail-a",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        22,
+        776,
+        358,
+        218
+      ],
+      "logicalSize": [
+        128,
+        64
+      ],
+      "pivot": [
+        64,
+        64
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "tile",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        576,
+        128,
+        64
+      ],
+      "contentRect": [
+        11,
+        0,
+        105,
+        64
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "bus-shelter",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        843,
+        732,
+        240,
+        257
+      ],
+      "logicalSize": [
+        64,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "parasol",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        294,
+        576,
+        64,
+        81
+      ],
+      "contentRect": [
+        0,
+        12,
+        64,
+        69
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "skip",
+      "source": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceSize": [
+        1168,
+        861
+      ],
+      "crop": [
+        1186,
+        771,
+        318,
+        215
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "environment",
+      "dimensionReference": "crates",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        586,
+        576,
+        32,
+        39
+      ],
+      "contentRect": [
+        0,
+        17,
+        32,
+        22
+      ],
+      "sourceArtwork": "assets/art/phase2/source/environment.png",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-van-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        47,
+        115,
+        222,
+        192
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        2,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        3,
+        68,
+        59
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-van-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        368,
+        109,
+        219,
+        196
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        134,
+        2,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        1,
+        68,
+        61
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-van-ne",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        677,
+        108,
+        227,
+        185
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        266,
+        2,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        7,
+        68,
+        55
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-van-nw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        972,
+        114,
+        229,
+        180
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        398,
+        2,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        9,
+        68,
+        53
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "lorry-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        28,
+        382,
+        261,
+        233
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "boat",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        97,
+        128,
+        91
+      ],
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "lorry-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        368,
+        378,
+        249,
+        239
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "boat",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        134,
+        97,
+        128,
+        91
+      ],
+      "contentRect": [
+        16,
+        0,
+        95,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "lorry-ne",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        669,
+        389,
+        257,
+        218
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "boat",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        266,
+        97,
+        128,
+        91
+      ],
+      "contentRect": [
+        10,
+        0,
+        107,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "lorry-nw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        966,
+        396,
+        246,
+        220
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "boat",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        398,
+        97,
+        128,
+        91
+      ],
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "car-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        39,
+        725,
+        253,
+        181
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        192,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        13,
+        68,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "car-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        342,
+        729,
+        248,
+        180
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        134,
+        192,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        13,
+        68,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "car-ne",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        668,
+        746,
+        247,
+        162
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        266,
+        192,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        17,
+        68,
+        45
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "car-nw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        969,
+        745,
+        240,
+        165
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        398,
+        192,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        15,
+        68,
+        47
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "bicycle-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        78,
+        1061,
+        154,
+        127
+      ],
+      "logicalSize": [
+        48,
+        43
+      ],
+      "pivot": [
+        24,
+        43
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "bench",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        287,
+        48,
+        43
+      ],
+      "contentRect": [
+        0,
+        3,
+        48,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "bicycle-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        406,
+        1064,
+        146,
+        127
+      ],
+      "logicalSize": [
+        48,
+        43
+      ],
+      "pivot": [
+        24,
+        43
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "bench",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        134,
+        287,
+        48,
+        43
+      ],
+      "contentRect": [
+        0,
+        1,
+        48,
+        42
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "forklift-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        647,
+        991,
+        220,
+        204
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        266,
+        287,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        0,
+        67,
+        62
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "service-van-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceSize": [
+        528,
+        380
+      ],
+      "crop": [
+        958,
+        989,
+        254,
+        212
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "vehicle",
+      "dimensionReference": "van-sw",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        398,
+        287,
+        68,
+        62
+      ],
+      "contentRect": [
+        0,
+        5,
+        68,
+        57
+      ],
+      "sourceArtwork": "assets/art/phase2/source/vehicles.png",
+      "productionCertified": false
+    },
+    {
+      "id": "owner-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        86,
+        66,
+        141,
+        287
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        2,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        20,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "owner-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        404,
+        66,
+        137,
+        287
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        30,
+        2,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        19,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "owner-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        715,
+        66,
+        128,
+        284
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        58,
+        2,
+        24,
+        40
+      ],
+      "contentRect": [
+        3,
+        0,
+        18,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "owner-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        1035,
+        66,
+        129,
+        287
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        86,
+        2,
+        24,
+        40
+      ],
+      "contentRect": [
+        3,
+        0,
+        18,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "office-worker-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        86,
+        380,
+        144,
+        286
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        46,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        20,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "office-worker-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        401,
+        380,
+        143,
+        286
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        30,
+        46,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        20,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "office-worker-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        715,
+        380,
+        134,
+        285
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        58,
+        46,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        19,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "office-worker-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        1031,
+        379,
+        138,
+        287
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        86,
+        46,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        19,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "customer-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        72,
+        687,
+        160,
+        272
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        90,
+        24,
+        40
+      ],
+      "contentRect": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "customer-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        396,
+        687,
+        157,
+        272
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        30,
+        90,
+        24,
+        40
+      ],
+      "contentRect": [
+        0,
+        0,
+        23,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "customer-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        702,
+        688,
+        149,
+        271
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        58,
+        90,
+        24,
+        40
+      ],
+      "contentRect": [
+        1,
+        0,
+        22,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "customer-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        1035,
+        688,
+        145,
+        271
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        86,
+        90,
+        24,
+        40
+      ],
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "construction-worker-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        95,
+        971,
+        137,
+        263
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        2,
+        134,
+        24,
+        40
+      ],
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "construction-worker-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        397,
+        971,
+        135,
+        263
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        30,
+        134,
+        24,
+        40
+      ],
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "construction-worker-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        718,
+        972,
+        133,
+        262
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        58,
+        134,
+        24,
+        40
+      ],
+      "contentRect": [
+        2,
+        0,
+        20,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "construction-worker-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceSize": [
+        112,
+        176
+      ],
+      "crop": [
+        1036,
+        972,
+        135,
+        262
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "dimensionReference": "actor",
+      "tier": null,
+      "status": "finished-static-integration",
+      "frame": [
+        86,
+        134,
+        24,
+        40
+      ],
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/source/additional-actors.png",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-t1",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        13,
+        56,
+        491,
+        425
+      ],
+      "logicalSize": [
+        256,
+        222
+      ],
+      "pivot": [
+        128,
+        222
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    },
+    {
+      "id": "mill-t1",
+      "source": "assets/art/source/flour-mill.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        216,
+        232,
+        859,
+        849
+      ],
+      "logicalSize": [
+        288,
+        285
+      ],
+      "pivot": [
+        144,
+        285
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    },
+    {
+      "id": "dairy-t1",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        537,
+        80,
+        465,
+        409
+      ],
+      "logicalSize": [
+        256,
+        225
+      ],
+      "pivot": [
+        128,
+        225
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    },
+    {
+      "id": "pizza-t1",
+      "source": "assets/art/source/pizza-shop.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        177,
+        88,
+        914,
+        1081
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    },
+    {
+      "id": "cafe-t1",
+      "source": "assets/art/source/cafe.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        181,
+        51,
+        904,
+        1151
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    },
+    {
+      "id": "timber-t1",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1033,
+        88,
+        491,
+        401
+      ],
+      "logicalSize": [
+        256,
+        209
+      ],
+      "pivot": [
+        128,
+        209
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "inherited-static-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false,
+      "tier": 1,
+      "sourceArtwork": "Phase 1 existing source"
+    }
+  ],
+  "animations": [
+    {
+      "id": "production",
+      "file": "assets/art/phase2/ui/state-production.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "delivery",
+      "file": "assets/art/phase2/ui/state-delivery.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "customer-entry",
+      "file": "assets/art/phase2/ui/state-customer-entry.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "construction",
+      "file": "assets/art/phase2/ui/state-construction.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "expansion",
+      "file": "assets/art/phase2/ui/state-expansion.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "low-stock",
+      "file": "assets/art/phase2/ui/state-low-stock.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "closed",
+      "file": "assets/art/phase2/ui/state-closed.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "bankrupt",
+      "file": "assets/art/phase2/ui/state-bankrupt.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "high-demand",
+      "file": "assets/art/phase2/ui/state-high-demand.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "success",
+      "file": "assets/art/phase2/ui/state-success.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    }
+  ],
+  "missing": [
+    "Courier walk sheet rejected: facing changes within row; not exported.",
+    "Rail-b duplicates rail-a direction; not exported.",
+    "Working and entering character animations",
+    "Large cargo truck",
+    "Remaining bicycle forklift service-vehicle facings",
+    "Detached recolourable awnings and exact facade sign masks",
+    "Strict pixel-density and arbitrary footprint certification inherited from Phase 1"
+  ],
+  "files": [
+    {
+      "filename": "assets/art/phase2/runtime/actor-atlas.png",
+      "dimensions": [
+        112,
+        176
+      ],
+      "mode": "RGBA",
+      "bytes": 32067,
+      "transparentPixels": 9668,
+      "usage": "runtime atlas"
+    },
+    {
+      "filename": "assets/art/phase2/runtime/building-atlas.png",
+      "dimensions": [
+        1168,
+        867
+      ],
+      "mode": "RGBA",
+      "bytes": 1574578,
+      "transparentPixels": 483840,
+      "usage": "runtime atlas"
+    },
+    {
+      "filename": "assets/art/phase2/runtime/environment-atlas.png",
+      "dimensions": [
+        1168,
+        861
+      ],
+      "mode": "RGBA",
+      "bytes": 439288,
+      "transparentPixels": 857094,
+      "usage": "runtime atlas"
+    },
+    {
+      "filename": "assets/art/phase2/runtime/state-atlas.png",
+      "dimensions": [
+        1168,
+        578
+      ],
+      "mode": "RGBA",
+      "bytes": 800566,
+      "transparentPixels": 406856,
+      "usage": "runtime atlas"
+    },
+    {
+      "filename": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "dimensions": [
+        528,
+        380
+      ],
+      "mode": "RGBA",
+      "bytes": 165195,
+      "transparentPixels": 139763,
+      "usage": "runtime atlas"
+    },
+    {
+      "filename": "assets/art/phase2/source/additional-actors.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 906487,
+      "transparentPixels": 1081383,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/courier-walk-study.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 792525,
+      "transparentPixels": 1112494,
+      "usage": "review-only source"
+    },
+    {
+      "filename": "assets/art/phase2/source/environment.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2643299,
+      "transparentPixels": 791118,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/processing-upgrades.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 2311442,
+      "transparentPixels": 718400,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/resource-upgrades.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 2041811,
+      "transparentPixels": 855868,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/retail-upgrades.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1908664,
+      "transparentPixels": 853052,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/state-infrastructure.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2784477,
+      "transparentPixels": 810481,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/source/vehicles.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1378462,
+      "transparentPixels": 876935,
+      "usage": "source artwork"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-bankrupt.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 857,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-closed.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 893,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-construction.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 881,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-customer-entry.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 849,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-delivery.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 897,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-expansion.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 869,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-high-demand.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1029,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-low-stock.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 841,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-production.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 889,
+      "usage": "four-frame state animation"
+    },
+    {
+      "filename": "assets/art/phase2/ui/state-success.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 801,
+      "usage": "four-frame state animation"
+    }
+  ]
+}

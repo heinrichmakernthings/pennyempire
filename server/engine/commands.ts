@@ -2,6 +2,7 @@ import type { ApiError } from '../../src/contracts/game-state';
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { LedgerError, available, reconcile, transfer, type TickCtx } from './ledger';
+import { HOUSEHOLDS } from '../seed/bristol';
 import { MarketError, cancelOrder, placeOrder } from './market';
 import { gameDate } from './config';
 import { logEvent } from './stats';
@@ -38,7 +39,7 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
   });
 }
 
-interface OwnedCompany { id: string; name: string; treasury_account_id: string; revision: number; status: string; owner_kind: string; owner_id: string; employees: number; max_employees: number; capacity_batches: number; min_price_minor: number; max_price_minor: number; wage_minor: number; property_minor: number; marketing_minor: number; unpaid_minor: number; storage_cap_units: number }
+interface OwnedCompany { retail_commodity_id: string | null; bankrupt_tick: number | null; hires_in_tick: number; dismissals_in_tick: number; staff_change_tick: number; id: string; name: string; treasury_account_id: string; revision: number; status: string; owner_kind: string; owner_id: string; employees: number; max_employees: number; capacity_batches: number; min_price_minor: number; max_price_minor: number; wage_minor: number; property_minor: number; marketing_minor: number; unpaid_minor: number; storage_cap_units: number }
 const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
   const c = db.get<OwnedCompany>('SELECT * FROM companies WHERE id = ?', companyId);
   if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
@@ -47,18 +48,25 @@ const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
 };
 const isErr = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;
 
-export interface ConfigurePatch { priceMinor?: number; employees?: number; quality?: 'basic' | 'standard' | 'premium'; plannedUnitsPerTick?: number; marketingMinorPerTick?: number }
+export interface ConfigurePatch { priceMinor?: number; employees?: number; quality?: 'basic' | 'standard' | 'premium'; plannedUnitsPerTick?: number; marketingMinorPerTick?: number; askPriceMinor?: number; autoProcure?: boolean }
 
 /** company.configure — validated against the company's own bounds; bumps the revision; optimistic-concurrency checked. */
 export function configureCompany(db: Sql, key: string, companyId: string, expectedRevision: number, p: ConfigurePatch): CommandResponse {
-  return runCommand(db, key, 'company.configure', () => {
+  return runCommand(db, key, 'company.configure', (ctx) => {
     const c = owned(db, companyId); if (isErr(c)) return c;
+    if (c.bankrupt_tick !== null) return err('FORBIDDEN', 'This company is bankrupt and closed.');
     if (c.revision !== expectedRevision) return err('STALE_REVISION', `Company changed (revision ${c.revision}); refresh and try again.`);
     if (c.status === 'insolvent') return err('VALIDATION', 'An insolvent company cannot be reconfigured.');
     const fe: Record<string, string> = {};
     const isInt = (n: unknown) => typeof n === 'number' && Number.isSafeInteger(n) && n >= 0;
     if (p.priceMinor !== undefined && (!isInt(p.priceMinor) || p.priceMinor < c.min_price_minor || p.priceMinor > c.max_price_minor)) fe.priceMinor = 'Price is outside the allowed range.';
     if (p.employees !== undefined && (!isInt(p.employees) || p.employees > c.max_employees)) fe.employees = `Staff must be a whole number from 0 to ${c.max_employees}.`;
+    const cfg = loadConfig(db);
+    const hires = p.employees !== undefined && isInt(p.employees) ? Math.max(0, p.employees - c.employees) : 0, fires = p.employees !== undefined && isInt(p.employees) ? Math.max(0, c.employees - p.employees) : 0;
+    const sameDay = c.staff_change_tick === ctx.tick;
+    if (hires > 0 && (sameDay ? c.hires_in_tick : 0) + hires > cfg.staffChangesPerDay) fe.employees = `You can hire at most ${cfg.staffChangesPerDay} people per day (${sameDay ? c.hires_in_tick : 0} already today).`;
+    if (fires > 0 && (sameDay ? c.dismissals_in_tick : 0) + fires > cfg.staffChangesPerDay) fe.employees = `You can dismiss at most ${cfg.staffChangesPerDay} people per day (${sameDay ? c.dismissals_in_tick : 0} already today).`;
+    if (p.askPriceMinor !== undefined && (!isInt(p.askPriceMinor) || p.askPriceMinor < c.min_price_minor || p.askPriceMinor > c.max_price_minor)) fe.askPriceMinor = 'Wholesale price is outside the allowed range.';
     if (p.marketingMinorPerTick !== undefined && !isInt(p.marketingMinorPerTick)) fe.marketingMinorPerTick = 'Marketing must be a non-negative integer.';
     if (p.quality !== undefined && !['basic', 'standard', 'premium'].includes(p.quality)) fe.quality = 'Unknown quality.';
     const lines = db.all<{ recipe_id: string; output_units: number }>('SELECT l.recipe_id, r.output_units FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ?', companyId);
@@ -72,6 +80,18 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     const sets: string[] = []; const vals: (string | number)[] = [];
     const add = (col: string, v: string | number | undefined) => { if (v !== undefined) { sets.push(`${col} = ?`); vals.push(v); } };
     add('price_minor', p.priceMinor); add('employees', p.employees); add('quality', p.quality); add('marketing_minor', p.marketingMinorPerTick);
+    add('auto_procure', p.autoProcure === undefined ? undefined : p.autoProcure ? 1 : 0);
+    // Hiring costs one day's wage as a recruitment fee, dismissal one day's wage as severance; both are paid to households now and recognised in the next day's labour cost.
+    const staffFee = (hires + fires) * c.wage_minor;
+    if (hires + fires > 0) {
+      if (available(db, c.treasury_account_id) < staffFee) return err('INSUFFICIENT_FUNDS', `Changing staff costs ${staffFee / 100} EC (one day's wage each); the company has ${available(db, c.treasury_account_id) / 100} EC.`);
+      if (staffFee > 0) transfer(db, ctx, `cmd:${key}:staff`, c.treasury_account_id, HOUSEHOLDS, staffFee, 'operating_cost', `${hires ? 'recruitment' : 'severance'} fees at ${c.name}`);
+      add('hires_in_tick', (sameDay ? c.hires_in_tick : 0) + hires); add('dismissals_in_tick', (sameDay ? c.dismissals_in_tick : 0) + fires); add('staff_change_tick', ctx.tick);
+      db.run('UPDATE companies SET pending_labour_minor = pending_labour_minor + ? WHERE id = ?', staffFee, companyId);
+    }
+    // Wholesale companies (no retail commodity) sell at their ask price, so the "price" setting is the ask price for them.
+    const ask = p.askPriceMinor ?? (c.retail_commodity_id === null ? p.priceMinor : undefined);
+    if (ask !== undefined) db.run('UPDATE production_lines SET ask_price_minor = ? WHERE company_id = ?', ask, companyId);
     if (sets.length) db.run(`UPDATE companies SET ${sets.join(', ')} WHERE id = ?`, ...vals, companyId);
     if (batches !== undefined) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ?', batches, companyId);
     db.run('UPDATE companies SET revision = revision + 1 WHERE id = ?', companyId);
@@ -109,11 +129,12 @@ export function withdrawFromCompany(db: Sql, key: string, companyId: string, amo
 export function reopenCompany(db: Sql, key: string, companyId: string): CommandResponse {
   return runCommand(db, key, 'company.reopen', (ctx) => {
     const c = owned(db, companyId); if (isErr(c)) return c;
+    if (c.bankrupt_tick !== null) return err('FORBIDDEN', 'A bankrupt company has been liquidated and cannot be reopened. Start a new company instead.');
     if (c.status !== 'insolvent') return err('VALIDATION', 'Only insolvent companies can be reopened.');
     const need = c.unpaid_minor + c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
     if (available(db, c.treasury_account_id) < need) return err('INSUFFICIENT_FUNDS', `Reopening needs ${need / 100} EC (arrears plus one day of costs).`);
     if (c.unpaid_minor > 0) transfer(db, ctx, `cmd:${key}`, c.treasury_account_id, TREASURY, c.unpaid_minor, 'state_payment', `insolvency administrator: arrears of ${c.name}`);
-    db.run("UPDATE companies SET status = 'operating', unpaid_minor = 0, shortfall_ticks = 0, revision = revision + 1 WHERE id = ?", companyId);
+    db.run("UPDATE companies SET status = 'operating', insolvent_tick = NULL, unpaid_minor = 0, shortfall_ticks = 0, revision = revision + 1 WHERE id = ?", companyId);
     logEvent(db, ctx.tick, 'company_reopened', 'info', companyId, `${c.name} reopened after settling arrears`);
     return { ok: true, revision: c.revision + 1, transactionId: key, refreshScreens: ['companies', 'city'] };
   });

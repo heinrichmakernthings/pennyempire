@@ -104,6 +104,6 @@ describe('asset boundary (runtime manifest vs files on disk)', () => {
       if (a.usage === 'actor') expect(a.logicalSize[1]).toBe(40);
       if (a.usage === 'inventory') expect(Math.max(...a.logicalSize)).toBeLessThanOrEqual(48);
     }
-    expect(manifest.assets).toHaveLength(41);
+    expect(manifest.assets).toHaveLength(41 + 18);   // base atlas + 18 Phase 2 tier-2/3 building frames
   });
 });

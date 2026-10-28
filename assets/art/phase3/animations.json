@@ -1,0 +1,1297 @@
+{
+  "version": 1,
+  "animations": [
+    {
+      "id": "production",
+      "file": "assets/art/phase2/ui/state-production.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "delivery",
+      "file": "assets/art/phase2/ui/state-delivery.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "customer-entry",
+      "file": "assets/art/phase2/ui/state-customer-entry.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "construction",
+      "file": "assets/art/phase2/ui/state-construction.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "expansion",
+      "file": "assets/art/phase2/ui/state-expansion.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "low-stock",
+      "file": "assets/art/phase2/ui/state-low-stock.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "closed",
+      "file": "assets/art/phase2/ui/state-closed.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "bankrupt",
+      "file": "assets/art/phase2/ui/state-bankrupt.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "high-demand",
+      "file": "assets/art/phase2/ui/state-high-demand.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "success",
+      "file": "assets/art/phase2/ui/state-success.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "missing-inputs",
+      "file": "assets/art/phase3/ui/state-missing-inputs.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/missing-inputs.png"
+    },
+    {
+      "id": "overproduction",
+      "file": "assets/art/phase3/ui/state-overproduction.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/overproduction.png"
+    },
+    {
+      "id": "loss",
+      "file": "assets/art/phase3/ui/state-loss.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/loss.png"
+    },
+    {
+      "id": "profit",
+      "file": "assets/art/phase3/ui/state-profit.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/profit.png"
+    },
+    {
+      "id": "startup",
+      "file": "assets/art/phase3/ui/state-startup.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/startup.png"
+    },
+    {
+      "id": "new-ownership",
+      "file": "assets/art/phase3/ui/state-new-ownership.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/new-ownership.png"
+    },
+    {
+      "id": "major-success",
+      "file": "assets/art/phase3/ui/state-major-success.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/major-success.png"
+    },
+    {
+      "id": "collection",
+      "file": "assets/art/phase3/ui/state-collection.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/collection.png"
+    },
+    {
+      "id": "warehouse-arrival",
+      "file": "assets/art/phase3/ui/state-warehouse-arrival.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/warehouse-arrival.png"
+    },
+    {
+      "id": "shipment",
+      "file": "assets/art/phase3/ui/state-shipment.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/shipment.png"
+    },
+    {
+      "id": "campaign",
+      "file": "assets/art/phase3/ui/state-campaign.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/campaign.png"
+    },
+    {
+      "id": "production-farm",
+      "file": "assets/art/phase3/ui/production-farm.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "farm",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-farm.png"
+    },
+    {
+      "id": "production-mill",
+      "file": "assets/art/phase3/ui/production-mill.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "mill",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-mill.png"
+    },
+    {
+      "id": "production-dairy",
+      "file": "assets/art/phase3/ui/production-dairy.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "dairy",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-dairy.png"
+    },
+    {
+      "id": "production-pizza",
+      "file": "assets/art/phase3/ui/production-pizza.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "pizza",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-pizza.png"
+    },
+    {
+      "id": "production-cafe",
+      "file": "assets/art/phase3/ui/production-cafe.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "cafe",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-cafe.png"
+    },
+    {
+      "id": "production-timber",
+      "file": "assets/art/phase3/ui/production-timber.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "industry-specific production motion glyph; not facade machinery",
+      "industry": "timber",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/production-timber.png"
+    }
+  ]
+}

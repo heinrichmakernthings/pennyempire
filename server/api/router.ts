@@ -4,6 +4,8 @@ import type { Sql } from '../db/sql';
 import { advanceToNow, nextTickAtMs, runTickSafely } from '../engine/clock';
 import { cancelPlayerOrder, configureCompany, fundCompany, placePlayerOrder, quoteOrder, reopenCompany, withdrawFromCompany, type CommandResponse } from '../engine/commands';
 import { gameDate, loadConfig } from '../engine/config';
+import { createCompany, procureNow, serviceEquipment, startupQuote, upgradeCompany } from '../engine/company';
+import { lots, management, opportunities, rankings } from '../engine/insights';
 import { economyDashboard } from './dashboard';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
@@ -13,7 +15,7 @@ export interface ApiOptions { devEndpoints: boolean; now?: () => number }
 
 const json = (status: number, body: unknown): ApiResponse => ({ status, body });
 const apiErr = (status: number, code: ApiError['code'], message: string): ApiResponse => json(status, { ok: false, error: { code, message } });
-const UNAVAILABLE_TYPES = new Set(['company.create', 'company.upgrade', 'shares.order', 'prestige.buy', 'wallet.testDeposit', 'wallet.testWithdraw']);
+const UNAVAILABLE_TYPES = new Set(['shares.order', 'prestige.buy', 'wallet.testDeposit', 'wallet.testWithdraw']);
 
 /** Envelope with real tick revision and clock; `authority: 'server'` tells the UI to drop the "illustrative" badges. */
 function envelope<T>(db: Sql, data: T) {
@@ -38,6 +40,17 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
         case 'portfolio': return json(200, envelope(db, portfolioScreen(db)));
         default: return apiErr(404, 'UNAVAILABLE', `Screen ${seg[1]} has no server data yet`);
       }
+    }
+    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db) });
+    if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
+    if (method === 'GET' && seg[0] === 'rankings') return json(200, { authority: 'server', rankings: rankings(db) });
+    if (method === 'GET' && seg[0] === 'startup-quote') {
+      const qq = startupQuote(db, { industry: q.industry ?? '', plotId: q.plotId ?? '', tier: Number(q.tier ?? 1), name: q.name, workingCapitalMinor: q.workingCapitalMinor === undefined ? undefined : Number(q.workingCapitalMinor) });
+      return json(200, { authority: 'server', quote: qq });
+    }
+    if (method === 'GET' && seg[0] === 'companies' && seg[1] && seg[2] === 'management') {
+      const m = management(db, seg[1]);
+      return m ? json(200, { authority: 'server', management: m }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[1]}`);
     }
     if (method === 'GET' && seg[0] === 'companies' && seg[1]) {
       if (seg[2] === 'financials') return json(200, { authority: 'server', rows: financials(db, seg[1], Number(q.limit ?? 30)) });
@@ -75,12 +88,16 @@ function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>): ApiResp
   const key = cmd?.idempotencyKey as string;
   let res: CommandResponse;
   switch (cmd?.type as string) {
-    case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined }); break;
+    case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined, askPriceMinor: cmd.askPriceMinor as number | undefined, autoProcure: cmd.autoProcure as boolean | undefined }); break;
     case 'commodity.order': res = placePlayerOrder(db, key, { companyId: cmd.companyId as string, commodityId: cmd.commodityId as string, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number, quoteId: cmd.quoteId as string }); break;
     case 'order.cancel': res = cancelPlayerOrder(db, key, Number(cmd.orderId)); break;
     case 'company.fund': res = fundCompany(db, key, cmd.companyId as string, cmd.amountMinor as number); break;
     case 'company.withdraw': res = withdrawFromCompany(db, key, cmd.companyId as string, cmd.amountMinor as number); break;
     case 'company.reopen': res = reopenCompany(db, key, cmd.companyId as string); break;
+    case 'company.create': res = createCompany(db, key, { industry: cmd.industry as string, plotId: cmd.plotId as string, tier: Number(cmd.tier ?? 1), name: String(cmd.name ?? ''), workingCapitalMinor: cmd.workingCapitalMinor as number | undefined, expectedTotalMinor: cmd.expectedTotalMinor as number }); break;
+    case 'company.upgrade': res = upgradeCompany(db, key, cmd.companyId as string, cmd.upgradeId as string); break;
+    case 'company.service': res = serviceEquipment(db, key, cmd.companyId as string); break;
+    case 'company.procure': res = procureNow(db, key, cmd.companyId as string, cmd.batches as number); break;
     default: res = { ok: false, error: { code: 'UNAVAILABLE', message: UNAVAILABLE_TYPES.has(cmd?.type as string) ? 'This action is not available on the server yet.' : `Unknown command ${String(cmd?.type)}` } };
   }
   return json(res.ok ? 200 : res.error.code === 'UNAVAILABLE' ? 501 : 422, res);

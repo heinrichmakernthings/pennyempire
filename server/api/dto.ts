@@ -3,6 +3,7 @@ import type { CompanySummary, PortfolioState } from '../../src/data/types';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { balance } from '../engine/ledger';
+import { effCapacity, type CompanyRow } from '../engine/operations';
 import { PLAYER_ID } from '../seed/bristol';
 
 const ec = (minor: number): Money => ({ currency: 'EC', minor });
@@ -12,7 +13,7 @@ const CONTRACT_INDUSTRIES = new Set(['farm', 'mill', 'dairy', 'pizza', 'cafe', '
 interface CoRow {
   id: string; name: string; city_id: string; plot_id: string | null; industry_id: string; asset_id: string | null; owner_kind: 'player' | 'npc' | 'state'; owner_id: string; owner_name: string; treasury_account_id: string;
   level: number; status: 'operating' | 'paused' | 'insolvent'; retail_commodity_id: string | null; price_minor: number; min_price_minor: number; max_price_minor: number; quality: 'basic' | 'standard' | 'premium';
-  employees: number; max_employees: number; wage_minor: number; capacity_batches: number; storage_cap_units: number; property_minor: number; marketing_minor: number; reputation_bps: number; unpaid_minor: number; revision: number;
+  employees: number; max_employees: number; wage_minor: number; capacity_batches: number; storage_cap_units: number; property_minor: number; marketing_minor: number; reputation_bps: number; unpaid_minor: number; revision: number; bankrupt_tick: number | null; premises_tier: number;
 }
 const COMPANY_SQL = 'SELECT c.*, o.name owner_name FROM companies c JOIN owners o ON o.id = c.owner_id';
 const owner = (c: Pick<CoRow, 'owner_id' | 'owner_name' | 'owner_kind'>): Owner => ({ id: c.owner_id, name: c.owner_name, kind: c.owner_kind });
@@ -38,7 +39,7 @@ export function playerDto(db: Sql): Player {
 }
 
 export function directory(db: Sql): CompanySummary[] {
-  return db.all<CoRow>(`${COMPANY_SQL} WHERE c.owner_kind <> 'state' ORDER BY c.id`).filter((c) => CONTRACT_INDUSTRIES.has(c.industry_id))
+  return db.all<CoRow>(`${COMPANY_SQL} WHERE c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY c.id`).filter((c) => CONTRACT_INDUSTRIES.has(c.industry_id))
     .map((c) => ({ id: c.id, name: c.name, plotId: c.plot_id ?? '', industry: c.industry_id as Company['industry'], owner: owner(c), level: c.level, status: c.status }));
 }
 
@@ -71,7 +72,7 @@ export function companyDto(db: Sql, id: string): Company | null {
   const revenue = st?.revenue_minor ?? 0, profit = st?.net_profit_minor ?? 0;
   const lines = db.all<{ recipe_id: string; planned_batches: number; output_units: number; output_commodity_id: string }>('SELECT l.recipe_id, l.planned_batches, r.output_units, r.output_commodity_id FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ? ORDER BY l.recipe_id', id);
   const planned = lines.reduce((a, l) => a + l.planned_batches * l.output_units, 0);
-  const effBatches = c.max_employees === 0 ? 0 : Math.floor((c.capacity_batches * c.employees) / c.max_employees);
+  const effBatches = effCapacity(c as unknown as CompanyRow);   // staff, productivity upgrades and equipment condition all count
   const perTickUse = new Map<string, number>();
   for (const l of lines) for (const i of db.all<{ commodity_id: string; units: number }>('SELECT * FROM recipe_inputs WHERE recipe_id = ?', l.recipe_id)) perTickUse.set(i.commodity_id, (perTickUse.get(i.commodity_id) ?? 0) + i.units * l.planned_batches);
   // Companies buy inputs just-in-time each day, so input stock is normally ~0 at day end. Only report "hours remaining" when it is meaningful:
@@ -93,9 +94,12 @@ export function companyDto(db: Sql, id: string): Company | null {
     price: ec(c.retail_commodity_id ? c.price_minor : (db.get<{ a: number }>('SELECT ask_price_minor a FROM production_lines WHERE company_id = ? ORDER BY recipe_id LIMIT 1', id)?.a ?? c.price_minor)), minPrice: ec(c.min_price_minor), maxPrice: ec(c.max_price_minor),
     employees: c.employees, maxEmployees: c.max_employees, wagePerTick: ec(c.wage_minor), quality: c.quality, reputationBps: c.reputation_bps,
     capacityPerTick: effBatches * (lines[0]?.output_units ?? 0), plannedUnitsPerTick: planned, marketingPerTick: ec(c.marketing_minor), inventory, recipeId: lines[0]?.recipe_id ?? '',
-    ownership: [{ owner: owner(c), shares: 10_000, ownershipBps: 10_000 }], upgrades: [],
+    ownership: [{ owner: owner(c), shares: 10_000, ownershipBps: 10_000 }],
+    upgrades: db.all<{ id: string; name: string; cost_minor: number; requires_tier: number; kind: string; to_tier: number | null }>('SELECT * FROM upgrade_catalog WHERE industry_id = ? ORDER BY sort, id', c.industry_id)
+      .filter((u) => !db.get('SELECT 1 FROM company_upgrades WHERE company_id = ? AND upgrade_id = ?', id, u.id))
+      .map((u) => ({ id: u.id, name: u.name, cost: ec(u.cost_minor), requirements: u.kind === 'tier' ? [`Premises tier ${(u.to_tier ?? 2) - 1}`] : [`Premises tier ${u.requires_tier}`], available: c.bankrupt_tick === null && (u.kind === 'tier' ? c.premises_tier + 1 === u.to_tier : c.premises_tier >= u.requires_tier), resultingAssetId: c.asset_id ?? c.industry_id })),
     profitHistory: history(db, id, 'net_profit_minor'), revenueHistory: history(db, id, 'revenue_minor'), expenseHistory: history(db, id, 'revenue_minor - net_profit_minor'),
-    permissions: { manage: mine && c.status !== 'insolvent', buySupplies: mine && c.status === 'operating', upgrade: false },
+    permissions: { manage: mine && c.status !== 'insolvent' && c.bankrupt_tick === null, buySupplies: mine && c.status === 'operating', upgrade: mine && c.status === 'operating' && c.bankrupt_tick === null },
   };
 }
 

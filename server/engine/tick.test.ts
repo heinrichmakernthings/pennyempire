@@ -9,7 +9,7 @@ import { PLAYER_ID, companyAccount, seedBristol } from '../seed/bristol';
 describe('seeding', () => {
   it('creates the Bristol economy with every opening coin recorded as a labelled issuance', () => {
     const db = memWorld();
-    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM companies').n).toBe(12);
+    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM companies').n).toBe(13);
     const s = supply(db);
     expect(s.issued).toBe(s.circulating); expect(s.destroyed).toBe(0);
     expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM ledger_transactions WHERE kind = 'issuance' AND idempotency_key LIKE 'seed:%'").n).toBeGreaterThan(10);
@@ -89,7 +89,8 @@ describe('production recipes (docs/ECONOMY.md)', () => {
     expect(-sum('co-brunel-mill', 'wheat', 'production_input')).toBe(2 * flour);                  // 2 wheat → 1 flour
     const cheese = sum('co-clifton-dairy', 'cheese', 'production_output'); expect(cheese).toBeGreaterThan(0);
     expect(-sum('co-clifton-dairy', 'milk', 'production_input')).toBe(2 * cheese);                // 2 milk → 1 cheese
-    for (const cafe of ['co-harbour-bean', 'co-bean-there']) expect(2 * -sum(cafe, 'milk', 'production_input')).toBe(sum(cafe, 'cafe-drink', 'production_output'));   // 1 milk → 2 drinks
+    expect(2 * -sum('co-bean-there', 'milk', 'production_input')).toBe(sum('co-bean-there', 'cafe-drink', 'production_output'));   // standard quality: 1 milk → 2 drinks
+    expect(20 * -sum('co-harbour-bean', 'milk', 'production_input')).toBe(9 * sum('co-harbour-bean', 'cafe-drink', 'production_output'));   // basic quality uses 10% fewer ingredients: 9 milk → 20 drinks
     for (const primary of [['co-severn-farm', 'wheat'], ['co-severn-farm', 'milk'], ['co-avon-timber', 'timber']] as const) expect(sum(primary[0], primary[1], 'production_output')).toBeGreaterThan(0);   // no inputs required
   });
   it('production is limited by staffing, storage and inputs — never creates stock beyond the cap', () => {

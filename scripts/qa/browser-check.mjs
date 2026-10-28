@@ -19,13 +19,13 @@ mkdirSync(OUT, { recursive: true });
 const tmp = mkdtempSync(join(tmpdir(), 'pe-qa-'));
 // Children are spawned directly (not via npx) so kill() really stops them, and the run refuses to start if a stale server owns the ports.
 for (const url of [`${BASE}/`, 'http://127.0.0.1:8787/api/health']) { const up = await fetch(url).then(() => true, () => false); if (up) { console.error(`Port already in use (${url}). Stop the stale server before running QA.`); process.exit(2); } }
-const engine = spawn(process.execPath, ['--import', 'tsx', '--no-warnings', 'server/node.ts'], { stdio: 'ignore', env: { ...process.env, PENNY_DB: join(tmp, 'qa.db'), PENNY_TICK_MS: '2500', PORT: '8787' } });
+const engine = spawn(process.execPath, ['--import', 'tsx', '--no-warnings', 'server/node.ts'], { stdio: 'ignore', env: { ...process.env, PENNY_DB: join(tmp, 'qa.db'), PENNY_PROFILE: 'demo', PENNY_TICK_MS: '2500', PORT: '8787' } });
 const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--port', String(PORT), '--host', '127.0.0.1', '--strictPort'], { stdio: 'ignore' });
 const stop = () => { server.kill(); engine.kill(); try { rmSync(tmp, { recursive: true, force: true }); } catch { /* ignore */ } };
 process.on('exit', stop);
 for (let i = 0; i < 100; i++) { try { if ((await fetch(BASE)).ok && (await fetch(`${BASE}/api/health`)).ok) break; } catch { /* waiting */ } await new Promise((r) => setTimeout(r, 200)); }
 
-const routes = ['/city', '/companies', '/commodities', '/stocks', '/portfolio', '/prestige', '/wallet'];
+const routes = ['/city', '/opportunities', '/companies', '/commodities', '/stocks', '/portfolio', '/prestige', '/wallet'];
 const viewports = [{ name: 'mobile-390', width: 390, height: 844, mobile: true }, { name: 'tablet-768', width: 768, height: 1024, mobile: false }, { name: 'desktop-1440', width: 1440, height: 900, mobile: false }];
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`); };
@@ -80,7 +80,7 @@ try {
     if (!vp.mobile) {
       await page.mouse.click(cx, cy); await page.getByRole('link', { name: 'Manage company' }).first().click();
       await page.waitForURL(/\/companies\?company=co-/);
-      check(`${vp.name} city: "Manage company" opens the company-management view`, await page.getByRole('tab', { name: 'Operations' }).waitFor({ timeout: 4000 }).then(() => true, () => false));
+      check(`${vp.name} city: "Manage company" opens the company-management view`, await page.getByRole('tab', { name: 'Controls' }).waitFor({ timeout: 4000 }).then(() => true, () => false));
       await page.goto(BASE + '/city', { waitUntil: 'networkidle' }); await wrap.waitFor(); await page.waitForTimeout(500);
     }
     // zoom
@@ -155,7 +155,7 @@ try {
   let d1 = d0; for (let i = 0; i < 40 && d1 === d0; i++) { await lp.waitForTimeout(500); d1 = await day(); }
   check('the economy advances by itself: HUD day increases with nobody clicking', d1 > d0, `Day ${d0} → ${d1}`);
   await lp.goto(BASE + '/companies?company=co-mad-slices', { waitUntil: 'networkidle' });
-  await lp.getByRole('tab', { name: 'Operations' }).click();
+  await lp.getByRole('tab', { name: 'Controls' }).click();
   const price = lp.getByLabel(/Price per unit/); await price.fill('10.50'); await lp.getByRole('button', { name: 'Save changes' }).click();
   check('saving company settings is accepted by the server and persists', await lp.getByText('Settings saved').waitFor({ timeout: 5000 }).then(() => true, () => false));
   const after = await (await fetch(`${BASE}/api/companies/co-mad-slices`)).json();

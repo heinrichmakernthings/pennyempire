@@ -1,0 +1,128 @@
+[
+  {
+    "id": "water",
+    "source": "assets/art/phase3/source/water.png",
+    "sourceSize": [
+      1334,
+      1179
+    ],
+    "crop": [
+      233,
+      139,
+      892,
+      935
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "id": "animal-feed",
+    "source": "assets/art/phase3/source/animal-feed.png",
+    "sourceSize": [
+      1312,
+      1199
+    ],
+    "crop": [
+      172,
+      146,
+      986,
+      946
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "id": "coffee",
+    "source": "assets/art/phase3/source/coffee.png",
+    "sourceSize": [
+      1374,
+      1145
+    ],
+    "crop": [
+      276,
+      163,
+      820,
+      839
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ]
+  },
+  {
+    "id": "building-materials",
+    "source": "assets/art/phase3/source/building-materials.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      351,
+      143,
+      839,
+      745
+    ],
+    "alphaExtrema": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "coffee-drinks",
+    "source": "assets/art/phase3/source/coffee-drinks.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      374,
+      97,
+      797,
+      821
+    ],
+    "alphaExtrema": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "bakery-products",
+    "source": "assets/art/phase3/source/bakery-products.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      187,
+      121,
+      1220,
+      816
+    ],
+    "alphaExtrema": [
+      0,
+      254
+    ]
+  },
+  {
+    "id": "furniture",
+    "source": "assets/art/phase3/source/furniture.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      271,
+      51,
+      770,
+      1157
+    ],
+    "alphaExtrema": [
+      0,
+      255
+    ]
+  }
+]

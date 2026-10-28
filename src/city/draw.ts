@@ -3,7 +3,7 @@ import { frameById } from '@/assets/artAssets';
 import type { Camera } from './camera';
 import { screenToWorld, worldToScreen } from './camera';
 import { pointInPolygon, project, type Vec } from './geometry';
-import type { Scene, SceneBuilding } from './scene';
+import type { Scene, SceneBuilding, SceneLot } from './scene';
 
 export const PALETTE = { water: '#23606b', waterHi: '#377887', road: '#343c40', grass: '#64724b', paving: '#80796b', seam: 'rgba(20,28,32,.18)', quay: '#b3a48b', dash: '#d6c8a6', amber: '#ffc45e', mint: '#62dbaf', cream: '#f0e8d7', bg: '#17252a' };
 
@@ -55,7 +55,7 @@ export function createTerrainLayer(scene: Scene): { canvas: HTMLCanvasElement; o
 }
 
 export interface ViewState { cam: Camera; width: number; height: number; dpr: number }
-export interface UiState { hoverId: string | null; selectedId: string | null }
+export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null }
 
 function drawFrame(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, id: string, ax: number, ay: number, zoom: number): boolean {
   const f = frameById.get(id); const img = f && atlas?.images.get(f.source);
@@ -104,6 +104,14 @@ export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene, atlas: 
     if (sx1 > sx0 && sy1 > sy0) ctx.drawImage(canvas, sx0, sy0, sx1 - sx0, sy1 - sy0, Math.round(ox + (sx0 + originX) * k), Math.round(oy + (sy0 + originY) * k), Math.round((sx1 - sx0) * k), Math.round((sy1 - sy0) * k));
   }
 
+  // vacant lots: dashed outline so a player can see where a new company could go
+  ctx.save(); ctx.scale(dpr, dpr);
+  for (const l of scene.lots) {
+    const on = l.plotId === ui.selectedLotId;
+    strokePolygon(ctx, l.polygon, view, { stroke: on ? PALETTE.amber : PALETTE.mint, width: on ? 3 : 2, dash: [10, 6], fill: on ? 'rgba(255,196,94,.20)' : 'rgba(98,219,175,.08)' });
+  }
+  ctx.restore();
+
   // ground-level overlays under sprites
   ctx.save(); ctx.scale(dpr, dpr);
   for (const b of scene.buildings) {
@@ -124,6 +132,10 @@ export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene, atlas: 
   const sel = scene.buildings.find((b) => b.selectable && b.companyId === ui.selectedId);
   if (sel) { ctx.save(); ctx.scale(dpr, dpr); strokePolygon(ctx, sel.polygon, view, { stroke: PALETTE.amber, width: 2, dash: [10, 6] }); ctx.restore(); }
 
+  for (const l of scene.lots) {
+    const [sx, sy] = worldToScreen(cam, width, height, l.anchor[0], l.anchor[1] - 28);
+    label(ctx, l.plotId === ui.selectedLotId ? 'For lease · selected' : 'For lease', sx * dpr, sy * dpr, l.plotId === ui.selectedLotId ? 'selected' : 'hover', dpr);
+  }
   // labels last, screen space
   const nameplates = scene.buildings.filter((b) => b.selectable && (b.owned || b.companyId === ui.hoverId || b.companyId === ui.selectedId));
   for (const b of nameplates) {
@@ -151,3 +163,9 @@ export function hitTest(scene: Scene, atlas: ArtAtlas | null, wx: number, wy: nu
 }
 
 export const viewToWorld = (view: ViewState, sx: number, sy: number) => screenToWorld(view.cam, view.width, view.height, sx, sy);
+
+/** Vacant-lot hit test: the footprint diamond only (there is no sprite). Buildings are tested first by the caller. */
+export function hitLot(scene: Scene, wx: number, wy: number): SceneLot | null {
+  for (const l of scene.lots) if (pointInPolygon([wx, wy], l.polygon)) return l;
+  return null;
+}

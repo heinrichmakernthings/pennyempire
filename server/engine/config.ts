@@ -26,6 +26,18 @@ export interface EngineConfig {
   supplyTargetMinor: number;         // inflation controller: target circulating supply (0 disables the controller)
   stipendGainBps: number;            // stipend = base × (1 + gain × (target − supply)/target), clamped to [0, 2×base]
   energyCommodityId: string;
+  // ── company management ──
+  maxCompaniesPerPlayer: number;     // active (non-bankrupt) companies one player may own
+  bankruptcyAfterTicks: number;      // insolvent this long without being reopened → bankrupt and liquidated
+  stockCoverDays: number;            // production pauses once unsold finished goods reach this many days of planned output (no blind overproduction)
+  staffChangesPerDay: number;        // max hires and max dismissals per company per day
+  awarenessHalfSpendMinor: number;   // daily marketing spend that earns half of the maximum awareness (diminishing returns)
+  awarenessMaxBps: number;           // ceiling on the demand-score bonus advertising can ever buy
+  awarenessDecayBps: number;         // share of awareness that fades every day (advertising must be sustained)
+  wearBpsPerTick: number;            // equipment condition lost per producing day
+  serviceCostBps: number;            // share of the equipment's cost needed to restore it from 0% to 100% condition
+  liquidationBps: number;            // price the state pays for a bankrupt company's stock, as a share of its cost basis
+  qualityInputBps: { basic: number; standard: number; premium: number };   // ingredient use per batch by quality grade
 }
 
 export const DEFAULT_CONFIG: EngineConfig = {
@@ -33,6 +45,7 @@ export const DEFAULT_CONFIG: EngineConfig = {
   exchangeFeeBps: 100, procurementLimitBps: 15_000, stateSupplyMarkupBps: 14_000, stateSupplyPerTick: 120, stateSupplyCap: 400,
   stipendPerThousandMinor: 120, civilPayrollBps: 500, corporationTaxBps: 1_500, idleCashLevyBps: 10, stateBurnBps: 100, stateReserveMinor: 2_000_000, enterpriseReserveMinor: 300_000,
   insolvencyAfterTicks: 3, npcPriceStepBps: 150, npcSupportMinor: 0, npcPayoutBps: 8_000, npcReserveTicks: 10, supplyTargetMinor: 0, stipendGainBps: 100_000, energyCommodityId: 'energy',
+  maxCompaniesPerPlayer: 6, bankruptcyAfterTicks: 10, staffChangesPerDay: 3, stockCoverDays: 5, awarenessHalfSpendMinor: 6_000, awarenessMaxBps: 4_000, awarenessDecayBps: 500, wearBpsPerTick: 20, serviceCostBps: 3_000, liquidationBps: 5_000, qualityInputBps: { basic: 9_000, standard: 10_000, premium: 12_500 },
 };
 
 export function loadConfig(db: Sql): EngineConfig {
@@ -45,7 +58,7 @@ export function saveConfig(db: Sql, cfg: EngineConfig) {
 
 export function validateConfig(c: EngineConfig): string[] {
   const errs: string[] = [];
-  const ints: (keyof EngineConfig)[] = ['realMsPerTick', 'maxCatchupTicks', 'exchangeFeeBps', 'procurementLimitBps', 'stateSupplyMarkupBps', 'stateSupplyPerTick', 'stateSupplyCap', 'stipendPerThousandMinor', 'civilPayrollBps', 'corporationTaxBps', 'idleCashLevyBps', 'stateBurnBps', 'stateReserveMinor', 'enterpriseReserveMinor', 'insolvencyAfterTicks', 'npcPriceStepBps', 'npcSupportMinor', 'npcPayoutBps', 'npcReserveTicks', 'supplyTargetMinor', 'stipendGainBps'];
+  const ints: (keyof EngineConfig)[] = ['realMsPerTick', 'maxCatchupTicks', 'exchangeFeeBps', 'procurementLimitBps', 'stateSupplyMarkupBps', 'stateSupplyPerTick', 'stateSupplyCap', 'stipendPerThousandMinor', 'civilPayrollBps', 'corporationTaxBps', 'idleCashLevyBps', 'stateBurnBps', 'stateReserveMinor', 'enterpriseReserveMinor', 'insolvencyAfterTicks', 'npcPriceStepBps', 'npcSupportMinor', 'npcPayoutBps', 'npcReserveTicks', 'supplyTargetMinor', 'stipendGainBps', 'maxCompaniesPerPlayer', 'bankruptcyAfterTicks', 'staffChangesPerDay', 'stockCoverDays', 'awarenessHalfSpendMinor', 'awarenessMaxBps', 'awarenessDecayBps', 'wearBpsPerTick', 'serviceCostBps', 'liquidationBps'];
   for (const k of ints) if (!Number.isSafeInteger(c[k]) || (c[k] as number) < 0) errs.push(`${k} must be a non-negative safe integer`);
   if (c.exchangeFeeBps > 10_000 || c.civilPayrollBps > 10_000 || c.corporationTaxBps > 10_000 || c.idleCashLevyBps > 10_000 || c.stateBurnBps > 10_000 || c.npcPayoutBps > 10_000) errs.push('basis-point settings must be ≤ 10000');
   if (c.realMsPerTick < 1) errs.push('realMsPerTick must be ≥ 1');

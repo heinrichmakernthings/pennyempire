@@ -3,17 +3,14 @@ import { loadConfig, gameDate } from './config';
 import { allocateDemand, type Seller } from './demand';
 import { InventoryError, addStock, freeStock, removeStock, stock } from './inventory';
 import { LedgerError, available, balance, destroy, issue, supply, transfer, type LedgerKind, type TickCtx } from './ledger';
-import { MarketError, cancelOrder, depth, placeOrder, type FillEvent } from './market';
+import { MarketError, cancelOrder, placeOrder, type FillEvent } from './market';
+import { liquidateCompany } from './lifecycle';
+import { energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
-interface Co {
-  id: string; name: string; city_id: string; industry_id: string; owner_kind: 'player' | 'npc' | 'state'; owner_id: string; treasury_account_id: string; status: 'operating' | 'paused' | 'insolvent';
-  retail_commodity_id: string | null; price_minor: number; quality: 'basic' | 'standard' | 'premium'; employees: number; max_employees: number; wage_minor: number; capacity_batches: number;
-  storage_cap_units: number; property_minor: number; marketing_minor: number; reputation_bps: number; unpaid_minor: number; shortfall_ticks: number;
-}
-interface Line { company_id: string; recipe_id: string; planned_batches: number; ask_price_minor: number; output_commodity_id: string; output_units: number; energy_units: number; ref_price: number }
-interface Stat { tax: number; revenue: number; cogs: number; labour: number; property: number; marketing: number; fees: number; energyPaid: number; inputPurchases: number; unitsProduced: number; unitsSold: number; energyDue: number; demanded: number; stockedOut: boolean }
-const newStat = (): Stat => ({ tax: 0, revenue: 0, cogs: 0, labour: 0, property: 0, marketing: 0, fees: 0, energyPaid: 0, inputPurchases: 0, unitsProduced: 0, unitsSold: 0, energyDue: 0, demanded: 0, stockedOut: false });
+type Co = CompanyRow;
+interface Stat { maintenance: number; tax: number; revenue: number; cogs: number; labour: number; property: number; marketing: number; fees: number; energyPaid: number; inputPurchases: number; unitsProduced: number; unitsSold: number; energyDue: number; demanded: number; stockedOut: boolean }
+const newStat = (): Stat => ({ maintenance: 0, tax: 0, revenue: 0, cogs: 0, labour: 0, property: 0, marketing: 0, fees: 0, energyPaid: 0, inputPurchases: 0, unitsProduced: 0, unitsSold: 0, energyDue: 0, demanded: 0, stockedOut: false });
 
 export type TickResult = { status: 'complete'; tick: number; summary: TickSummary } | { status: 'skipped'; tick: number; reason: string };
 export interface TickSummary { tick: number; issuedMinor: number; destroyedMinor: number; circulatingMinor: number; trades: number; tradeValueMinor: number; consumerSpendMinor: number; unmetUnits: number; unitsProduced: number; insolvencies: number; failures: number; supportMinor: number }
@@ -52,13 +49,13 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const rot = n % Math.max(1, all.length);
     const order = [...all.slice(rot), ...all.slice(0, rot)];            // fair rotation: nobody always shops first
     const byId = new Map(all.map((c) => [c.id, c]));
-    const linesOf = (id: string) => db.all<Line>('SELECT l.company_id, l.recipe_id, l.planned_batches, l.ask_price_minor, r.output_commodity_id, r.output_units, r.energy_units, cm.reference_price_minor ref_price FROM production_lines l JOIN recipes r ON r.id = l.recipe_id JOIN commodities cm ON cm.id = r.output_commodity_id WHERE l.company_id = ? ORDER BY l.recipe_id', id);
-    const inputsOf = (recipe: string) => db.all<{ commodity_id: string; units: number }>('SELECT commodity_id, units FROM recipe_inputs WHERE recipe_id = ? ORDER BY commodity_id', recipe);
-    const refPrice = (c: string) => db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', c)!.p;
+    const linesOf = (id: string) => opsLinesOf(db, id);
+    const inputsOf = (recipe: string) => recipeInputs(db, recipe);
+    const refPrice = (c: string) => refPriceOf(db, c);
     const stateCo = (industry: string) => all.find((c) => c.owner_kind === 'state' && c.industry_id === industry);
     const energyCo = stateCo('utility'), estatesCo = stateCo('property'), mediaCo = stateCo('media'), provisions = stateCo('wholesale');
     const energyPrice = refPrice(cfg.energyCommodityId);
-    const effCapacity = (c: Co) => (c.max_employees === 0 ? 0 : Math.floor((c.capacity_batches * c.employees) / c.max_employees));
+    const worksCo = stateCo('works');
     const city = db.get<{ id: string; population: number; households_account_id: string; treasury_account_id: string }>('SELECT id, population, households_account_id, treasury_account_id FROM cities ORDER BY id LIMIT 1')!;
     const onFill = (f: FillEvent) => { trades++; tradeValue += f.price * f.qty; st(f.seller).revenue += f.price * f.qty; st(f.seller).cogs += f.cost; st(f.seller).fees += f.fee; st(f.seller).unitsSold += f.qty; st(f.buyer).inputPurchases += f.price * f.qty; };
 
@@ -111,7 +108,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         capLeft = Math.max(0, capLeft - planned); plannedTotal += planned;
         if (planned !== l.planned_batches) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ? AND recipe_id = ?', planned, c.id, l.recipe_id);
       }
-      const staff = Math.max(1, Math.min(c.max_employees, Math.ceil((plannedTotal * c.max_employees) / Math.max(1, c.capacity_batches))));
+      const staff = staffNeeded(c, plannedTotal);
       if (staff !== c.employees) { db.run('UPDATE companies SET employees = ? WHERE id = ?', staff, c.id); c.employees = staff; }
     }
 
@@ -129,56 +126,55 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       });
     }
 
-    /* E. Procurement: buy missing inputs (immediate-or-cancel limit orders) for as many planned batches as cash and the book allow. */
+    /* E. Procurement: automatic purchasing of missing inputs (shared with the player's "buy supplies now" action). A player can switch it off. */
     phase('procurement');
-    const plan = (c: Co) => {
-      let capLeft = effCapacity(c); const out: { line: Line; batches: number }[] = [];
-      for (const l of linesOf(c.id)) {
-        const room = Math.floor((c.storage_cap_units - stock(db, c.id, l.output_commodity_id).qty) / l.output_units);
-        const b = Math.max(0, Math.min(l.planned_batches, capLeft, room)); capLeft -= b; out.push({ line: l, batches: b });
-      }
-      return out;
-    };
+    const procLimit = new Map<string, LimitReason>();
+    for (const c of order) {
+      if (c.status !== 'operating' || (c.owner_kind === 'player' && c.auto_procure === 0)) continue;
+      safe('procurement', c.id, () => {
+        const budget = Math.max(0, available(db, c.treasury_account_id) - c.employees * c.wage_minor - c.property_minor - c.marketing_minor);
+        const r = procureInputs(db, ctx, cfg, c, budget, energyPrice, onFill);
+        if (r.limit) procLimit.set(c.id, r.limit);
+      });
+    }
+
+    /* F. Production: batches limited by plan, staffing, equipment condition, storage and inputs. Inputs are consumed from real stock (quality sets
+     *    how much per batch); output cost basis = inputs consumed + energy (capitalised). Every line writes a production-log row saying what limited it. */
+    phase('production');
+    const producedBatches = new Map<string, number>();
     for (const c of order) {
       if (c.status !== 'operating') continue;
-      safe('procurement', c.id, () => {
-        let budget = Math.max(0, available(db, c.treasury_account_id) - c.employees * c.wage_minor - c.property_minor - c.marketing_minor);
-        for (const { line, batches } of plan(c)) {
-          const inputs = inputsOf(line.recipe_id); if (inputs.length === 0 || batches === 0) continue;
-          const energyCost = line.energy_units * energyPrice;
-          for (let b = batches; b > 0; b--) {
-            let cost = b * energyCost, ok = true; const buys: { com: string; qty: number }[] = [];
-            for (const i of inputs) {
-              const deficit = Math.max(0, b * i.units - freeStock(db, c.id, i.commodity_id)); if (deficit === 0) continue;
-              const limit = Math.floor((refPrice(i.commodity_id) * cfg.procurementLimitBps) / 10_000);
-              const d = depth(db, i.commodity_id, limit, c.id, deficit);
-              if (d.qty < deficit) { ok = false; break; }
-              cost += d.cost; buys.push({ com: i.commodity_id, qty: deficit });
-            }
-            if (!ok || cost > budget) continue;
-            for (const bu of buys) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: bu.com, side: 'buy', price: Math.floor((refPrice(bu.com) * cfg.procurementLimitBps) / 10_000), qty: bu.qty, ioc: true }, onFill);
-            budget -= cost; break;
+      safe('production', c.id, () => {
+        for (const { line, batches, wanted, reason } of planCompany(db, c, cfg)) {
+          const inputs = inputsOf(line.recipe_id).map((i) => ({ ...i, need: inputUnitsPerBatch(cfg, c.quality, i.units) }));
+          const byInputs = Math.min(batches, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.need)));
+          const b = Math.max(0, byInputs);
+          let limited: LimitReason = reason;
+          if (b < batches) limited = procLimit.get(c.id) ?? 'inputs';
+          let basis = 0; const used: Record<string, number> = {};
+          if (b > 0) {
+            for (const i of inputs) { basis += removeStock(db, ctx, c.id, i.commodity_id, b * i.need, 'production_input', line.recipe_id); used[i.commodity_id] = b * i.need; }
+            const energy = b * energyPerBatch(c, line.energy_units) * energyPrice; st(c.id).energyDue += energy;
+            addStock(db, ctx, c.id, line.output_commodity_id, b * line.output_units, basis + energy, 'production_output', line.recipe_id);
+            st(c.id).unitsProduced += b * line.output_units;
+            producedBatches.set(c.id, (producedBatches.get(c.id) ?? 0) + b);
           }
+          db.run('INSERT INTO production_log (tick, company_id, recipe_id, planned_batches, produced_batches, limited_by, output_units, inputs_json) VALUES (?,?,?,?,?,?,?,?)', n, c.id, line.recipe_id, wanted, b, limited, b * line.output_units, JSON.stringify(used));
         }
       });
     }
 
-    /* F. Production: batches limited by staffing, storage, inputs. Output cost basis = inputs consumed + energy (capitalised). */
-    phase('production');
+    /* F2. Wear: producing wears equipment; at low condition output drops. NPC firms service equipment automatically (paying Bristol Works); players decide. */
     for (const c of order) {
-      if (c.status !== 'operating') continue;
-      safe('production', c.id, () => {
-        for (const { line, batches } of plan(c)) {
-          const inputs = inputsOf(line.recipe_id);
-          const b = Math.min(batches, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.units)));
-          if (b <= 0) continue;
-          let basis = 0;
-          for (const i of inputs) basis += removeStock(db, ctx, c.id, i.commodity_id, b * i.units, 'production_input', line.recipe_id);
-          const energy = b * line.energy_units * energyPrice; st(c.id).energyDue += energy;
-          addStock(db, ctx, c.id, line.output_commodity_id, b * line.output_units, basis + energy, 'production_output', line.recipe_id);
-          st(c.id).unitsProduced += b * line.output_units;
+      if (c.status !== 'operating' || !(producedBatches.get(c.id) ?? 0)) continue;
+      c.condition_bps = Math.max(2_000, c.condition_bps - cfg.wearBpsPerTick);
+      if (c.owner_kind === 'npc' && c.condition_bps < 6_000 && c.equipment_cost_minor > 0 && worksCo) {
+        const cost = Math.ceil((c.equipment_cost_minor * (10_000 - c.condition_bps) * cfg.serviceCostBps) / 100_000_000);
+        if (cost > 0 && available(db, c.treasury_account_id) > cost + c.employees * c.wage_minor + c.property_minor) {
+          safe('maintenance', c.id, () => { pay('operating_cost', c.treasury_account_id, worksCo.treasury_account_id, cost, `equipment service for ${c.name}`); st(worksCo.id).revenue += cost; st(c.id).maintenance += cost; c.condition_bps = 10_000; });
         }
-      });
+      }
+      db.run('UPDATE companies SET condition_bps = ? WHERE id = ?', c.condition_bps, c.id);
     }
 
     /* G. Consumer demand: every budget comes from a named funder account and is capped by that account's balance. */
@@ -195,7 +191,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       const sellers = order.filter((c) => c.status === 'operating' && c.retail_commodity_id === r.commodity_id);
       for (const c of sellers) if (freeStock(db, c.id, r.commodity_id) === 0) st(c.id).stockedOut = true;
       const live = sellers.filter((c) => freeStock(db, c.id, r.commodity_id) > 0);
-      const res = allocateDemand(budget, ref, r.price_sensitivity, live.map((c): Seller => ({ id: c.id, price: c.price_minor, stock: freeStock(db, c.id, r.commodity_id), quality: c.quality, reputationBps: c.reputation_bps, marketingMinor: c.marketing_minor })));
+      const res = allocateDemand(budget, ref, r.price_sensitivity, live.map((c): Seller => ({ id: c.id, price: c.price_minor, stock: freeStock(db, c.id, r.commodity_id), quality: c.quality, reputationBps: c.reputation_bps, awarenessBps: c.awareness_bps })));
       let spent = 0, sold = 0;
       for (const a of res.allocations) {
         const c = byId.get(a.id)!; st(c.id).demanded += Math.floor((res.unitsWanted * a.share) / 10_000);
@@ -216,9 +212,11 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     for (const c of order) {
       if (c.status !== 'operating') continue;
       const s = st(c.id);
-      s.labour = c.employees * c.wage_minor; s.property = c.property_minor; s.marketing = c.marketing_minor;
+      const payroll = c.employees * c.wage_minor;
+      // One-off staffing costs (hiring fees, severance) and equipment servicing were paid in cash when the player acted; they are recognised in this day's profit here.
+      s.labour = payroll + c.pending_labour_minor; s.property = c.property_minor; s.marketing = c.marketing_minor; s.maintenance += c.pending_maintenance_minor;
       const due: { to: string; amount: number; bucket: 'labour' | 'energy' | 'property' | 'marketing'; payee: Co | null }[] = [
-        { to: city.households_account_id, amount: s.labour, bucket: 'labour', payee: null },
+        { to: city.households_account_id, amount: payroll, bucket: 'labour', payee: null },
         { to: energyCo?.treasury_account_id ?? city.treasury_account_id, amount: s.energyDue, bucket: 'energy', payee: energyCo ?? null },
         { to: estatesCo?.treasury_account_id ?? city.treasury_account_id, amount: s.property, bucket: 'property', payee: estatesCo ?? null },
         { to: mediaCo?.treasury_account_id ?? city.treasury_account_id, amount: s.marketing, bucket: 'marketing', payee: mediaCo ?? null },
@@ -241,7 +239,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         }
         unpaid += d.amount - p;
       }
-      db.run('UPDATE companies SET unpaid_minor = unpaid_minor + ?, shortfall_ticks = ? WHERE id = ?', unpaid, unpaid > 0 ? c.shortfall_ticks + 1 : 0, c.id);
+      db.run('UPDATE companies SET unpaid_minor = unpaid_minor + ?, shortfall_ticks = ?, pending_labour_minor = 0, pending_maintenance_minor = 0 WHERE id = ?', unpaid, unpaid > 0 ? c.shortfall_ticks + 1 : 0, c.id);
       if (unpaid > 0) logEvent(db, n, 'unpaid_expenses', 'warning', c.id, `${c.name} could not pay ${unpaid / 100} EC of operating costs`);
     }
     // Corporation tax on positive net profit and an idle-cash levy above the operating reserve: both are transfers to the treasury (which the state
@@ -249,7 +247,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     for (const c of order) {
       if (c.owner_kind === 'state' || c.status !== 'operating') continue;
       const s = st(c.id);
-      const profit = s.revenue - s.cogs - s.labour - s.property - s.marketing - s.fees;
+      const profit = s.revenue - s.cogs - s.labour - s.property - s.marketing - s.fees - s.maintenance;
       const tax = profit > 0 ? Math.floor((profit * cfg.corporationTaxBps) / 10_000) : 0;
       const reserve = 20 * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
       const levy = Math.floor((Math.max(0, available(db, c.treasury_account_id) - reserve) * cfg.idleCashLevyBps) / 10_000);
@@ -275,7 +273,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const burn = Math.floor((Math.max(0, available(db, city.treasury_account_id) - cfg.stateReserveMinor) * cfg.stateBurnBps) / 10_000);
     if (burn > 0) destroy(db, ctx, key('upkeep'), city.treasury_account_id, burn, 'infrastructure upkeep (explicit burn)');
 
-    /* J. Reputation and insolvency boundaries. */
+    /* J. Reputation, advertising awareness, insolvency and bankruptcy boundaries. */
     phase('reputation_insolvency');
     for (const c of order) {
       if (c.status !== 'operating') continue;
@@ -283,13 +281,26 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       if (c.retail_commodity_id) {
         let rep = c.reputation_bps;
         if (s.stockedOut) rep -= 50; else if (s.demanded > 0 && s.unitsSold * 100 >= s.demanded * 95) rep += 20; else if (s.demanded > 0 && s.unitsSold * 100 < s.demanded * 70) rep -= 30;
+        rep += { basic: -10, standard: 0, premium: 10 }[c.quality];                       // quality builds (or erodes) reputation slowly
+        const planned = linesOf(c.id).reduce((a, l) => a + l.planned_batches, 0);
+        if (planned > staffedCapacity(c)) rep -= 15;                                      // too few staff to serve the plan: service suffers
         db.run('UPDATE companies SET reputation_bps = ? WHERE id = ?', Math.max(1_000, Math.min(9_500, rep)), c.id);
+      }
+      if (c.owner_kind !== 'state') {
+        // Awareness: advertising earns a saturating bonus (half of the maximum at `awarenessHalfSpend` a day) that fades 5% a day — it must be sustained, and has a hard ceiling.
+        const m = s.marketing > 0 && (db.get<{ s: number }>('SELECT shortfall_ticks s FROM companies WHERE id = ?', c.id)!.s === 0) ? c.marketing_minor : 0;
+        const target = Math.floor((cfg.awarenessMaxBps * m) / (m + cfg.awarenessHalfSpendMinor));
+        const next = Math.floor((c.awareness_bps * (10_000 - cfg.awarenessDecayBps)) / 10_000) + Math.floor((target * cfg.awarenessDecayBps) / 10_000);
+        if (next !== c.awareness_bps) db.run('UPDATE companies SET awareness_bps = ? WHERE id = ?', Math.min(cfg.awarenessMaxBps, next), c.id);
       }
       const shortfall = db.get<{ shortfall_ticks: number }>('SELECT shortfall_ticks FROM companies WHERE id = ?', c.id)!.shortfall_ticks;
       if (shortfall >= cfg.insolvencyAfterTicks) {
-        db.run("UPDATE companies SET status = 'insolvent', revision = revision + 1 WHERE id = ?", c.id); insolvencies++;
+        db.run("UPDATE companies SET status = 'insolvent', insolvent_tick = ?, revision = revision + 1 WHERE id = ?", n, c.id); insolvencies++;
         logEvent(db, n, 'insolvency', 'error', c.id, `${c.name} is insolvent after ${shortfall} consecutive ticks of unpaid operating costs`);
       }
+    }
+    for (const c of db.all<Co>("SELECT * FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL AND insolvent_tick IS NOT NULL AND insolvent_tick <= ? ORDER BY id", n - cfg.bankruptcyAfterTicks)) {
+      safe('bankruptcy', c.id, () => { liquidateCompany(db, ctx, cfg, c); });
     }
 
     /* K. History + snapshot. */
@@ -299,9 +310,9 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       const s = stats.get(c.id) ?? newStat(); produced += s.unitsProduced;
       const row = db.get<{ status: string; unpaid_minor: number }>('SELECT status, unpaid_minor FROM companies WHERE id = ?', c.id)!;
       const invValue = db.get<{ v: number }>('SELECT COALESCE(SUM(value_minor),0) v FROM inventory WHERE company_id = ?', c.id)!.v;
-      const gross = s.revenue - s.cogs, net = gross - s.labour - s.property - s.marketing - s.fees - s.tax;
-      db.run('INSERT INTO company_tick_stats (tick, company_id, revenue_minor, cogs_minor, labour_minor, property_minor, marketing_minor, fees_minor, tax_minor, energy_paid_minor, input_purchases_minor, gross_profit_minor, net_profit_minor, cash_end_minor, inventory_value_minor, units_produced, units_sold, unpaid_end_minor, status) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
-        n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status);
+      const gross = s.revenue - s.cogs, net = gross - s.labour - s.property - s.marketing - s.fees - s.tax - s.maintenance;
+      db.run('INSERT INTO company_tick_stats (tick, company_id, revenue_minor, cogs_minor, labour_minor, property_minor, marketing_minor, fees_minor, tax_minor, energy_paid_minor, input_purchases_minor, gross_profit_minor, net_profit_minor, cash_end_minor, inventory_value_minor, units_produced, units_sold, unpaid_end_minor, status, maintenance_minor) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)',
+        n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
     const snap = db.get<{ issued_tick_minor: number; destroyed_tick_minor: number; circulating_minor: number }>('SELECT * FROM supply_snapshots WHERE tick = ?', n)!;

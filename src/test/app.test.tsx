@@ -13,7 +13,7 @@ function setup(path = '/city', mode: FixtureMode = 'normal') {
   return user;
 }
 
-describe('navigation and the seven sections', () => {
+describe('navigation and the eight sections', () => {
   const sections: [string, RegExp][] = [
     ['/city', /Bristol economy/], ['/companies', /My Companies/], ['/commodities', /Commodity Exchange/], ['/stocks', /Stock Exchange/],
     ['/portfolio', /^Portfolio$/], ['/prestige', /^Prestige$/], ['/wallet', /Wallet \(simulated\)/],
@@ -22,10 +22,10 @@ describe('navigation and the seven sections', () => {
     setup(path);
     expect(await screen.findByRole('heading', { name: heading, level: path === '/city' ? 2 : 1 })).toBeInTheDocument();
   });
-  it('the main navigation links to all seven sections and switches screens', async () => {
+  it('the main navigation links to all eight sections (seven game sections plus Opportunities) and switches screens', async () => {
     const user = setup('/city');
     const nav = await screen.findByRole('navigation', { name: 'Main' });
-    expect(within(nav).getAllByRole('link')).toHaveLength(7);
+    expect(within(nav).getAllByRole('link')).toHaveLength(8);
     await user.click(within(nav).getByRole('link', { name: /Stock Exchange/ }));
     expect(await screen.findByRole('heading', { name: 'Stock Exchange', level: 1 })).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: /Stock Exchange/ })).toHaveAttribute('aria-current', 'page');
@@ -93,7 +93,7 @@ describe('loading, empty, error and stale states', () => {
   it('shows an empty state with a next action instead of fabricated companies', async () => {
     setup('/companies', 'empty');
     expect(await screen.findByText("You don't own a company yet")).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Find a plot/ })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /Find an opportunity/ })).toBeInTheDocument();
   });
   it('empty portfolio links to the exchange', async () => {
     setup('/portfolio', 'empty');
