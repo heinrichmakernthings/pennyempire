@@ -3,17 +3,20 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { DataProvider } from './data/store';
-import { createFixtureDataSource, fixtureModeFromSearch } from './data/fixtures';
+import { chooseDataSource } from './data/serverSource';
+import { useUi } from './state/ui';
 import './design/tokens.css';
 import './design/global.css';
 
-// The only data source today is the illustrative fixture adapter. A server adapter replaces it behind GameDataSource.
-const source = createFixtureDataSource(fixtureModeFromSearch(window.location.search));
-
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <DataProvider source={source}>
-      <BrowserRouter><App /></BrowserRouter>
-    </DataProvider>
-  </StrictMode>,
-);
+const root = createRoot(document.getElementById('root')!);
+// The server-authoritative engine is used when /api/health answers; otherwise we say so and fall back to labelled fixtures.
+void chooseDataSource(window.location.search).then(({ source, fallbackReason }) => {
+  if (fallbackReason) useUi.getState().notify({ tone: 'warning', title: 'Illustrative data only', message: fallbackReason });
+  root.render(
+    <StrictMode>
+      <DataProvider source={source}>
+        <BrowserRouter><App /></BrowserRouter>
+      </DataProvider>
+    </StrictMode>,
+  );
+});

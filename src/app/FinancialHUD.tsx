@@ -21,6 +21,7 @@ export function FinancialHUD() {
       </dl>
       <div className="pe-hud-meta">
         {ready?.loaded.authority === 'illustrative-fixture' && <IllustrativeBadge compact />}
+        {ready?.loaded.authority === 'server' && <span className="pe-live" title="Values come from the server-authoritative economic simulation">Live simulation · Day {ready.loaded.envelope.revision}</span>}
         <span className="pe-hud-city"><Icon name="city" size={16} />{player ? player.displayName : '…'} · {city?.name ?? 'Bristol'}</span>
         {asOf && <time dateTime={asOf} className="pe-hint">{new Date(asOf).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })} UTC</time>}
         <NavLink to="/city" className="pe-icon-btn" aria-label={`Notifications${player?.unreadNotifications ? `, ${player.unreadNotifications} unread` : ''}`}><Icon name="notification" />{!!player?.unreadNotifications && <span className="pe-badge">{player.unreadNotifications}</span>}</NavLink>

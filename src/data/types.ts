@@ -35,6 +35,9 @@ export type ScreenKey = keyof ClientScreenState;
 export interface DecorPlacement { assetId: string; column: number; row: number; offsetX?: number; offsetY?: number }
 export interface MapMeta { cityId: string; columns: number; rows: number; decor: DecorPlacement[] }
 
+/** One row of a company's daily operating statement (EC minor units). Server data only. */
+export interface FinancialRow { tick: number; gameDate: string; revenue: number; cogs: number; labour: number; property: number; marketing: number; fees: number; tax: number; energyPaid: number; inputPurchases: number; grossProfit: number; netProfit: number; cash: number; inventoryValue: number; unitsProduced: number; unitsSold: number; unpaid: number; status: string }
+
 export type QuoteResponse = { ok: true; quote: Quote } | { ok: false; error: ApiError };
 
 export interface GameDataSource {
@@ -42,6 +45,8 @@ export interface GameDataSource {
   load<K extends ScreenKey>(key: K, opts?: { signal?: AbortSignal }): Promise<Loaded<ClientScreenState[K]>>;
   /** Full detail for one company (what the server returns as `selectedCompany`). */
   loadCompany(id: string, opts?: { signal?: AbortSignal }): Promise<Loaded<Company>>;
+  /** Optional: per-day operating statement. Null/absent when the source has no such history (fixtures). */
+  loadFinancials?(id: string): Promise<FinancialRow[] | null>;
   mapMeta(cityId: string): MapMeta;
   requestQuote(req: QuoteRequest): Promise<QuoteResponse>;
   submitCommand(cmd: Command): Promise<CommandResult>;

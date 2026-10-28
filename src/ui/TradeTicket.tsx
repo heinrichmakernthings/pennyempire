@@ -92,7 +92,7 @@ export function TradeTicket(p: TicketProps) {
             <div><dt>Fee</dt><dd><MoneyValue value={quote.fee} tone="neutral" /></dd></div>
             <div className="pe-quote-total"><dt>{side === 'buy' ? 'You pay' : 'You receive'}</dt><dd><MoneyValue value={quote.total} tone="neutral" /></dd></div>
           </dl>
-          {expired ? <StatusLabel tone="warning">Quote expired — request a new quote</StatusLabel> : <p className="pe-hint" role="timer" aria-live="off">Quote valid for {secondsLeft}s. Illustrative fee schedule.</p>}
+          {expired ? <StatusLabel tone="warning">Quote expired — request a new quote</StatusLabel> : <p className="pe-hint" role="timer" aria-live="off">Quote valid {source.authority === 'server' ? `until the next economic tick (${secondsLeft}s)` : `for ${secondsLeft}s. Illustrative fee schedule`}. {source.authority === 'server' ? 'The exchange fee is paid by the seller and destroyed.' : ''}</p>}
           <Button variant="primary" block pending={pending} disabled={expired} onClick={() => void place()}>Confirm {side === 'buy' ? 'purchase' : 'sale'}</Button>
         </section>
       )}

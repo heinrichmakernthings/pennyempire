@@ -18,6 +18,9 @@ export interface DataState {
   ensureCompany(id: string): void;
   ensure(key: ScreenKey): void;
   refresh(key: ScreenKey): void;
+  /** Re-fetches the named screens (if loaded) and every cached company, keeping old data on screen while it loads. */
+  refreshAll(keys?: string[]): void;
+  refreshCompany(id: string): void;
 }
 
 /** Client-side cache of server (or fixture) screen payloads. It never mutates balances; it only stores what the source returned. */
@@ -52,6 +55,17 @@ export function createDataStore(source: GameDataSource): StoreApi<DataState> {
       },
       ensure: (key) => { const e = get().entries[key]; if (!e || e.status === 'idle') void run(key, false); },
       refresh: (key) => void run(key, true),
+      refreshCompany: (id) => {
+        source.loadCompany(id).then(
+          (loaded) => set((s) => ({ companies: { ...s.companies, [id]: { status: 'ready', loaded } } })),
+          () => { /* keep showing the last good company; the screen-level refresh reports staleness */ },
+        );
+      },
+      refreshAll: (keys) => {
+        const st = get();
+        for (const k of Object.keys(st.entries) as ScreenKey[]) if (!keys || keys.includes(k)) st.refresh(k);
+        for (const id of Object.keys(st.companies)) st.refreshCompany(id);
+      },
     };
   });
 }
@@ -64,18 +78,32 @@ export function DataProvider({ source, store, children }: { source?: GameDataSou
 }
 const useDataStore = () => { const s = useContext(Ctx); if (!s) throw new Error('DataProvider missing'); return s; };
 
+export const POLL_MS = 5_000;
+
 export function useScreen<K extends ScreenKey>(key: K) {
   const store = useDataStore();
   const entry = useStore(store, (s) => s.entries[key]) as Entry<K> | undefined;
   useEffect(() => { store.getState().ensure(key); }, [store, key]);
+  // The server economy moves on its own clock, so server-backed screens poll. Fixtures never change and are not polled.
+  useEffect(() => {
+    if (store.getState().source.authority !== 'server') return;
+    const t = setInterval(() => { if (!document.hidden) store.getState().refresh(key); }, POLL_MS);
+    return () => clearInterval(t);
+  }, [store, key]);
   return { entry: entry ?? ({ status: 'loading' } as Entry<K>), refresh: () => store.getState().refresh(key) };
 }
 export const useDataSource = () => useStore(useDataStore(), (s) => s.source);
+export const useDataActions = () => { const store = useDataStore(); return { refreshAll: (keys?: string[]) => store.getState().refreshAll(keys) }; };
 
 export function useCompany(id: string | null) {
   const store = useDataStore();
   const entry = useStore(store, (s) => (id ? s.companies[id] : undefined));
   useEffect(() => { if (id) store.getState().ensureCompany(id); }, [store, id]);
+  useEffect(() => {
+    if (!id || store.getState().source.authority !== 'server') return;
+    const t = setInterval(() => { if (!document.hidden) store.getState().refreshCompany(id); }, POLL_MS);
+    return () => clearInterval(t);
+  }, [store, id]);
   const retry = () => { if (!id) return; store.setState((s) => { const { [id]: _drop, ...rest } = s.companies; return { companies: rest }; }); store.getState().ensureCompany(id); };
   return { entry, retry };
 }

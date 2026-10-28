@@ -65,7 +65,7 @@ function CommodityView({ cityId, commodities, orders, ownOrders, history }: { ci
 
 function OrderBook({ orders, unit }: { orders: Order[]; unit: string }) {
   return (
-    <DataTable caption="Sell orders (supply)" rowKey={(o) => o.id} rows={orders} empty={<EmptyState title="No sell orders">Nobody is offering this right now. Prices fall back to the NPC state supplier once that exists.</EmptyState>}
+    <DataTable caption="Sell orders (supply)" rowKey={(o) => o.id} rows={orders} empty={<EmptyState title="No sell orders">Nothing is listed on the exchange for this commodity right now. Goods sold straight to consumers (pizza, drinks, timber) are not listed here.</EmptyState>}
       columns={[
         { key: 'p', header: `Price per ${unit}`, align: 'end', render: (o) => <MoneyValue value={o.pricePerUnit} fixed tone="neutral" /> },
         { key: 'u', header: 'Units available', align: 'end', render: (o) => formatUnits(o.remainingUnits) },

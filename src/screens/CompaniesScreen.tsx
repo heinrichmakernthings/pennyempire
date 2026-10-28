@@ -17,6 +17,7 @@ import { EmptyState, ErrorState, Skeleton } from '@/ui/States';
 import { StatusLabel } from '@/ui/StatusLabel';
 import { Sparkline } from '@/ui/Sparkline';
 import { Tabs } from '@/ui/Tabs';
+import { OperatingStatement } from './OperatingStatement';
 
 export function CompaniesScreen() {
   return (
@@ -66,7 +67,7 @@ function CompanyDetail({ id, tab, onTab, recipes, illustrative }: { id: string; 
       <Tabs label="Company views" value={tab} onChange={onTab} tabs={[{ id: 'overview', label: 'Overview' }, { id: 'operations', label: 'Operations' }, { id: 'financials', label: 'Financials' }]}>
         {tab === 'overview' && <CompanyOverview company={c} recipe={recipe} />}
         {tab === 'operations' && <OperationsForm company={c} recipe={recipe} />}
-        {tab === 'financials' && <CompanyFinancials company={c} />}
+        {tab === 'financials' && <CompanyFinancials company={c} asOf={entry.loaded.envelope.asOf} />}
       </Tabs>
     </section>
   );
@@ -157,7 +158,7 @@ function OperationsForm({ company: c, recipe }: { company: Company; recipe?: Rec
   );
 }
 
-function CompanyFinancials({ company: c }: { company: Company }) {
+function CompanyFinancials({ company: c, asOf }: { company: Company; asOf: string }) {
   return (
     <div className="pe-stack">
       <FinancialChart title={`${c.name} — revenue, expenses and profit`} periodLabel="Last 7 days, daily" series={[
@@ -167,6 +168,7 @@ function CompanyFinancials({ company: c }: { company: Company }) {
         <div><dt>Valuation</dt><dd><MoneyValue value={c.valuation} tone="neutral" /></dd></div>
         <div><dt>Cash</dt><dd><MoneyValue value={c.cash} tone="neutral" /></dd></div>
       </dl>
+      <OperatingStatement companyId={c.id} asOf={asOf} />
       <h3 className="pe-h3">Ownership</h3>
       <DataTable caption="Ownership" rowKey={(o) => o.owner.id} rows={c.ownership} columns={[{ key: 'o', header: 'Owner', render: (o) => o.owner.name }, { key: 's', header: 'Shares', align: 'end', render: (o) => formatUnits(o.shares) }, { key: 'b', header: 'Stake', align: 'end', render: (o) => formatBps(o.ownershipBps) }]} />
     </div>

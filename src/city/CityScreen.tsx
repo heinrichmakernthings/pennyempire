@@ -33,8 +33,10 @@ function CityView({ data, illustrative }: { data: CityScreenState; illustrative:
   const registerHandle = useCallback((h: CityViewportHandle | null) => { handle.current = h; }, []);
 
   const meta = useMemo(() => source.mapMeta(data.city.id), [source, data.city.id]);
-  const scene = useMemo(() => buildScene(data.city, meta, data.directory, data.player.id), [data.city, meta, data.directory, data.player.id]);
-  const byId = useMemo(() => new Map(data.directory.map((c) => [c.id, c])), [data.directory]);
+  // Server data is re-fetched every few seconds; only rebuild the scene (and its cached ground layer) when its content actually changes.
+  const sceneKey = JSON.stringify([data.city.plots, data.directory.map((d) => [d.id, d.plotId, d.name, d.owner.id, d.status]), data.player.id]);
+  const scene = useMemo(() => buildScene(data.city, meta, data.directory, data.player.id), [sceneKey, meta]);
+  const byId = useMemo(() => new Map(data.directory.map((c) => [c.id, c])), [sceneKey]);
   const hoverCaption = useCallback((id: string) => { const c = byId.get(id); return c ? { title: c.name, subtitle: `${industryLabel(c.industry)} · ${c.owner.id === data.player.id ? 'Your company' : `${ownerKindLabel(c.owner.kind)}: ${c.owner.name}`}` } : null; }, [byId, data.player.id]);
   const onSelect = useCallback((id: string | null) => select(id), [select]);
   const focusFromList = (id: string) => { select(id); handle.current?.focusCompany(id); setListOpen(false); };
