@@ -1,0 +1,1748 @@
+{
+  "passed": true,
+  "frameCount": 134,
+  "assets": [
+    {
+      "id": "maya-reed-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        86,
+        96
+      ]
+    },
+    {
+      "id": "maya-reed-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        86,
+        96
+      ]
+    },
+    {
+      "id": "maya-reed-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        86,
+        96
+      ]
+    },
+    {
+      "id": "maya-reed-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "maya-reed-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "maya-reed-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        1,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "maya-reed-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        43,
+        48
+      ]
+    },
+    {
+      "id": "maya-reed-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        43,
+        48
+      ]
+    },
+    {
+      "id": "maya-reed-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        43,
+        48
+      ]
+    },
+    {
+      "id": "leo-marsh-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "leo-marsh-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "leo-marsh-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "leo-marsh-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "leo-marsh-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        1,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "leo-marsh-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        2,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "leo-marsh-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "leo-marsh-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "leo-marsh-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "imogen-shaw-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        88,
+        96
+      ]
+    },
+    {
+      "id": "imogen-shaw-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        92,
+        96
+      ]
+    },
+    {
+      "id": "imogen-shaw-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "imogen-shaw-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "imogen-shaw-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "imogen-shaw-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        1,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "imogen-shaw-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "imogen-shaw-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        46,
+        48
+      ]
+    },
+    {
+      "id": "imogen-shaw-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "nora-bell-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        88,
+        96
+      ]
+    },
+    {
+      "id": "nora-bell-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        6,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "nora-bell-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        88,
+        96
+      ]
+    },
+    {
+      "id": "nora-bell-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "nora-bell-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "nora-bell-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        1,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "nora-bell-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "nora-bell-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "nora-bell-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "farah-ali-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "farah-ali-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "farah-ali-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "farah-ali-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "farah-ali-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "farah-ali-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        1,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "farah-ali-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "farah-ali-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "farah-ali-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "arthur-vale-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        85,
+        96
+      ]
+    },
+    {
+      "id": "arthur-vale-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        6,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "arthur-vale-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "arthur-vale-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "arthur-vale-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        1,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "arthur-vale-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        1,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "arthur-vale-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        43,
+        48
+      ]
+    },
+    {
+      "id": "arthur-vale-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "arthur-vale-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "evelyn-park-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        88,
+        96
+      ]
+    },
+    {
+      "id": "evelyn-park-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        93,
+        96
+      ]
+    },
+    {
+      "id": "evelyn-park-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        6,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "evelyn-park-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "evelyn-park-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "evelyn-park-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        1,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "evelyn-park-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "evelyn-park-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "evelyn-park-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "kit-morgan-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        10,
+        0,
+        86,
+        96
+      ]
+    },
+    {
+      "id": "kit-morgan-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        6,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "kit-morgan-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "kit-morgan-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "kit-morgan-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "kit-morgan-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "kit-morgan-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        43,
+        48
+      ]
+    },
+    {
+      "id": "kit-morgan-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "kit-morgan-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "dev-patel-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "dev-patel-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "dev-patel-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        6,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "dev-patel-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "dev-patel-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "dev-patel-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        2,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "dev-patel-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "dev-patel-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "dev-patel-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "rafael-costa-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "rafael-costa-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        90,
+        96
+      ]
+    },
+    {
+      "id": "rafael-costa-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        88,
+        96
+      ]
+    },
+    {
+      "id": "rafael-costa-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "rafael-costa-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "rafael-costa-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        1,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "rafael-costa-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "rafael-costa-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "rafael-costa-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "aisha-cole-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "aisha-cole-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        9,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "aisha-cole-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        8,
+        0,
+        87,
+        96
+      ]
+    },
+    {
+      "id": "aisha-cole-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "aisha-cole-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "aisha-cole-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        19,
+        40
+      ]
+    },
+    {
+      "id": "aisha-cole-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "aisha-cole-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        5,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "aisha-cole-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        44,
+        48
+      ]
+    },
+    {
+      "id": "owen-price-portraits-neutral",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "owen-price-portraits-positive",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        1,
+        0,
+        94,
+        96
+      ]
+    },
+    {
+      "id": "owen-price-portraits-negative",
+      "dimensions": [
+        96,
+        96
+      ],
+      "alphaBounds": [
+        7,
+        0,
+        89,
+        96
+      ]
+    },
+    {
+      "id": "owen-price-world-neutral",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "owen-price-world-positive",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "owen-price-world-negative",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        1,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "owen-price-avatar-neutral",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "owen-price-avatar-positive",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        1,
+        0,
+        47,
+        48
+      ]
+    },
+    {
+      "id": "owen-price-avatar-negative",
+      "dimensions": [
+        48,
+        48
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        45,
+        48
+      ]
+    },
+    {
+      "id": "farm-worker-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        4,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "farm-worker-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        0,
+        6,
+        24,
+        40
+      ]
+    },
+    {
+      "id": "farm-worker-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        1,
+        4,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "mill-worker-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "mill-worker-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        0,
+        1,
+        23,
+        40
+      ]
+    },
+    {
+      "id": "mill-worker-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "dairy-worker-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "dairy-worker-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "dairy-worker-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "pizza-chef-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "pizza-chef-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "pizza-chef-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "barista-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "barista-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "barista-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "timber-worker-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        1,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "timber-worker-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "timber-worker-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        2,
+        0,
+        22,
+        40
+      ]
+    },
+    {
+      "id": "delivery-driver-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "delivery-driver-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        0,
+        0,
+        23,
+        40
+      ]
+    },
+    {
+      "id": "delivery-driver-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        0,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "warehouse-worker-idle",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        3,
+        5,
+        21,
+        40
+      ]
+    },
+    {
+      "id": "warehouse-worker-work-a",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        0,
+        5,
+        24,
+        40
+      ]
+    },
+    {
+      "id": "warehouse-worker-work-b",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaBounds": [
+        4,
+        6,
+        20,
+        40
+      ]
+    },
+    {
+      "id": "closed-shutter-static",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaBounds": [
+        0,
+        5,
+        64,
+        81
+      ]
+    },
+    {
+      "id": "farm-pickup-sw-static",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaBounds": [
+        0,
+        4,
+        128,
+        91
+      ]
+    }
+  ]
+}

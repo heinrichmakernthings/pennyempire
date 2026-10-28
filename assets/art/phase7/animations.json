@@ -1,0 +1,575 @@
+{
+  "version": 1,
+  "clips": [
+    {
+      "id": "maya-reed-reaction",
+      "file": "assets/art/phase7/runtime/maya-reed-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "leo-marsh-reaction",
+      "file": "assets/art/phase7/runtime/leo-marsh-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "imogen-shaw-reaction",
+      "file": "assets/art/phase7/runtime/imogen-shaw-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "nora-bell-reaction",
+      "file": "assets/art/phase7/runtime/nora-bell-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "farah-ali-reaction",
+      "file": "assets/art/phase7/runtime/farah-ali-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "arthur-vale-reaction",
+      "file": "assets/art/phase7/runtime/arthur-vale-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "evelyn-park-reaction",
+      "file": "assets/art/phase7/runtime/evelyn-park-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "kit-morgan-reaction",
+      "file": "assets/art/phase7/runtime/kit-morgan-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "dev-patel-reaction",
+      "file": "assets/art/phase7/runtime/dev-patel-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "rafael-costa-reaction",
+      "file": "assets/art/phase7/runtime/rafael-costa-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "aisha-cole-reaction",
+      "file": "assets/art/phase7/runtime/aisha-cole-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "owen-price-reaction",
+      "file": "assets/art/phase7/runtime/owen-price-world.png",
+      "frameSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "kind": "held-reaction-pose",
+      "neutralFrame": 0,
+      "positiveFrame": 1,
+      "negativeFrame": 2,
+      "holdMs": 750,
+      "loop": false,
+      "reducedMotionFrame": 0
+    },
+    {
+      "id": "farm-worker-work",
+      "file": "assets/art/phase7/runtime/farm-worker.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "mill-worker-work",
+      "file": "assets/art/phase7/runtime/mill-worker.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "dairy-worker-work",
+      "file": "assets/art/phase7/runtime/dairy-worker.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "pizza-chef-work",
+      "file": "assets/art/phase7/runtime/pizza-chef.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "barista-work",
+      "file": "assets/art/phase7/runtime/barista.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "timber-worker-work",
+      "file": "assets/art/phase7/runtime/timber-worker.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed productionActive; not closed, bankrupt or stale"
+    },
+    {
+      "id": "delivery-driver-work",
+      "file": "assets/art/phase7/runtime/delivery-driver.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed transfer handling; not stale"
+    },
+    {
+      "id": "warehouse-worker-work",
+      "file": "assets/art/phase7/runtime/warehouse-worker.png",
+      "sheetSize": [
+        72,
+        40
+      ],
+      "frameSize": [
+        24,
+        40
+      ],
+      "frames": [
+        [
+          24,
+          0,
+          24,
+          40
+        ],
+        [
+          48,
+          0,
+          24,
+          40
+        ]
+      ],
+      "frameDurationMs": 240,
+      "loop": true,
+      "pivot": [
+        12,
+        40
+      ],
+      "direction": "sw",
+      "idleFrame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "reducedMotionFrame": 0,
+      "requires": "confirmed transfer handling; not stale"
+    }
+  ],
+  "walking": "Not approved: generated SW studies repeat the same leading leg. Excluded from runtime manifest.",
+  "entryExit": "Translate existing directional idle sprite along approved path; not a walk or door-opening animation."
+}

@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "icons": [
+    {
+      "id": "for-sale",
+      "source": "assets/art/phase7/ui/for-sale.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "owner-npc",
+      "source": "assets/art/phase7/ui/owner-npc.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "owner-player",
+      "source": "assets/art/phase7/ui/owner-player.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "owner-state",
+      "source": "assets/art/phase7/ui/owner-state.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "reputation",
+      "source": "assets/art/phase7/ui/reputation.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "vacant",
+      "source": "assets/art/phase7/ui/vacant.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    },
+    {
+      "id": "vip-frame",
+      "source": "assets/art/phase7/ui/vip-frame.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "UI icon; ownership, reputation, vacancy or cosmetic status",
+      "colour": "currentColor; use CSS mask for external img colouring",
+      "status": "finished-vector"
+    }
+  ]
+}
