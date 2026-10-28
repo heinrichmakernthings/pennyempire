@@ -8,7 +8,7 @@
 ## Headline
 - Circulating supply 116,250.00 EC → 114,607.99 EC (-1.41%)
 - Live companies 8 → 9 · NPC entries 1 · voluntary closures 0 · bankruptcies 0
-- Days with unmet consumer demand: 115/120 · company-cash Gini 25% · daily consumer spend 2,054.05 EC (day 1) → 3,227.17 EC (last day)
+- Days with any unmet consumer units: 115/120 · company-cash Gini 25% · daily consumer spend 2,054.05 EC (day 1) → 3,227.17 EC (last day)
 - NPC strategy reviews logged: 160 · live NPC strategies: premium 2, struggling 1, opportunistic 1, growth 1, conservative 1, budget 1
 - Player: 2 companies, net worth 2,400.00 EC → 14,601.94 EC (+12,201.94 EC), 5.0% of all units sold in the final fortnight
 - Largest explicit coin destruction over the run: Penny Exchange fee burn (explicit) — 803.16 EC (every destruction is a recorded sink; transfers are never counted as sinks).

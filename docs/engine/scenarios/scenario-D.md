@@ -8,7 +8,7 @@
 ## Headline
 - Circulating supply 133,850.00 EC → 131,016.82 EC (-2.12%)
 - Live companies 11 → 8 · NPC entries 1 · voluntary closures 3 · bankruptcies 4
-- Days with unmet consumer demand: 117/120 · company-cash Gini 27% · daily consumer spend 1,965.45 EC (day 1) → 3,376.27 EC (last day)
+- Days with any unmet consumer units: 117/120 · company-cash Gini 27% · daily consumer spend 1,965.45 EC (day 1) → 3,376.27 EC (last day)
 - NPC strategy reviews logged: 179 · live NPC strategies: budget 3, premium 1, opportunistic 1, growth 1, conservative 1
 - Player: 1 company, net worth 1,500.00 EC → 12,350.73 EC (+10,850.73 EC), 2.8% of all units sold in the final fortnight
 - flour traded as high as 3.08 EC against a 2.20 EC reference (140% of reference).

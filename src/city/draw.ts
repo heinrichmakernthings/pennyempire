@@ -71,6 +71,7 @@ function badgeImg(state: string, redraw?: () => void): HTMLImageElement | null {
 const FACING = ['se', 'sw', 'ne', 'nw'] as const;
 /** Residents, vans and workers around a building; positions are a fixed function of the company and the count, so nothing jitters between frames. */
 function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: SceneBuilding, a: CompanyActivity, ox: number, oy: number, k: number, dpr: number, redraw?: () => void) {
+  void dpr;
   const f = frameById.get(b.assetId); if (!f) return;
   const seed = [...b.plotId].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
   const foot = (i: number, spread: number): [number, number] => [b.anchor[0] + ((hash(seed, i) - 0.5) * spread), b.anchor[1] + 6 + hash(i, seed) * 14];
@@ -78,7 +79,7 @@ function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: 
   for (let i = 0; i < a.workers; i++) { const [x, y] = foot(10 + i, 40); drawFrame(ctx, atlas, `worker-${FACING[(seed + i + 1) % 4]}`, ox + (x - 20) * k, oy + (y - 8) * k, k); }
   for (let i = 0; i < a.vans; i++) drawFrame(ctx, atlas, i % 2 ? 'van-sw' : 'van-se', ox + (b.anchor[0] + 52 + i * 26) * k, oy + (b.anchor[1] + 24 + i * 6) * k, k);
   const img = badgeImg(a.state, redraw);
-  if (img) { const sz = 22 * dpr * Math.max(1, k / dpr * 0.75); const sx = ox + b.anchor[0] * k, sy = oy + (b.anchor[1] - f.pivot[1] - 6) * k; ctx.save(); ctx.imageSmoothingEnabled = true; if (a.state === 'closed') ctx.globalAlpha = .95; ctx.drawImage(img, Math.round(sx - sz / 2), Math.round(sy - sz), sz, sz); ctx.restore(); }
+  if (img) { const sz = 30 * k; const sx = ox + b.anchor[0] * k, sy = oy + (b.anchor[1] - f.pivot[1] - 6) * k; ctx.save(); ctx.imageSmoothingEnabled = true; if (a.state === 'closed') ctx.globalAlpha = .95; ctx.drawImage(img, Math.round(sx - sz / 2), Math.round(sy - sz), sz, sz); ctx.restore(); }
 }
 
 function drawFrame(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, id: string, ax: number, ay: number, zoom: number): boolean {

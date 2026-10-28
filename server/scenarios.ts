@@ -174,7 +174,7 @@ export function formatScenario(r: ScenarioReport): string {
   const L: string[] = [`# Scenario ${r.name}`, '', `${r.days} in-game days · deterministic · reconciles: **${r.reconciles}** · accounting anomalies: **${r.anomalies.length}**`, '', '## Setup', ...r.setup.map((s) => `- ${s}`)];
   L.push('', '## Headline', `- Circulating supply ${ec(r.supply.start)} → ${ec(r.supply.end)} (${(r.supply.changeBps / 100).toFixed(2)}%)`);
   L.push(`- Live companies ${r.companies.start} → ${r.companies.end} · NPC entries ${r.companies.opened} · voluntary closures ${r.companies.closed} · bankruptcies ${r.companies.bankrupt}`);
-  L.push(`- Days with unmet consumer demand: ${r.shortageDays}/${r.days} · company-cash Gini ${(r.giniEndBps / 100).toFixed(0)}% · daily consumer spend ${ec(r.consumerSpendFirst)} (day 1) → ${ec(r.consumerSpendDay)} (last day)`);
+  L.push(`- Days with any unmet consumer units: ${r.shortageDays}/${r.days} · company-cash Gini ${(r.giniEndBps / 100).toFixed(0)}% · daily consumer spend ${ec(r.consumerSpendFirst)} (day 1) → ${ec(r.consumerSpendDay)} (last day)`);
   L.push(`- NPC strategy reviews logged: ${r.decisions} · live NPC strategies: ${r.strategies.map((s) => `${s.strategy} ${s.n}`).join(', ')}`);
   if (r.player) L.push(`- Player: ${r.player.companies} compan${r.player.companies === 1 ? 'y' : 'ies'}, net worth ${ec(r.player.worthStart)} → ${ec(r.player.worthEnd)} (${r.player.profit >= 0 ? '+' : ''}${ec(r.player.profit)}), ${(r.player.shareOfAllUnitsBps / 100).toFixed(1)}% of all units sold in the final fortnight`);
   for (const n of r.notes) L.push(`- ${n}`);

@@ -45,7 +45,7 @@ function News() {
   );
 }
 
-const fmt = (unit: 'minor' | 'bps', v: number) => (unit === 'minor' ? formatMoney({ currency: 'EC', minor: Math.round(v) }, { signed: true }) : formatBps(Math.round(v)));
+const fmt = (key: string, unit: 'minor' | 'bps', v: number) => (unit === 'minor' ? formatMoney({ currency: 'EC', minor: Math.round(v) }, { signed: key === 'profit' }) : formatBps(Math.round(v)));
 
 function Boards() {
   const q = useQuery((s) => fetchStandings(s), [], true);
@@ -61,7 +61,7 @@ function Boards() {
           <h2 id={`b-${b.key}-${b.scope}`} className="pe-h3">{b.label}</h2>
           <table className="pe-table pe-small"><caption className="pe-sr">{b.label}</caption>
             <thead><tr><th scope="col">#</th><th scope="col">Company</th><th scope="col" className="pe-num">Value</th></tr></thead>
-            <tbody>{b.rows.map((r) => <tr key={r.companyId} className={r.mine ? 'pe-rank-me' : ''}><td>{r.rank}</td><th scope="row"><Link to={`/competitors/${r.companyId}`}>{r.name}</Link> {r.mine ? '(you)' : r.ownerKind === 'npc' ? <span className="pe-hint">NPC</span> : null}</th><td className="pe-financial-number">{fmt(b.unit, r.value)}</td></tr>)}</tbody>
+            <tbody>{b.rows.map((r) => <tr key={r.companyId} className={r.mine ? 'pe-rank-me' : ''}><td>{r.rank}</td><th scope="row"><Link to={`/competitors/${r.companyId}`}>{r.name}</Link> {r.mine ? '(you)' : r.ownerKind === 'npc' ? <span className="pe-hint">NPC</span> : null}</th><td className="pe-financial-number">{fmt(b.key, b.unit, r.value)}</td></tr>)}</tbody>
           </table>
         </section>
       ))}</div>

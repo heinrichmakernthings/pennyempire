@@ -8,7 +8,7 @@
 ## Headline
 - Circulating supply 395,800.00 EC → 392,386.88 EC (-0.86%)
 - Live companies 11 → 8 · NPC entries 0 · voluntary closures 3 · bankruptcies 3
-- Days with unmet consumer demand: 102/120 · company-cash Gini 31% · daily consumer spend 2,119.15 EC (day 1) → 2,060.98 EC (last day)
+- Days with any unmet consumer units: 102/120 · company-cash Gini 31% · daily consumer spend 2,119.15 EC (day 1) → 2,060.98 EC (last day)
 - NPC strategy reviews logged: 114 · live NPC strategies: budget 2, premium 1
 - Player: 5 companies, net worth 100,000.00 EC → 93,003.14 EC (-6,996.86 EC), 59.4% of all units sold in the final fortnight
 - Largest explicit coin destruction over the run: infrastructure upkeep (explicit burn) — 2,666.36 EC (every destruction is a recorded sink; transfers are never counted as sinks).
