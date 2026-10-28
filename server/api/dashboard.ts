@@ -2,6 +2,7 @@ import type { Sql } from '../db/sql';
 import { gameDate, loadConfig, type EngineConfig } from '../engine/config';
 import { BURN, ISSUANCE, balance, reconcile, supply } from '../engine/ledger';
 import { directory } from '../engine/exchange';
+import { livingDashboard, type LivingDashboard } from './livingDashboard';
 import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 
 /** Everything the developer economy dashboard shows. Read-only, computed from the ledger and history tables — no cached or invented numbers. */
@@ -17,6 +18,7 @@ export interface EconomyDashboard {
   errors: { failedTransactions: { id: number; tick: number; kind: string; reason: string; key: string | null }[]; events: { id: number; tick: number; kind: string; severity: string; subject: string | null; message: string }[]; failedTicks: number };
   reconciliation: { ok: boolean; problems: string[]; transactions: number; accounts: number };
   exchange: ExchangeDashboard;
+  living: LivingDashboard;
 }
 
 export interface ExchangeDashboard {
@@ -112,5 +114,6 @@ export function economyDashboard(db: Sql): EconomyDashboard {
     },
     reconciliation: { ok: rec.ok, problems: rec.problems, transactions: rec.checked.transactions, accounts: rec.checked.accounts },
     exchange: exchangeDashboard(db, tick),
+    living: livingDashboard(db, tick),
   };
 }

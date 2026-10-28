@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { useId, useState, type ReactNode } from 'react';
 import type { Company } from '@/contracts/game-state';
 import { fetchRankings, useQuery, type Management } from '@/data/managementApi';
@@ -63,7 +64,7 @@ export function Rankings({ industry, companyId, deps }: { industry: string; comp
       <table className="pe-table" aria-label={`${r.label} ranking in Bristol`}>
         <caption className="pe-sr">{r.label} ranking in Bristol, by units sold per day (7-day average)</caption>
         <thead><tr><th scope="col">#</th><th scope="col">Company</th><th scope="col" className="pe-num">Sold / day</th><th scope="col" className="pe-num">Share</th><th scope="col" className="pe-num">Reputation</th><th scope="col" className="pe-num">Price</th></tr></thead>
-        <tbody>{r.rows.map((x) => <tr key={x.companyId} className={x.companyId === companyId ? 'pe-rank-me' : ''}><td>{x.rank}</td><th scope="row">{x.name}{x.mine ? ' (you)' : ''}</th><td className="pe-financial-number">{formatUnits(x.unitsPerDay)}</td><td className="pe-financial-number">{formatBps(x.shareBps)}</td><td className="pe-financial-number">{formatBps(x.reputationBps)}</td><td className="pe-financial-number">{money(x.priceMinor)}</td></tr>)}</tbody>
+        <tbody>{r.rows.map((x) => <tr key={x.companyId} className={x.companyId === companyId ? 'pe-rank-me' : ''}><td>{x.rank}</td><th scope="row">{x.mine ? x.name : <Link to={`/competitors/${x.companyId}`}>{x.name}</Link>}{x.mine ? ' (you)' : ''}</th><td className="pe-financial-number">{formatUnits(x.unitsPerDay)}</td><td className="pe-financial-number">{formatBps(x.shareBps)}</td><td className="pe-financial-number">{formatBps(x.reputationBps)}</td><td className="pe-financial-number">{money(x.priceMinor)}</td></tr>)}</tbody>
       </table>
     </div>
   );

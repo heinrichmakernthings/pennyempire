@@ -49,6 +49,7 @@ function OpportunityCard({ o, rank }: { o: Opportunity; rank: number }) {
         <div className="pe-row"><Icon name={INDUSTRY_ICON[o.industry] ?? 'startup'} size={28} /><div><h2 id={`op-${o.industry}`}>#{rank} {o.label}</h2><p className="pe-hint">{o.tagline}</p></div></div>
         <div className="pe-badge-row"><StatusLabel tone={RISK_TONE[o.risk]}>{o.risk[0]!.toUpperCase() + o.risk.slice(1)} risk</StatusLabel></div>
       </header>
+      {o.labels.length > 0 && <div className="pe-badge-row" aria-label="Market conditions" data-testid={`labels-${o.industry}`}>{o.labels.map((l) => <StatusLabel key={l} tone={l === 'High risk' || l === 'Oversupplied' ? 'negative' : l === 'Competitive' ? 'warning' : 'positive'}>{l}</StatusLabel>)}</div>}
       <p><span className="pe-tag-forecast">FORECAST</span> <strong className={f.profitMinor >= 0 ? 'pe-pos' : 'pe-neg'}>{o.headline}</strong></p>
       <dl className="pe-kv">
         <div><dt>Profit / day (forecast)</dt><dd className={f.profitMinor >= 0 ? 'pe-pos' : 'pe-neg'}>{money(f.profitMinor, true)}</dd></div>

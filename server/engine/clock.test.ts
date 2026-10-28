@@ -53,7 +53,7 @@ describe('persistence between sessions', () => {
   });
   it('migrations are append-only and re-runnable', () => {
     const db = memWorld();
-    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM schema_migrations').n).toBe(3);
+    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM schema_migrations').n).toBe(4);
     expect(migrate(db)).toEqual([]);
   });
 });

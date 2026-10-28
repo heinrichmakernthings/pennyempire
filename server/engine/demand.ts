@@ -21,10 +21,15 @@ export function score(s: Seller, refPrice: number, priceSensitivity: number): nu
   return Math.max(1, Math.floor((w * (10_000 + s.awarenessBps)) / 10_000));    // awareness (0..4000 bps) is earned by sustained advertising, see tick.ts
 }
 
-export function allocateDemand(budget: number, refPrice: number, sensitivity: number, sellers: Seller[]): DemandResult {
+export interface WeightedSeller { id: string; price: number; stock: number; weight: number }
+/**
+ * Core allocation given precomputed weights: how many units each seller sells from `budget`. Total wanted units follow the budget and the weighted average price
+ * (cheap prices lift volume by at most 25%); sellers are served in proportion to weight, limited by the stock they really hold; the budget is a hard ceiling.
+ */
+export function allocateByWeights(budget: number, refPrice: number, sensitivity: number, sellers: WeightedSeller[]): DemandResult {
   const empty: DemandResult = { allocations: sellers.map((s) => ({ id: s.id, units: 0, spend: 0, share: 0 })), unitsWanted: 0, unitsSold: 0, unmetUnits: 0, spend: 0, weightedAvgPrice: 0 };
   if (budget <= 0 || sellers.length === 0) return empty;
-  const w = sellers.map((s) => score(s, refPrice, sensitivity));
+  const w = sellers.map((s) => Math.max(1, s.weight));
   const sumW = w.reduce((a, b) => a + b, 0);
   const avg = Math.floor(sellers.reduce((a, s, i) => a + s.price * w[i]!, 0) / sumW);
   const factor = Math.min(MAX_DEMAND_FACTOR_BPS, Math.floor((refPrice * 10_000) / avg));
@@ -41,7 +46,6 @@ export function allocateDemand(budget: number, refPrice: number, sensitivity: nu
     active.forEach((i, k) => { const take = Math.min(shares[k]!, sellers[i]!.stock - units[i]!); units[i]! += take; remaining -= take; });
     active = active.filter((i) => units[i]! < sellers[i]!.stock);
   }
-  // Budget is a hard ceiling: consumers can never spend more than the funder allotted.
   let left = budget; let spend = 0; let sold = 0;
   const allocations: Allocation[] = sellers.map((s, i) => {
     const u = Math.min(units[i]!, Math.floor(left / s.price));
@@ -49,4 +53,8 @@ export function allocateDemand(budget: number, refPrice: number, sensitivity: nu
     return { id: s.id, units: u, spend: cost, share: Math.floor((w[i]! * 10_000) / sumW) };
   });
   return { allocations, unitsWanted: wanted, unitsSold: sold, unmetUnits: Math.max(0, wanted - sold), spend, weightedAvgPrice: avg };
+}
+
+export function allocateDemand(budget: number, refPrice: number, sensitivity: number, sellers: Seller[]): DemandResult {
+  return allocateByWeights(budget, refPrice, sensitivity, sellers.map((s) => ({ id: s.id, price: s.price, stock: s.stock, weight: score(s, refPrice, sensitivity) })));
 }

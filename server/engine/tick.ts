@@ -1,12 +1,15 @@
 import type { Sql } from '../db/sql';
 import { loadConfig, gameDate } from './config';
-import { allocateDemand, type Seller } from './demand';
 import { InventoryError, addStock, freeStock, removeStock, stock } from './inventory';
 import { LedgerError, available, balance, destroy, issue, supply, transfer, type LedgerKind, type TickCtx } from './ledger';
 import { MarketError, cancelOrder, expireOrders, placeOrder, type FillEvent } from './market';
 import { runContractDeliveries } from './contracts';
 import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
+import { runConsumers } from './consumers';
+import { runStandings } from './standings';
+import { runNpcDecisions, runNpcEntry, type Profile } from './npc';
+import { npcStaffTo } from './staffing';
 import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
@@ -48,6 +51,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const pay = (kind: Exclude<LedgerKind, 'issuance' | 'sink' | 'sink_fee'>, from: string, to: string, amount: number, memo: string) => { if (amount > 0) transfer(db, ctx, key(kind), from, to, amount, kind, memo); };
 
     const all = db.all<Co>('SELECT * FROM companies ORDER BY id');
+    const profiles = new Map(db.all<Profile>('SELECT * FROM npc_profiles').map((p) => [p.company_id, p]));
     const rot = n % Math.max(1, all.length);
     const order = [...all.slice(rot), ...all.slice(0, rot)];            // fair rotation: nobody always shops first
     const byId = new Map(all.map((c) => [c.id, c]));
@@ -93,7 +97,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         const soldLast = db.get<{ u: number }>("SELECT COALESCE(-SUM(delta),0) u FROM inventory_movements WHERE tick = ? AND company_id = ? AND commodity_id = ? AND reason IN ('trade_out','consumer_purchase','public_works')", n - 1, c.id, l.output_commodity_id)!.u;
         const expected = Math.max(1, soldLast, Math.floor((c.capacity_batches * l.output_units) / lines.length / 4));
         const unitCost = inv.qty > 0 ? Math.floor(inv.value_minor / inv.qty) : Math.floor(l.ref_price / 2);
-        const target = Math.ceil(((unitCost + Math.ceil(fixedLine / expected)) * 105) / 100);
+        const target = Math.ceil(((unitCost + Math.ceil(fixedLine / expected)) * (profiles.get(c.id)?.markup_bps ?? 10_500)) / 10_000);
         const stockPct = Math.floor((inv.qty * 100) / c.storage_cap_units);
         const current = c.retail_commodity_id ? c.price_minor : l.ask_price_minor;
         let next = current;
@@ -110,9 +114,17 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         capLeft = Math.max(0, capLeft - planned); plannedTotal += planned;
         if (planned !== l.planned_batches) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ? AND recipe_id = ?', planned, c.id, l.recipe_id);
       }
+      // Staffing follows planned output, but through the same hiring rules as a player: daily limits, a fee per hire/dismissal, never on credit.
       const staff = staffNeeded(c, plannedTotal);
-      if (staff !== c.employees) { db.run('UPDATE companies SET employees = ? WHERE id = ?', staff, c.id); c.employees = staff; }
+      if (staff !== c.employees) safe('npc_staffing', c.id, () => { npcStaffTo(db, ctx, cfg, c as never, staff, key('npc-staff')); });
     }
+
+    /* C1. Periodic strategic reviews (staggered and capped per tick) and, rarely, market entry by a new NPC entrepreneur. Both use the same cores as players. */
+    phase('npc_decisions');
+    const exitMark = { tick: Number(db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'npc_last_exit'")?.value ?? -999) };
+    safe('npc_decisions', 'npc', () => { runNpcDecisions(db, ctx, cfg, exitMark); });
+    db.run("INSERT INTO meta (key, value) VALUES ('npc_last_exit', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(exitMark.tick));
+    safe('npc_entry', 'npc', () => { runNpcEntry(db, ctx, cfg); });
 
     /* C2. Orders whose expiry has arrived stop trading and release their reservations; then recurring supply contracts deliver from free stock
      *     BEFORE the day's listings reserve it, so contracted goods are never double-sold. */
@@ -190,33 +202,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
 
     /* G. Consumer demand: every budget comes from a named funder account and is capped by that account's balance. */
     phase('consumers');
-    const rules = db.all<{ id: string; label: string; commodity_id: string; funder_account_id: string; mode: 'pool_share' | 'fixed'; amount: number; payment_kind: 'consumer_sale' | 'state_payment'; goods_reason: 'consumer_purchase' | 'public_works'; price_sensitivity: number }>('SELECT * FROM demand_rules WHERE city_id = ? ORDER BY id', city.id);
-    const startBal = new Map<string, number>(); for (const r of rules) if (!startBal.has(r.funder_account_id)) startBal.set(r.funder_account_id, available(db, r.funder_account_id));
-    const committed = new Map<string, number>();
-    for (const r of rules) {
-      const base = startBal.get(r.funder_account_id)!;
-      const want = r.mode === 'pool_share' ? Math.floor((base * r.amount) / 10_000) : r.amount;
-      const budget = Math.max(0, Math.min(want, base - (committed.get(r.funder_account_id) ?? 0), available(db, r.funder_account_id)));
-      committed.set(r.funder_account_id, (committed.get(r.funder_account_id) ?? 0) + budget);
-      const ref = refPrice(r.commodity_id);
-      const sellers = order.filter((c) => c.status === 'operating' && c.retail_commodity_id === r.commodity_id);
-      for (const c of sellers) if (freeStock(db, c.id, r.commodity_id) === 0) st(c.id).stockedOut = true;
-      const live = sellers.filter((c) => freeStock(db, c.id, r.commodity_id) > 0);
-      const res = allocateDemand(budget, ref, r.price_sensitivity, live.map((c): Seller => ({ id: c.id, price: c.price_minor, stock: freeStock(db, c.id, r.commodity_id), quality: c.quality, reputationBps: c.reputation_bps, awarenessBps: c.awareness_bps })));
-      let spent = 0, sold = 0;
-      for (const a of res.allocations) {
-        const c = byId.get(a.id)!; st(c.id).demanded += Math.floor((res.unitsWanted * a.share) / 10_000);
-        if (a.units <= 0) continue;
-        safe('consumer_sale', c.id, () => {
-          pay(r.payment_kind, r.funder_account_id, c.treasury_account_id, a.spend, `${a.units} ${r.commodity_id} to ${r.id}`);
-          const cost = removeStock(db, ctx, c.id, r.commodity_id, a.units, r.goods_reason, r.id);
-          const s = st(c.id); s.revenue += a.spend; s.cogs += cost; s.unitsSold += a.units; spent += a.spend; sold += a.units;
-        });
-      }
-      consumerSpend += spent; unmet += Math.max(0, res.unitsWanted - sold);
-      db.run('INSERT INTO demand_tick_stats (tick, rule_id, budget_minor, spent_minor, units_wanted, units_sold, unmet_units) VALUES (?,?,?,?,?,?,?)', n, r.id, budget, spent, res.unitsWanted, sold, Math.max(0, res.unitsWanted - sold));
-      if (res.unitsWanted > 0 && sold * 10 < res.unitsWanted * 7) logEvent(db, n, 'shortage', 'warning', r.commodity_id, `${r.label}: only ${sold} of ${res.unitsWanted} units could be served`, { rule: r.id });
-    }
+    const consumed = runConsumers(db, ctx, cfg, { order, byId, refPrice, cityId: city.id, population: city.population, householdsAccount: city.households_account_id, st, pay, safe });
+    consumerSpend += consumed.spend; unmet += consumed.unmet;
 
     /* H. Operating expenses (accrual): wages → households; energy, rent, advertising → state enterprises. Unpaid amounts become arrears. */
     phase('expenses');
@@ -269,7 +256,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     // NPC shareholders are citizens: cash above a reserve of N ticks of fixed costs is paid out to households (a transfer, never minted).
     for (const c of order) {
       if (c.owner_kind !== 'npc' || c.status !== 'operating' || cfg.npcPayoutBps === 0) continue;
-      const reserve = cfg.npcReserveTicks * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
+      const reserve = (profiles.get(c.id)?.reserve_days ?? cfg.npcReserveTicks) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
       const excess = available(db, c.treasury_account_id) - reserve;
       const dividend = Math.floor((Math.max(0, excess) * cfg.npcPayoutBps) / 10_000);
       if (dividend > 0) safe('dividend', c.id, () => pay('transfer', c.treasury_account_id, city.households_account_id, dividend, `${c.name} dividend to NPC shareholders`));
@@ -330,6 +317,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
+    phase('standings');
+    runStandings(db, ctx, cfg);
     const snap = db.get<{ issued_tick_minor: number; destroyed_tick_minor: number; circulating_minor: number }>('SELECT * FROM supply_snapshots WHERE tick = ?', n)!;
     const summary: TickSummary = { tick: n, issuedMinor: snap.issued_tick_minor, destroyedMinor: snap.destroyed_tick_minor, circulatingMinor: snap.circulating_minor, trades, tradeValueMinor: tradeValue, consumerSpendMinor: consumerSpend, unmetUnits: unmet, unitsProduced: produced, insolvencies, failures: failures.n, supportMinor: support };
     db.run("UPDATE ticks SET status = 'complete', finished_at = ?, duration_ms = ?, summary_json = ? WHERE tick = ?", ctx.gameDate, Date.now() - t0, JSON.stringify(summary), n);

@@ -2,7 +2,7 @@ import type { ApiError } from '../../src/contracts/game-state';
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { LedgerError, available, reconcile, transfer, type TickCtx } from './ledger';
-import { HOUSEHOLDS } from '../seed/bristol';
+import { applyStaffChange } from './staffing';
 import { MarketError, cancelOrder, liveBook, marketLimit, placeOrder } from './market';
 import { gameDate } from './config';
 import { logEvent } from './stats';
@@ -79,15 +79,10 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     if (Object.keys(fe).length) return err('VALIDATION', 'Some settings are invalid.', fe);
     const sets: string[] = []; const vals: (string | number)[] = [];
     const add = (col: string, v: string | number | undefined) => { if (v !== undefined) { sets.push(`${col} = ?`); vals.push(v); } };
-    add('price_minor', p.priceMinor); add('employees', p.employees); add('quality', p.quality); add('marketing_minor', p.marketingMinorPerTick);
+    add('price_minor', p.priceMinor); add('quality', p.quality); add('marketing_minor', p.marketingMinorPerTick);
     add('auto_procure', p.autoProcure === undefined ? undefined : p.autoProcure ? 1 : 0);
-    // Hiring costs one day's wage as a recruitment fee, dismissal one day's wage as severance; both are paid to households now and recognised in the next day's labour cost.
-    const staffFee = (hires + fires) * c.wage_minor;
     if (hires + fires > 0) {
-      if (available(db, c.treasury_account_id) < staffFee) return err('INSUFFICIENT_FUNDS', `Changing staff costs ${staffFee / 100} EC (one day's wage each); the company has ${available(db, c.treasury_account_id) / 100} EC.`);
-      if (staffFee > 0) transfer(db, ctx, `cmd:${key}:staff`, c.treasury_account_id, HOUSEHOLDS, staffFee, 'operating_cost', `${hires ? 'recruitment' : 'severance'} fees at ${c.name}`);
-      add('hires_in_tick', (sameDay ? c.hires_in_tick : 0) + hires); add('dismissals_in_tick', (sameDay ? c.dismissals_in_tick : 0) + fires); add('staff_change_tick', ctx.tick);
-      db.run('UPDATE companies SET pending_labour_minor = pending_labour_minor + ? WHERE id = ?', staffFee, companyId);
+      try { applyStaffChange(db, ctx, cfg, c as never, p.employees!, `cmd:${key}`); } catch (e) { if (e instanceof LedgerError) return err('INSUFFICIENT_FUNDS', e.message); throw e; }
     }
     // Wholesale companies (no retail commodity) sell at their ask price, so the "price" setting is the ask price for them.
     const ask = p.askPriceMinor ?? (c.retail_commodity_id === null ? p.priceMinor : undefined);

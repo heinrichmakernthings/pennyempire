@@ -6,6 +6,7 @@ import type { MarketShortage } from '../../src/shared/exchange';
 import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
 import { PLAYER_ID } from '../seed/bristol';
 import { directory as directoryRows } from './exchange';
+import { washSql } from './standings';
 import { feeFromBps } from '../../src/domain/money';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -91,12 +92,25 @@ export function opportunities(db: Sql): Opportunity[] {
     if (total > wallet.b - wallet.r) warnings.push(`Startup needs ${total / 100} EC and you have ${(wallet.b - wallet.r) / 100} EC.`);
     if (!freeLots.length) warnings.push(`No vacant ${spec.plot_width}×${spec.plot_depth} lot is free.`);
     const risk: Opportunity['risk'] = profit <= 0 || saturation >= 12_000 ? 'high' : saturation >= 8_000 || lowStock.length > 0 || margin < 1_000 ? 'medium' : 'low';
+    // Opportunity finder v2: labels and metrics come straight from recorded data; they describe the market, they never promise a profit.
+    const sold = (from: number, to: number) => db.get<{ u: number }>("SELECT COALESCE(SUM(s.units_sold),0) u FROM company_tick_stats s JOIN companies c ON c.id = s.company_id WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND s.tick > ? AND s.tick <= ?", spec.industry_id, from, to)!.u;
+    const recentU = sold(t - WINDOW, t), priorU = sold(t - 2 * WINDOW, t - WINDOW);
+    const growthBps = priorU > 0 ? Math.round(((recentU - priorU) * 10_000) / priorU) : 0;
+    const failures = db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE industry_id = ? AND owner_kind <> 'state' AND bankrupt_tick IS NOT NULL AND bankrupt_tick > ?", spec.industry_id, t - 30)!.n;
+    const entrants = db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE industry_id = ? AND owner_kind <> 'state' AND created_tick > ?", spec.industry_id, t - 30)?.n ?? 0;
+    const labels: Opportunity['labels'] = [];
+    if (demand > 0 && unmet * 10 >= demand * 2) labels.push('High unmet demand');
+    if (t >= 14 && growthBps >= 1_000 && recentU > 0) labels.push('Growing market');
+    if (rivals.length >= 3 || saturation >= 9_000) labels.push('Competitive');
+    if (demand > 0 && saturation >= 15_000) labels.push('Oversupplied');
+    if (failures >= 1 || profit <= 0 || saturation >= 12_000) labels.push('High risk');
+    const metrics: Opportunity['metrics'] = { unmetDemandBps: demand > 0 ? Math.floor((unmet * 10_000) / demand) : 0, growthBps, concentrationBps: supply > 0 ? Math.floor((leader * 10_000) / Math.max(1, supply)) : 0, recentFailures: failures, newEntrants: entrants };
     out.push({
       industry: spec.industry_id, label: spec.label, tagline: spec.tagline, sells: spec.sells,
       forecast: { label: 'FORECAST', unitsPerDay: units, pricePerUnitMinor: price, revenueMinor: revenue, inputsMinor, energyMinor, wagesMinor: wages, rentMinor: rent, feesMinor: fees, profitMinor: profit, marginBps: margin, paybackDays: profit > 0 ? Math.ceil(sunk / profit) : null },
       startup: { totalMinor: total, licenceMinor: spec.licence_fee_minor, premisesMinor: tier.fitout_minor, equipmentMinor: spec.equipment_minor, workingCapitalMinor: spec.working_capital_minor },
       market: { demandUnitsPerDay: demand, supplyUnitsPerDay: supply, unmetUnitsPerDay: unmet, saturationBps: saturation, competitors: rivals.length, leaderUnitsPerDay: leader, referencePriceMinor: ref },
-      inputs, risk, score: profit * 100 + unmet * 10 - rivals.length * 50, headline: '', reasons, warnings,
+      labels, metrics, inputs, risk, score: profit * 100 + unmet * 10 - rivals.length * 50, headline: '', reasons, warnings,
       tiers: db.all<Tier>('SELECT * FROM industry_tiers WHERE industry_id = ? ORDER BY tier', spec.industry_id).filter((x) => x.tier <= 2).map((x) => ({ tier: x.tier, name: x.name, fitoutMinor: x.fitout_minor, capacity: x.capacity_batches * recipe.output_units, staff: x.max_employees })),
     });
   }
@@ -123,7 +137,7 @@ export function lots(db: Sql): LotInfo[] {
 export function rankings(db: Sql): Ranking[] {
   const t = lastTick(db), days = daysOf(db);
   return startable(db).map((spec) => {
-    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>("SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id", t - WINDOW, spec.industry_id);
+    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>(`SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, MAX(0, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) - ${washSql('qty', 'c.id')}) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id`, t - WINDOW, t - WINDOW, t, spec.industry_id);
     const total = rows.reduce((a, r) => a + r.u, 0);
     return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avgOver(total, days), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avgOver(r.u, days), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === PLAYER_ID })) };
   });
