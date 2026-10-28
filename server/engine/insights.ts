@@ -6,6 +6,7 @@ import type { MarketShortage } from '../../src/shared/exchange';
 import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
 import { PLAYER_ID } from '../seed/bristol';
 import { directory as directoryRows } from './exchange';
+import { washSql } from './standings';
 import { feeFromBps } from '../../src/domain/money';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -136,7 +137,7 @@ export function lots(db: Sql): LotInfo[] {
 export function rankings(db: Sql): Ranking[] {
   const t = lastTick(db), days = daysOf(db);
   return startable(db).map((spec) => {
-    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>("SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id", t - WINDOW, spec.industry_id);
+    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>(`SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, MAX(0, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) - ${washSql('qty', 'c.id')}) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id`, t - WINDOW, t - WINDOW, t, spec.industry_id);
     const total = rows.reduce((a, r) => a + r.u, 0);
     return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avgOver(total, days), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avgOver(r.u, days), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === PLAYER_ID })) };
   });

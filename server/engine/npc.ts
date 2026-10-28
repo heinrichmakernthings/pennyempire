@@ -147,6 +147,21 @@ const NAMES: Record<string, string[]> = {
   farm: ['Mendip Growers', 'Chew Valley Farm', 'Avon Acres'], mill: ['Bathurst Milling', 'Cumberland Mill', 'Temple Mill'], dairy: ['Mendip Creamery', 'Chew Dairy', 'Severn Cheese Co'], timber: ['Brislington Timber', 'Forest of Avon Yard', 'Ashton Sawmill'],
 };
 
+const ENTRY_STRATEGIES: Strategy[] = ['budget', 'premium', 'growth', 'conservative', 'opportunistic'];
+
+/** Found an NPC company with the same founding core players use, funded from the NPC shareholders' households; gives it a strategy profile. Also used to seed scenarios. */
+export function openNpcCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, a: { industry: string; plotId: string; name: string; workingCapitalMinor?: number; strategy: Strategy; key: string }): { ok: true; companyId: string } | { ok: false; error: string } {
+  const seq = db.get<{ n: number }>("SELECT COUNT(*) n FROM owners WHERE id LIKE 'npc-entrant-%'")!.n + 1;
+  const ownerId = `npc-entrant-${seq}`;
+  db.run('INSERT INTO owners (id, kind, name) VALUES (?,?,?)', ownerId, 'npc', `${a.name} Ltd`);
+  const founder: Founder = { kind: 'npc', ownerId, fundingAccount: HOUSEHOLDS, idPrefix: 'co-npc', limited: false };
+  const r = foundCompany(db, ctx, a.key, { industry: a.industry, plotId: a.plotId, tier: 1, name: a.name, workingCapitalMinor: a.workingCapitalMinor }, founder);
+  if (!r.ok) { db.run('DELETE FROM owners WHERE id = ?', ownerId); return { ok: false, error: r.error.message }; }
+  createProfile(db, ctx.tick, r.companyId, a.strategy, cfg.npcDecisionEveryTicks);
+  db.run('UPDATE companies SET owner_kind = ?, owner_id = ? WHERE id = ?', 'npc', ownerId, r.companyId);
+  return { ok: true, companyId: r.companyId };
+}
+
 /** Market entry: at most one new NPC company per `npcEntryEveryTicks`, only where the live opportunity data shows demand, only with finite capital from the NPC shareholders. */
 export function runNpcEntry(db: Sql, ctx: TickCtx, cfg: EngineConfig): string | null {
   if (ctx.tick < 20 || ctx.tick % cfg.npcEntryEveryTicks !== 0) return null;   // needs a few weeks of real market history first
@@ -174,18 +189,11 @@ export function runNpcEntry(db: Sql, ctx: TickCtx, cfg: EngineConfig): string | 
     const used = new Set(db.all<{ name: string }>('SELECT name FROM companies').map((r) => r.name));
     const name = (NAMES[o.industry] ?? []).find((n) => !used.has(n));
     if (!name) { log(o.industry, 'skipped', 'no company names left', null, o.score); continue; }
-    const seq = db.get<{ n: number }>("SELECT COUNT(*) n FROM owners WHERE id LIKE 'npc-entrant-%'")!.n + 1;
-    const ownerId = `npc-entrant-${seq}`;
-    db.run('INSERT INTO owners (id, kind, name) VALUES (?,?,?)', ownerId, 'npc', `${name} Ltd`);
-    const founder: Founder = { kind: 'npc', ownerId, fundingAccount: HOUSEHOLDS, idPrefix: 'co-npc', limited: false };
     const wc = Math.min(Math.floor(o.startup.workingCapitalMinor * 1.5), cfg.npcEntryCapitalMinor - (o.startup.totalMinor - o.startup.workingCapitalMinor));
-    const r = foundCompany(db, ctx, `npc:found:${ctx.tick}:${o.industry}`, { industry: o.industry, plotId: lot.id, tier: 1, name, workingCapitalMinor: wc }, founder);
-    if (!r.ok) { log(o.industry, 'failed', r.error.message, null, o.score); db.run('DELETE FROM owners WHERE id = ?', ownerId); continue; }
-    const order: Strategy[] = ['budget', 'premium', 'growth', 'conservative', 'opportunistic'];
-    const strategy = order[(hash(name) + ctx.tick) % order.length]!;
-    createProfile(db, ctx.tick, r.companyId, strategy, cfg.npcDecisionEveryTicks);
-    db.run('UPDATE companies SET owner_kind = ?, owner_id = ? WHERE id = ?', 'npc', ownerId, r.companyId);
-    logDecision(db, ctx.tick, { id: r.companyId }, strategy, 'enter_market', `Forecast profit ${(o.forecast.profitMinor / 100).toFixed(2)} EC/day, ${o.market.unmetUnitsPerDay} units/day unserved, ${rivals} rivals: opened as a ${STRATEGIES[strategy].label.toLowerCase()} with ${(r.totalMinor / 100).toFixed(0)} EC of startup capital.`, { forecast: o.forecast, market: o.market }, true, true);
+    const strategy = ENTRY_STRATEGIES[(hash(name) + ctx.tick) % ENTRY_STRATEGIES.length]!;
+    const r = openNpcCompany(db, ctx, cfg, { industry: o.industry, plotId: lot.id, name, workingCapitalMinor: wc, strategy, key: `npc:found:${ctx.tick}:${o.industry}` });
+    if (!r.ok) { log(o.industry, 'failed', r.error, null, o.score); continue; }
+    logDecision(db, ctx.tick, { id: r.companyId }, strategy, 'enter_market', `Forecast profit ${(o.forecast.profitMinor / 100).toFixed(2)} EC/day, ${o.market.unmetUnitsPerDay} units/day unserved, ${rivals} rivals: opened as a ${STRATEGIES[strategy].label.toLowerCase()} with ${(o.startup.totalMinor / 100).toFixed(0)} EC of startup capital.`, { forecast: o.forecast, market: o.market }, true, true);
     log(o.industry, 'entered', `opened ${name}`, r.companyId, o.score);
     void CITY_ID;
     return r.companyId;
