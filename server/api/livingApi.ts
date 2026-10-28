@@ -59,3 +59,29 @@ export function competitorProfile(db: Sql, id: string): CompetitorProfile | null
     notice: 'Public information only. Cash, margins, stock and plans are private to each company.',
   };
 }
+
+import type { CompanyActivity, ActivityState } from '../../src/shared/living';
+/**
+ * What each building looks like today. Every flag is computed from recorded rows (the last completed day's sales, production and shipments):
+ * customers/vans/workers are capped counts of those real numbers, never decoration invented for effect.
+ */
+export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] } {
+  const t = lastTick(db);
+  const items = db.all<{ id: string; status: string; bankrupt_tick: number | null; created_tick: number; employees: number }>("SELECT id, status, bankrupt_tick, created_tick, employees FROM companies WHERE owner_kind <> 'state' ORDER BY id").map((c): CompanyActivity => {
+    const s = db.get<{ revenue_minor: number; units_sold: number; units_produced: number; inventory_value_minor: number }>('SELECT revenue_minor, units_sold, units_produced, inventory_value_minor FROM company_tick_stats WHERE company_id = ? AND tick = ?', c.id, t);
+    const consumer = db.get<{ u: number }>('SELECT COALESCE(SUM(units),0) u FROM segment_sales WHERE company_id = ? AND tick = ?', c.id, t)!.u;
+    const shipped = db.get<{ n: number }>('SELECT COUNT(*) n FROM trades WHERE seller_company_id = ? AND tick = ?', c.id, t)!.n;
+    const limited = db.get<{ l: string }>('SELECT limited_by l FROM production_log WHERE company_id = ? AND tick = ?', c.id, t)?.l;
+    let state: ActivityState = 'quiet';
+    if (c.bankrupt_tick !== null || c.status === 'insolvent' || c.status === 'paused') state = 'closed';
+    else if (t - c.created_tick < 3) state = 'construction';
+    else if (limited === 'supply' || limited === 'inputs') state = 'missing-inputs';
+    else if (s && s.units_produced > 0 && s.units_sold >= s.units_produced && s.inventory_value_minor === 0) state = 'high-demand';
+    else if (shipped > 0) state = 'delivery';
+    else if (consumer > 0) state = 'customers';
+    else if (s && s.units_produced > 0) state = 'production';
+    const open = state !== 'closed' && state !== 'construction';
+    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0 };
+  });
+  return { tick: t, items };
+}

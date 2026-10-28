@@ -9,7 +9,7 @@ import { lots, management, marketShortages, opportunities, rankings } from '../e
 import { cancelContract, proposeContract, respondContract } from '../engine/contracts';
 import { commodityDetail, directory } from '../engine/exchange';
 import { contractCandidates, contracts, holdings, ownOrders, ownTrades } from './exchangeApi';
-import { competitorProfile, news, standings } from './livingApi';
+import { cityActivity, competitorProfile, news, standings } from './livingApi';
 import { economyDashboard } from './dashboard';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
@@ -57,6 +57,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     }
     if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db), shortages: marketShortages(db) });
     if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
+    if (method === 'GET' && seg[0] === 'city' && seg[1] === 'activity') return json(200, { authority: 'server', ...cityActivity(db) });
     if (method === 'GET' && seg[0] === 'standings') return json(200, { authority: 'server', standings: standings(db) });
     if (method === 'GET' && seg[0] === 'news') return json(200, { authority: 'server', articles: news(db, Number(q.limit ?? 30)) });
     if (method === 'GET' && seg[0] === 'competitors' && seg[1]) { const p = competitorProfile(db, seg[1]); return p ? json(200, { authority: 'server', profile: p }) : apiErr(404, 'VALIDATION', `Unknown competitor ${seg[1]}`); }

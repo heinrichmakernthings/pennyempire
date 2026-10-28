@@ -33,3 +33,12 @@ describe('living-city API', () => {
     expect(d.npcInspector.length).toBeGreaterThan(3); expect(d.npcByIndustry.length).toBeGreaterThan(3);
   });
 });
+
+describe('city activity', () => {
+  it('is derived from recorded state: every company appears, closed firms look closed, new firms look under construction', () => {
+    const b = get('/api/city/activity').body as { items: { companyId: string; state: string; customers: number; vans: number }[] };
+    expect(b.items.length).toBeGreaterThanOrEqual(7);
+    const states = new Set(b.items.map((i) => i.state)); expect(states.size).toBeGreaterThan(1);
+    for (const i of b.items) { expect(i.customers).toBeLessThanOrEqual(4); expect(i.vans).toBeLessThanOrEqual(2); if (i.state === 'closed') expect(i.customers + i.vans).toBe(0); }
+  });
+});

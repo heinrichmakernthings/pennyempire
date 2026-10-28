@@ -4,6 +4,8 @@ import type { Camera } from './camera';
 import { screenToWorld, worldToScreen } from './camera';
 import { pointInPolygon, project, type Vec } from './geometry';
 import type { Scene, SceneBuilding, SceneLot } from './scene';
+import { uiIconUrl } from '@/assets/artAssets';
+import type { CompanyActivity } from '@/shared/living';
 
 export const PALETTE = { water: '#23606b', waterHi: '#377887', road: '#343c40', grass: '#64724b', paving: '#80796b', seam: 'rgba(20,28,32,.18)', quay: '#b3a48b', dash: '#d6c8a6', amber: '#ffc45e', mint: '#62dbaf', cream: '#f0e8d7', bg: '#17252a' };
 
@@ -55,7 +57,29 @@ export function createTerrainLayer(scene: Scene): { canvas: HTMLCanvasElement; o
 }
 
 export interface ViewState { cam: Camera; width: number; height: number; dpr: number }
-export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null }
+export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null; activity?: Map<string, CompanyActivity>; redraw?: () => void }
+
+/** Approved Phase 2/3 state icons, loaded once. Missing icons simply don't draw. */
+const BADGE: Record<string, string> = { closed: 'state-closed', construction: 'state-construction', 'missing-inputs': 'state-missing-inputs', 'high-demand': 'state-high-demand', delivery: 'state-delivery', customers: 'state-customer-entry', production: 'state-production' };
+const badgeImgs = new Map<string, HTMLImageElement | null>();
+function badgeImg(state: string, redraw?: () => void): HTMLImageElement | null {
+  const name = BADGE[state]; if (!name) return null;
+  if (badgeImgs.has(name)) return badgeImgs.get(name)!;
+  const url = uiIconUrl(name); if (!url || typeof Image === 'undefined') { badgeImgs.set(name, null); return null; }
+  const img = new Image(); badgeImgs.set(name, null); img.onload = () => { badgeImgs.set(name, img); redraw?.(); }; img.src = url; return null;
+}
+const FACING = ['se', 'sw', 'ne', 'nw'] as const;
+/** Residents, vans and workers around a building; positions are a fixed function of the company and the count, so nothing jitters between frames. */
+function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: SceneBuilding, a: CompanyActivity, ox: number, oy: number, k: number, dpr: number, redraw?: () => void) {
+  const f = frameById.get(b.assetId); if (!f) return;
+  const seed = [...b.plotId].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
+  const foot = (i: number, spread: number): [number, number] => [b.anchor[0] + ((hash(seed, i) - 0.5) * spread), b.anchor[1] + 6 + hash(i, seed) * 14];
+  for (let i = 0; i < a.customers; i++) { const [x, y] = foot(i, 70); drawFrame(ctx, atlas, `resident-${FACING[(seed + i) % 4]}`, ox + x * k, oy + y * k, k); }
+  for (let i = 0; i < a.workers; i++) { const [x, y] = foot(10 + i, 40); drawFrame(ctx, atlas, `worker-${FACING[(seed + i + 1) % 4]}`, ox + (x - 20) * k, oy + (y - 8) * k, k); }
+  for (let i = 0; i < a.vans; i++) drawFrame(ctx, atlas, i % 2 ? 'van-sw' : 'van-se', ox + (b.anchor[0] + 52 + i * 26) * k, oy + (b.anchor[1] + 24 + i * 6) * k, k);
+  const img = badgeImg(a.state, redraw);
+  if (img) { const sz = 22 * dpr * Math.max(1, k / dpr * 0.75); const sx = ox + b.anchor[0] * k, sy = oy + (b.anchor[1] - f.pivot[1] - 6) * k; ctx.save(); ctx.imageSmoothingEnabled = true; if (a.state === 'closed') ctx.globalAlpha = .95; ctx.drawImage(img, Math.round(sx - sz / 2), Math.round(sy - sz), sz, sz); ctx.restore(); }
+}
 
 function drawFrame(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, id: string, ax: number, ay: number, zoom: number): boolean {
   const f = frameById.get(id); const img = f && atlas?.images.get(f.source);
@@ -126,6 +150,13 @@ export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene, atlas: 
     const [wx, wy] = d.type === 'building' ? d.building.anchor : d.prop.anchor;
     const id = d.type === 'building' ? d.building.assetId : d.prop.assetId;
     drawFrame(ctx, atlas, id, ox + wx * k, oy + wy * k, k);
+    if (d.type === 'building' && d.building.companyId) {
+      const a = ui.activity?.get(d.building.companyId);
+      if (a) {
+        if (a.state === 'closed') { ctx.save(); ctx.scale(dpr, dpr); strokePolygon(ctx, d.building.polygon, view, { stroke: '#8a8f93', width: 2, fill: 'rgba(30,34,38,.45)', dash: [4, 4] }); ctx.restore(); }
+        drawActivity(ctx, atlas, d.building, a, ox, oy, k, dpr, ui.redraw);
+      }
+    }
   }
 
   // selection ring above sprites so the selected plot is unmistakable even behind tall roofs

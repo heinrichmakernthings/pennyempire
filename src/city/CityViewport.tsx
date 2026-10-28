@@ -8,7 +8,7 @@ import { Icon } from '@/ui/Icon';
 export interface CityViewportHandle { focusCompany(id: string): void }
 interface Props {
   scene: Scene; atlas: ArtAtlas | null; selectedId: string | null; hoverCaption(id: string): { title: string; subtitle: string } | null;
-  selectedLotId?: string | null; onSelectLot?(plotId: string): void;
+  selectedLotId?: string | null; onSelectLot?(plotId: string): void; activity?: Map<string, import('@/shared/living').CompanyActivity>;
   onSelect(id: string | null): void; registerHandle?(h: CityViewportHandle | null): void;
 }
 const DRAG_PX = 5;
@@ -23,7 +23,7 @@ function initialCamera(scene: Scene): Camera {
  * Canvas city. Camera, hover and pointer state live in refs so panning/hovering never re-renders React;
  * only zoom level (for the controls) and the hover tooltip are React state.
  */
-export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, selectedLotId = null, onSelectLot, hoverCaption, onSelect, registerHandle }: Props) {
+export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, selectedLotId = null, onSelectLot, activity, hoverCaption, onSelect, registerHandle }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const cam = useRef<Camera>(initialCamera(scene));
@@ -38,14 +38,17 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
   const [zoom, setZoom] = useState<Zoom>(1);
   const [tip, setTip] = useState<{ id: string; x: number; y: number } | null>(null);
   const terrain = useMemo(() => createTerrainLayer(scene), [scene]);
+  const activityRef = useRef(activity); const invRef = useRef<(() => void) | undefined>(undefined);
 
   const draw = useCallback(() => {
     raf.current = 0;
     const c = canvas.current; const ctx = c?.getContext('2d');
     if (!c || !ctx || size.current.w === 0) return;
-    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current, selectedLotId: selectedLot.current });
+    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current, selectedLotId: selectedLot.current, activity: activityRef.current, redraw: () => invRef.current?.() });
   }, [scene, atlas, terrain]);
   const invalidate = useCallback(() => { if (!raf.current) raf.current = requestAnimationFrame(draw); }, [draw]);
+  invRef.current = invalidate;
+  useEffect(() => { activityRef.current = activity; invalidate(); }, [activity, invalidate]);
   useEffect(() => () => { cancelAnimationFrame(raf.current); raf.current = 0; }, []);
 
   useEffect(() => { selected.current = selectedId; selectedLot.current = selectedLotId; invalidate(); }, [selectedId, selectedLotId, invalidate]);
