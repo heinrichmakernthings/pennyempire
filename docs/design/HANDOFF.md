@@ -17,3 +17,7 @@ Production source artwork generated with the built-in image generation tool. Pro
 ## Known generation defect
 
 The three multi-object sheets still contain coloured semi-transparent haze after a targeted background-removal retry. They are retained as visual source only and must NOT be imported as finished transparent atlases. Regenerate individual objects or perform supervised masking before extraction. The three standalone building sources have transparent backgrounds, but still need scale/pivot checks. Do not mark the whole pack production-ready.
+
+## Follow-up audit
+
+Read ASSET-AUDIT.md for updated alpha findings and new inventory/actor/UI assets. Its evidence supersedes the earlier categorical haze diagnosis. The connection study failed orientation review and must not be used as a runtime road atlas.

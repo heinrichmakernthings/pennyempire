@@ -1,92 +1,212 @@
-[
-  {
-    "file": "props-sheet.png",
-    "size": [
-      1536,
-      1024
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      254
-    ],
-    "transparent_fraction": 0.6606,
-    "opaque_fraction": 0.0,
-    "status": "needs background repair and extraction"
-  },
-  {
-    "file": "industry-sheet.png",
-    "size": [
-      1536,
-      1024
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      254
-    ],
-    "transparent_fraction": 0.4561,
-    "opaque_fraction": 0.0,
-    "status": "needs background repair and extraction"
-  },
-  {
-    "file": "terrain-sheet.png",
-    "size": [
-      1536,
-      1024
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      254
-    ],
-    "transparent_fraction": 0.6302,
-    "opaque_fraction": 0.0,
-    "status": "needs background repair and extraction"
-  },
-  {
-    "file": "pizza-shop.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      255
-    ],
-    "transparent_fraction": 0.545,
-    "opaque_fraction": 0.0001,
-    "status": "transparent source; needs scale and pivot validation"
-  },
-  {
-    "file": "cafe.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      255
-    ],
-    "transparent_fraction": 0.4938,
-    "opaque_fraction": 0.0001,
-    "status": "transparent source; needs scale and pivot validation"
-  },
-  {
-    "file": "flour-mill.png",
-    "size": [
-      1254,
-      1254
-    ],
-    "mode": "RGBA",
-    "alpha_range": [
-      0,
-      255
-    ],
-    "transparent_fraction": 0.6655,
-    "opaque_fraction": 0.0001,
-    "status": "transparent source; needs scale and pivot validation"
-  }
-]
+{
+  "note": "Alpha statistics do not prove clean contours or tile compatibility. Near-opaque means alpha >=250, not only 255.",
+  "sources": [
+    {
+      "file": "actors-idle-sheet.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.74837,
+      "near_opaque_fraction": 0.17452,
+      "partial_alpha_fraction": 0.0771,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "cafe.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.49381,
+      "near_opaque_fraction": 0.47797,
+      "partial_alpha_fraction": 0.02823,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "commodities-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        254
+      ],
+      "transparent_fraction": 0.53061,
+      "near_opaque_fraction": 0.38926,
+      "partial_alpha_fraction": 0.08013,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "connections-study.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        254
+      ],
+      "transparent_fraction": 0.61796,
+      "near_opaque_fraction": 0.33064,
+      "partial_alpha_fraction": 0.0514,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "flour-mill.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.66555,
+      "near_opaque_fraction": 0.31355,
+      "partial_alpha_fraction": 0.0209,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "industry-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        254
+      ],
+      "transparent_fraction": 0.4561,
+      "near_opaque_fraction": 0.48971,
+      "partial_alpha_fraction": 0.05418,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "pizza-shop.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        255
+      ],
+      "transparent_fraction": 0.545,
+      "near_opaque_fraction": 0.43073,
+      "partial_alpha_fraction": 0.02427,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "props-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        254
+      ],
+      "transparent_fraction": 0.6606,
+      "near_opaque_fraction": 0.25796,
+      "partial_alpha_fraction": 0.08143,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    },
+    {
+      "file": "terrain-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "alpha_range": [
+        0,
+        254
+      ],
+      "transparent_fraction": 0.63018,
+      "near_opaque_fraction": 0.3286,
+      "partial_alpha_fraction": 0.04122,
+      "runtime_ready": false,
+      "remaining_checks": [
+        "edge composite inspection",
+        "extraction",
+        "pixel scale",
+        "pivot",
+        "grid composition"
+      ]
+    }
+  ]
+}

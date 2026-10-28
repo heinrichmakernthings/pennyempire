@@ -8,13 +8,13 @@ Status: source artwork is created; runtime extraction/normalisation and in-engin
 | Industry sheet | Farm barn+silo, dairy, timber yard, warehouse, utility substation, terrace pair | Source sheet; extract six objects |
 | Terrain sheet | Cobble, asphalt, grass, water, road NE/SW, road NW/SE, crossroads, corner, quay NE, quay NW, brick plaza, wheat | Source sheet; grid normalization and seam tests required |
 | Props sheet | Tree, streetlamp, bench, planter, van SW, van SE, narrowboat, railing, crates, parasol/table, bollard, crane | Source sheet; separate silhouettes and normalize scale |
-| Additional roads | T junction, end cap, remaining corner orientations, remaining quay edges and inner/outer corners | Required before arbitrary map layouts |
-| Actors | Resident, worker, courier; four directions; idle and four walk frames each | Outstanding; 60 frames total |
+| Additional roads | T junction, end cap, remaining corner orientations, remaining quay edges and inner/outer corners | Connection study generated; T-junction geometry rejected on review; exact overlays required |
+| Actors | Resident, worker, courier; four directions; idle and four walk frames each | 12 idle views now sourced; 48 walk frames remain |
 | Vehicles | Remaining van directions; boat opposite facing | Outstanding |
 | Business progression | Pizza levels 2/3; cafe levels 2/3; mill levels 2/3 | Outstanding; six variants |
 | Production FX | Smoke 4 frames, water 4 frames, delivery arrival 4 frames | Outstanding; disable with reduced motion |
-| Commodities | Wheat, flour, cheese, milk, pizza, timber, energy | Outstanding; seven consistent inventory icons |
-| UI graphics | Navigation icons, selection diamond, hover diamond, ownership marker, warning state | Render as code/SVG, not baked into city sprites |
+| Commodities | Wheat, flour, cheese, milk, pizza, timber, energy | Eight source icons created (seven commodities plus delivery carton); extraction pending |
+| UI graphics | Navigation icons, selection diamond, hover diamond, ownership marker, warning state | 18 SVG assets created in assets/art/ui; browser QA pending |
 | Financial graphics | Profit sparkline, revenue/expense chart, portfolio chart, commodity history | Render from data in code; specification in ART-DIRECTION.md |
 | Prestige | Car, penthouse overlay, HQ upgrade, yacht | Later art batch after initial district works |
 
