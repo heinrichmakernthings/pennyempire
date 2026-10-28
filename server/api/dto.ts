@@ -3,6 +3,7 @@ import type { CompanySummary, PortfolioState } from '../../src/data/types';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { balance } from '../engine/ledger';
+import { effCapacity, type CompanyRow } from '../engine/operations';
 import { PLAYER_ID } from '../seed/bristol';
 
 const ec = (minor: number): Money => ({ currency: 'EC', minor });
@@ -71,7 +72,7 @@ export function companyDto(db: Sql, id: string): Company | null {
   const revenue = st?.revenue_minor ?? 0, profit = st?.net_profit_minor ?? 0;
   const lines = db.all<{ recipe_id: string; planned_batches: number; output_units: number; output_commodity_id: string }>('SELECT l.recipe_id, l.planned_batches, r.output_units, r.output_commodity_id FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ? ORDER BY l.recipe_id', id);
   const planned = lines.reduce((a, l) => a + l.planned_batches * l.output_units, 0);
-  const effBatches = c.max_employees === 0 ? 0 : Math.floor((c.capacity_batches * c.employees) / c.max_employees);
+  const effBatches = effCapacity(c as unknown as CompanyRow);   // staff, productivity upgrades and equipment condition all count
   const perTickUse = new Map<string, number>();
   for (const l of lines) for (const i of db.all<{ commodity_id: string; units: number }>('SELECT * FROM recipe_inputs WHERE recipe_id = ?', l.recipe_id)) perTickUse.set(i.commodity_id, (perTickUse.get(i.commodity_id) ?? 0) + i.units * l.planned_batches);
   // Companies buy inputs just-in-time each day, so input stock is normally ~0 at day end. Only report "hours remaining" when it is meaningful:

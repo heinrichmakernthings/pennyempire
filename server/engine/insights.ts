@@ -2,6 +2,7 @@ import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from './config';
 import { energyPerBatch, inputUnitsPerBatch, linesOf, recipeInputs, type CompanyRow } from './operations';
 import { LOT_SQL, defaultStaff, rentFor, tierOf, upgradeBlocker, type Spec, type Tier, type UpgradeRow } from './company';
+import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
 import { PLAYER_ID } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
 
@@ -10,16 +11,6 @@ const WINDOW = 7;                                         // days of history beh
 const startable = (db: Sql) => db.all<Spec>('SELECT * FROM industry_specs WHERE startable = 1 ORDER BY industry_id');
 const avg = (n: number) => Math.round(n / WINDOW);
 
-export interface Opportunity {
-  industry: string; label: string; tagline: string; sells: Spec['sells'];
-  /** Everything under `forecast` is an ESTIMATE from the last week of real simulation data, not a promise. */
-  forecast: { label: 'FORECAST'; unitsPerDay: number; pricePerUnitMinor: number; revenueMinor: number; inputsMinor: number; energyMinor: number; wagesMinor: number; rentMinor: number; feesMinor: number; profitMinor: number; marginBps: number; paybackDays: number | null };
-  startup: { totalMinor: number; licenceMinor: number; premisesMinor: number; equipmentMinor: number; workingCapitalMinor: number };
-  market: { demandUnitsPerDay: number; supplyUnitsPerDay: number; unmetUnitsPerDay: number; saturationBps: number; competitors: number; leaderUnitsPerDay: number; referencePriceMinor: number };
-  inputs: { commodityId: string; unitsPerDay: number; unitPriceMinor: number; availableUnits: number; stateFallback: boolean }[];
-  risk: 'low' | 'medium' | 'high'; score: number; headline: string; reasons: string[]; warnings: string[];
-  tiers: { tier: number; name: string; fitoutMinor: number; capacity: number; staff: number }[];
-}
 
 /** Real units wanted/sold per day for a commodity, derived from consumer + public-works demand rules. */
 function consumerDemand(db: Sql, commodity: string, t: number) {
@@ -106,7 +97,6 @@ export function opportunities(db: Sql): Opportunity[] {
   return out;
 }
 
-export interface LotInfo { id: string; column: number; row: number; width: number; depth: number; district: string; districtName: string; propertyIndexBps: number; status: 'vacant' | 'taken'; fits: string[]; rentFrom: Record<string, number> }
 /** Lots with the daily rent each industry would pay there (district property index × industry base × premises tier). */
 export function lots(db: Sql): LotInfo[] {
   const specs = startable(db);
@@ -116,8 +106,6 @@ export function lots(db: Sql): LotInfo[] {
   });
 }
 
-export interface RankRow { rank: number; companyId: string; name: string; unitsPerDay: number; shareBps: number; reputationBps: number; priceMinor: number; mine: boolean }
-export interface Ranking { industry: string; label: string; total: number; unitsPerDay: number; rows: RankRow[] }
 /** Local rankings by 7-day average units sold. Ties break on reputation, then id, so the order is deterministic. */
 export function rankings(db: Sql): Ranking[] {
   const t = lastTick(db);
@@ -128,18 +116,6 @@ export function rankings(db: Sql): Ranking[] {
   });
 }
 
-export interface Management {
-  companyId: string; rank: { rank: number; of: number; label: string } | null;
-  diagnosis: { kind: 'good' | 'warn' | 'bad'; text: string }[];
-  staff: { employees: number; max: number; needed: number; wagePerDayMinor: number; changesLeftToday: { hire: number; dismiss: number }; changeFeeMinor: number };
-  equipment: { conditionBps: number; serviceCostMinor: number; capacityFactorBps: number; wearBpsPerDay: number };
-  production: { recipeId: string; plannedBatches: number; effectiveBatches: number; outputUnits: number; outputPerBatch: number; log: { tick: number; gameDate: string; planned: number; produced: number; limitedBy: string; outputUnits: number }[]; limitedBy: string | null };
-  supplyChain: { commodityId: string; perBatch: number; inStock: number; forSale: number; bestAskMinor: number | null; stateFallbackMinor: number | null }[];
-  advertising: { spendPerDayMinor: number; awarenessBps: number; maxAwarenessBps: number };
-  quality: { current: string; inputMultiplierBps: Record<string, number> };
-  upgrades: { id: string; name: string; description: string; kind: string; costMinor: number; effect: string; installed: boolean; blocker: string | null; affordable: boolean }[];
-  autoProcure: boolean; premisesTier: number; tierName: string; assetId: string; closed: { bankrupt: boolean; writtenOffMinor: number } | null;
-}
 
 export function management(db: Sql, companyId: string): Management | null {
   const c = db.get<CompanyRow>('SELECT * FROM companies WHERE id = ?', companyId);
@@ -204,3 +180,5 @@ export function management(db: Sql, companyId: string): Management | null {
     closed: live ? null : { bankrupt: true, writtenOffMinor: c.written_off_minor },
   };
 }
+
+export type { LotInfo, Management, Opportunity, RankRow, Ranking };

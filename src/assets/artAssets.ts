@@ -1,4 +1,5 @@
 import manifestJson from '@art/runtime/manifest.json';
+import phase2Json from '@art/phase2/manifest.json';
 
 /** Typed view of assets/art/runtime/manifest.json — the single source of truth for atlas frames. No hard-coded offsets elsewhere. */
 export interface AtlasFrame {
@@ -14,18 +15,22 @@ export interface AtlasFrame {
   productionCertified: boolean;
 }
 interface Manifest { version: number; tile: [number, number]; assets: AtlasFrame[]; missing: string[]; excluded: string[] }
-export const manifest = manifestJson as unknown as Manifest;
+const base = manifestJson as unknown as Manifest;
+/** Phase 2 adds the tier-2/3 building frames (pizza-t2 …) used by premises upgrades. Base frames always win on an id clash. */
+const phase2 = (phase2Json as unknown as Manifest).assets.filter((a) => a.usage === 'building' && !base.assets.some((b) => b.id === a.id));
+export const manifest: Manifest = { ...base, assets: [...base.assets, ...phase2] };
 export const frameById = new Map(manifest.assets.map((a) => [a.id, a]));
 export const hasFrame = (id: string) => frameById.has(id);
 
 /** Only atlas sources the manifest references are bundled; the excluded study/terrain sheets are never emitted. */
 const sourceUrls = import.meta.glob(
-  ['/assets/art/source/*.png', '!/assets/art/source/connections-study.png', '!/assets/art/source/terrain-sheet.png'],
+  ['/assets/art/source/*.png', '!/assets/art/source/connections-study.png', '!/assets/art/source/terrain-sheet.png', '/assets/art/phase2/runtime/building-atlas.png'],
   { query: '?url', import: 'default', eager: true },
 ) as Record<string, string>;
 
-const iconUrls = import.meta.glob('/assets/art/ui/*.svg', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
-export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`];
+const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+/** UI icons: the base terminal set first, then the Phase 3 economy icons, then the Phase 2 state icons. */
+export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`];
 
 export interface ArtAtlas {
   images: Map<string, HTMLImageElement>;

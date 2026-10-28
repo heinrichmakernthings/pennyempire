@@ -7,6 +7,7 @@ import { chooseDataSource } from './data/serverSource';
 import { useUi } from './state/ui';
 import './design/tokens.css';
 import './design/global.css';
+import './design/management.css';
 
 const root = createRoot(document.getElementById('root')!);
 // The server-authoritative engine is used when /api/health answers; otherwise we say so and fall back to labelled fixtures.

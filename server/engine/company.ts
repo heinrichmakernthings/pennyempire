@@ -4,6 +4,7 @@ import { runCommand, type CommandErr, type CommandResponse } from './commands';
 import { available, destroy, transfer, createAccount } from './ledger';
 import { logEvent } from './stats';
 import { procureInputs, refPriceOf, type CompanyRow } from './operations';
+import type { StartupLine, StartupQuote } from '../../src/shared/management';
 import { PLAYER_ID, PLAYER_WALLET, companyAccount } from '../seed/bristol';
 
 const err = (code: CommandErr['error']['code'], message: string, fieldErrors?: Record<string, string>): CommandErr => ({ ok: false, error: { code, message, ...(fieldErrors ? { fieldErrors } : {}) } });
@@ -20,12 +21,6 @@ export const rentFor = (db: Sql, spec: Spec, tier: Tier, district: string | null
 };
 
 export interface StartupInput { industry: string; plotId: string; tier: number; workingCapitalMinor?: number; name?: string }
-export interface StartupLine { kind: 'licence' | 'premises' | 'equipment' | 'working_capital'; label: string; amountMinor: number; paidTo: string; note: string }
-export interface StartupQuote {
-  ok: boolean; industry: string; plotId: string; tier: number; lines: StartupLine[]; totalMinor: number; walletAvailableMinor: number; shortfallMinor: number;
-  workingCapitalMinMinor: number; workingCapitalDefaultMinor: number; issues: { field: string; message: string }[];
-  running: { rentPerDayMinor: number; wagesPerDayMinor: number; staff: number; maxStaff: number; capacityBatches: number; storageUnits: number; assetId: string };
-}
 /** Staff needed to run the default production plan at full equipment condition: hiring beyond this buys no output. */
 export const defaultStaff = (spec: Spec, tier: Tier) => Math.max(1, Math.min(tier.max_employees, Math.ceil((Math.min(spec.default_batches, tier.capacity_batches) * tier.max_employees) / tier.capacity_batches)));
 /** Plots a player can build on: the numbered lots, plus the two starter-shop plots once vacated (or built on by a player company). */
@@ -189,3 +184,5 @@ export function procureNow(db: Sql, key: string, companyId: string, batches: num
   }) as CommandResponse<{ purchases: { commodity: string; qty: number; cost: number }[]; batches: number; limit: string | null }>;
 }
 
+
+export type { StartupLine, StartupQuote };

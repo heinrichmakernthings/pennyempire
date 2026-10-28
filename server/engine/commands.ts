@@ -39,7 +39,7 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
   });
 }
 
-interface OwnedCompany { bankrupt_tick: number | null; hires_in_tick: number; dismissals_in_tick: number; staff_change_tick: number; id: string; name: string; treasury_account_id: string; revision: number; status: string; owner_kind: string; owner_id: string; employees: number; max_employees: number; capacity_batches: number; min_price_minor: number; max_price_minor: number; wage_minor: number; property_minor: number; marketing_minor: number; unpaid_minor: number; storage_cap_units: number }
+interface OwnedCompany { retail_commodity_id: string | null; bankrupt_tick: number | null; hires_in_tick: number; dismissals_in_tick: number; staff_change_tick: number; id: string; name: string; treasury_account_id: string; revision: number; status: string; owner_kind: string; owner_id: string; employees: number; max_employees: number; capacity_batches: number; min_price_minor: number; max_price_minor: number; wage_minor: number; property_minor: number; marketing_minor: number; unpaid_minor: number; storage_cap_units: number }
 const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
   const c = db.get<OwnedCompany>('SELECT * FROM companies WHERE id = ?', companyId);
   if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
@@ -66,7 +66,7 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     const sameDay = c.staff_change_tick === ctx.tick;
     if (hires > 0 && (sameDay ? c.hires_in_tick : 0) + hires > cfg.staffChangesPerDay) fe.employees = `You can hire at most ${cfg.staffChangesPerDay} people per day (${sameDay ? c.hires_in_tick : 0} already today).`;
     if (fires > 0 && (sameDay ? c.dismissals_in_tick : 0) + fires > cfg.staffChangesPerDay) fe.employees = `You can dismiss at most ${cfg.staffChangesPerDay} people per day (${sameDay ? c.dismissals_in_tick : 0} already today).`;
-    if (p.askPriceMinor !== undefined && (!isInt(p.askPriceMinor) || p.askPriceMinor <= 0)) fe.askPriceMinor = 'Wholesale price must be a positive integer.';
+    if (p.askPriceMinor !== undefined && (!isInt(p.askPriceMinor) || p.askPriceMinor < c.min_price_minor || p.askPriceMinor > c.max_price_minor)) fe.askPriceMinor = 'Wholesale price is outside the allowed range.';
     if (p.marketingMinorPerTick !== undefined && !isInt(p.marketingMinorPerTick)) fe.marketingMinorPerTick = 'Marketing must be a non-negative integer.';
     if (p.quality !== undefined && !['basic', 'standard', 'premium'].includes(p.quality)) fe.quality = 'Unknown quality.';
     const lines = db.all<{ recipe_id: string; output_units: number }>('SELECT l.recipe_id, r.output_units FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ?', companyId);
@@ -89,7 +89,9 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
       add('hires_in_tick', (sameDay ? c.hires_in_tick : 0) + hires); add('dismissals_in_tick', (sameDay ? c.dismissals_in_tick : 0) + fires); add('staff_change_tick', ctx.tick);
       db.run('UPDATE companies SET pending_labour_minor = pending_labour_minor + ? WHERE id = ?', staffFee, companyId);
     }
-    if (p.askPriceMinor !== undefined) db.run('UPDATE production_lines SET ask_price_minor = ? WHERE company_id = ?', p.askPriceMinor, companyId);
+    // Wholesale companies (no retail commodity) sell at their ask price, so the "price" setting is the ask price for them.
+    const ask = p.askPriceMinor ?? (c.retail_commodity_id === null ? p.priceMinor : undefined);
+    if (ask !== undefined) db.run('UPDATE production_lines SET ask_price_minor = ? WHERE company_id = ?', ask, companyId);
     if (sets.length) db.run(`UPDATE companies SET ${sets.join(', ')} WHERE id = ?`, ...vals, companyId);
     if (batches !== undefined) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ?', batches, companyId);
     db.run('UPDATE companies SET revision = revision + 1 WHERE id = ?', companyId);

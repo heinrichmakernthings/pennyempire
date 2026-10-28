@@ -1,13 +1,14 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent as RPointerEvent } from 'react';
 import type { ArtAtlas } from '@/assets/artAssets';
 import { clampCamera, screenToWorld, stepZoom, zoomAt, type Camera, type Zoom } from './camera';
-import { createTerrainLayer, hitTest, renderScene } from './draw';
+import { createTerrainLayer, hitLot, hitTest, renderScene } from './draw';
 import type { Scene } from './scene';
 import { Icon } from '@/ui/Icon';
 
 export interface CityViewportHandle { focusCompany(id: string): void }
 interface Props {
   scene: Scene; atlas: ArtAtlas | null; selectedId: string | null; hoverCaption(id: string): { title: string; subtitle: string } | null;
+  selectedLotId?: string | null; onSelectLot?(plotId: string): void;
   onSelect(id: string | null): void; registerHandle?(h: CityViewportHandle | null): void;
 }
 const DRAG_PX = 5;
@@ -22,13 +23,14 @@ function initialCamera(scene: Scene): Camera {
  * Canvas city. Camera, hover and pointer state live in refs so panning/hovering never re-renders React;
  * only zoom level (for the controls) and the hover tooltip are React state.
  */
-export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, hoverCaption, onSelect, registerHandle }: Props) {
+export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, selectedLotId = null, onSelectLot, hoverCaption, onSelect, registerHandle }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const cam = useRef<Camera>(initialCamera(scene));
   const size = useRef({ w: 0, h: 0, dpr: 1 });
   const hover = useRef<string | null>(null);
   const selected = useRef<string | null>(selectedId);
+  const selectedLot = useRef<string | null>(selectedLotId);
   const raf = useRef(0);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const drag = useRef<{ sx: number; sy: number; cx: number; cy: number; moved: boolean } | null>(null);
@@ -41,12 +43,12 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
     raf.current = 0;
     const c = canvas.current; const ctx = c?.getContext('2d');
     if (!c || !ctx || size.current.w === 0) return;
-    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current });
+    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current, selectedLotId: selectedLot.current });
   }, [scene, atlas, terrain]);
   const invalidate = useCallback(() => { if (!raf.current) raf.current = requestAnimationFrame(draw); }, [draw]);
   useEffect(() => () => { cancelAnimationFrame(raf.current); raf.current = 0; }, []);
 
-  useEffect(() => { selected.current = selectedId; invalidate(); }, [selectedId, invalidate]);
+  useEffect(() => { selected.current = selectedId; selectedLot.current = selectedLotId; invalidate(); }, [selectedId, selectedLotId, invalidate]);
 
   // resize → backing store follows CSS size × DPR; world geometry is unaffected
   useEffect(() => {
@@ -80,7 +82,7 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
   const pick = (e: { clientX: number; clientY: number }) => {
     const r = wrap.current!.getBoundingClientRect(); const sx = e.clientX - r.left, sy = e.clientY - r.top;
     const [wx, wy] = screenToWorld(cam.current, size.current.w, size.current.h, sx, sy);
-    return { sx, sy, hit: hitTest(scene, atlas, wx, wy) };
+    return { sx, sy, hit: hitTest(scene, atlas, wx, wy), lot: hitLot(scene, wx, wy) };
   };
 
   const onPointerDown = (e: RPointerEvent) => {
@@ -111,7 +113,7 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
   const onPointerUp = (e: RPointerEvent) => {
     const d = drag.current; pointers.current.delete(e.pointerId); if (pointers.current.size < 2) pinch.current = null;
     drag.current = null;
-    if (d && !d.moved && e.type === 'pointerup') { const { hit } = pick(e); onSelect(hit?.selectable ? hit.companyId : null); }
+    if (d && !d.moved && e.type === 'pointerup') { const { hit, lot } = pick(e); if (!hit && lot && onSelectLot) onSelectLot(lot.plotId); else onSelect(hit?.selectable ? hit.companyId : null); }
   };
   const onPointerLeave = () => { if (hover.current) { hover.current = null; invalidate(); } setTip(null); };
 

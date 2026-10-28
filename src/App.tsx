@@ -11,6 +11,8 @@ const Stocks = lazy(() => import('./screens/StocksScreen').then((m) => ({ defaul
 const Portfolio = lazy(() => import('./screens/PortfolioScreen').then((m) => ({ default: m.PortfolioScreen })));
 const Prestige = lazy(() => import('./screens/PrestigeScreen').then((m) => ({ default: m.PrestigeScreen })));
 const DevEconomy = lazy(() => import('./screens/DevEconomyScreen').then((m) => ({ default: m.DevEconomyScreen })));
+const Opportunities = lazy(() => import('./screens/OpportunitiesScreen').then((m) => ({ default: m.OpportunitiesScreen })));
+const StartCompany = lazy(() => import('./screens/StartCompanyScreen').then((m) => ({ default: m.StartCompanyScreen })));
 const Wallet = lazy(() => import('./screens/WalletScreen').then((m) => ({ default: m.WalletScreen })));
 
 export function App() {
@@ -19,6 +21,8 @@ export function App() {
       <Route element={<AppShell />}>
         <Route index element={<Navigate to="/city" replace />} />
         <Route path="/city" element={<CityScreen />} />
+        <Route path="/opportunities" element={<Opportunities />} />
+        <Route path="/start" element={<StartCompany />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/commodities" element={<Commodities />} />
         <Route path="/stocks" element={<Stocks />} />
