@@ -1,0 +1,137 @@
+[
+  {
+    "device": "desktop",
+    "name": "company-overview",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "company-operations",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "company-inventory",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "company-growth",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "upgrade-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "company-ownership",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "create-opportunity",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "create-premises",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "create-budget",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "create-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "first-production",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "marketplace",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "trade-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "supplier-contract",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "supply-chain",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "component-states",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "consoleErrors": [],
+    "flows": "settings save, 4-step creation, first setup, quote/confirm, partial remainder cancellation, contract dialog"
+  },
+  {
+    "device": "mobile",
+    "name": "company-overview",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "company-operations",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "create-opportunity",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "create-premises",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "create-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "marketplace",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "trade-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "supplier-contract",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "supply-chain",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "consoleErrors": [],
+    "flows": "settings save, 4-step creation, first setup, quote/confirm, partial remainder cancellation, contract dialog"
+  }
+]
