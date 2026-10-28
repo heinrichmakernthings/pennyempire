@@ -11,7 +11,8 @@ const port = Number(process.env.PORT ?? 8787);
 const devEndpoints = process.env.ENABLE_DEV_ENDPOINTS !== 'false';
 const tickMs = process.env.PENNY_TICK_MS ? Number(process.env.PENNY_TICK_MS) : undefined;
 if (dbPath !== ':memory:') mkdirSync(dirname(dbPath), { recursive: true });
-const db = openWorld(dbPath, tickMs ? { realMsPerTick: tickMs } : {});
+// New-game profile by default (player starts with coins and no company); PENNY_PROFILE=demo keeps the two demo shops.
+const db = openWorld(dbPath, tickMs ? { realMsPerTick: tickMs } : {}, process.env.PENNY_PROFILE === 'demo' ? 'demo' : 'new');
 
 const first = advanceToNow(db, Date.now());
 console.log(`[engine] db=${dbPath} tick=${first.lastTick} (replayed ${first.ran}, skipped ${first.skipped})`);

@@ -18,7 +18,7 @@ export class EconomyDO extends DurableObject<Env> {
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
     this.db = durableObjectSql(ctx.storage as unknown as DoStorage);
-    ctx.blockConcurrencyWhile(async () => { migrate(this.db); seedBristol(this.db); await this.schedule(); });
+    ctx.blockConcurrencyWhile(async () => { migrate(this.db); seedBristol(this.db, {}, 'new'); await this.schedule(); });
   }
   private async schedule() { await this.ctx.storage.setAlarm(Math.max(Date.now() + 1_000, nextTickAtMs(this.db))); }
   async alarm() { advanceToNow(this.db, Date.now()); await this.schedule(); }

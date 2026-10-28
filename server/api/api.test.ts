@@ -93,7 +93,7 @@ describe('developer endpoints', () => {
     expect(d.tick).toBe(20); expect(d.reconciliation.ok).toBe(true);
     expect(d.money.issued - d.money.destroyed).toBe(d.money.circulating);
     expect(d.money.households + d.money.stateTreasury + d.money.stateEnterprises + d.money.companies + d.money.players).toBe(d.money.circulating);
-    expect(d.companies.count).toBe(12); expect(d.ticks).toHaveLength(21 > 30 ? 30 : 21); expect(d.demand.length).toBe(3);
+    expect(d.companies.count).toBe(13); expect(d.ticks).toHaveLength(21 > 30 ? 30 : 21); expect(d.demand.length).toBe(3);
     expect(d.flows.issuedByReason.map((r: { reason: string }) => r.reason)).toEqual(expect.arrayContaining(['genesis grants', 'NPC citizen income grant']));
     expect(d.flows.destroyedByKind.length).toBeGreaterThan(0);
   });

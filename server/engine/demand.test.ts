@@ -1,7 +1,7 @@
 // @vitest-environment node
 import { allocateDemand, powBps, score, type Seller } from './demand';
 
-const s = (id: string, price: number, over: Partial<Seller> = {}): Seller => ({ id, price, stock: 1_000, quality: 'standard', reputationBps: 5_000, marketingMinor: 0, ...over });
+const s = (id: string, price: number, over: Partial<Seller> = {}): Seller => ({ id, price, stock: 1_000, quality: 'standard', reputationBps: 5_000, awarenessBps: 0, ...over });
 
 describe('consumer demand allocation', () => {
   it('never spends more than the budget and sells whole units', () => {
@@ -21,12 +21,12 @@ describe('consumer demand allocation', () => {
     const r = allocateDemand(100_000, 1_000, 2, [s('cheap', 800), s('dear', 1_250)]);
     expect(r.allocations[0]!.units).toBeGreaterThan(r.allocations[1]!.units * 2);
   });
-  it('quality, reputation and marketing each raise a seller’s share', () => {
+  it('quality, reputation and advertising awareness each raise a seller’s share', () => {
     const base = score(s('x', 1_000), 1_000, 2);
     expect(score(s('x', 1_000, { quality: 'premium' }), 1_000, 2)).toBeGreaterThan(base);
     expect(score(s('x', 1_000, { quality: 'basic' }), 1_000, 2)).toBeLessThan(base);
     expect(score(s('x', 1_000, { reputationBps: 9_000 }), 1_000, 2)).toBeGreaterThan(base);
-    expect(score(s('x', 1_000, { marketingMinor: 5_000 }), 1_000, 2)).toBeGreaterThan(base);
+    expect(score(s('x', 1_000, { awarenessBps: 2_000 }), 1_000, 2)).toBeGreaterThan(base);
   });
   it('high prices shrink total demand; very low prices lift it only up to the cap', () => {
     const at = (p: number) => allocateDemand(100_000, 1_000, 2, [s('a', p)]).unitsWanted;

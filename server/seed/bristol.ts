@@ -1,5 +1,6 @@
 import type { Sql } from '../db/sql';
-import { DEFAULT_CONFIG, gameDate, saveConfig, validateConfig, type EngineConfig } from '../engine/config';
+import { DEFAULT_CONFIG, gameDate, loadConfig, saveConfig, validateConfig, type EngineConfig } from '../engine/config';
+import { applySeedPatches } from './patches';
 import { addStock } from '../engine/inventory';
 import { BURN, ISSUANCE, createAccount, issue, type TickCtx } from '../engine/ledger';
 import { MAP_BLOCKS, mapTiles } from '../../src/shared/bristolMap';
@@ -68,8 +69,18 @@ const DEMAND_RULES = [
 ] as const;
 
 /** Creates the whole fictional Bristol economy. Idempotent: does nothing if this database is already seeded. */
-export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}): { seeded: boolean; issuedMinor: number } {
-  if (db.get("SELECT 1 FROM meta WHERE key = 'seed_version'")) return { seeded: false, issuedMinor: 0 };
+export type StartingProfile = 'demo' | 'new';
+/**
+ * Creates the fictional Bristol economy. `demo` (default; used by tests) gives the player two running companies. `new` is the real new-game start:
+ * the player owns no company and holds 20,000 EC; the two shops become NPC-owned competitors.
+ */
+export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}, profile: StartingProfile = 'demo'): { seeded: boolean; issuedMinor: number } {
+  if (db.get("SELECT 1 FROM meta WHERE key = 'seed_version'")) {
+    // Existing world: bring it up to the current data patches (idempotent, each runs once).
+    const lastTick = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
+    const extra = applySeedPatches(db, { tick: lastTick, gameDate: gameDate(loadConfig(db), lastTick), actor: 'seed-patch' });
+    return { seeded: false, issuedMinor: extra };
+  }
   const cfg: EngineConfig = { ...DEFAULT_CONFIG, ...overrides };
   const errs = validateConfig(cfg); if (errs.length) throw new Error(`Invalid config: ${errs.join('; ')}`);
   return db.transaction(() => {
@@ -90,7 +101,7 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}): { s
     }
     db.run('INSERT INTO cities (id, name, population, households_account_id, treasury_account_id) VALUES (?,?,?,?,?)', CITY_ID, 'Bristol', 50_000, HOUSEHOLDS, TREASURY);
     for (const [id, name, idx] of DISTRICTS) db.run('INSERT INTO districts (id, city_id, name, property_index_bps) VALUES (?,?,?,?)', id, CITY_ID, name, idx);
-    const ownerNames: Record<string, string> = { [PLAYER_ID]: 'You (demo trader)', 'npc-clifton-slice': 'Clifton Slice Ltd', 'npc-bean-there': 'Bean There Coffee Co', 'npc-severn': 'Severn Valley Growers', 'npc-brunel': 'Brunel Milling Ltd', 'npc-clifton': 'Clifton Creamery Co-op', 'npc-avon': 'Avon Timber & Joinery', 'state-bristol': 'Bristol City (state)' };
+    const ownerNames: Record<string, string> = { [PLAYER_ID]: 'You (demo trader)', 'npc-clifton-slice': 'Clifton Slice Ltd', 'npc-bean-there': 'Bean There Coffee Co', 'npc-severn': 'Severn Valley Growers', 'npc-mad-slices': 'Mad Slices Ltd', 'npc-harbour-bean': 'Harbour Bean Ltd', 'npc-brunel': 'Brunel Milling Ltd', 'npc-clifton': 'Clifton Creamery Co-op', 'npc-avon': 'Avon Timber & Joinery', 'state-bristol': 'Bristol City (state)' };
     for (const c of COMPANIES) if (!db.get('SELECT 1 FROM owners WHERE id = ?', c.owner[1])) db.run('INSERT INTO owners (id, kind, name) VALUES (?,?,?)', c.owner[1], c.owner[0], ownerNames[c.owner[1]] ?? c.owner[1]);
     db.run('INSERT INTO players (id, display_name, city_id, wallet_account_id) VALUES (?,?,?,?)', PLAYER_ID, 'Demo Trader', CITY_ID, PLAYER_WALLET);
 
@@ -100,9 +111,10 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}): { s
     // Opening money: every coin is a recorded issuance with a reason.
     grant('households', HOUSEHOLDS, 6_000, 'opening NPC household savings');
     grant('treasury', TREASURY, 20_000, 'opening state treasury');
-    grant('player', PLAYER_WALLET, 15_000, 'demo player starting capital');
+    grant('player', PLAYER_WALLET, profile === 'new' ? 20_000 : 15_000, profile === 'new' ? 'new player starting capital' : 'demo player starting capital');
 
-    for (const c of COMPANIES) {
+    for (const company of COMPANIES) {
+      const c: CoSeed = profile === 'new' && company.owner[0] === 'player' ? { ...company, owner: ['npc', company.id === 'co-mad-slices' ? 'npc-mad-slices' : 'npc-harbour-bean'] } : company;
       const acct = companyAccount(c.id);
       createAccount(db, acct, 'company', `${c.name} treasury`);
       const dist = DISTRICTS.find((d) => d[0] === c.district)!;
@@ -121,6 +133,7 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}): { s
     }
     for (const r of DEMAND_RULES) db.run('INSERT INTO demand_rules (id, city_id, commodity_id, label, funder_account_id, mode, amount, payment_kind, goods_reason, price_sensitivity) VALUES (?,?,?,?,?,?,?,?,?,?)', r.id, CITY_ID, r.commodity, r.label, r.funder, r.mode, r.amount, r.payment, r.goods, r.sens);
 
+    issued += applySeedPatches(db, ctx);
     if (cfg.supplyTargetMinor === 0) saveConfig(db, { ...cfg, supplyTargetMinor: issued });  // default target = genesis supply
     db.run("INSERT INTO meta (key, value) VALUES ('seed_version', ?)", String(SEED_VERSION));
     db.run('INSERT INTO ticks (tick, status, game_date, started_at, finished_at, duration_ms, summary_json) VALUES (0, ?, ?, ?, ?, 0, ?)', 'complete', ctx.gameDate, 'seed', 'seed', JSON.stringify({ seed: true, issued_minor: issued }));

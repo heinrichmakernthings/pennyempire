@@ -2,7 +2,7 @@
  * Consumer allocation, integer arithmetic only. Given a funded budget and the sellers able to serve it, decides how many
  * units each seller sells. Reproducible: same inputs → same outputs (ties broken by input order, which the tick rotates fairly).
  */
-export interface Seller { id: string; price: number; stock: number; quality: 'basic' | 'standard' | 'premium'; reputationBps: number; marketingMinor: number }
+export interface Seller { id: string; price: number; stock: number; quality: 'basic' | 'standard' | 'premium'; reputationBps: number; awarenessBps: number }
 export interface Allocation { id: string; units: number; spend: number; share: number }
 export interface DemandResult { allocations: Allocation[]; unitsWanted: number; unitsSold: number; unmetUnits: number; spend: number; weightedAvgPrice: number }
 
@@ -11,15 +11,14 @@ export const MAX_DEMAND_FACTOR_BPS = 12_500; // cheap prices can lift volume by 
 
 export const powBps = (ratioBps: number, n: number) => { let r = 10_000; for (let i = 0; i < n; i++) r = Math.floor((r * ratioBps) / 10_000); return r; };
 
-/** Attractiveness: (ref/price)² × quality × reputation × marketing. All integer, each step bounded < 2^53. */
+/** Attractiveness: (ref/price)² × quality × reputation × advertising awareness. All integer, each step bounded < 2^53. */
 export function score(s: Seller, refPrice: number, priceSensitivity: number): number {
   const ratioPpm = Math.floor((refPrice * 1_000_000) / s.price);
   let w = ratioPpm;
   for (let i = 1; i < priceSensitivity; i++) w = Math.floor((w * ratioPpm) / 1_000_000);
   w = Math.floor((w * QUALITY_BPS[s.quality]) / 10_000);
   w = Math.floor((w * (5_000 + s.reputationBps)) / 10_000);
-  const marketingBps = 10_000 + Math.min(4_000, Math.floor((s.marketingMinor * 3) / 10));
-  return Math.max(1, Math.floor((w * marketingBps) / 10_000));
+  return Math.max(1, Math.floor((w * (10_000 + s.awarenessBps)) / 10_000));    // awareness (0..4000 bps) is earned by sustained advertising, see tick.ts
 }
 
 export function allocateDemand(budget: number, refPrice: number, sensitivity: number, sellers: Seller[]): DemandResult {
