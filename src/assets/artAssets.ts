@@ -1,0 +1,81 @@
+import manifestJson from '@art/runtime/manifest.json';
+
+/** Typed view of assets/art/runtime/manifest.json — the single source of truth for atlas frames. No hard-coded offsets elsewhere. */
+export interface AtlasFrame {
+  id: string;
+  source: string;
+  sourceSize: [number, number];
+  frame: [number, number, number, number];
+  logicalSize: [number, number];
+  pivot: [number, number];
+  footprint: [number, number];
+  usage: 'building' | 'prop' | 'inventory' | 'actor';
+  status: string;
+  productionCertified: boolean;
+}
+interface Manifest { version: number; tile: [number, number]; assets: AtlasFrame[]; missing: string[]; excluded: string[] }
+export const manifest = manifestJson as unknown as Manifest;
+export const frameById = new Map(manifest.assets.map((a) => [a.id, a]));
+export const hasFrame = (id: string) => frameById.has(id);
+
+/** Only atlas sources the manifest references are bundled; the excluded study/terrain sheets are never emitted. */
+const sourceUrls = import.meta.glob(
+  ['/assets/art/source/*.png', '!/assets/art/source/connections-study.png', '!/assets/art/source/terrain-sheet.png'],
+  { query: '?url', import: 'default', eager: true },
+) as Record<string, string>;
+
+const iconUrls = import.meta.glob('/assets/art/ui/*.svg', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`];
+
+export interface ArtAtlas {
+  images: Map<string, HTMLImageElement>;
+  /** Source files that failed to load; frames from them render as a visible placeholder instead of crashing. */
+  failedSources: string[];
+  alpha(id: string): { data: Uint8ClampedArray; width: number; height: number } | null;
+}
+
+function loadImage(url: string): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.onload = () => resolve(img);
+    img.onerror = () => reject(new Error(`Failed to load ${url}`));
+    img.src = url;
+  });
+}
+
+export async function loadArtAtlas(frameIds?: string[]): Promise<ArtAtlas> {
+  const wanted = frameIds ? manifest.assets.filter((a) => frameIds.includes(a.id)) : manifest.assets;
+  const sources = [...new Set(wanted.map((a) => a.source))];
+  const images = new Map<string, HTMLImageElement>();
+  const failedSources: string[] = [];
+  await Promise.all(sources.map(async (src) => {
+    const url = sourceUrls[`/${src}`];
+    try {
+      if (!url) throw new Error('not bundled');
+      images.set(src, await loadImage(url));
+    } catch { failedSources.push(src); }
+  }));
+  const alphaCache = new Map<string, { data: Uint8ClampedArray; width: number; height: number } | null>();
+  return {
+    images, failedSources,
+    alpha(id) {
+      if (alphaCache.has(id)) return alphaCache.get(id) ?? null;
+      const f = frameById.get(id); const img = f && images.get(f.source);
+      let result: { data: Uint8ClampedArray; width: number; height: number } | null = null;
+      if (f && img && typeof document !== 'undefined') {
+        try {
+          const [w, h] = f.logicalSize;
+          const c = document.createElement('canvas'); c.width = w; c.height = h;
+          const ctx = c.getContext('2d', { willReadFrequently: true });
+          if (ctx) {
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(img, f.frame[0], f.frame[1], f.frame[2], f.frame[3], 0, 0, w, h);
+            result = { data: ctx.getImageData(0, 0, w, h).data, width: w, height: h };
+          }
+        } catch { result = null; }
+      }
+      alphaCache.set(id, result);
+      return result;
+    },
+  };
+}
