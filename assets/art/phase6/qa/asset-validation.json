@@ -1,0 +1,600 @@
+{
+  "checked": 27,
+  "passed": true,
+  "assets": [
+    {
+      "id": "london-commercial",
+      "dimensions": [
+        224,
+        265
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        23,
+        0,
+        178,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "london-office",
+      "dimensions": [
+        224,
+        285
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        7,
+        0,
+        209,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "lisbon-tiled-shop",
+      "dimensions": [
+        224,
+        265
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        23,
+        0,
+        178,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "lisbon-waterfront-store",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        5,
+        0,
+        277,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "lisbon-retaining-wall",
+      "dimensions": [
+        64,
+        49
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        2,
+        0,
+        59,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "mexico-city-shop",
+      "dimensions": [
+        224,
+        265
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        15,
+        0,
+        194,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "mexico-city-market-stall",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        2,
+        64,
+        79
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "mexico-city-workshop",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        2,
+        288,
+        281
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "freight-container",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "customs-office",
+      "dimensions": [
+        224,
+        194
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        5,
+        0,
+        214,
+        194
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "air-freight-terminal",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        47,
+        288,
+        236
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "boarded-window-panel",
+      "dimensions": [
+        64,
+        49
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        18,
+        0,
+        28,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "empty-stock-rack",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        1,
+        0,
+        62,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "maintenance-crate",
+      "dimensions": [
+        32,
+        39
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        7,
+        32,
+        32
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "warehouse-module",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        13,
+        0,
+        262,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": "warehouse-module"
+    },
+    {
+      "id": "terrace-module",
+      "dimensions": [
+        224,
+        234
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        14,
+        0,
+        196,
+        234
+      ],
+      "pivot": [
+        112,
+        234
+      ],
+      "reusedFrom": "terrace-module"
+    },
+    {
+      "id": "shop-module",
+      "dimensions": [
+        224,
+        265
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        12,
+        0,
+        199,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "reusedFrom": "shop-module"
+    },
+    {
+      "id": "lorry-sw",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": "lorry-sw"
+    },
+    {
+      "id": "lorry-se",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        16,
+        0,
+        95,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": "lorry-se"
+    },
+    {
+      "id": "lorry-ne",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        10,
+        0,
+        107,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": "lorry-ne"
+    },
+    {
+      "id": "lorry-nw",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": "lorry-nw"
+    },
+    {
+      "id": "forklift-sw",
+      "dimensions": [
+        68,
+        62
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        0,
+        67,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reusedFrom": "forklift-sw"
+    },
+    {
+      "id": "penny-logistics",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        28,
+        288,
+        255
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": "penny-logistics"
+    },
+    {
+      "id": "customer-sw",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reusedFrom": "customer-sw"
+    },
+    {
+      "id": "construction-worker-sw",
+      "dimensions": [
+        24,
+        40
+      ],
+      "alphaRange": [
+        0,
+        253
+      ],
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reusedFrom": "construction-worker-sw"
+    },
+    {
+      "id": "crane",
+      "dimensions": [
+        96,
+        146
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        0,
+        96,
+        146
+      ],
+      "pivot": [
+        48,
+        146
+      ],
+      "reusedFrom": "crane"
+    },
+    {
+      "id": "crates",
+      "dimensions": [
+        32,
+        39
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reusedFrom": "crates"
+    }
+  ]
+}
