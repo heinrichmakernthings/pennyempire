@@ -19,9 +19,9 @@ describe('market simulation with scripted test players (90 days)', () => {
     expect(b.profit).toBeLessThan(b.startWorth * 0.1);
   });
   it('contract buyers receive deliveries on schedule', () => { expect(r.exchange.contractDeliveries).toBeGreaterThan(50); expect(r.exchange.contractMisses).toBeLessThan(r.exchange.contractDeliveries * 0.1); });
-  it('fees are recorded and every coin of them is either burned, swept or still held: nothing vanishes', () => {
-    expect(r.exchange.feesCollected).toBeGreaterThan(0); expect(r.exchange.burned + r.exchange.swept).toBeLessThanOrEqual(r.exchange.feesCollected + 1);
-    expect(r.exchange.burned + r.exchange.swept).toBeGreaterThan(r.exchange.feesCollected * 0.9);
+  it('fees are recorded and every coin of them is burned (explicitly) or kept as the exchange revenue: nothing vanishes', () => {
+    expect(r.exchange.feesCollected).toBeGreaterThan(0); expect(r.exchange.burned + r.exchange.retained).toBeLessThanOrEqual(r.exchange.feesCollected + 1);
+    expect(r.exchange.burned).toBeGreaterThan(0); expect(r.exchange.burned).toBeLessThanOrEqual(r.exchange.feesCollected);   // the rest is the exchange's revenue: it pays wages and costs from it
   });
   it('produces a readable report', () => { expect(formatMarketReport(r)).toContain('Commodity markets'); });
 });

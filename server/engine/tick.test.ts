@@ -9,7 +9,7 @@ import { PLAYER_ID, companyAccount, seedBristol } from '../seed/bristol';
 describe('seeding', () => {
   it('creates the Bristol economy with every opening coin recorded as a labelled issuance', () => {
     const db = memWorld();
-    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM companies').n).toBe(13);
+    expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM companies').n).toBe(16);
     const s = supply(db);
     expect(s.issued).toBe(s.circulating); expect(s.destroyed).toBe(0);
     expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM ledger_transactions WHERE kind = 'issuance' AND idempotency_key LIKE 'seed:%'").n).toBeGreaterThan(10);

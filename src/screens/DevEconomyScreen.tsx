@@ -115,7 +115,7 @@ function ExchangeSection({ x }: { x: EconomyDashboard['exchange'] }) {
         <div><dt>Fee income held (now)</dt><dd>{ec(x.fees.balance)}</dd></div>
         <div><dt>Fees collected (7d)</dt><dd>{ec(x.fees.collected7d)}</dd></div>
         <div><dt>Fees burned (total)</dt><dd>{ec(x.fees.burnedTotal)}</dd></div>
-        <div><dt>Fees swept to treasury (total)</dt><dd>{ec(x.fees.sweptTotal)}</dd></div>
+        <div><dt>Fees swept to treasury (none: retained as exchange revenue)</dt><dd>{ec(x.fees.sweptTotal)}</dd></div>
         <div><dt>Trades / value (7d)</dt><dd>{x.trades.count7d} · {ec(x.trades.value7d)}</dd></div>
         <div><dt>Open orders (buy / sell)</dt><dd>{x.orders.open} ({x.orders.openBuy} / {x.orders.openSell})</dd></div>
         <div><dt>Reserved funds / units</dt><dd>{ec(x.orders.reservedFunds)} / {x.orders.reservedUnits}</dd></div>

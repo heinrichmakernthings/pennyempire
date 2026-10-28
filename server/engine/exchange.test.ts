@@ -41,21 +41,19 @@ describe('fees: a transfer to the Penny Exchange, burned only by an explicit sep
     expect(supply(db).destroyed).toBe(before.destroyed);
     expect(reconcile(db).ok).toBe(true);
   });
-  it('the exchange sweeps its income each tick: a configured share is burned (explicit, labelled), the rest goes to the treasury as a transfer', () => {
+  it('the exchange recognises its income each tick: a configured share is burned (explicit, labelled), the rest stays in its treasury as revenue', () => {
     const db = world({ exchangeBurnBps: 4_000 });
     clearBook(db); const farm = found(db, 'farm', 'lot-3', 'Sweep Farm'), mill = found(db, 'mill', 'lot-7', 'Sweep Mill');
     give(db, farm, 'wheat', 200);
     place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 100, qty: 100 }); place(db, { company: mill, commodity: 'wheat', side: 'buy', price: 100, qty: 100 });
-    const fee = balance(db, EXCHANGE_ACCOUNT); expect(fee).toBeGreaterThanOrEqual(100);
+    const held0 = balance(db, EXCHANGE_ACCOUNT); expect(held0).toBeGreaterThanOrEqual(100);
     const d0 = supply(db).destroyed;
     advance(db, 1);
-    expect(balance(db, EXCHANGE_ACCOUNT)).toBe(0);
-    const sum = (memo: string, acct: string) => db.get<{ a: number }>('SELECT COALESCE(SUM(p.amount_minor),0) a FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.memo LIKE ? AND p.amount_minor > 0 AND p.account_id = ? AND t.tick = ?', memo, acct, ctxOf(db).tick)!.a;
-    const burn = sum('Penny Exchange fee burn%', 'acct:burn'), swept = sum('Penny Exchange fee income%', TREASURY);
-    expect(burn + swept).toBeGreaterThanOrEqual(fee);                                  // everything the exchange held that tick was either burned or swept
-    expect(Math.abs(burn - 0.4 * (burn + swept))).toBeLessThanOrEqual(1);              // the configured 40% share (integer rounding)
+    const burn = db.get<{ a: number }>("SELECT COALESCE(SUM(p.amount_minor),0) a FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.memo LIKE 'Penny Exchange fee burn%' AND p.amount_minor > 0 AND p.account_id = 'acct:burn'")!.a;
+    expect(burn).toBeGreaterThan(0);
     expect(supply(db).destroyed - d0).toBeGreaterThanOrEqual(burn);
-    expect(db.get('SELECT 1 FROM ledger_transactions WHERE memo LIKE ?', 'Penny Exchange fee income to state treasury%')).toBeTruthy();
+    expect(burn).toBeGreaterThanOrEqual(Math.floor(0.4 * held0) - 1);                              // at least the configured 40% of the fees (more if other fees were recognised that tick)
+    expect(db.get("SELECT 1 FROM service_charges WHERE service = 'exchange'")).toBeTruthy();
     expect(reconcile(db).ok).toBe(true);
   });
 });

@@ -4,6 +4,7 @@ import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
 import { ownerInvestor, registerCapital } from '../engine/capital';
+import { ensureStateCompanies } from '../engine/stateCompanies';
 import { LISTED_AT_OPENING, seedNpcInvestors } from '../engine/securitiesTick';
 import { createProfile, type Strategy } from '../engine/npc';
 import { CITY_ID, EXCHANGE_ACCOUNT, companyAccount } from './bristol';
@@ -111,7 +112,10 @@ const securitiesV1: Patch = {
   },
 };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1];
+/** Six state enterprises, the central bank and the lease register (Prompt 8). */
+const stateEconomyV1: Patch = { id: 'state-economy-v1', run(db, ctx) { return ensureStateCompanies(db, ctx, loadConfig(db)); } };
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {
