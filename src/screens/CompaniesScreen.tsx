@@ -77,7 +77,7 @@ function CompanyDetail({ id, tab, onTab, recipes, illustrative }: { id: string; 
       {m?.closed && <p className="pe-callout" role="status">This company was liquidated by the state administrator: stock sold at a discount, arrears paid first, {formatMoney({ currency: 'EC', minor: m.closed.writtenOffMinor })} written off, any cash left returned to you. History is kept; the plot is free again.</p>}
       <Tabs label="Company views" value={active} onChange={onTab} tabs={tabs}>
         {active === 'overview' && <CompanyOverview company={c} recipe={recipe} management={m} />}
-        {active === 'operations' && m && <OperationsTab company={c} m={m} canAct={canAct} />}
+        {active === 'operations' && m && <OperationsTab company={c} m={m} canAct={canAct} onChanged={mq.reload} />}
         {active === 'controls' && <><OperationsForm company={c} recipe={recipe} management={m} />{m && canAct && <CashPanel company={c} />}</>}
         {active === 'upgrades' && m && <UpgradesPanel c={c} m={m} canAct={canAct} />}
         {active === 'financials' && <CompanyFinancials company={c} asOf={entry.loaded.envelope.asOf} />}
@@ -86,11 +86,11 @@ function CompanyDetail({ id, tab, onTab, recipes, illustrative }: { id: string; 
   );
 }
 
-function OperationsTab({ company: c, m, canAct }: { company: Company; m: Management; canAct: boolean }) {
+function OperationsTab({ company: c, m, canAct, onChanged }: { company: Company; m: Management; canAct: boolean; onChanged: () => void }) {
   return (
     <div className="pe-stack">
       <h3 className="pe-h3">Production</h3><ProductionPanel c={c} m={m} />
-      <h3 className="pe-h3">Ingredients and suppliers</h3><SupplyChainPanel c={c} m={m} canAct={canAct} />
+      <h3 className="pe-h3">Ingredients and suppliers</h3><SupplyChainPanel c={c} m={m} canAct={canAct} onChanged={onChanged} />
       <h3 className="pe-h3">Staff</h3><StaffPanel m={m} />
       <h3 className="pe-h3">Equipment</h3><EquipmentPanel c={c} m={m} canAct={canAct} />
       <h3 className="pe-h3">Advertising <Tip>Spending on advertising builds awareness, which lifts your share of customers. Returns diminish: the first coins help most, and awareness fades 5% a day.</Tip></h3>

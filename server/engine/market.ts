@@ -1,10 +1,10 @@
 import type { Sql } from '../db/sql';
-import { addStock, freeStock, releaseStock, removeStock, reserveStock } from './inventory';
+import { addStock, freeStock, releaseStock, removeStock, reserveStock, stock } from './inventory';
 import { LedgerError, available, releaseFunds, reserveFunds, transfer, type TickCtx } from './ledger';
 import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
 
-export interface OrderRow { id: number; company_id: string; commodity_id: string; side: 'buy' | 'sell'; price_minor: number; qty_original: number; qty_remaining: number; reserved_funds_minor: number; status: 'open' | 'filled' | 'cancelled'; created_tick: number; kind: 'limit' | 'market'; expires_tick: number | null; end_reason: 'cancelled' | 'expired' | 'unfilled_remainder' | null; city_id: string }
+export interface OrderRow { id: number; company_id: string; commodity_id: string; side: 'buy' | 'sell'; price_minor: number; qty_original: number; qty_remaining: number; reserved_funds_minor: number; status: 'open' | 'filled' | 'cancelled'; created_tick: number; kind: 'limit' | 'market' | 'direct'; only_company_id: string | null; expires_tick: number | null; end_reason: 'cancelled' | 'expired' | 'unfilled_remainder' | null; city_id: string }
 export type MarketErrorCode = 'INVALID_ORDER' | 'INSUFFICIENT_FUNDS' | 'INSUFFICIENT_STOCK' | 'NOT_FOUND' | 'FORBIDDEN' | 'NOT_OPEN';
 export class MarketError extends Error { constructor(public readonly code: MarketErrorCode, message: string) { super(message); this.name = 'MarketError'; } }
 
@@ -21,7 +21,8 @@ export interface PlaceOrder {
   company: string; commodity: string; side: 'buy' | 'sell'; price: number; qty: number;
   /** immediate-or-cancel: whatever cannot fill now is cancelled */ ioc?: boolean; key?: string | null;
   /** 'market' orders ignore `price`: the limit is derived from the best opposite price ± slippage, and the order is always immediate-or-cancel. */
-  kind?: 'limit' | 'market'; slippageBps?: number;
+  kind?: 'limit' | 'market' | 'direct'; slippageBps?: number;
+  /** direct purchase: trade only against this supplier's listings, at or below `price`; whatever is not filled is cancelled */ onlyFrom?: string;
   /** the order stops being matchable at the start of this tick and is then cancelled with its reservation released */ expiresTick?: number | null;
   cityId?: string;
 }
@@ -61,6 +62,7 @@ export function placeOrder(db: Sql, ctx: TickCtx, feeBps: number, o: PlaceOrder,
     }
     const kind = o.kind ?? 'limit';
     let price = o.price;
+    if (kind === 'direct' && (o.side !== 'buy' || !o.onlyFrom || o.onlyFrom === o.company)) throw new MarketError('INVALID_ORDER', 'A direct purchase needs a buy side and a different supplier');
     if (kind === 'market') {
       const lim = marketLimit(db, o.commodity, o.side, o.company, ctx.tick, o.slippageBps ?? 500);
       if (lim === null) throw new MarketError('INVALID_ORDER', `Nobody is ${o.side === 'buy' ? 'selling' : 'buying'} ${o.commodity} right now, so a market order has nothing to protect you against. Place a limit order instead.`);
@@ -70,6 +72,12 @@ export function placeOrder(db: Sql, ctx: TickCtx, feeBps: number, o: PlaceOrder,
     if (o.expiresTick !== undefined && o.expiresTick !== null && (!Number.isSafeInteger(o.expiresTick) || o.expiresTick <= ctx.tick)) throw new MarketError('INVALID_ORDER', 'An order must expire in the future');
     if (!db.get('SELECT 1 FROM commodities WHERE id = ?', o.commodity)) throw new MarketError('INVALID_ORDER', `Unknown commodity ${o.commodity}`);
     const acct = treasuryOf(db, o.company);
+    // A company's automatic daily listing (key 'sys:…') reserves all its free stock at its standard asking price. A deliberate order outranks it:
+    // the automatic listing is withdrawn so the stock can back the new order, and is simply re-posted for whatever is left at the next tick.
+    if (o.side === 'sell' && !(o.key ?? '').startsWith('sys:')) {
+      const st = stock(db, o.company, o.commodity);
+      if (st.qty - st.reserved < o.qty) for (const a of db.all<{ id: number }>("SELECT id FROM orders WHERE company_id = ? AND commodity_id = ? AND side = 'sell' AND status = 'open' AND idempotency_key LIKE 'sys:%'", o.company, o.commodity)) cancelIfOpen(db, a.id);
+    }
     const reserve = o.side === 'buy' ? price * o.qty : 0;
     try {
       if (o.side === 'buy') reserveFunds(db, acct, reserve); else reserveStock(db, o.company, o.commodity, o.qty);
@@ -77,10 +85,10 @@ export function placeOrder(db: Sql, ctx: TickCtx, feeBps: number, o: PlaceOrder,
       if (e instanceof LedgerError) throw new MarketError('INSUFFICIENT_FUNDS', e.message);
       throw new MarketError('INSUFFICIENT_STOCK', (e as Error).message);
     }
-    const ins = db.run("INSERT INTO orders (company_id, commodity_id, side, price_minor, qty_original, qty_remaining, reserved_funds_minor, status, created_tick, idempotency_key, kind, expires_tick, city_id) VALUES (?,?,?,?,?,?,?, 'open', ?, ?, ?, ?, ?)", o.company, o.commodity, o.side, price, o.qty, o.qty, reserve, ctx.tick, o.key ?? null, kind, o.expiresTick ?? null, o.cityId ?? 'city-bristol');
+    const ins = db.run("INSERT INTO orders (company_id, commodity_id, side, price_minor, qty_original, qty_remaining, reserved_funds_minor, status, created_tick, idempotency_key, kind, expires_tick, city_id, only_company_id) VALUES (?,?,?,?,?,?,?, 'open', ?, ?, ?, ?, ?, ?)", o.company, o.commodity, o.side, price, o.qty, o.qty, reserve, ctx.tick, o.key ?? null, kind, o.expiresTick ?? null, o.cityId ?? 'city-bristol', kind === 'direct' ? o.onlyFrom! : null);
     const id = ins.lastInsertRowid;
     const fills = matchOrder(db, ctx, feeBps, id, onFill);
-    if (o.ioc || kind === 'market') cancelIfOpen(db, id, 'unfilled_remainder');
+    if (o.ioc || kind === 'market' || kind === 'direct') cancelIfOpen(db, id, 'unfilled_remainder');
     return { order: db.get<OrderRow>('SELECT * FROM orders WHERE id = ?', id)!, fills, duplicate: false };
   });
 }
@@ -120,10 +128,11 @@ function matchOrder(db: Sql, ctx: TickCtx, feeBps: number, id: number, onFill?: 
     const me = db.get<OrderRow>('SELECT * FROM orders WHERE id = ?', id)!;
     if (me.status !== 'open' || me.qty_remaining === 0) break;
     const blocked = blockedSet(db, me.company_id);
-    const live = `status = 'open' AND qty_remaining > 0 AND (expires_tick IS NULL OR expires_tick > ?) AND company_id NOT IN (${notIn(blocked)})`;
+    const live = `status = 'open' AND qty_remaining > 0 AND (expires_tick IS NULL OR expires_tick > ?) AND company_id NOT IN (${notIn(blocked)})${me.only_company_id ? ' AND company_id = ?' : ''}`;
+    const extra = me.only_company_id ? [me.only_company_id] : [];
     const other = me.side === 'buy'
-      ? db.get<OrderRow>(`SELECT * FROM orders WHERE commodity_id = ? AND side = 'sell' AND price_minor <= ? AND ${live} ORDER BY price_minor ASC, id ASC LIMIT 1`, me.commodity_id, me.price_minor, ctx.tick, ...blocked)
-      : db.get<OrderRow>(`SELECT * FROM orders WHERE commodity_id = ? AND side = 'buy' AND price_minor >= ? AND ${live} ORDER BY price_minor DESC, id ASC LIMIT 1`, me.commodity_id, me.price_minor, ctx.tick, ...blocked);
+      ? db.get<OrderRow>(`SELECT * FROM orders WHERE commodity_id = ? AND side = 'sell' AND price_minor <= ? AND ${live} ORDER BY price_minor ASC, id ASC LIMIT 1`, me.commodity_id, me.price_minor, ctx.tick, ...blocked, ...extra)
+      : db.get<OrderRow>(`SELECT * FROM orders WHERE commodity_id = ? AND side = 'buy' AND price_minor >= ? AND ${live} ORDER BY price_minor DESC, id ASC LIMIT 1`, me.commodity_id, me.price_minor, ctx.tick, ...blocked, ...extra);
     if (!other) break;
     const buy = me.side === 'buy' ? me : other, sell = me.side === 'sell' ? me : other;
     const resting = me.id < other.id ? me : other;
@@ -171,12 +180,13 @@ function settle(db: Sql, ctx: TickCtx, feeBps: number, buy: OrderRow, sell: Orde
 }
 
 /** The live orders `company` could trade against, best price first (price-time order). `take` is the side being consumed. */
-export function liveBook(db: Sql, company: string, commodity: string, take: 'buy' | 'sell', limitPrice: number, tick: number): OrderRow[] {
+export function liveBook(db: Sql, company: string, commodity: string, take: 'buy' | 'sell', limitPrice: number, tick: number, onlyFrom?: string): OrderRow[] {
   const blocked = blockedSet(db, company);
-  const base = `commodity_id = ? AND side = ? AND status = 'open' AND qty_remaining > 0 AND (expires_tick IS NULL OR expires_tick > ?) AND company_id NOT IN (${notIn(blocked)})`;
+  const base = `commodity_id = ? AND side = ? AND status = 'open' AND qty_remaining > 0 AND (expires_tick IS NULL OR expires_tick > ?) AND company_id NOT IN (${notIn(blocked)})${onlyFrom ? ' AND company_id = ?' : ''}`;
+  const extra = onlyFrom ? [onlyFrom] : [];
   return take === 'sell'
-    ? db.all<OrderRow>(`SELECT * FROM orders WHERE ${base} AND price_minor <= ? ORDER BY price_minor ASC, id ASC`, commodity, 'sell', tick, ...blocked, limitPrice)
-    : db.all<OrderRow>(`SELECT * FROM orders WHERE ${base} AND price_minor >= ? ORDER BY price_minor DESC, id ASC`, commodity, 'buy', tick, ...blocked, limitPrice);
+    ? db.all<OrderRow>(`SELECT * FROM orders WHERE ${base} AND price_minor <= ? ORDER BY price_minor ASC, id ASC`, commodity, 'sell', tick, ...blocked, ...extra, limitPrice)
+    : db.all<OrderRow>(`SELECT * FROM orders WHERE ${base} AND price_minor >= ? ORDER BY price_minor DESC, id ASC`, commodity, 'buy', tick, ...blocked, ...extra, limitPrice);
 }
 
 /** Cheapest asks that a buyer could take right now (for sizing procurement and quoting). */

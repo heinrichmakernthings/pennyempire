@@ -1,6 +1,7 @@
 /** Migration 0003 — Penny Exchange: order kinds + expiry, local-market keys, per-day market statistics, recurring supply contracts. Additive only. */
 export default `
-ALTER TABLE orders ADD COLUMN kind TEXT NOT NULL DEFAULT 'limit' CHECK (kind IN ('limit','market'));
+ALTER TABLE orders ADD COLUMN kind TEXT NOT NULL DEFAULT 'limit' CHECK (kind IN ('limit','market','direct'));
+ALTER TABLE orders ADD COLUMN only_company_id TEXT;   -- direct purchases trade against one chosen supplier only
 ALTER TABLE orders ADD COLUMN expires_tick INTEGER;
 ALTER TABLE orders ADD COLUMN end_reason TEXT CHECK (end_reason IS NULL OR end_reason IN ('cancelled','expired','unfilled_remainder'));
 ALTER TABLE orders ADD COLUMN city_id TEXT NOT NULL DEFAULT 'city-bristol';

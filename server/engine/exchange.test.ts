@@ -108,6 +108,18 @@ describe('matching engine', () => {
   });
 });
 
+describe('automatic listings yield to deliberate orders', () => {
+  it('a player sell order reclaims stock reserved by the company\'s automatic daily listing, and only for that company', () => {
+    const db = world(); const farm = found(db, 'farm', 'lot-3', 'Auto Farm'); give(db, farm, 'wheat', 100);
+    place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 50, qty: 100, key: 'sys:test:auto' });
+    expect(freeStock(db, farm, 'wheat')).toBe(0);
+    const r = place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 80, qty: 40 });
+    expect(r.order.status).toBe('open'); expect(db.get<{ status: string }>("SELECT status FROM orders WHERE idempotency_key = 'sys:test:auto'")!.status).toBe('cancelled');
+    expect(stock(db, farm, 'wheat').reserved).toBe(40);
+    expect(() => place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 80, qty: 100 })).toThrow(MarketError);        // genuinely not enough stock
+  });
+});
+
 describe('expiry', () => {
   it('an expired order stops matching and releases what it reserved; the sweep is idempotent', () => {
     const db = world(); clearBook(db); const farm = found(db, 'farm', 'lot-3', 'E Farm'); const mill = found(db, 'mill', 'lot-7', 'E Mill'); give(db, farm, 'wheat', 100);
@@ -143,6 +155,28 @@ describe('market orders', () => {
   });
 });
 
+describe('direct purchases from a chosen supplier', () => {
+  it('trade only against that supplier, even when cheaper listings exist, and cancel the unfilled remainder', () => {
+    const db = world(); clearBook(db);
+    const farm = found(db, 'farm', 'lot-3', 'D Farm'), farm2 = found(db, 'farm', 'lot-4', 'D Farm Two'), mill = found(db, 'mill', 'lot-7', 'D Mill'); fundCompany(db, 'fd', mill, 200_000);
+    give(db, farm, 'wheat', 50); give(db, farm2, 'wheat', 50);
+    place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 40, qty: 50 });            // cheaper, but not chosen
+    place(db, { company: farm2, commodity: 'wheat', side: 'sell', price: 60, qty: 30 });
+    const q = quoteOrder(db, { companyId: mill, commodityId: 'wheat', side: 'buy', quantity: 50, limitPriceMinor: 60, kind: 'direct', fromCompanyId: farm2 });
+    if (!q.ok) throw new Error(q.error.message);
+    expect(q.quote.availableUnits).toBe(30); expect(q.quote.subtotalMinor).toBe(30 * 60);
+    const r = placePlayerOrder(db, 'dp', { companyId: mill, commodityId: 'wheat', side: 'buy', quantity: 50, limitPriceMinor: 60, quoteId: q.quote.id, kind: 'direct', fromCompanyId: farm2 });
+    expect(r).toMatchObject({ ok: true, data: { filled: 30, remaining: 20 } });
+    expect(db.get<{ n: number }>('SELECT COUNT(*) n FROM trades WHERE seller_company_id = ?', farm)!.n).toBe(0);
+    expect(db.get<{ status: string; end_reason: string }>("SELECT status, end_reason FROM orders WHERE idempotency_key = 'player:dp'")).toMatchObject({ status: 'cancelled', end_reason: 'unfilled_remainder' });
+    expect(db.get<{ r: number }>('SELECT reserved_minor r FROM accounts WHERE id = ?', companyAccount(mill))!.r).toBe(0);
+    // the quote cannot be reused for a different supplier
+    const swap = placePlayerOrder(db, 'dp2', { companyId: mill, commodityId: 'wheat', side: 'buy', quantity: 50, limitPriceMinor: 60, quoteId: q.quote.id, kind: 'direct', fromCompanyId: farm });
+    expect(swap.ok).toBe(false);
+    expect(reconcile(db).ok).toBe(true);
+  });
+});
+
 describe('player commands: authorisation, idempotency, quotes', () => {
   it('quote → order is idempotent; a replay returns the same result and never double-spends', () => {
     const db = world(); const mill = found(db, 'mill', 'lot-7', 'Cmd Mill'); fundCompany(db, 'f', mill, 200_000);
@@ -162,6 +196,19 @@ describe('player commands: authorisation, idempotency, quotes', () => {
     expect(!q.ok && q.error.code).toBe('FORBIDDEN');
     const open = db.get<{ id: number }>("SELECT id FROM orders WHERE status = 'open' LIMIT 1")!;
     const c = cancelPlayerOrder(db, 'x1', open.id); expect(!c.ok && c.error.code).toBe('FORBIDDEN');
+  });
+  it('refuses fat-finger and manipulation prices far outside the reference band', () => {
+    const db = world(); const mill = found(db, 'mill', 'lot-7', 'Band Mill'); fundCompany(db, 'f', mill, 400_000);
+    for (const bad of [100_000, 1]) { const q = quoteOrder(db, { companyId: mill, commodityId: 'wheat', side: 'buy', quantity: 5, limitPriceMinor: bad }); expect(q.ok).toBe(false); }
+  });
+  it('cancelling an order mid-way leaves nothing to fill: a later opposite order cannot trade against it', () => {
+    const db = world(); clearBook(db); const farm = found(db, 'farm', 'lot-3', 'X Farm'); const mill = found(db, 'mill', 'lot-7', 'X Mill'); give(db, farm, 'wheat', 100);
+    const sell = place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 60, qty: 100 }).order;
+    place(db, { company: mill, commodity: 'wheat', side: 'buy', price: 60, qty: 30 });
+    cancelOrder(db, sell.id, farm);
+    const r = place(db, { company: mill, commodity: 'wheat', side: 'buy', price: 90, qty: 30 });
+    expect(r.fills).toHaveLength(0); expect(reconcile(db).ok).toBe(true);
+    expect(db.get<{ n: number }>('SELECT COUNT(*) n FROM trades WHERE sell_order_id = ?', sell.id)!.n).toBe(1);      // only the one real fill
   });
   it('a limit order can carry an expiry and a protected market order is quoted with its price cap', () => {
     const db = world(); const mill = found(db, 'mill', 'lot-7', 'Mkt Mill'); fundCompany(db, 'f', mill, 200_000);
@@ -239,6 +286,13 @@ describe('supply contracts', () => {
     expect(db.get<{ n: number }>('SELECT COUNT(*) n FROM ledger_transactions WHERE memo = ?', `exchange fee on contract #${id}`)!.n).toBe(3);
     expect(balance(db, companyAccount(mill))).toBeLessThan(m0); expect(balance(db, companyAccount('co-severn-farm'))).toBeGreaterThan(s0 - 1_000_000); void ex0;
     expect(reconcile(db).ok).toBe(true);
+  });
+  it('delivers from stock that yesterday\'s automatic listing was holding (the state provisioner and NPC suppliers are not "out of stock" because they listed it)', () => {
+    const { db, mill } = setup();
+    const r = offer(db, mill, { counterpartyId: 'co-bristol-provisions', qtyPerDelivery: 40, priceMinor: 70, everyTicks: 1 }); const id = cid(r);
+    advance(db, 4);
+    const rows = db.all<{ status: string }>('SELECT status FROM contract_deliveries WHERE contract_id = ?', id);
+    expect(rows.length).toBeGreaterThanOrEqual(3); expect(rows.every((x) => x.status === 'delivered')).toBe(true);
   });
   it('is declined with an explanation when the price would lose the supplier money, or the volume is too big', () => {
     const { db, mill } = setup();

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import type { MarketShortage } from '@/shared/exchange';
 import { fetchOpportunities, useQuery, type Opportunity } from '@/data/managementApi';
 import { useDataSource } from '@/data/store';
 import { formatBps, formatMoney, formatUnits } from '@/domain/money';
@@ -24,15 +25,16 @@ export function OpportunitiesScreen() {
       {source.authority !== 'server' ? <EmptyState title="Opportunities need the game server">The finder reads live Bristol market data. Start the game server (npm run dev:all) to see real forecasts.</EmptyState>
         : q.status === 'loading' ? <Skeleton lines={8} label="Loading opportunities" />
         : q.status === 'error' ? <ErrorState title="Couldn’t load opportunities" message={q.error} onRetry={q.reload} />
-        : <Finder note={q.data.forecastNote} items={q.data.opportunities} />}
+        : <Finder note={q.data.forecastNote} items={q.data.opportunities} shortages={q.data.shortages} />}
     </div>
   );
 }
 
-function Finder({ note, items }: { note: string; items: Opportunity[] }) {
+function Finder({ note, items, shortages }: { note: string; items: Opportunity[]; shortages: MarketShortage[] }) {
   return (
     <div className="pe-stack">
       <p className="pe-callout" role="note"><Icon name="warning" size={18} /><span><strong>FORECAST.</strong> {note} Ranked by expected daily profit. Not a promise: prices, rivals and your own choices change the result.</span></p>
+      <MarketGaps shortages={shortages} />
       <div className="pe-cards">{items.map((o, i) => <OpportunityCard key={o.industry} o={o} rank={i + 1} />)}</div>
     </div>
   );
@@ -79,5 +81,24 @@ function OpportunityCard({ o, rank }: { o: Opportunity; rank: number }) {
         </div>
       )}
     </article>
+  );
+}
+
+/** Live market gaps from the exchange: where demand outruns what producers plan to make. Every figure is computed from current simulation state. */
+function MarketGaps({ shortages }: { shortages: MarketShortage[] }) {
+  const rows = shortages.filter((s) => s.demandUnitsPerDay > 0);
+  if (rows.length === 0) return null;
+  return (
+    <section aria-labelledby="gaps-t"><h2 id="gaps-t" className="pe-h3">Bristol commodity markets: shortages and gaps</h2>
+      <div className="pe-table-scroll"><table className="pe-table" aria-label="Commodity market gaps" data-testid="market-gaps">
+        <thead><tr><th scope="col">Market</th><th scope="col" className="pe-num">Demand / day (est.)</th><th scope="col" className="pe-num">Producers plan / day</th><th scope="col" className="pe-num">Shortage / day</th><th scope="col" className="pe-num">Listed now</th><th scope="col" className="pe-num">Recent price</th><th scope="col" className="pe-num">Unit cost</th><th scope="col">Producers</th><th scope="col"><span className="pe-sr">Action</span></th></tr></thead>
+        <tbody>{rows.map((s) => (
+          <tr key={s.commodityId}><th scope="row">{s.label}</th><td className="pe-financial-number">{formatUnits(s.demandUnitsPerDay)}</td><td className="pe-financial-number">{formatUnits(s.supplyUnitsPerDay)}</td>
+            <td className={`pe-financial-number ${s.shortageUnitsPerDay > 0 ? 'pe-neg' : ''}`}>{s.shortageUnitsPerDay > 0 ? formatUnits(s.shortageUnitsPerDay) : '—'}</td><td className="pe-financial-number">{formatUnits(s.listedUnits)}</td>
+            <td className="pe-financial-number">{money(s.recentPriceMinor)}{s.priceBasis === 'reference' ? ' (ref.)' : ''}</td><td className="pe-financial-number">{s.unitCostMinor > 0 ? `${money(s.unitCostMinor)} → ${money(s.unitProfitMinor, true)}` : '—'}</td><td>{s.competitors}</td>
+            <td>{s.industry ? <Link className="pe-btn pe-btn--secondary" to={`/start?industry=${s.industry}`}>Start a {s.industryLabel!.toLowerCase()}</Link> : <Link className="pe-btn pe-btn--secondary" to={`/commodities?commodity=${s.commodityId}`}>View market</Link>}</td></tr>))}</tbody>
+      </table></div>
+      <p className="pe-hint">Demand is an <strong>estimate</strong> (funded consumer budgets plus what companies plan to use). Producers' plans and prices are read from the live simulation. Unit cost is ingredients at today's best price plus energy; it excludes wages and rent.</p>
+    </section>
   );
 }

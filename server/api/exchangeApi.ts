@@ -2,14 +2,14 @@ import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { upcomingDeliveries, type ContractRow } from '../engine/contracts';
 import { PLAYER_ID } from '../seed/bristol';
+import type { ContractDto, Holding, OwnOrder, OwnTrade } from '../../src/shared/exchange';
 
 const tickOf = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 const mineSql = "(SELECT id FROM companies WHERE owner_kind = 'player' AND owner_id = ?)";
 
-export interface OwnOrder { id: number; companyId: string; companyName: string; commodityId: string; side: 'buy' | 'sell'; kind: 'limit' | 'market'; priceMinor: number; unitsOriginal: number; unitsRemaining: number; unitsFilled: number; avgFillMinor: number | null; reservedFundsMinor: number; reservedUnits: number; status: 'open' | 'partial' | 'filled' | 'cancelled' | 'expired'; endReason: string | null; createdTick: number; expiresTick: number | null; createdDate: string }
 export function ownOrders(db: Sql, commodity?: string, limit = 60): OwnOrder[] {
   const cfg = loadConfig(db);
-  const rows = db.all<{ id: number; company_id: string; name: string; commodity_id: string; side: 'buy' | 'sell'; kind: 'limit' | 'market'; price_minor: number; qty_original: number; qty_remaining: number; reserved_funds_minor: number; status: 'open' | 'filled' | 'cancelled'; end_reason: string | null; created_tick: number; expires_tick: number | null }>(
+  const rows = db.all<{ id: number; company_id: string; name: string; commodity_id: string; side: 'buy' | 'sell'; kind: 'limit' | 'market' | 'direct'; price_minor: number; qty_original: number; qty_remaining: number; reserved_funds_minor: number; status: 'open' | 'filled' | 'cancelled'; end_reason: string | null; created_tick: number; expires_tick: number | null }>(
     `SELECT o.*, c.name FROM orders o JOIN companies c ON c.id = o.company_id WHERE o.company_id IN ${mineSql} ${commodity ? 'AND o.commodity_id = ?' : ''} ORDER BY (o.status = 'open') DESC, o.id DESC LIMIT ?`, PLAYER_ID, ...(commodity ? [commodity] : []), limit);
   return rows.map((o) => {
     const f = db.get<{ q: number; v: number }>('SELECT COALESCE(SUM(qty),0) q, COALESCE(SUM(qty * price_minor),0) v FROM trades WHERE buy_order_id = ? OR sell_order_id = ?', o.id, o.id)!;
@@ -23,7 +23,6 @@ export function ownOrders(db: Sql, commodity?: string, limit = 60): OwnOrder[] {
   });
 }
 
-export interface OwnTrade { id: number; tick: number; gameDate: string; commodityId: string; role: 'bought' | 'sold'; counterparty: string; companyId: string; qty: number; priceMinor: number; grossMinor: number; feeMinor: number; netMinor: number; ledgerTxId: number | null }
 export function ownTrades(db: Sql, commodity?: string, limit = 60): OwnTrade[] {
   const cfg = loadConfig(db);
   return db.all<{ id: number; tick: number; commodity_id: string; qty: number; price_minor: number; fee_minor: number; ledger_tx_id: number | null; buyer_company_id: string; seller_company_id: string; bn: string; sn: string; mine_buy: number }>(
@@ -32,19 +31,12 @@ export function ownTrades(db: Sql, commodity?: string, limit = 60): OwnTrade[] {
     .map((t) => { const gross = t.qty * t.price_minor, bought = t.mine_buy === 1; return { id: t.id, tick: t.tick, gameDate: gameDate(cfg, t.tick), commodityId: t.commodity_id, role: bought ? 'bought' : 'sold', counterparty: bought ? t.sn : t.bn, companyId: bought ? t.buyer_company_id : t.seller_company_id, qty: t.qty, priceMinor: t.price_minor, grossMinor: gross, feeMinor: bought ? 0 : t.fee_minor, netMinor: bought ? -gross : gross - t.fee_minor, ledgerTxId: t.ledger_tx_id }; });
 }
 
-export interface Holding { companyId: string; companyName: string; commodityId: string; units: number; reservedUnits: number; freeUnits: number; cashMinor: number; availableCashMinor: number }
 export function holdings(db: Sql, commodity: string): Holding[] {
-  return db.all<{ id: string; name: string; qty: number | null; reserved: number | null; b: number; r: number }>(
-    `SELECT c.id, c.name, i.qty, i.reserved, a.balance_minor b, a.reserved_minor r FROM companies c JOIN accounts a ON a.id = c.treasury_account_id LEFT JOIN inventory i ON i.company_id = c.id AND i.commodity_id = ? WHERE c.id IN ${mineSql} AND c.bankrupt_tick IS NULL ORDER BY c.id`, commodity, PLAYER_ID)
-    .map((h) => ({ companyId: h.id, companyName: h.name, commodityId: commodity, units: h.qty ?? 0, reservedUnits: h.reserved ?? 0, freeUnits: (h.qty ?? 0) - (h.reserved ?? 0), cashMinor: h.b, availableCashMinor: h.b - h.r }));
+  return db.all<{ id: string; name: string; qty: number | null; reserved: number | null; b: number; r: number; sys: number }>(
+    `SELECT c.id, c.name, i.qty, i.reserved, a.balance_minor b, a.reserved_minor r, (SELECT COALESCE(SUM(o.qty_remaining),0) FROM orders o WHERE o.company_id = c.id AND o.commodity_id = ? AND o.side = 'sell' AND o.status = 'open' AND o.idempotency_key LIKE 'sys:%') sys FROM companies c JOIN accounts a ON a.id = c.treasury_account_id LEFT JOIN inventory i ON i.company_id = c.id AND i.commodity_id = ? WHERE c.id IN ${mineSql} AND c.bankrupt_tick IS NULL ORDER BY c.id`, commodity, commodity, PLAYER_ID)
+    .map((h) => ({ companyId: h.id, companyName: h.name, commodityId: commodity, units: h.qty ?? 0, reservedUnits: (h.reserved ?? 0) - h.sys, autoListedUnits: h.sys, freeUnits: (h.qty ?? 0) - (h.reserved ?? 0) + h.sys, cashMinor: h.b, availableCashMinor: h.b - h.r }));
 }
 
-export interface ContractDto {
-  id: number; status: ContractRow['status']; role: 'buyer' | 'supplier'; buyerId: string; buyerName: string; supplierId: string; supplierName: string; commodityId: string; qtyPerDelivery: number; priceMinor: number; everyTicks: number;
-  startTick: number; endTick: number; startDate: string; endDate: string; noticeTicks: number; cancelEffectiveTick: number | null; proposedBy: 'buyer' | 'supplier'; reason: string | null; consecutiveMisses: number; maxMisses: number;
-  upcoming: { tick: number; gameDate: string; grossMinor: number }[]; history: { tick: number; gameDate: string; status: string; qty: number; grossMinor: number; feeMinor: number }[];
-  delivered: number; missed: number; deliveredUnits: number; totalPaidMinor: number;
-}
 export function contracts(db: Sql): ContractDto[] {
   const cfg = loadConfig(db), tick = tickOf(db);
   const rows = db.all<ContractRow & { bn: string; sn: string; mine_buyer: number }>(`SELECT k.*, b.name bn, s.name sn, (k.buyer_company_id IN ${mineSql}) mine_buyer FROM supply_contracts k JOIN companies b ON b.id = k.buyer_company_id JOIN companies s ON s.id = k.supplier_company_id
@@ -74,3 +66,5 @@ export function contractCandidates(db: Sql, commodity: string) {
     .map((b) => ({ companyId: b.id, name: b.name, ownerKind: b.owner_kind, dailyNeed: b.need, maxPerDay: Math.floor((b.need * cfg.contractShareBps) / 10_000) }));
   return { referencePriceMinor: ref, suppliers, buyers, limits: { maxTicks: cfg.contractMaxTicks, noticeTicks: cfg.contractNoticeTicks, maxMisses: cfg.contractMaxMisses, shareBps: cfg.contractShareBps } };
 }
+
+export type { ContractDto, Holding, OwnOrder, OwnTrade };

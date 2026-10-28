@@ -1,0 +1,25 @@
+Market simulation: 120 in-game days, 4 scripted test players against the NPC and state participants
+Circulating supply 135,850.00 EC → 133,727.72 EC (-1.56%) · reconciles: true · accounting anomalies: 0
+Test players (net worth = cash + stock at cost, all companies of the bot)
+  A wholesaler       bankrupt   worth 2,000.00 EC → 0.00 EC (-2,000.00 EC)  trades 88  bought 1480 sold 8580  fees paid 46.31 EC  — undercuts the cheapest rival by 1% on wheat and flour
+  B monopolist       operating  worth 15,000.00 EC → 14,851.38 EC (-148.62 EC)  trades 351  bought 43100 sold 13460  fees paid 296.12 EC  — sweeps wheat with protected market orders, re-lists at 180% of reference
+  C contract buyer   operating  worth 1,500.00 EC → 12,395.15 EC (+10,895.15 EC)  trades 390  bought 8640 sold 0  fees paid 0.00 EC  — 40-unit daily flour and cheese contracts at 105% of the supplier’s ask
+  D idle             operating  worth 900.00 EC → 6,913.29 EC (+6,013.29 EC)  trades 240  bought 5460 sold 0  fees paid 0.00 EC  — does nothing
+Commodity markets
+  commodity     first VWAP   last VWAP    min–max VWAP            ref      volat.  volume  shortage-days  spread  HHI    top seller (share)
+  cafe-drink             —           —  —–—                      3.50 EC    0.0%       0            120     —      0  — (0%)
+  cheese           3.25 EC     2.12 EC  2.12 EC–3.93 EC          3.20 EC    2.1%   17070              0     —  10000  co-clifton-dairy (100%)
+  coffee           1.40 EC     1.40 EC  1.40 EC–1.40 EC          1.00 EC    0.0%    4128              0     —  10000  co-bristol-provisions (100%)
+  flour            2.24 EC     2.41 EC  2.20 EC–2.41 EC          2.20 EC    0.5%   17070              0     —   5173  co-pl-mill-3 (59%)
+  milk             0.72 EC     0.35 EC  0.35 EC–0.74 EC          0.70 EC    1.0%   52050              3     —  10000  co-severn-farm (100%)
+  packaging        0.56 EC     0.56 EC  0.56 EC–0.56 EC          0.40 EC    0.0%    4146              0     —  10000  co-bristol-provisions (100%)
+  pizza                  —           —  —–—                     10.00 EC    0.0%       0            120     —      0  — (0%)
+  timber                 —           —  —–—                      3.10 EC    0.0%       0            120     —      0  — (0%)
+  wheat            0.58 EC     0.38 EC  0.38 EC–0.58 EC          0.50 EC    1.1%   17740              4     —  10000  co-severn-farm (100%)
+Exchange: 1711 trades worth 142,163.16 EC · fees 1,630.10 EC (burned 814.77 EC, swept to treasury 815.33 EC) · contract deliveries 180 ok / 0 missed · failed settlements 87
+  contract offer — flour from Brunel Milling: Brunel Milling accepts: price covers its costs and volume is within its capacity.
+  contract offer — cheese from Clifton Creamery: Clifton Creamery accepts: price covers its costs and volume is within its capacity.
+  refused ×77: company.configure — This company is bankrupt and closed.
+  refused ×10: company.configure — An insolvent company cannot be reconfigured.
+State provisioner lowest stock: wheat 0, milk 120, flour 120, cheese 120, coffee 92, packaging 94
+Insolvent NPC firms: none · bankruptcies: co-pl-farm-1, co-pl-mill-2

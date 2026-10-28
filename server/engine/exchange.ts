@@ -2,6 +2,7 @@ import type { Sql } from '../db/sql';
 import { gameDate, loadConfig, type EngineConfig } from './config';
 import { available, destroy, transfer, type TickCtx } from './ledger';
 import { EXCHANGE_ACCOUNT } from '../seed/bristol';
+import type { BookLevel, CommodityDetail, DirectoryRow, SupplierRow } from '../../src/shared/exchange';
 
 const CITY = 'city-bristol';
 
@@ -37,12 +38,6 @@ export function recordMarketStats(db: Sql, tick: number): void {
   }
 }
 
-export interface DirectoryRow {
-  commodityId: string; name: string; unitLabel: string; referencePriceMinor: number;
-  lastTradePriceMinor: number | null; vwap7dMinor: number | null; bestBidMinor: number | null; bestAskMinor: number | null; spreadMinor: number | null;
-  volumeToday: number; volume7d: number; value7dMinor: number; listedUnits: number; bidUnits: number; demandUnitsPerDay: number; consumerUnitsToday: number; contractUnitsToday: number;
-  shortageUnits: number; surplusUnits: number; status: 'shortage' | 'balanced' | 'surplus' | 'no-market'; changeBps: number; basis: 'trades' | 'reference';
-}
 
 /** Directory of every tradable commodity with statistics derived from stored market_stats. `status` compares listed supply with estimated demand (an ESTIMATE, labelled in the UI). */
 export function directory(db: Sql): DirectoryRow[] {
@@ -56,23 +51,21 @@ export function directory(db: Sql): DirectoryRow[] {
     const listed = today?.listed_units ?? db.get<{ q: number }>("SELECT COALESCE(SUM(qty_remaining),0) q FROM orders WHERE commodity_id = ? AND side='sell' AND status='open'", c.id)!.q;
     const bestAsk = today?.best_ask_minor ?? null, bestBid = today?.best_bid_minor ?? null;
     const demand = demandFor(db, c.id, tick).total;   // live: production plans change the moment a company opens or retargets
-    const shortage = Math.max(0, demand - listed), surplus = Math.max(0, listed - demand);
-    const status: DirectoryRow['status'] = demand === 0 && listed === 0 ? 'no-market' : shortage * 10 >= demand * 2 ? 'shortage' : surplus * 10 >= Math.max(1, demand) * 5 ? 'surplus' : 'balanced';
+    // Finished goods sold over the counter (pizza, drinks, timber for public works) never reach the exchange: their "supply" is what shops hold and their gap is real unmet consumer demand.
+    const retail = db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE retail_commodity_id = ? AND bankrupt_tick IS NULL", c.id)!.n > 0;
+    const shelf = retail ? db.get<{ q: number }>("SELECT COALESCE(SUM(i.qty - i.reserved),0) q FROM inventory i JOIN companies k ON k.id = i.company_id WHERE i.commodity_id = ? AND k.retail_commodity_id = ? AND k.bankrupt_tick IS NULL AND k.status = 'operating'", c.id, c.id)!.q : 0;
+    const unmet = retail ? db.get<{ u: number }>('SELECT COALESCE(SUM(s.unmet_units),0) u FROM demand_tick_stats s JOIN demand_rules r ON r.id = s.rule_id WHERE r.commodity_id = ? AND s.tick = ?', c.id, tick)!.u : 0;
+    const supplyNow = retail ? shelf : listed;
+    const shortage = retail ? unmet : Math.max(0, demand - listed);
+    const surplus = Math.max(0, supplyNow - demand * 5);          // more than five days of cover is a surplus
+    const status: DirectoryRow['status'] = demand === 0 && supplyNow === 0 ? 'no-market' : shortage * 10 >= Math.max(1, demand) * 2 ? 'shortage' : surplus > 0 ? 'surplus' : 'balanced';
     const price = last ?? c.reference_price_minor;
     return { commodityId: c.id, name: c.name, unitLabel: c.unit_label, referencePriceMinor: c.reference_price_minor, lastTradePriceMinor: last, vwap7dMinor: vwap, bestBidMinor: bestBid, bestAskMinor: bestAsk, spreadMinor: bestBid !== null && bestAsk !== null ? bestAsk - bestBid : null,
-      volumeToday: today?.volume ?? 0, volume7d: w.q, value7dMinor: w.value, listedUnits: listed, bidUnits: today?.bid_units ?? 0, demandUnitsPerDay: demand, consumerUnitsToday: today?.consumer_units ?? 0, contractUnitsToday: today?.contract_units ?? 0,
-      shortageUnits: shortage, surplusUnits: surplus, status, changeBps: prev && prev > 0 ? Math.max(-10_000, Math.min(10_000, Math.round(((price - prev) * 10_000) / prev))) : 0, basis: last === null ? 'reference' : 'trades' };
+      volumeToday: today?.volume ?? 0, volume7d: w.q, value7dMinor: w.value, listedUnits: supplyNow, bidUnits: today?.bid_units ?? 0, demandUnitsPerDay: demand, consumerUnitsToday: today?.consumer_units ?? 0, contractUnitsToday: today?.contract_units ?? 0,
+      shortageUnits: shortage, surplusUnits: surplus, channel: retail ? 'retail' : 'exchange', status, changeBps: prev && prev > 0 ? Math.max(-10_000, Math.min(10_000, Math.round(((price - prev) * 10_000) / prev))) : 0, basis: last === null ? 'reference' : 'trades' };
   });
 }
 
-export interface BookLevel { priceMinor: number; units: number; orders: number; suppliers: number }
-export interface CommodityDetail {
-  commodityId: string; asks: BookLevel[]; bids: BookLevel[];
-  history: { tick: number; gameDate: string; open: number | null; high: number | null; low: number | null; close: number | null; vwap: number | null; volume: number; bestBid: number | null; bestAsk: number | null; listed: number; demand: number }[];
-  recentTrades: { id: number; tick: number; gameDate: string; qty: number; priceMinor: number; feeMinor: number; buyer: string; seller: string }[];
-  suppliers: SupplierRow[];
-}
-export interface SupplierRow { companyId: string; name: string; ownerKind: 'player' | 'npc' | 'state'; askMinor: number; units: number; reputationBps: number; sold7d: number; delivered7d: number; missed7d: number; contractable: boolean; industry: string }
 
 export function commodityDetail(db: Sql, commodity: string, viewer?: string): CommodityDetail | null {
   if (!db.get('SELECT 1 FROM commodities WHERE id = ?', commodity)) return null;
@@ -93,5 +86,7 @@ export function commodityDetail(db: Sql, commodity: string, viewer?: string): Co
     missed7d: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries d JOIN supply_contracts k ON k.id = d.contract_id WHERE k.supplier_company_id = ? AND k.commodity_id = ? AND d.status = 'missed_stock' AND d.due_tick > ?", s.id, commodity, tick - 7)!.n,
     contractable: s.id !== viewer,
   }));
-  return { commodityId: commodity, asks: levels('sell'), bids: levels('buy'), history, recentTrades, suppliers };
+  return { commodityId: commodity, unitLabel: db.get<{ u: string }>('SELECT unit_label u FROM commodities WHERE id = ?', commodity)!.u, asks: levels('sell'), bids: levels('buy'), history, recentTrades, suppliers };
 }
+
+export type { BookLevel, CommodityDetail, DirectoryRow, SupplierRow };

@@ -28,9 +28,9 @@ const sourceUrls = import.meta.glob(
   { query: '?url', import: 'default', eager: true },
 ) as Record<string, string>;
 
-const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg', '/assets/art/phase4/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 /** UI icons: the base terminal set first, then the Phase 3 economy icons, then the Phase 2 state icons. */
-export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`];
+export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase4/ui/${name}.svg`];
 
 export interface ArtAtlas {
   images: Map<string, HTMLImageElement>;
@@ -84,3 +84,8 @@ export async function loadArtAtlas(frameIds?: string[]): Promise<ArtAtlas> {
     },
   };
 }
+
+const commodityPngs = import.meta.glob('/assets/art/phase3/runtime/commodities/*.png', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+/** Engine commodity id → Phase 3 icon file (the art uses `coffee-drinks` for the engine's `cafe-drink`). */
+const COMMODITY_ICON_FILE: Record<string, string> = { 'cafe-drink': 'coffee-drinks' };
+export const commodityIconUrl = (id: string): string | undefined => commodityPngs[`/assets/art/phase3/runtime/commodities/${COMMODITY_ICON_FILE[id] ?? id}.png`];

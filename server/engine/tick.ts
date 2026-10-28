@@ -119,12 +119,13 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     phase('order_expiry');
     const expired = expireOrders(db, n);
     if (expired.length) logEvent(db, n, 'orders_expired', 'info', null, `${expired.length} order(s) expired and released their reservations`);
+    // Yesterday's automatic listings are withdrawn first: their reservations must not hide stock a contract is owed. Today's listings are re-posted in step D.
+    for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE status = 'open' AND idempotency_key LIKE 'sys:%'")) cancelOrder(db, o.id);
     phase('contracts');
     for (const d of runContractDeliveries(db, ctx, cfg, safe)) if (d.status === 'delivered') { trades++; tradeValue += d.grossMinor; const sv = st(d.supplier!), bv = st(d.buyer!); sv.revenue += d.grossMinor; sv.cogs += d.costMinor!; sv.fees += d.feeMinor; sv.unitsSold += d.qty; bv.inputPurchases += d.grossMinor; }
 
     /* D. Refresh system sell orders (player-placed resting orders have idempotency keys and are left alone). */
     phase('listings');
-    for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE status = 'open' AND idempotency_key LIKE 'sys:%'")) cancelOrder(db, o.id);
     for (const c of order) {
       if (c.status !== 'operating') continue;
       safe('listing', c.id, () => {

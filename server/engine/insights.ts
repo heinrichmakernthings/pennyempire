@@ -2,6 +2,7 @@ import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from './config';
 import { energyPerBatch, inputUnitsPerBatch, linesOf, recipeInputs, type CompanyRow } from './operations';
 import { LOT_SQL, defaultStaff, rentFor, tierOf, upgradeBlocker, type Spec, type Tier, type UpgradeRow } from './company';
+import type { MarketShortage } from '../../src/shared/exchange';
 import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
 import { PLAYER_ID } from '../seed/bristol';
 import { directory as directoryRows } from './exchange';
@@ -198,12 +199,6 @@ export function management(db: Sql, companyId: string): Management | null {
 
 export type { LotInfo, Management, Opportunity, RankRow, Ranking };
 
-export interface MarketShortage {
-  commodityId: string; label: string; industry: string | null; industryLabel: string | null;
-  demandUnitsPerDay: number; supplyUnitsPerDay: number; shortageUnitsPerDay: number; listedUnits: number; competitors: number;
-  recentPriceMinor: number; priceBasis: 'trades' | 'reference'; unitCostMinor: number; unitProfitMinor: number; status: 'shortage' | 'balanced' | 'surplus';
-  explanation: string;
-}
 /** Per-commodity market gaps for the opportunity finder. Demand = funded consumer budgets + production plans that use it; supply = what producers plan to make; all computed live. */
 export function marketShortages(db: Sql): MarketShortage[] {
   const cfg = loadConfig(db), tick = lastTick(db);
@@ -230,3 +225,5 @@ export function marketShortages(db: Sql): MarketShortage[] {
   void tick;
   return out.sort((a, b) => b.shortageUnitsPerDay - a.shortageUnitsPerDay || a.commodityId.localeCompare(b.commodityId));
 }
+
+export type { MarketShortage };
