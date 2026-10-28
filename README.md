@@ -26,6 +26,13 @@ Penny Empire is a browser-first, mobile-friendly multiplayer economic simulation
 ## First slice
 A player starts in Bristol, sees demand for flour, creates a flour mill or pizza shop, buys inputs from NPC/state or other players, sells outputs to local buyers, and watches profits, inventory and market share update.
 
+## Run the frontend (pre-alpha, fixture-backed)
+```bash
+npm install && npm run dev      # http://localhost:5173
+npm run typecheck && npm test && npm run build
+```
+See [docs/FRONTEND.md](docs/FRONTEND.md). All values on screen are illustrative fixtures and are labelled as such.
+
 ## Project rules
 See [AGENTS.md](AGENTS.md). Work on feature branches and submit pull requests. Never enable live financial transfers merely by changing a feature flag.
 
