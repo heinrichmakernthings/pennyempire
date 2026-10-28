@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "note": "Compositions reuse approved art; no duplicate flattened sprites. Ground positions are demonstration staging offsets; runtime route/door/loading positions must come from map metadata. Do not imply animation frames for static actors.",
+  "compositions": [
+    {
+      "id": "delivery.collected",
+      "animation": "collection",
+      "placements": [
+        {
+          "assetId": "crates",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "courier-sw",
+          "offset": [
+            38,
+            0
+          ]
+        },
+        {
+          "assetId": "delivery-van-sw",
+          "offset": [
+            104,
+            12
+          ]
+        }
+      ],
+      "trigger": "authoritative delivery.collected",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "delivery.arrived",
+      "animation": "warehouse-arrival",
+      "placements": [
+        {
+          "assetId": "crates",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "forklift-sw",
+          "offset": [
+            65,
+            8
+          ]
+        }
+      ],
+      "trigger": "authoritative delivery.arrived",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "customer.queue",
+      "animation": "high-demand",
+      "placements": [
+        {
+          "assetId": "customer-sw",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "customer-sw",
+          "offset": [
+            28,
+            14
+          ]
+        },
+        {
+          "assetId": "customer-sw",
+          "offset": [
+            56,
+            28
+          ]
+        }
+      ],
+      "trigger": "authoritative customer.queue",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "supplier.dispatched",
+      "animation": "shipment",
+      "placements": [
+        {
+          "assetId": "lorry-se",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "crates",
+          "offset": [
+            100,
+            20
+          ]
+        }
+      ],
+      "trigger": "authoritative supplier.dispatched",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "campaign.started",
+      "animation": "campaign",
+      "placements": [
+        {
+          "assetId": "street-ad",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "owner-sw",
+          "offset": [
+            40,
+            0
+          ]
+        }
+      ],
+      "trigger": "authoritative campaign.started",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "construction.started",
+      "animation": "construction",
+      "placements": [
+        {
+          "assetId": "skip",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "construction-worker-sw",
+          "offset": [
+            45,
+            0
+          ]
+        },
+        {
+          "assetId": "crane",
+          "offset": [
+            120,
+            0
+          ]
+        }
+      ],
+      "trigger": "authoritative construction.started",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "shop.sale",
+      "animation": "success",
+      "placements": [
+        {
+          "assetId": "customer-se",
+          "offset": [
+            0,
+            0
+          ]
+        },
+        {
+          "assetId": "owner-sw",
+          "offset": [
+            40,
+            0
+          ]
+        }
+      ],
+      "trigger": "authoritative shop.sale",
+      "status": "reusable-static-composition",
+      "cargoBadge": null
+    },
+    {
+      "id": "delivery.in-transit",
+      "animation": "shipment",
+      "placements": [
+        {
+          "assetId": "delivery-van-se",
+          "offset": [
+            0,
+            0
+          ]
+        }
+      ],
+      "trigger": "authoritative delivery.in-transit",
+      "status": "reusable-static-composition",
+      "cargoBadge": "cargo"
+    }
+  ]
+}

@@ -44,3 +44,7 @@ See [AGENTS.md](AGENTS.md). Work on feature branches and submit pull requests. N
 ## Phase 1 implementation package
 
 Start with [production readiness](docs/design/PRODUCTION-READINESS.md), then [Claude Code Prompt 1](docs/design/CLAUDE-PROMPT-1.md). The package includes screen specifications, shared TypeScript DTOs, a measured atlas manifest and a standalone art acceptance bench. Static integration is supported; final art certification and browser QA remain open. See the readiness report rather than treating source-image counts as completed production assets.
+
+## Living Bristol art expansion
+
+[Phase 2 delivery](docs/art/phase2/README.md) includes fixed-frame runtime atlases, building tiers, state-service buildings, transport views, idle roles, activity strips and an art fixture at `/tools/living-bristol/`. Read its missing-assets report: reliable walking/working animations and several transport/customisation assets remain outstanding.

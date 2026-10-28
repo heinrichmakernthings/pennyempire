@@ -1554,5 +1554,8 @@
       "bytes": 208
     }
   ],
-  "validation": "Rendered at declared logical sizes with nearest-neighbour and checkerboard; 1x/2x district inspected. Native Canvas, not browser. See PRODUCTION-READINESS.md."
+  "validation": "Rendered at declared logical sizes with nearest-neighbour and checkerboard; 1x/2x district inspected. Native Canvas, not browser. See PRODUCTION-READINESS.md.",
+  "extensions": [
+    "assets/art/phase2/manifest.json"
+  ]
 }

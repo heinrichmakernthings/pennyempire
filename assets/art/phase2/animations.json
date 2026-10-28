@@ -1,0 +1,468 @@
+{
+  "version": 1,
+  "animations": [
+    {
+      "id": "production",
+      "file": "assets/art/phase2/ui/state-production.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "delivery",
+      "file": "assets/art/phase2/ui/state-delivery.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "customer-entry",
+      "file": "assets/art/phase2/ui/state-customer-entry.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "construction",
+      "file": "assets/art/phase2/ui/state-construction.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "expansion",
+      "file": "assets/art/phase2/ui/state-expansion.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "low-stock",
+      "file": "assets/art/phase2/ui/state-low-stock.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "closed",
+      "file": "assets/art/phase2/ui/state-closed.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "bankrupt",
+      "file": "assets/art/phase2/ui/state-bankrupt.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "high-demand",
+      "file": "assets/art/phase2/ui/state-high-demand.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    },
+    {
+      "id": "success",
+      "file": "assets/art/phase2/ui/state-success.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation"
+    }
+  ],
+  "excluded": [
+    "courier-walk-study.png: direction and pose inconsistency"
+  ]
+}
