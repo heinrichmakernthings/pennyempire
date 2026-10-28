@@ -8,6 +8,9 @@ export interface Opportunity {
   startup: { totalMinor: number; licenceMinor: number; premisesMinor: number; equipmentMinor: number; workingCapitalMinor: number };
   market: { demandUnitsPerDay: number; supplyUnitsPerDay: number; unmetUnitsPerDay: number; saturationBps: number; competitors: number; leaderUnitsPerDay: number; referencePriceMinor: number };
   inputs: { commodityId: string; unitsPerDay: number; unitPriceMinor: number; availableUnits: number; stateFallback: boolean }[];
+  /** Derived from recorded market data; descriptive, never a promise of profit. */
+  labels: ('High unmet demand' | 'Growing market' | 'Competitive' | 'Oversupplied' | 'High risk')[];
+  metrics: { unmetDemandBps: number; growthBps: number; concentrationBps: number; recentFailures: number; newEntrants: number };
   risk: 'low' | 'medium' | 'high'; score: number; headline: string; reasons: string[]; warnings: string[];
   tiers: { tier: number; name: string; fitoutMinor: number; capacity: number; staff: number }[];
 }
