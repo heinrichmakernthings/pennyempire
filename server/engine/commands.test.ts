@@ -4,7 +4,7 @@ import { cancelPlayerOrder, configureCompany, fundCompany, placePlayerOrder, quo
 import { advance } from './world';
 import { stock } from './inventory';
 import { memWorld, one } from '../test/helpers';
-import { companyAccount } from '../seed/bristol';
+import { EXCHANGE_ACCOUNT, companyAccount } from '../seed/bristol';
 
 const W = 'acct:player:demo', MS = 'co-mad-slices', MILL = 'co-brunel-mill';
 const rev = (db: ReturnType<typeof memWorld>, id = MS) => one<{ r: number }>(db, 'SELECT revision r FROM companies WHERE id = ?', id).r;
@@ -84,12 +84,13 @@ describe('player market orders', () => {
     const db = memWorld(); advance(db, 1);
     const quote = q(db); if (!quote.ok) throw new Error('quote failed');
     expect(quote.quote.availableUnits).toBe(10); expect(quote.quote.feeMinor).toBe(0); expect(quote.quote.totalMinor).toBe(quote.quote.subtotalMinor);
-    const flour0 = stock(db, MS, 'flour').qty, cash0 = balance(db, companyAccount(MS)), s0 = supply(db);
+    const flour0 = stock(db, MS, 'flour').qty, cash0 = balance(db, companyAccount(MS)), s0 = supply(db), ex0 = balance(db, EXCHANGE_ACCOUNT);
     const res = placePlayerOrder(db, 'o1', { companyId: MS, commodityId: 'flour', side: 'buy', quantity: 10, limitPriceMinor: 400, quoteId: quote.quote.id });
     expect(res).toMatchObject({ ok: true, data: { filled: 10, remaining: 0 } });
     expect(stock(db, MS, 'flour').qty).toBe(flour0 + 10);
     expect(cash0 - balance(db, companyAccount(MS))).toBe(quote.quote.totalMinor);
-    expect(supply(db).destroyed - s0.destroyed).toBe(Math.floor(quote.quote.subtotalMinor / 100));   // seller-paid 1% fee destroyed
+    expect(supply(db).destroyed - s0.destroyed).toBe(0);                                                  // the fee is a transfer to the Penny Exchange, not a burn
+    expect(balance(db, EXCHANGE_ACCOUNT) - ex0).toBe(Math.floor(quote.quote.subtotalMinor / 100));
     expect(reconcile(db).ok).toBe(true);
   });
   it('quotes expire when the tick advances and must match the order', () => {

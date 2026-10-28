@@ -3,7 +3,9 @@ import { loadConfig, gameDate } from './config';
 import { allocateDemand, type Seller } from './demand';
 import { InventoryError, addStock, freeStock, removeStock, stock } from './inventory';
 import { LedgerError, available, balance, destroy, issue, supply, transfer, type LedgerKind, type TickCtx } from './ledger';
-import { MarketError, cancelOrder, placeOrder, type FillEvent } from './market';
+import { MarketError, cancelOrder, expireOrders, placeOrder, type FillEvent } from './market';
+import { runContractDeliveries } from './contracts';
+import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
 import { energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
@@ -111,6 +113,14 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       const staff = staffNeeded(c, plannedTotal);
       if (staff !== c.employees) { db.run('UPDATE companies SET employees = ? WHERE id = ?', staff, c.id); c.employees = staff; }
     }
+
+    /* C2. Orders whose expiry has arrived stop trading and release their reservations; then recurring supply contracts deliver from free stock
+     *     BEFORE the day's listings reserve it, so contracted goods are never double-sold. */
+    phase('order_expiry');
+    const expired = expireOrders(db, n);
+    if (expired.length) logEvent(db, n, 'orders_expired', 'info', null, `${expired.length} order(s) expired and released their reservations`);
+    phase('contracts');
+    for (const d of runContractDeliveries(db, ctx, cfg, safe)) if (d.status === 'delivered') { trades++; tradeValue += d.grossMinor; const sv = st(d.supplier!), bv = st(d.buyer!); sv.revenue += d.grossMinor; sv.cogs += d.costMinor!; sv.fees += d.feeMinor; sv.unitsSold += d.qty; bv.inputPurchases += d.grossMinor; }
 
     /* D. Refresh system sell orders (player-placed resting orders have idempotency keys and are left alone). */
     phase('listings');
@@ -269,6 +279,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       const surplus = available(db, c.treasury_account_id) - cfg.enterpriseReserveMinor;
       if (surplus > 0) safe('sweep', c.id, () => pay('transfer', c.treasury_account_id, city.treasury_account_id, surplus, `${c.name} surplus to treasury`));
     }
+    phase('exchange');
+    safe('exchange_sweep', 'penny-exchange', () => { sweepExchange(db, ctx, cfg, city.treasury_account_id); });
     phase('state_sink');
     const burn = Math.floor((Math.max(0, available(db, city.treasury_account_id) - cfg.stateReserveMinor) * cfg.stateBurnBps) / 10_000);
     if (burn > 0) destroy(db, ctx, key('upkeep'), city.treasury_account_id, burn, 'infrastructure upkeep (explicit burn)');
@@ -304,6 +316,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
 
     /* K. History + snapshot. */
+    phase('market_stats');
+    recordMarketStats(db, n);
     phase('history');
     let produced = 0;
     for (const c of all) {

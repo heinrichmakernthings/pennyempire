@@ -4,7 +4,8 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { openWorld, lastTick } from './world';
-import { reconcile, supply } from './ledger';
+import { balance, reconcile, supply } from './ledger';
+import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 import { stock } from './inventory';
 
 const race = (mode: string, path: string, args: string[]) => Promise.all(args.map((arg) => new Promise<unknown>((resolve) => {
@@ -57,7 +58,8 @@ describe('concurrent actions from separate processes on one database file', () =
       const res = (await race('buy', path, ['1', '2', '3', '4', '5', '6'])) as { filled: number }[];
       expect(res.reduce((a, r) => a + r.filled, 0)).toBe(150);                       // 6 × wants 100 of 150 → total exactly 150
       expect(db.get<{ s: number }>("SELECT SUM(qty) s FROM inventory WHERE commodity_id = 'wheat'")!.s).toBe(wheatBefore);   // units moved, none created
-      expect(supply(db).circulating).toBe(s0.circulating - Math.floor((150 * 60) / 100));                                   // only the fee left the economy
+      expect(supply(db).circulating).toBe(s0.circulating);                                                                   // nothing left the economy: the fee moved to the Penny Exchange
+      expect(balance(db, EXCHANGE_ACCOUNT)).toBe(Math.floor((150 * 60) / 100));
       expect(reconcile(db)).toMatchObject({ ok: true });
     } finally { db.close(); rmSync(dir, { recursive: true, force: true }); }
   }, 60_000);

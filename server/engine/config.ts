@@ -6,7 +6,7 @@ export interface EngineConfig {
   epochDate: string;                 // game date of tick 0
   realMsPerTick: number;             // wall-clock length of one economic tick (one in-game day)
   maxCatchupTicks: number;           // after downtime, at most this many ticks are replayed; the rest of the gap is skipped (and logged)
-  exchangeFeeBps: number;            // seller-paid fee on every trade; destroyed (a sink)
+  exchangeFeeBps: number;            // seller-paid fee on every trade; paid to the Penny Exchange (a transfer — see exchangeBurnBps for the explicit burn)
   procurementLimitBps: number;       // NPC/company input purchases are limited to this share of the reference price
   stateSupplyMarkupBps: number;      // price of the state provisioner's bounded fallback stock
   stateSupplyPerTick: number;        // units of each base commodity the provisioner can create per tick
@@ -37,6 +37,15 @@ export interface EngineConfig {
   wearBpsPerTick: number;            // equipment condition lost per producing day
   serviceCostBps: number;            // share of the equipment's cost needed to restore it from 0% to 100% condition
   liquidationBps: number;            // price the state pays for a bankrupt company's stock, as a share of its cost basis
+  // ── exchange ──
+  exchangeBurnBps: number;           // share of the Penny Exchange's fee income destroyed each tick (explicit burn); the rest is swept to the state treasury (a transfer)
+  marketSlippageBps: number;         // default price protection for market orders (max distance from the best opposite price)
+  maxSlippageBps: number;            // hard ceiling a player may request
+  maxOrderTicks: number;             // longest lifetime an order may request (days)
+  contractNoticeTicks: number;       // days of notice before a cancellation takes effect
+  contractMaxMisses: number;         // consecutive missed deliveries that end a contract
+  contractMaxTicks: number;          // longest contract duration (days)
+  contractShareBps: number;          // largest share of a supplier's daily output (or a buyer's daily need) one contract may commit
   qualityInputBps: { basic: number; standard: number; premium: number };   // ingredient use per batch by quality grade
 }
 
@@ -45,7 +54,7 @@ export const DEFAULT_CONFIG: EngineConfig = {
   exchangeFeeBps: 100, procurementLimitBps: 15_000, stateSupplyMarkupBps: 14_000, stateSupplyPerTick: 120, stateSupplyCap: 400,
   stipendPerThousandMinor: 120, civilPayrollBps: 500, corporationTaxBps: 1_500, idleCashLevyBps: 10, stateBurnBps: 100, stateReserveMinor: 2_000_000, enterpriseReserveMinor: 300_000,
   insolvencyAfterTicks: 3, npcPriceStepBps: 150, npcSupportMinor: 0, npcPayoutBps: 8_000, npcReserveTicks: 10, supplyTargetMinor: 0, stipendGainBps: 100_000, energyCommodityId: 'energy',
-  maxCompaniesPerPlayer: 6, bankruptcyAfterTicks: 10, staffChangesPerDay: 3, stockCoverDays: 5, awarenessHalfSpendMinor: 6_000, awarenessMaxBps: 4_000, awarenessDecayBps: 500, wearBpsPerTick: 20, serviceCostBps: 3_000, liquidationBps: 5_000, qualityInputBps: { basic: 9_000, standard: 10_000, premium: 12_500 },
+  maxCompaniesPerPlayer: 6, bankruptcyAfterTicks: 10, staffChangesPerDay: 3, stockCoverDays: 5, awarenessHalfSpendMinor: 6_000, awarenessMaxBps: 4_000, awarenessDecayBps: 500, wearBpsPerTick: 20, serviceCostBps: 3_000, liquidationBps: 5_000, exchangeBurnBps: 5_000, marketSlippageBps: 500, maxSlippageBps: 2_000, maxOrderTicks: 60, contractNoticeTicks: 3, contractMaxMisses: 3, contractMaxTicks: 90, contractShareBps: 5_000, qualityInputBps: { basic: 9_000, standard: 10_000, premium: 12_500 },
 };
 
 export function loadConfig(db: Sql): EngineConfig {
@@ -58,9 +67,9 @@ export function saveConfig(db: Sql, cfg: EngineConfig) {
 
 export function validateConfig(c: EngineConfig): string[] {
   const errs: string[] = [];
-  const ints: (keyof EngineConfig)[] = ['realMsPerTick', 'maxCatchupTicks', 'exchangeFeeBps', 'procurementLimitBps', 'stateSupplyMarkupBps', 'stateSupplyPerTick', 'stateSupplyCap', 'stipendPerThousandMinor', 'civilPayrollBps', 'corporationTaxBps', 'idleCashLevyBps', 'stateBurnBps', 'stateReserveMinor', 'enterpriseReserveMinor', 'insolvencyAfterTicks', 'npcPriceStepBps', 'npcSupportMinor', 'npcPayoutBps', 'npcReserveTicks', 'supplyTargetMinor', 'stipendGainBps', 'maxCompaniesPerPlayer', 'bankruptcyAfterTicks', 'staffChangesPerDay', 'stockCoverDays', 'awarenessHalfSpendMinor', 'awarenessMaxBps', 'awarenessDecayBps', 'wearBpsPerTick', 'serviceCostBps', 'liquidationBps'];
+  const ints: (keyof EngineConfig)[] = ['realMsPerTick', 'maxCatchupTicks', 'exchangeFeeBps', 'procurementLimitBps', 'stateSupplyMarkupBps', 'stateSupplyPerTick', 'stateSupplyCap', 'stipendPerThousandMinor', 'civilPayrollBps', 'corporationTaxBps', 'idleCashLevyBps', 'stateBurnBps', 'stateReserveMinor', 'enterpriseReserveMinor', 'insolvencyAfterTicks', 'npcPriceStepBps', 'npcSupportMinor', 'npcPayoutBps', 'npcReserveTicks', 'supplyTargetMinor', 'stipendGainBps', 'maxCompaniesPerPlayer', 'bankruptcyAfterTicks', 'staffChangesPerDay', 'stockCoverDays', 'awarenessHalfSpendMinor', 'awarenessMaxBps', 'awarenessDecayBps', 'wearBpsPerTick', 'serviceCostBps', 'liquidationBps', 'exchangeBurnBps', 'marketSlippageBps', 'maxSlippageBps', 'maxOrderTicks', 'contractNoticeTicks', 'contractMaxMisses', 'contractMaxTicks', 'contractShareBps'];
   for (const k of ints) if (!Number.isSafeInteger(c[k]) || (c[k] as number) < 0) errs.push(`${k} must be a non-negative safe integer`);
-  if (c.exchangeFeeBps > 10_000 || c.civilPayrollBps > 10_000 || c.corporationTaxBps > 10_000 || c.idleCashLevyBps > 10_000 || c.stateBurnBps > 10_000 || c.npcPayoutBps > 10_000) errs.push('basis-point settings must be ≤ 10000');
+  if (c.exchangeFeeBps > 10_000 || c.civilPayrollBps > 10_000 || c.corporationTaxBps > 10_000 || c.idleCashLevyBps > 10_000 || c.stateBurnBps > 10_000 || c.npcPayoutBps > 10_000 || c.exchangeBurnBps > 10_000 || c.contractShareBps > 10_000) errs.push('basis-point settings must be ≤ 10000');
   if (c.realMsPerTick < 1) errs.push('realMsPerTick must be ≥ 1');
   if (c.maxCatchupTicks < 1) errs.push('maxCatchupTicks must be ≥ 1');
   return errs;

@@ -10,6 +10,7 @@ export const CITY_ID = 'city-bristol';
 export const PLAYER_ID = 'player-demo';
 export const HOUSEHOLDS = 'acct:households:bristol';
 export const TREASURY = 'acct:state:bristol-treasury';
+export const EXCHANGE_ACCOUNT = 'acct:state:penny-exchange';
 export const PLAYER_WALLET = 'acct:player:demo';
 export const companyAccount = (id: string) => `acct:co:${id}`;
 export const SEED_VERSION = 1;

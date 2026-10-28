@@ -3,7 +3,7 @@ import { balance, reconcile, supply } from './ledger';
 import { MarketError, cancelOrder, placeOrder } from './market';
 import { freeStock, stock } from './inventory';
 import { memWorld, one } from '../test/helpers';
-import { companyAccount } from '../seed/bristol';
+import { EXCHANGE_ACCOUNT, companyAccount } from '../seed/bristol';
 
 const ctx = { tick: 0, gameDate: 'x', actor: 't' };
 const FARM = 'co-severn-farm', MILL = 'co-brunel-mill', PIZZA = 'co-mad-slices';
@@ -39,7 +39,8 @@ describe('order book', () => {
     expect(balance(db, companyAccount(MILL))).toBe(800_000 - 2_400);
     expect(balance(db, companyAccount(FARM))).toBe(800_000 + 2_400 - 24);
     expect(stock(db, MILL, 'wheat').qty).toBe(240); expect(stock(db, FARM, 'wheat')).toMatchObject({ qty: 160, reserved: 60 });
-    expect(supply(db)).toEqual({ issued: s0.issued, destroyed: 24, circulating: s0.circulating - 24 });
+    expect(supply(db)).toEqual({ issued: s0.issued, destroyed: 0, circulating: s0.circulating });   // fee is a transfer to the exchange
+    expect(balance(db, EXCHANGE_ACCOUNT)).toBe(24);
     expect(one<{ r: number }>(db, 'SELECT reserved_minor r FROM accounts WHERE id = ?', companyAccount(MILL)).r).toBe(0);      // surplus reservation released
     expect(reconcile(db)).toMatchObject({ ok: true });
   });

@@ -71,7 +71,7 @@ export function procureInputs(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Compa
         const need = inputUnitsPerBatch(cfg, c.quality, i.units);
         const deficit = Math.max(0, b * need - freeStock(db, c.id, i.commodity_id)); if (deficit === 0) continue;
         const cap = Math.floor((refPriceOf(db, i.commodity_id) * cfg.procurementLimitBps) / 10_000);
-        const d = depth(db, i.commodity_id, cap, c.id, deficit);
+        const d = depth(db, i.commodity_id, cap, c.id, deficit, ctx.tick);
         if (d.qty < deficit) { ok = false; why = 'supply'; break; }
         cost += d.cost; buys.push({ com: i.commodity_id, qty: deficit });
       }
