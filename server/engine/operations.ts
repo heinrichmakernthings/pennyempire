@@ -28,7 +28,8 @@ export const conditionFactorBps = (c: Pick<CompanyRow, 'condition_bps'>) => 5_00
 /** Share of full capacity the current staff can run: each employee covers max/employees of the workplace, scaled by productivity upgrades. Capped at 100%: extra staff beyond the workplace cannot exist. */
 export const staffFactorBps = (c: Pick<CompanyRow, 'employees' | 'max_employees' | 'productivity_bps'>) => (c.max_employees === 0 ? 0 : Math.min(10_000, Math.floor((c.employees * (10_000 + c.productivity_bps)) / c.max_employees)));
 export const staffedCapacity = (c: CompanyRow) => Math.floor((c.capacity_batches * staffFactorBps(c)) / 10_000);
-export const effCapacity = (c: CompanyRow) => Math.floor((staffedCapacity(c) * conditionFactorBps(c)) / 10_000);
+/** Rounded, not floored: a hair of wear must not cost a whole batch. */
+export const effCapacity = (c: CompanyRow) => Math.round((staffedCapacity(c) * conditionFactorBps(c)) / 10_000);
 /** Employees needed to run `planned` batches at the current condition and productivity (hire/fire to demand rule for NPCs; shown to players as "staff needed"). */
 export const staffNeeded = (c: CompanyRow, planned: number) => {
   const denom = c.capacity_batches * conditionFactorBps(c) * (10_000 + c.productivity_bps);
@@ -37,11 +38,13 @@ export const staffNeeded = (c: CompanyRow, planned: number) => {
 
 export interface PlannedLine { line: Line; batches: number; wanted: number; reason: LimitReason }
 /** What each production line may run before inputs are considered: min(target, staffed+condition capacity, storage room). */
-export function planCompany(db: Sql, c: CompanyRow, override?: number): PlannedLine[] {
+export function planCompany(db: Sql, c: CompanyRow, cfg: Pick<EngineConfig, 'stockCoverDays'>, override?: number): PlannedLine[] {
   let capLeft = effCapacity(c); const noCond = staffedCapacity(c);
   return linesOf(db, c.id).map((line) => {
     const wanted = override ?? line.planned_batches;
-    const room = Math.max(0, Math.floor((c.storage_cap_units - stock(db, c.id, line.output_commodity_id).qty) / line.output_units));
+    const held = stock(db, c.id, line.output_commodity_id).qty;
+    const cover = Math.max(0, Math.floor((line.planned_batches * line.output_units * cfg.stockCoverDays - held) / line.output_units));   // days-of-stock guard
+    const room = Math.min(cover, Math.max(0, Math.floor((c.storage_cap_units - held) / line.output_units)));
     const b = Math.max(0, Math.min(wanted, capLeft, room));
     let reason: LimitReason = 'plan';
     if (b < wanted) reason = room <= capLeft ? 'storage' : (capLeft < noCond && noCond >= wanted ? 'condition' : 'staff');
@@ -58,7 +61,7 @@ export interface ProcureResult { purchases: Purchase[]; batches: number; limit: 
  */
 export function procureInputs(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: CompanyRow, budget: number, energyPrice: number, onFill?: (f: FillEvent) => void, override?: number): ProcureResult {
   const purchases: Purchase[] = []; let limit: ProcureResult['limit'] = null; let total = 0;
-  for (const { line, batches } of planCompany(db, c, override)) {
+  for (const { line, batches } of planCompany(db, c, cfg, override)) {
     const inputs = recipeInputs(db, line.recipe_id); if (inputs.length === 0 || batches === 0) continue;
     const energyCost = energyPerBatch(c, line.energy_units) * energyPrice;
     let done = false;

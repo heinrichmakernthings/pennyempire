@@ -9,13 +9,21 @@ import { feeFromBps } from '../../src/domain/money';
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 const WINDOW = 7;                                         // days of history behind every estimate
 const startable = (db: Sql) => db.all<Spec>('SELECT * FROM industry_specs WHERE startable = 1 ORDER BY industry_id');
-const avg = (n: number) => Math.round(n / WINDOW);
+/** Days of real history behind an average: a young world has fewer than WINDOW ticks, and the first tick (0) is the seed, not a trading day. */
+const daysOf = (db: Sql) => Math.max(1, Math.min(WINDOW, lastTick(db)));
+const avgOver = (n: number, days: number) => Math.round(n / days);
 
 
 /** Real units wanted/sold per day for a commodity, derived from consumer + public-works demand rules. */
 function consumerDemand(db: Sql, commodity: string, t: number) {
-  const r = db.get<{ w: number; s: number; u: number }>('SELECT COALESCE(SUM(s.units_wanted),0) w, COALESCE(SUM(s.units_sold),0) s, COALESCE(SUM(s.unmet_units),0) u FROM demand_tick_stats s JOIN demand_rules r ON r.id = s.rule_id WHERE r.commodity_id = ? AND s.tick > ?', commodity, t - WINDOW)!;
-  return { wanted: avg(r.w), sold: avg(r.s), unmet: avg(r.u) };
+  const days = daysOf(db);
+  const r = db.get<{ w: number; s: number; u: number }>('SELECT COALESCE(SUM(s.units_wanted),0) w, COALESCE(SUM(s.units_sold),0) s, COALESCE(SUM(s.unmet_units),0) u FROM demand_tick_stats s JOIN demand_rules r ON r.id = s.rule_id WHERE r.commodity_id = ? AND s.tick > ? AND s.tick > 0', commodity, t - WINDOW)!;
+  if (r.w > 0) return { wanted: avgOver(r.w, days), sold: avgOver(r.s, days), unmet: avgOver(r.u, days) };
+  // No trading day yet: estimate from the demand rules' funding at the reference price.
+  const ref = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', commodity)!.p;
+  const rules = db.all<{ mode: string; amount: number; bal: number }>('SELECT r.mode, r.amount, a.balance_minor bal FROM demand_rules r JOIN accounts a ON a.id = r.funder_account_id WHERE r.commodity_id = ?', commodity);
+  const budget = rules.reduce((a, x) => a + (x.mode === 'fixed' ? Math.min(x.amount, x.bal) : Math.floor((x.bal * x.amount) / 10_000)), 0);
+  return { wanted: Math.floor(budget / ref), sold: 0, unmet: 0 };
 }
 /** Business-to-business demand: units per day that production lines in the city plan to consume. */
 function businessDemand(db: Sql, commodity: string) {
@@ -34,8 +42,11 @@ export function opportunities(db: Sql): Opportunity[] {
     const commodity = recipe.output_commodity_id;
     const ref = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', commodity)!.p;
     const energyRef = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', cfg.energyCommodityId)?.p ?? 0;
-    const rivals = db.all<{ id: string; u: number }>("SELECT c.id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ?),0) u FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL AND c.status <> 'insolvent'", t - WINDOW, spec.industry_id);
-    const supply = avg(rivals.reduce((a, r) => a + r.u, 0)), leader = avg(Math.max(0, ...rivals.map((r) => r.u)));
+    const days = daysOf(db);
+    const rivals = db.all<{ id: string; u: number }>("SELECT c.id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) u FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL AND c.status <> 'insolvent'", t - WINDOW, spec.industry_id);
+    // Before the first trading day there is no sales history: use what rivals plan to make (their real production lines) instead.
+    if (t < 1) for (const r of rivals) r.u = db.get<{ u: number }>('SELECT COALESCE(SUM(l.planned_batches * rc.output_units),0) u FROM production_lines l JOIN recipes rc ON rc.id = l.recipe_id WHERE l.company_id = ? AND rc.output_commodity_id = ?', r.id, commodity)!.u;
+    const supply = avgOver(rivals.reduce((a, r) => a + r.u, 0), t < 1 ? 1 : days), leader = avgOver(Math.max(0, ...rivals.map((r) => r.u)), t < 1 ? 1 : days);
     const demand = spec.sells === 'businesses' ? businessDemand(db, commodity) : consumerDemand(db, commodity, t).wanted;
     const unmet = Math.max(0, demand - supply);
     const saturation = demand > 0 ? Math.min(20_000, Math.floor((supply * 10_000) / demand)) : 20_000;
@@ -108,11 +119,11 @@ export function lots(db: Sql): LotInfo[] {
 
 /** Local rankings by 7-day average units sold. Ties break on reputation, then id, so the order is deterministic. */
 export function rankings(db: Sql): Ranking[] {
-  const t = lastTick(db);
+  const t = lastTick(db), days = daysOf(db);
   return startable(db).map((spec) => {
-    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>("SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ?),0) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id", t - WINDOW, spec.industry_id);
+    const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>("SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id", t - WINDOW, spec.industry_id);
     const total = rows.reduce((a, r) => a + r.u, 0);
-    return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avg(total), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avg(r.u), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === PLAYER_ID })) };
+    return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avgOver(total, days), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avgOver(r.u, days), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === PLAYER_ID })) };
   });
 }
 
@@ -130,7 +141,7 @@ export function management(db: Sql, companyId: string): Management | null {
   };
   const sameDay = c.staff_change_tick === t;
   const staffFactor = c.max_employees === 0 ? 0 : Math.min(10_000, Math.floor((c.employees * (10_000 + c.productivity_bps)) / c.max_employees));
-  const effBatches = Math.floor((Math.floor((c.capacity_batches * staffFactor) / 10_000) * condFactor) / 10_000);
+  const effBatches = Math.round((Math.floor((c.capacity_batches * staffFactor) / 10_000) * condFactor) / 10_000);
   const log = db.all<{ tick: number; planned_batches: number; produced_batches: number; limited_by: string; output_units: number }>('SELECT * FROM production_log WHERE company_id = ? ORDER BY tick DESC LIMIT 14', companyId);
   const lastLimit = log[0]?.limited_by;
   const chain = line ? recipeInputs(db, line.recipe_id).map((i) => {
@@ -154,10 +165,13 @@ export function management(db: Sql, companyId: string): Management | null {
       const worst = parts.sort((a, b) => b[1] - a[1])[0]!;
       diag.push({ kind: 'bad', text: `Losing ${(-st.net_profit_minor / 100).toFixed(2)} EC/day. The biggest cost is ${worst[0]} (${(worst[1] / 100).toFixed(2)} EC) against ${(st.revenue_minor / 100).toFixed(2)} EC of sales.` });
     }
+    const lowest = rk?.rows.filter((r) => r.companyId !== companyId && r.priceMinor > 0).sort((a, b) => a.priceMinor - b.priceMinor)[0];
+    const myPrice = rk?.rows.find((r) => r.companyId === companyId)?.priceMinor ?? 0;
+    if (lowest && myPrice > lowest.priceMinor && st.units_sold < st.units_produced) diag.push({ kind: 'warn', text: `A competitor undercuts you: ${lowest.name} sells at ${(lowest.priceMinor / 100).toFixed(2)} EC against your ${(myPrice / 100).toFixed(2)} EC, and buyers favour the lower price.` });
     if (st.units_produced > 0 && st.units_sold === 0) diag.push({ kind: 'warn', text: 'You produced goods but sold none: check your price against competitors, or your reputation and advertising.' });
   }
   if (lastLimit && lastLimit !== 'plan' && live) {
-    const why: Record<string, string> = { staff: 'You do not have enough staff to run the planned batches. Hire, or lower the target.', storage: 'Storage is full. Sell stock, lower the target, or buy a storage upgrade.', inputs: 'Ingredients ran out. Buy supplies or turn on auto-purchasing.', cash: 'The company ran short of cash for ingredients.', supply: 'Nobody could sell the company enough ingredients.', condition: 'Worn equipment is cutting output. Service it.', closed: 'The company was closed.' };
+    const why: Record<string, string> = { staff: 'You do not have enough staff to run the planned batches. Hire, or lower the target.', storage: 'Unsold stock has piled up (storage is full, or about 5 days of output is sitting in the store). Lower your price or your production target.', inputs: 'Ingredients ran out. Buy supplies or turn on auto-purchasing.', cash: 'The company ran short of cash for ingredients.', supply: 'Nobody could sell the company enough ingredients.', condition: 'Worn equipment is cutting output. Service it.', closed: 'The company was closed.' };
     diag.push({ kind: 'warn', text: why[lastLimit] ?? `Production limited by ${lastLimit}.` });
   }
   if (c.condition_bps < 5_000 && live) diag.push({ kind: 'warn', text: `Equipment is at ${Math.round(c.condition_bps / 100)}% condition; output is reduced until it is serviced.` });

@@ -86,7 +86,7 @@ export function ProductionPanel({ c, m }: { c: Company; m: Management }) {
     </div>
   );
 }
-const LIMIT_LABEL: Record<string, string> = { plan: 'Nothing (target met)', staff: 'Not enough staff', storage: 'Storage full', inputs: 'Ran out of ingredients', cash: 'No cash for ingredients', supply: 'Nobody selling', condition: 'Worn equipment', closed: 'Closed' };
+const LIMIT_LABEL: Record<string, string> = { plan: 'Nothing (target met)', staff: 'Not enough staff', storage: 'Storage full or 5 days of unsold stock', inputs: 'Ran out of ingredients', cash: 'No cash for ingredients', supply: 'Nobody selling', condition: 'Worn equipment', closed: 'Closed' };
 
 export function SupplyChainPanel({ c, m, canAct }: { c: Company; m: Management; canAct: boolean }) {
   const { send, pending } = useCommand();
@@ -108,7 +108,7 @@ export function SupplyChainPanel({ c, m, canAct }: { c: Company; m: Management; 
       {canAct && (
         <div className="pe-row">
           <label className="pe-row" htmlFor="batches-input">Batches to buy now <Tip>Buys ingredients immediately for this many batches from the cheapest sellers, using the company's cash.</Tip></label>
-          <input id="batches-input" type="number" min={1} max={100} step={1} value={batches} onChange={(e) => { setBatches(e.target.value); setKey(newIdempotencyKey()); }} style={{ width: 80 }} />
+          <input id="batches-input" type="number" min={1} max={100} step={1} value={batches} onChange={(e) => { setBatches(e.target.value); setKey(newIdempotencyKey()); }} className="pe-input-sm" />
           <Button variant="primary" pending={pending} disabled={!Number.isInteger(n) || n < 1 || n > 100} onClick={() => void buy()} data-testid="buy-supplies">Buy supplies now</Button>
         </div>
       )}

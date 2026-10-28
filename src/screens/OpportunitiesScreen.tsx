@@ -21,7 +21,7 @@ export function OpportunitiesScreen() {
   return (
     <div className="pe-screen">
       <div className="pe-screen-head"><h1 className="pe-h1">Opportunities</h1>{source.authority !== 'server' && <IllustrativeBadge />}</div>
-      {source.authority !== 'server' ? <EmptyState title="Opportunities need the game server">The finder reads live Bristol market data. Start the game server (npm run dev:full) to see real forecasts.</EmptyState>
+      {source.authority !== 'server' ? <EmptyState title="Opportunities need the game server">The finder reads live Bristol market data. Start the game server (npm run dev:all) to see real forecasts.</EmptyState>
         : q.status === 'loading' ? <Skeleton lines={8} label="Loading opportunities" />
         : q.status === 'error' ? <ErrorState title="Couldn’t load opportunities" message={q.error} onRetry={q.reload} />
         : <Finder note={q.data.forecastNote} items={q.data.opportunities} />}

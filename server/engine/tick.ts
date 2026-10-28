@@ -145,7 +145,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     for (const c of order) {
       if (c.status !== 'operating') continue;
       safe('production', c.id, () => {
-        for (const { line, batches, wanted, reason } of planCompany(db, c)) {
+        for (const { line, batches, wanted, reason } of planCompany(db, c, cfg)) {
           const inputs = inputsOf(line.recipe_id).map((i) => ({ ...i, need: inputUnitsPerBatch(cfg, c.quality, i.units) }));
           const byInputs = Math.min(batches, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.need)));
           const b = Math.max(0, byInputs);

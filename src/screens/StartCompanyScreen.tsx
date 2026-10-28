@@ -33,7 +33,7 @@ export function StartCompanyScreen() {
   const quote = useQuery((s) => (industry && lotId ? fetchStartupQuote({ industry, plotId: lotId, tier, name: name.trim() || undefined, workingCapitalMinor: Number.isNaN(capitalMinor) ? undefined : capitalMinor }, s) : Promise.resolve(null)), [industry, lotId, tier, name, capitalMinor], false);
   useEffect(() => { setKey(newIdempotencyKey()); }, [industry, lotId, tier, name, capitalMinor]);
 
-  if (source.authority !== 'server') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><IllustrativeBadge /><EmptyState title="Company creation needs the game server">Start the game server (npm run dev:full) to found a real company.</EmptyState></div>;
+  if (source.authority !== 'server') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><IllustrativeBadge /><EmptyState title="Company creation needs the game server">Start the game server (npm run dev:all) to found a real company.</EmptyState></div>;
   if (ops.status === 'loading' || lots.status === 'loading') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><Skeleton lines={6} label="Loading" /></div>;
   if (ops.status === 'error' || lots.status === 'error') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><ErrorState message={ops.status === 'error' ? ops.error : lots.status === 'error' ? lots.error : ''} onRetry={() => { ops.reload(); lots.reload(); }} /></div>;
   const industries = ops.data.opportunities;

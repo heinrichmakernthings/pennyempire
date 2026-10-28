@@ -179,6 +179,16 @@ describe('calibration: default companies are viable, never runaway', () => {
     expect(q.totalMinor / avg).toBeGreaterThan(30);               // no default business repays its whole startup cost in under 30 days
     expect(reconcile(db).ok).toBe(true);
   });
+  it('production pauses once unsold stock reaches the cover limit, so an unsellable price cannot burn cash on endless overproduction', () => {
+    const db = fresh(); advance(db, 7);
+    const q = startupQuote(db, { industry: 'cafe', plotId: 'plot-cafe', tier: 1, name: 'Overstock Cafe' });
+    const id = (createCompany(db, 'k', { industry: 'cafe', plotId: 'plot-cafe', tier: 1, name: 'Overstock Cafe', expectedTotalMinor: q.totalMinor }) as { data: { companyId: string } }).data.companyId;
+    configureCompany(db, 'p', id, 1, { priceMinor: 700 });                       // maximum price: little demand
+    advance(db, 25);
+    const held = db.get<{ q: number }>("SELECT COALESCE(SUM(qty),0) q FROM inventory WHERE company_id = ? AND commodity_id = 'cafe-drink'", id)!.q;
+    const planned = db.get<{ u: number }>('SELECT l.planned_batches * r.output_units u FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ?', id)!.u;
+    expect(held).toBeLessThanOrEqual(planned * 5 + planned);                      // cover limit (+ one day's batch in flight)
+  });
   it('overstaffing costs wages without adding output', () => {
     const run = (staff: number) => {
       const db = fresh(); const q = startupQuote(db, { industry: 'cafe', plotId: 'plot-cafe', tier: 1, name: 'Staff Cafe' });
@@ -196,6 +206,27 @@ describe('calibration: default companies are viable, never runaway', () => {
     const id = (createCompany(db, 'k', { industry: 'pizza', plotId: 'plot-pizza', tier: 1, name: 'Empty Pizza', expectedTotalMinor: q.totalMinor }) as { data: { companyId: string } }).data.companyId;
     configureCompany(db, 'a', id, 1, { autoProcure: false }); advance(db, 3);
     expect(db.get<{ u: number }>('SELECT COALESCE(SUM(units_produced),0) u FROM company_tick_stats WHERE company_id = ? AND tick > 3', id)!.u).toBe(0);
+  });
+});
+
+describe('strategy: attention pays', () => {
+  const play = (industry: string, plot: string, managed: boolean) => {
+    const db = fresh(); advance(db, 7);
+    const q = startupQuote(db, { industry, plotId: plot, tier: 1, name: 'Strategy Co' });
+    const id = (createCompany(db, 'k', { industry, plotId: plot, tier: 1, name: 'Strategy Co', expectedTotalMinor: q.totalMinor }) as { data: { companyId: string } }).data.companyId;
+    for (let d = 0; d < 60; d++) {
+      if (managed && d % 2 === 0) {
+        // a competent owner watches the price war and stays just under the cheapest rival
+        const c = db.get<{ revision: number; min_price_minor: number; max_price_minor: number; retail_commodity_id: string | null }>('SELECT * FROM companies WHERE id = ?', id)!;
+        const rival = rankings(db).find((r) => r.industry === industry)!.rows.filter((r) => r.companyId !== id).map((r) => r.priceMinor);
+        if (rival.length) { const target = Math.max(c.min_price_minor, Math.min(c.max_price_minor, Math.floor(Math.min(...rival) * 0.99))); configureCompany(db, `m${d}`, id, c.revision, { priceMinor: target }); }
+      }
+      advance(db, 1);
+    }
+    return db.get<{ p: number }>('SELECT COALESCE(SUM(net_profit_minor),0) p FROM company_tick_stats WHERE company_id = ?', id)!.p;
+  };
+  it('a managed company out-earns a set-and-forget one in a market with price competition', () => {
+    expect(play('dairy', 'lot-3', true)).toBeGreaterThan(play('dairy', 'lot-3', false));
   });
 });
 
@@ -226,6 +257,14 @@ describe('opportunity finder, lots and rankings', () => {
     const ops = opportunities(db);
     for (const o of ops) { expect(o.forecast.label).toBe('FORECAST'); expect(Number.isInteger(o.forecast.profitMinor)).toBe(true); expect(o.reasons.length).toBeGreaterThan(0); }
     expect(ops[0]!.score).toBeGreaterThanOrEqual(ops[ops.length - 1]!.score);
+  });
+  it('opportunities on day 0 use rivals’ production plans and demand funding, not empty history', () => {
+    const db = openWorld(':memory:', { realMsPerTick: 3_600_000_000 }, 'new');
+    const ops = opportunities(db);
+    const farm = ops.find((o) => o.industry === 'farm')!, pizza = ops.find((o) => o.industry === 'pizza')!;
+    expect(farm.market.supplyUnitsPerDay).toBeGreaterThan(0);                 // Severn Valley Farm plans to make wheat
+    expect(farm.market.unmetUnitsPerDay).toBeLessThan(farm.market.demandUnitsPerDay);
+    expect(pizza.market.demandUnitsPerDay).toBeGreaterThan(0);
   });
   it('lots list vacancy and fits; a taken lot becomes unavailable', () => {
     const db = fresh(); expect(lots(db).filter((l) => l.status === 'vacant')).toHaveLength(10);

@@ -41,7 +41,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
         default: return apiErr(404, 'UNAVAILABLE', `Screen ${seg[1]} has no server data yet`);
       }
     }
-    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'FORECAST: estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db) });
+    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db) });
     if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
     if (method === 'GET' && seg[0] === 'rankings') return json(200, { authority: 'server', rankings: rankings(db) });
     if (method === 'GET' && seg[0] === 'startup-quote') {
