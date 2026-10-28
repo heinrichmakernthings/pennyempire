@@ -26,6 +26,10 @@ export interface StartupQuote {
   workingCapitalMinMinor: number; workingCapitalDefaultMinor: number; issues: { field: string; message: string }[];
   running: { rentPerDayMinor: number; wagesPerDayMinor: number; staff: number; maxStaff: number; capacityBatches: number; storageUnits: number; assetId: string };
 }
+/** Staff needed to run the default production plan at full equipment condition: hiring beyond this buys no output. */
+export const defaultStaff = (spec: Spec, tier: Tier) => Math.max(1, Math.min(tier.max_employees, Math.ceil((Math.min(spec.default_batches, tier.capacity_batches) * tier.max_employees) / tier.capacity_batches)));
+/** Plots a player can build on: the numbered lots, plus the two starter-shop plots once vacated (or built on by a player company). */
+export const LOT_SQL = "(p.id LIKE 'lot-%' OR (p.id IN ('plot-pizza','plot-cafe') AND (p.company_id IS NULL OR p.company_id LIKE 'co-pl-%')))";
 export const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9 '&.,-]{2,31}$/;
 
 /** Itemised startup cost and every reason it could be refused. Pure read; `createCompany` re-runs it inside the transaction, so the client never sets a price. */
@@ -34,8 +38,7 @@ export function startupQuote(db: Sql, input: StartupInput): StartupQuote {
   const issues: { field: string; message: string }[] = [];
   const spec = specOf(db, input.industry);
   const tier = spec && [1, 2].includes(input.tier) ? tierOf(db, input.industry, input.tier) : undefined;
-  const plot = db.get<{ id: string; width: number; depth: number; district_id: string | null; company_id: string | null; asset_id: string | null }>("SELECT id, width, depth, district_id, company_id, asset_id FROM plots WHERE id = ? AND id LIKE 'lot-%'", input.plotId)
-    ?? db.get<{ id: string; width: number; depth: number; district_id: string | null; company_id: string | null; asset_id: string | null }>('SELECT id, width, depth, district_id, company_id, asset_id FROM plots WHERE id = ? AND asset_id IS NULL AND company_id IS NULL AND (width > 1 OR depth > 1)', input.plotId);
+  const plot = db.get<{ id: string; width: number; depth: number; district_id: string | null; company_id: string | null; asset_id: string | null }>(`SELECT p.id, p.width, p.depth, p.district_id, p.company_id, p.asset_id FROM plots p WHERE p.id = ? AND ${LOT_SQL}`, input.plotId);
   if (!spec) issues.push({ field: 'industry', message: 'Unknown or unavailable industry.' });
   if (spec && !tier) issues.push({ field: 'tier', message: 'Choose standard or refurbished premises.' });
   if (!plot) issues.push({ field: 'plotId', message: 'That location does not exist.' });
@@ -50,7 +53,7 @@ export function startupQuote(db: Sql, input: StartupInput): StartupQuote {
   }
   const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w;
   const walletAvail = available(db, wallet);
-  const staff = spec && tier ? Math.min(spec.default_staff, tier.max_employees) : 0;
+  const staff = spec && tier ? defaultStaff(spec, tier) : 0;
   const rent = spec && tier ? rentFor(db, spec, tier, plot?.district_id ?? null) : 0;
   const dailyFixed = spec ? staff * spec.wage_minor + rent : 0;
   const wcMin = Math.max(dailyFixed * 3, spec ? Math.floor(spec.working_capital_minor / 3) : 0), wcDefault = spec?.working_capital_minor ?? 0;
@@ -90,7 +93,7 @@ export function createCompany(db: Sql, key: string, input: CreateInput): Command
     const claimed = db.run('UPDATE plots SET company_id = ?, asset_id = ? WHERE id = ? AND company_id IS NULL AND asset_id IS NULL', id, tier.asset_id, input.plotId).changes;
     if (claimed !== 1) return err('VALIDATION', 'That location was just taken.');
     createAccount(db, acct, 'company', `${name} treasury`);
-    const rent = rentFor(db, spec, tier, plot.district_id), staff = Math.min(spec.default_staff, tier.max_employees);
+    const rent = rentFor(db, spec, tier, plot.district_id), staff = defaultStaff(spec, tier);
     const batches = Math.min(spec.default_batches, tier.capacity_batches);
     db.run(`INSERT INTO companies (id, name, city_id, district_id, plot_id, industry_id, asset_id, owner_kind, owner_id, treasury_account_id, level, status, retail_commodity_id, price_minor, min_price_minor, max_price_minor, quality, employees, max_employees, wage_minor, capacity_batches, storage_cap_units, property_minor, marketing_minor, reputation_bps, created_tick, premises_tier, equipment_cost_minor)
       VALUES (?,?,?,?,?,?,?, 'player', ?, ?, ?, 'operating', ?,?,?,?, 'standard', ?,?,?,?,?,?, 0, 5000, ?, ?, ?)`,

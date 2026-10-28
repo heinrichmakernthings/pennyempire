@@ -106,7 +106,10 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}, prof
     db.run('INSERT INTO players (id, display_name, city_id, wallet_account_id) VALUES (?,?,?,?)', PLAYER_ID, 'Demo Trader', CITY_ID, PLAYER_WALLET);
 
     for (const t of mapTiles()) db.run('INSERT INTO plots (id, city_id, district_id, col, row, width, depth, terrain, road_mask, quay_mask, asset_id, company_id) VALUES (?,?,NULL,?,?,1,1,?,?,?,NULL,NULL)', `tile-${t.column}-${t.row}`, CITY_ID, t.column, t.row, t.terrain, t.roadMask, t.quayMask);
-    for (const b of MAP_BLOCKS) db.run('INSERT INTO plots (id, city_id, district_id, col, row, width, depth, terrain, road_mask, quay_mask, asset_id, company_id) VALUES (?,?,?,?,?,?,?,?,0,0,?,?)', b.plotId, CITY_ID, b.district, b.column, b.row, b.width, b.depth, 'paving', b.assetId, b.companyId);
+    // The 'new' profile has no starter shops: the two demo player shops are vacant plots a real player can claim.
+    const STARTER_SHOPS = new Set(['co-mad-slices', 'co-harbour-bean']);
+    const vacantStarter = (b: { companyId: string | null }) => profile === 'new' && b.companyId !== null && STARTER_SHOPS.has(b.companyId);
+    for (const b of MAP_BLOCKS) db.run('INSERT INTO plots (id, city_id, district_id, col, row, width, depth, terrain, road_mask, quay_mask, asset_id, company_id) VALUES (?,?,?,?,?,?,?,?,0,0,?,?)', b.plotId, CITY_ID, b.district, b.column, b.row, b.width, b.depth, 'paving', vacantStarter(b) ? null : b.assetId, vacantStarter(b) ? null : b.companyId);
 
     // Opening money: every coin is a recorded issuance with a reason.
     grant('households', HOUSEHOLDS, 6_000, 'opening NPC household savings');
@@ -114,7 +117,8 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}, prof
     grant('player', PLAYER_WALLET, profile === 'new' ? 20_000 : 15_000, profile === 'new' ? 'new player starting capital' : 'demo player starting capital');
 
     for (const company of COMPANIES) {
-      const c: CoSeed = profile === 'new' && company.owner[0] === 'player' ? { ...company, owner: ['npc', company.id === 'co-mad-slices' ? 'npc-mad-slices' : 'npc-harbour-bean'] } : company;
+      if (profile === 'new' && STARTER_SHOPS.has(company.id)) continue;
+      const c: CoSeed = company;
       const acct = companyAccount(c.id);
       createAccount(db, acct, 'company', `${c.name} treasury`);
       const dist = DISTRICTS.find((d) => d[0] === c.district)!;
