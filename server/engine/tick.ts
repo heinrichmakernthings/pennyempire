@@ -8,6 +8,7 @@ import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
 import { runConsumers } from './consumers';
 import { runStandings } from './standings';
+import { runShareClosing, runShareDecisions, runShareOpening } from './securitiesTick';
 import { runNpcDecisions, runNpcEntry, type Profile } from './npc';
 import { npcStaffTo } from './staffing';
 import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
@@ -63,7 +64,12 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const energyPrice = refPrice(cfg.energyCommodityId);
     const worksCo = stateCo('works');
     const city = db.get<{ id: string; population: number; households_account_id: string; treasury_account_id: string }>('SELECT id, population, households_account_id, treasury_account_id FROM cities ORDER BY id LIMIT 1')!;
+    const listedIds = new Set(db.all<{ company_id: string }>("SELECT company_id FROM securities WHERE status IN ('open','suspended')").map((r) => r.company_id));   // listed companies pay dividends through the dividend engine, not the automatic sweeps
     const onFill = (f: FillEvent) => { trades++; tradeValue += f.price * f.qty; st(f.seller).revenue += f.price * f.qty; st(f.seller).cogs += f.cost; st(f.seller).fees += f.fee; st(f.seller).unitsSold += f.qty; st(f.buyer).inputPurchases += f.price * f.qty; };
+
+    /* A0. Securities opening: stale share orders expire and declared dividends reach their payment day (treasury → shareholders). */
+    phase('share_opening');
+    safe('share_opening', 'shares', () => { runShareOpening(db, ctx); });
 
     /* A. Income: the only coins entering the economy during a tick are the citizens' income grant (issuance); everything else moves. */
     phase('income');
@@ -125,6 +131,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     safe('npc_decisions', 'npc', () => { runNpcDecisions(db, ctx, cfg, exitMark); });
     db.run("INSERT INTO meta (key, value) VALUES ('npc_last_exit', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(exitMark.tick));
     safe('npc_entry', 'npc', () => { runNpcEntry(db, ctx, cfg); });
+    phase('share_decisions');
+    safe('share_decisions', 'shares', () => { runShareDecisions(db, ctx, cfg); });
 
     /* C2. Orders whose expiry has arrived stop trading and release their reservations; then recurring supply contracts deliver from free stock
      *     BEFORE the day's listings reserve it, so contracted goods are never double-sold. */
@@ -255,7 +263,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
     // NPC shareholders are citizens: cash above a reserve of N ticks of fixed costs is paid out to households (a transfer, never minted).
     for (const c of order) {
-      if (c.owner_kind !== 'npc' || c.status !== 'operating' || cfg.npcPayoutBps === 0) continue;
+      if (c.owner_kind !== 'npc' || c.status !== 'operating' || cfg.npcPayoutBps === 0 || listedIds.has(c.id)) continue;
       const reserve = (profiles.get(c.id)?.reserve_days ?? cfg.npcReserveTicks) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
       const excess = available(db, c.treasury_account_id) - reserve;
       const dividend = Math.floor((Math.max(0, excess) * cfg.npcPayoutBps) / 10_000);
@@ -263,7 +271,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
     // State enterprises hold a working reserve; surplus returns to the treasury as a transfer (NOT destroyed).
     for (const c of order) {
-      if (c.owner_kind !== 'state' || c.status !== 'operating') continue;
+      if (c.owner_kind !== 'state' || c.status !== 'operating' || listedIds.has(c.id)) continue;
       const surplus = available(db, c.treasury_account_id) - cfg.enterpriseReserveMinor;
       if (surplus > 0) safe('sweep', c.id, () => pay('transfer', c.treasury_account_id, city.treasury_account_id, surplus, `${c.name} surplus to treasury`));
     }
@@ -317,6 +325,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
+    phase('share_closing');
+    safe('share_closing', 'shares', () => { runShareClosing(db, ctx, cfg); });
     phase('standings');
     runStandings(db, ctx, cfg);
     const snap = db.get<{ issued_tick_minor: number; destroyed_tick_minor: number; circulating_minor: number }>('SELECT * FROM supply_snapshots WHERE tick = ?', n)!;

@@ -3,6 +3,7 @@ import { loadConfig } from './config';
 import { runCommand, type CommandErr, type CommandResponse } from './commands';
 import { available, destroy, transfer, createAccount, type TickCtx } from './ledger';
 import { logEvent } from './stats';
+import { ownerInvestor, registerCapital } from './capital';
 import { procureInputs, refPriceOf, type CompanyRow } from './operations';
 import type { StartupLine, StartupQuote } from '../../src/shared/management';
 import { PLAYER_ID, companyAccount } from '../seed/bristol';
@@ -95,7 +96,7 @@ export function foundCompany(db: Sql, ctx: TickCtx, key: string, input: StartupI
     VALUES (?,?,?,?,?,?,?, ?, ?, ?, ?, 'operating', ?,?,?,?, 'standard', ?,?,?,?,?,?, 0, 5000, ?, ?, ?)`,
     id, name, 'city-bristol', plot.district_id, input.plotId, input.industry, tier.asset_id, founder.kind, founder.ownerId, acct, input.tier, spec.retail_commodity_id, spec.default_price_minor, spec.min_price_minor, spec.max_price_minor,
     staff, tier.max_employees, spec.wage_minor, tier.capacity_batches, tier.storage_cap_units, rent, ctx.tick, input.tier, spec.equipment_minor);
-  db.run('INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, ?, ?, 10000)', id, founder.kind, founder.ownerId);
+  registerCapital(db, ctx, id, ownerInvestor(db, founder.ownerId, founder.kind, undefined, founder.fundingAccount), q.totalMinor, `founded by ${founder.ownerId}; startup cost ${q.totalMinor} minor`);
   db.run('INSERT INTO production_lines (company_id, recipe_id, planned_batches, ask_price_minor) VALUES (?,?,?,?)', id, spec.primary_recipe_id, batches, spec.default_price_minor);
   // 2. money, all through the ledger
   const estates = stateAccount(db, 'property')!, works = stateAccount(db, 'works')!;

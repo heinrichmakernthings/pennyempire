@@ -105,7 +105,7 @@ export function runMarketSim(days: number): MarketSimReport {
     const ref = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', id)!.p;
     return { id, vwapFirst: v[0] ?? null, vwapLast: v.at(-1) ?? null, minVwap: v.length ? Math.min(...v) : null, maxVwap: v.length ? Math.max(...v) : null, reference: ref, volatilityBps: Math.round(vol * 10_000), volume: rows.reduce((a, r) => a + r.volume, 0), shortageDays: rows.filter((r) => r.demand_units > 0 && r.listed_units * 10 < r.demand_units * 8).length, avgSpreadBps: spreads.length ? Math.round(spreads.reduce((a, b) => a + b, 0) / spreads.length) : null, hhiBps: Math.round(hhi), topSupplier: sellers[0]?.s ?? '—', topShareBps: tot > 0 ? Math.round((sellers[0]!.q * 10_000) / tot) : 0 };
   });
-  const fee = db.get<{ f: number }>('SELECT COALESCE(SUM(fee_minor),0) f FROM trades')!.f + db.get<{ f: number }>('SELECT COALESCE(SUM(fee_minor),0) f FROM contract_deliveries')!.f;
+  const fee = db.get<{ f: number }>('SELECT COALESCE(SUM(fee_minor),0) f FROM trades')!.f + db.get<{ f: number }>('SELECT COALESCE(SUM(fee_minor),0) f FROM contract_deliveries')!.f + db.get<{ f: number }>('SELECT COALESCE(SUM(fee_minor),0) f FROM share_trades')!.f + db.get<{ f: number }>('SELECT COALESCE(SUM(listing_fee_minor),0) f FROM share_offerings')!.f;
   const sumTx = (like: string, acct: string) => db.get<{ a: number }>('SELECT COALESCE(SUM(p.amount_minor),0) a FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.memo LIKE ? AND p.amount_minor > 0 AND p.account_id = ?', like, acct)!.a;
   void mine;
   return {

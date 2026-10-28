@@ -43,7 +43,7 @@ const window = (db: Sql, id: string, from: number, to: number) => db.get<{ profi
  * public market data (rival prices, shortage status); every action goes through the same cores the player uses and is recorded with its reasons in `npc_decisions`.
  */
 export function runNpcDecisions(db: Sql, ctx: TickCtx, cfg: EngineConfig, lastExit: { tick: number }): { reviewed: number; closed: string[] } {
-  const due = db.all<Profile>('SELECT p.* FROM npc_profiles p JOIN companies c ON c.id = p.company_id WHERE p.next_decision_tick <= ? AND c.status <> ? AND c.bankrupt_tick IS NULL ORDER BY p.next_decision_tick, p.company_id LIMIT ?', ctx.tick, 'x', cfg.npcDecisionsPerTick);
+  const due = db.all<Profile>('SELECT p.* FROM npc_profiles p JOIN companies c ON c.id = p.company_id WHERE p.next_decision_tick <= ? AND c.status <> ? AND c.bankrupt_tick IS NULL AND c.owner_kind = ? ORDER BY p.next_decision_tick, p.company_id LIMIT ?', ctx.tick, 'x', 'npc', cfg.npcDecisionsPerTick);
   if (!due.length) return { reviewed: 0, closed: [] };
   const dir = new Map(directory(db).map((d) => [d.commodityId, d]));
   const closed: string[] = [];

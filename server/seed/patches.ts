@@ -3,6 +3,9 @@ import { loadConfig, saveConfig } from '../engine/config';
 import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
+import { ownerInvestor, registerCapital } from '../engine/capital';
+import { seedNpcInvestors } from '../engine/securitiesTick';
+import { computeValuation } from '../engine/valuation';
 import { createProfile, type Strategy } from '../engine/npc';
 import { CITY_ID, EXCHANGE_ACCOUNT, companyAccount } from './bristol';
 
@@ -21,7 +24,7 @@ const companyManagement: Patch = {
       createAccount(db, acct, 'company', 'Bristol Works treasury');
       db.run(`INSERT INTO companies (id, name, city_id, district_id, plot_id, industry_id, asset_id, owner_kind, owner_id, treasury_account_id, level, status, retail_commodity_id, price_minor, min_price_minor, max_price_minor, quality, employees, max_employees, wage_minor, capacity_batches, storage_cap_units, property_minor, marketing_minor, reputation_bps, created_tick)
         VALUES (?,?,?,?,NULL,'works',NULL,'state','state-bristol',?,1,'operating',NULL,100,100,100,'standard',0,0,0,0,1,0,0,9000,0)`, works, 'Bristol Works', CITY_ID, 'dist-redcliffe', acct);
-      db.run("INSERT OR IGNORE INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, 'state', 'state-bristol', 10000)", works);
+      if (!db.get('SELECT 1 FROM securities WHERE company_id = ?', works)) registerCapital(db, ctx, works, ownerInvestor(db, 'state-bristol', 'state'), 0, 'genesis cap table');
       issue(db, ctx, `seed:co:${works}`, acct, E(3_000), 'opening capital: Bristol Works'); issued += E(3_000);
     }
     // Industry catalogue (shared by all six industries)
@@ -94,7 +97,28 @@ const npcV1: Patch = {
   },
 };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1];
+
+/**
+ * Penny Exchange opens with its first listings: the established NPC firms (each a real operating business) and the three state enterprises that earn real revenue.
+ * Their founding holders (the NPC shareholders and the state) keep a majority and offer a float; six NPC investors arrive with finite, recorded seed capital.
+ */
+const LISTED_AT_OPENING: Record<string, string> = { 'co-bristol-energy': 'BENR', 'co-bristol-estates': 'BEST', 'co-bristol-provisions': 'BPRV', 'co-clifton-slice': 'CSLC', 'co-bean-there': 'BNTH', 'co-severn-farm': 'SVFM', 'co-brunel-mill': 'BRML', 'co-clifton-dairy': 'CLDY', 'co-avon-timber': 'AVTM' };
+const securitiesV1: Patch = {
+  id: 'securities-v1',
+  run(db, ctx) {
+    const cfg = loadConfig(db);
+    const issued = seedNpcInvestors(db, ctx, cfg);
+    for (const [company, ticker] of Object.entries(LISTED_AT_OPENING)) {
+      const sec = db.get<{ status: string }>('SELECT status FROM securities WHERE company_id = ?', company);
+      if (!sec || sec.status !== 'unlisted') continue;
+      const v = computeValuation(db, cfg, company, ctx.tick);
+      db.run("UPDATE securities SET status = 'open', ticker = ?, listed_tick = ?, listing_price_minor = ? WHERE company_id = ?", ticker, ctx.tick, v?.fairValuePerShareMinor ?? 100, company);
+    }
+    return issued;
+  },
+};
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {
