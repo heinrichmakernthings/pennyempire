@@ -17,8 +17,10 @@ if (!chromium) { console.error('Playwright not found. Install it (npm i -D playw
 const PORT = 4173, BASE = `http://127.0.0.1:${PORT}`, OUT = process.env.QA_OUT ?? 'qa-output';
 mkdirSync(OUT, { recursive: true });
 const tmp = mkdtempSync(join(tmpdir(), 'pe-qa-'));
-const engine = spawn('npx', ['tsx', 'server/node.ts'], { stdio: 'ignore', env: { ...process.env, PENNY_DB: join(tmp, 'qa.db'), PENNY_TICK_MS: '2500', PORT: '8787' } });
-const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--host', '127.0.0.1', '--strictPort'], { stdio: 'ignore' });
+// Children are spawned directly (not via npx) so kill() really stops them, and the run refuses to start if a stale server owns the ports.
+for (const url of [`${BASE}/`, 'http://127.0.0.1:8787/api/health']) { const up = await fetch(url).then(() => true, () => false); if (up) { console.error(`Port already in use (${url}). Stop the stale server before running QA.`); process.exit(2); } }
+const engine = spawn(process.execPath, ['--import', 'tsx', '--no-warnings', 'server/node.ts'], { stdio: 'ignore', env: { ...process.env, PENNY_DB: join(tmp, 'qa.db'), PENNY_TICK_MS: '2500', PORT: '8787' } });
+const server = spawn(process.execPath, ['node_modules/vite/bin/vite.js', 'preview', '--port', String(PORT), '--host', '127.0.0.1', '--strictPort'], { stdio: 'ignore' });
 const stop = () => { server.kill(); engine.kill(); try { rmSync(tmp, { recursive: true, force: true }); } catch { /* ignore */ } };
 process.on('exit', stop);
 for (let i = 0; i < 100; i++) { try { if ((await fetch(BASE)).ok && (await fetch(`${BASE}/api/health`)).ok) break; } catch { /* waiting */ } await new Promise((r) => setTimeout(r, 200)); }
