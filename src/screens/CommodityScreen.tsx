@@ -2,7 +2,8 @@ import { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useBreakpoint } from '@/app/useBreakpoint';
 import type { Commodity, Order, Trade } from '@/contracts/game-state';
-import { useScreen } from '@/data/store';
+import { useDataSource, useScreen } from '@/data/store';
+import { ExchangeScreen } from './exchange/ExchangeScreen';
 import { useCommand, newIdempotencyKey } from '@/data/useCommand';
 import { formatSignedBps, formatUnits } from '@/domain/money';
 import { commodityLabel } from '@/domain/labels';
@@ -17,8 +18,10 @@ import { EmptyState } from '@/ui/States';
 import { StatusLabel } from '@/ui/StatusLabel';
 import { TradeTicket } from '@/ui/TradeTicket';
 
+/** Real server → the full Penny Exchange terminal. Fixtures (no server) → the illustrative foundation screen. */
 export function CommodityScreen() {
-  return <ScreenData screen="commodities" title="Commodity Exchange">{(d) => <CommodityView {...d} />}</ScreenData>;
+  const source = useDataSource();
+  return source.authority === 'server' ? <ExchangeScreen /> : <ScreenData screen="commodities" title="Commodity Exchange">{(d) => <CommodityView {...d} />}</ScreenData>;
 }
 
 function CommodityView({ cityId, commodities, orders, ownOrders, history }: { cityId: string; commodities: Commodity[]; orders: { items: Order[] }; ownOrders: { items: Order[] }; history: { items: Trade[] } }) {

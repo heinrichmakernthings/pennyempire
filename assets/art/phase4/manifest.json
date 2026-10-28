@@ -1,0 +1,479 @@
+{
+  "version": 4,
+  "inherits": [
+    "assets/art/runtime/manifest.json",
+    "assets/art/phase2/manifest.json",
+    "assets/art/phase3/manifest.json"
+  ],
+  "assets": [
+    {
+      "id": "arrow",
+      "file": "assets/art/phase4/ui/arrow.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": false,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "check",
+      "file": "assets/art/phase3/ui/order-filled.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "alert",
+      "file": "assets/art/ui/warning.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "info",
+      "file": "assets/art/phase4/ui/info.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": false,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "premises",
+      "file": "assets/art/phase4/ui/premises.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": false,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "contract",
+      "file": "assets/art/phase4/ui/contract.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": false,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "transit",
+      "file": "assets/art/phase3/ui/shipment.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "close",
+      "file": "assets/art/ui/close.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "city",
+      "file": "assets/art/ui/city.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "company",
+      "file": "assets/art/ui/companies.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "market",
+      "file": "assets/art/ui/marketplace.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "chain",
+      "file": "assets/art/phase3/ui/supply-chain.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "growth",
+      "file": "assets/art/phase3/ui/profit.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "people",
+      "file": "assets/art/ui/staff.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "stock",
+      "file": "assets/art/phase3/ui/inventory.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    },
+    {
+      "id": "settings",
+      "file": "assets/art/ui/settings.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "terminal icon / CSS mask",
+      "reused": true,
+      "status": "finished; visual approval pending"
+    }
+  ],
+  "commodityAliases": {
+    "cafe-drink": "commodity-coffee-drinks"
+  },
+  "components": {
+    "source": "tools/company-marketplace/components.js",
+    "stylesheet": "tools/company-marketplace/styles.css",
+    "screens": "tools/company-marketplace/app.js"
+  },
+  "screenExports": "docs/art/phase4/qa/",
+  "newRasterArtwork": false,
+  "note": "Approved sprites and commodity icons reused; financial data and charts stay live HTML/SVG.",
+  "reusedBuildings": {
+    "manifest": "assets/art/phase2/manifest.json",
+    "ids": [
+      "pizza-t1",
+      "pizza-t3",
+      "mill-t1",
+      "cafe-t1",
+      "dairy-t1",
+      "farm-t1",
+      "timber-t1"
+    ],
+    "note": "Original logical dimensions and atlas rectangles are unchanged."
+  },
+  "reusedCommodities": {
+    "manifest": "assets/art/phase3/manifest.json",
+    "dimensions": [
+      48,
+      48
+    ],
+    "ids": [
+      "commodity-wheat",
+      "commodity-flour",
+      "commodity-cheese",
+      "commodity-milk",
+      "commodity-pizza",
+      "commodity-timber",
+      "commodity-energy",
+      "commodity-coffee-drinks"
+    ]
+  },
+  "screenFiles": [
+    {
+      "file": "docs/art/phase4/qa/desktop-company-growth.png",
+      "dimensions": [
+        1440,
+        1112
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-inventory.png",
+      "dimensions": [
+        1440,
+        1252
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-operations.png",
+      "dimensions": [
+        1440,
+        1050
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-overview.png",
+      "dimensions": [
+        1440,
+        1238
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-ownership.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-component-states.png",
+      "dimensions": [
+        1440,
+        1638
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-budget.png",
+      "dimensions": [
+        1440,
+        1057
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-opportunity.png",
+      "dimensions": [
+        1440,
+        1050
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-premises.png",
+      "dimensions": [
+        1440,
+        1080
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-review.png",
+      "dimensions": [
+        1440,
+        1028
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-first-production.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-marketplace.png",
+      "dimensions": [
+        1440,
+        1376
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-supplier-contract.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-supply-chain.png",
+      "dimensions": [
+        1440,
+        1056
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-trade-review.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-upgrade-review.png",
+      "dimensions": [
+        1440,
+        1000
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "1440x1000",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-company-operations.png",
+      "dimensions": [
+        390,
+        1716
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-company-overview.png",
+      "dimensions": [
+        390,
+        1517
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-opportunity.png",
+      "dimensions": [
+        390,
+        1897
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-premises.png",
+      "dimensions": [
+        390,
+        1703
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-review.png",
+      "dimensions": [
+        390,
+        1567
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-marketplace.png",
+      "dimensions": [
+        390,
+        1806
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-supplier-contract.png",
+      "dimensions": [
+        390,
+        844
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-supply-chain.png",
+      "dimensions": [
+        390,
+        2248
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-trade-review.png",
+      "dimensions": [
+        390,
+        844
+      ],
+      "usage": "browser screenshot for implementation review; never runtime artwork",
+      "viewport": "390x844",
+      "capture": "viewport when modal open; otherwise full page"
+    }
+  ]
+}

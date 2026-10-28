@@ -52,7 +52,10 @@ export type Command = CommandMeta & (
  {type:'company.fund'|'company.withdraw';companyId:ID;amountMinor:number} |
  {type:'company.procure';companyId:ID;batches:number} |
  {type:'company.upgrade';companyId:ID;upgradeId:ID} |
- {type:'commodity.order';companyId:ID;commodityId:ID;side:'buy'|'sell';quantity:number;limitPriceMinor:number;quoteId:string} |
+ {type:'commodity.order';companyId:ID;commodityId:ID;side:'buy'|'sell';quantity:number;limitPriceMinor:number;quoteId:string;orderKind?:'limit'|'market'|'direct';fromCompanyId?:string;slippageBps?:number;expiresInTicks?:number|null} |
+ {type:'contract.propose';companyId:ID;counterpartyId:ID;role:'buyer'|'supplier';commodityId:ID;qtyPerDelivery:number;priceMinor:number;everyTicks:number;durationTicks:number} |
+ {type:'contract.respond';contractId:number;accept:boolean} |
+ {type:'contract.cancel';contractId:number} |
  {type:'order.cancel';orderId:ID} |
  {type:'shares.order';listingId:ID;side:'buy'|'sell';quantity:number;limitPriceMinor:number;quoteId:string} |
  {type:'prestige.buy';itemId:ID;plotId:ID|null;quoteId:string} |

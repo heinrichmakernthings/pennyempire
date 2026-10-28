@@ -5,7 +5,10 @@ import { advanceToNow, nextTickAtMs, runTickSafely } from '../engine/clock';
 import { cancelPlayerOrder, configureCompany, fundCompany, placePlayerOrder, quoteOrder, reopenCompany, withdrawFromCompany, type CommandResponse } from '../engine/commands';
 import { gameDate, loadConfig } from '../engine/config';
 import { createCompany, procureNow, serviceEquipment, startupQuote, upgradeCompany } from '../engine/company';
-import { lots, management, opportunities, rankings } from '../engine/insights';
+import { lots, management, marketShortages, opportunities, rankings } from '../engine/insights';
+import { cancelContract, proposeContract, respondContract } from '../engine/contracts';
+import { commodityDetail, directory } from '../engine/exchange';
+import { contractCandidates, contracts, holdings, ownOrders, ownTrades } from './exchangeApi';
 import { economyDashboard } from './dashboard';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
@@ -41,7 +44,17 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
         default: return apiErr(404, 'UNAVAILABLE', `Screen ${seg[1]} has no server data yet`);
       }
     }
-    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db) });
+    if (method === 'GET' && seg[0] === 'exchange') {
+      if (seg[1] === 'commodities' && !seg[2]) return json(200, { authority: 'server', city: 'city-bristol', commodities: directory(db), note: 'Prices come from executed trades; supply is units listed for sale now; demand is an ESTIMATE from consumer budgets and production plans.' });
+      if (seg[1] === 'commodities' && seg[2]) {
+        const d = commodityDetail(db, seg[2]); if (!d) return apiErr(404, 'VALIDATION', `Unknown commodity ${seg[2]}`);
+        return json(200, { authority: 'server', detail: d, orders: ownOrders(db, seg[2]), trades: ownTrades(db, seg[2]), holdings: holdings(db, seg[2]), contractOptions: contractCandidates(db, seg[2]) });
+      }
+      if (seg[1] === 'orders') return json(200, { authority: 'server', orders: ownOrders(db, q.commodity) });
+      if (seg[1] === 'trades') return json(200, { authority: 'server', trades: ownTrades(db, q.commodity) });
+      if (seg[1] === 'contracts') return json(200, { authority: 'server', contracts: contracts(db) });
+    }
+    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db), shortages: marketShortages(db) });
     if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
     if (method === 'GET' && seg[0] === 'rankings') return json(200, { authority: 'server', rankings: rankings(db) });
     if (method === 'GET' && seg[0] === 'startup-quote') {
@@ -62,10 +75,10 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     if (method === 'POST' && seg[0] === 'quote') {
       const b = req.body as QuoteRequest & { companyId: string };
       if (b.kind !== 'commodity') return apiErr(501, 'UNAVAILABLE', `Quotes for ${b.kind} are not available on the server yet`);
-      const out = quoteOrder(db, { companyId: b.companyId ?? '', commodityId: b.entityId, side: b.side, quantity: b.quantity, limitPriceMinor: b.limitPriceMinor ?? 0 });
+      const out = quoteOrder(db, { companyId: b.companyId ?? '', commodityId: b.entityId, side: b.side, quantity: b.quantity, limitPriceMinor: b.limitPriceMinor ?? 0, kind: (b as { orderKind?: 'limit' | 'market' }).orderKind, slippageBps: (b as { slippageBps?: number }).slippageBps, expiresInTicks: (b as { expiresInTicks?: number | null }).expiresInTicks, fromCompanyId: (b as { fromCompanyId?: string }).fromCompanyId });
       if (!out.ok) return json(422, out);
       const c = out.quote; const cur = (m: number) => ({ currency: 'EC' as const, minor: m });
-      return json(200, { ok: true, quote: { id: c.id, expiresAt: new Date(nextTickAtMs(db)).toISOString(), revision: c.revision, quantity: c.quantity, subtotal: cur(c.subtotalMinor), fee: cur(c.feeMinor), total: cur(c.totalMinor), availableUnits: c.availableUnits } });
+      return json(200, { ok: true, quote: { id: c.id, expiresAt: new Date(nextTickAtMs(db)).toISOString(), revision: c.revision, kind: c.kind, limitPriceMinor: c.limitPriceMinor, reserveMinor: c.reserveMinor, slippageBps: c.slippageBps, quantity: c.quantity, subtotal: cur(c.subtotalMinor), fee: cur(c.feeMinor), total: cur(c.totalMinor), availableUnits: c.availableUnits } });
     }
     if (method === 'POST' && seg[0] === 'command') return runApiCommand(db, req.body as Command & Record<string, unknown>);
     if (seg[0] === 'dev') {
@@ -89,11 +102,14 @@ function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>): ApiResp
   let res: CommandResponse;
   switch (cmd?.type as string) {
     case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined, askPriceMinor: cmd.askPriceMinor as number | undefined, autoProcure: cmd.autoProcure as boolean | undefined }); break;
-    case 'commodity.order': res = placePlayerOrder(db, key, { companyId: cmd.companyId as string, commodityId: cmd.commodityId as string, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number, quoteId: cmd.quoteId as string }); break;
+    case 'commodity.order': res = placePlayerOrder(db, key, { companyId: cmd.companyId as string, commodityId: cmd.commodityId as string, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number, quoteId: cmd.quoteId as string, kind: cmd.orderKind as 'limit' | 'market' | 'direct' | undefined, fromCompanyId: cmd.fromCompanyId as string | undefined, slippageBps: cmd.slippageBps as number | undefined, expiresInTicks: cmd.expiresInTicks as number | null | undefined }); break;
     case 'order.cancel': res = cancelPlayerOrder(db, key, Number(cmd.orderId)); break;
     case 'company.fund': res = fundCompany(db, key, cmd.companyId as string, cmd.amountMinor as number); break;
     case 'company.withdraw': res = withdrawFromCompany(db, key, cmd.companyId as string, cmd.amountMinor as number); break;
     case 'company.reopen': res = reopenCompany(db, key, cmd.companyId as string); break;
+    case 'contract.propose': res = proposeContract(db, key, { actorCompanyId: cmd.companyId as string, counterpartyId: cmd.counterpartyId as string, role: cmd.role as 'buyer', commodityId: cmd.commodityId as string, qtyPerDelivery: cmd.qtyPerDelivery as number, priceMinor: cmd.priceMinor as number, everyTicks: cmd.everyTicks as number, durationTicks: cmd.durationTicks as number }); break;
+    case 'contract.respond': res = respondContract(db, key, Number(cmd.contractId), cmd.accept === true); break;
+    case 'contract.cancel': res = cancelContract(db, key, Number(cmd.contractId)); break;
     case 'company.create': res = createCompany(db, key, { industry: cmd.industry as string, plotId: cmd.plotId as string, tier: Number(cmd.tier ?? 1), name: String(cmd.name ?? ''), workingCapitalMinor: cmd.workingCapitalMinor as number | undefined, expectedTotalMinor: cmd.expectedTotalMinor as number }); break;
     case 'company.upgrade': res = upgradeCompany(db, key, cmd.companyId as string, cmd.upgradeId as string); break;
     case 'company.service': res = serviceEquipment(db, key, cmd.companyId as string); break;

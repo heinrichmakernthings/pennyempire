@@ -3,7 +3,7 @@ import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { LedgerError, available, reconcile, transfer, type TickCtx } from './ledger';
 import { HOUSEHOLDS } from '../seed/bristol';
-import { MarketError, cancelOrder, placeOrder } from './market';
+import { MarketError, cancelOrder, liveBook, marketLimit, placeOrder } from './market';
 import { gameDate } from './config';
 import { logEvent } from './stats';
 import { PLAYER_ID, TREASURY } from '../seed/bristol';
@@ -140,38 +140,59 @@ export function reopenCompany(db: Sql, key: string, companyId: string): CommandR
   });
 }
 
-export interface QuoteInput { companyId: string; commodityId: string; side: 'buy' | 'sell'; quantity: number; limitPriceMinor: number }
-export type QuoteOut = { ok: true; quote: { id: string; tick: number; quantity: number; subtotalMinor: number; feeMinor: number; totalMinor: number; availableUnits: number; revision: number } } | CommandErr;
+export interface QuoteInput { companyId: string; commodityId: string; side: 'buy' | 'sell'; quantity: number; limitPriceMinor: number; kind?: 'limit' | 'market' | 'direct'; slippageBps?: number; expiresInTicks?: number | null; fromCompanyId?: string }
+export type QuoteOut = { ok: true; quote: { id: string; tick: number; quantity: number; subtotalMinor: number; feeMinor: number; totalMinor: number; availableUnits: number; revision: number; kind: 'limit' | 'market' | 'direct'; limitPriceMinor: number; reserveMinor: number; slippageBps: number | null } } | CommandErr;
 
 /** Server-authoritative quote from the live order book. Valid for the current tick only (the book is rebuilt every tick). */
 export function quoteOrder(db: Sql, q: QuoteInput): QuoteOut {
   const c = owned(db, q.companyId); if (isErr(c)) return c;
   if (!Number.isSafeInteger(q.quantity) || q.quantity <= 0) return err('VALIDATION', 'Quantity must be a whole number greater than zero.', { quantity: 'Enter a whole number of units greater than zero.' });
-  if (!Number.isSafeInteger(q.limitPriceMinor) || q.limitPriceMinor <= 0) return err('VALIDATION', 'Limit price must be positive.', { limitPrice: 'Enter a positive limit price.' });
   const cfg = loadConfig(db); const tick = lastTick(db);
-  const book = q.side === 'buy'
-    ? db.all<{ price_minor: number; qty_remaining: number }>("SELECT price_minor, qty_remaining FROM orders WHERE commodity_id = ? AND side='sell' AND status='open' AND price_minor <= ? AND company_id <> ? ORDER BY price_minor ASC, id ASC", q.commodityId, q.limitPriceMinor, q.companyId)
-    : db.all<{ price_minor: number; qty_remaining: number }>("SELECT price_minor, qty_remaining FROM orders WHERE commodity_id = ? AND side='buy' AND status='open' AND price_minor >= ? AND company_id <> ? ORDER BY price_minor DESC, id ASC", q.commodityId, q.limitPriceMinor, q.companyId);
+  const kind = q.kind ?? 'limit';
+  const slip = kind === 'market' ? (q.slippageBps ?? cfg.marketSlippageBps) : null;
+  if (slip !== null && (!Number.isSafeInteger(slip) || slip < 0 || slip > cfg.maxSlippageBps)) return err('VALIDATION', `Price protection must be between 0% and ${cfg.maxSlippageBps / 100}%.`, { slippage: `Choose 0–${cfg.maxSlippageBps / 100}%.` });
+  if (q.expiresInTicks !== undefined && q.expiresInTicks !== null && (!Number.isSafeInteger(q.expiresInTicks) || q.expiresInTicks < 1 || q.expiresInTicks > cfg.maxOrderTicks)) return err('VALIDATION', `An order can last 1 to ${cfg.maxOrderTicks} days.`, { expiresInTicks: `Choose 1–${cfg.maxOrderTicks} days.` });
+  if (!db.get('SELECT 1 FROM commodities WHERE id = ?', q.commodityId)) return err('VALIDATION', `Unknown commodity ${q.commodityId}`);
+  if (kind === 'direct') {
+    if (q.side !== 'buy' || !q.fromCompanyId) return err('VALIDATION', 'A direct purchase buys from one chosen supplier.');
+    const sup = db.get<{ id: string }>("SELECT id FROM companies WHERE id = ? AND bankrupt_tick IS NULL", q.fromCompanyId);
+    if (!sup || q.fromCompanyId === q.companyId) return err('VALIDATION', 'That supplier cannot be used.');
+  }
+  let limitPrice = q.limitPriceMinor;
+  if (kind === 'market') {
+    const lim = marketLimit(db, q.commodityId, q.side, q.companyId, tick, slip!);
+    if (lim === null) return err('VALIDATION', `Nobody is ${q.side === 'buy' ? 'selling' : 'buying'} ${q.commodityId} right now, so a market order has no price to protect. Place a limit order instead.`);
+    limitPrice = lim;
+  }
+  if (!Number.isSafeInteger(limitPrice) || limitPrice <= 0) return err('VALIDATION', 'Limit price must be positive.', { limitPrice: 'Enter a positive limit price.' });
+  // Fat-finger / manipulation guard: a limit price more than 10× away from the reference price is refused (market orders are already bounded by their protection band).
+  const refPrice = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', q.commodityId)!.p;
+  if (kind !== 'market' && (limitPrice > refPrice * 10 || limitPrice * 10 < refPrice)) return err('VALIDATION', `Price must be within 10× of the ${(refPrice / 100).toFixed(2)} EC reference price (0.1× to 10×).`, { limitPrice: 'This price is far outside the normal range; check the decimal point.' });
+  const book = liveBook(db, q.companyId, q.commodityId, q.side === 'buy' ? 'sell' : 'buy', limitPrice, tick, kind === 'direct' ? q.fromCompanyId : undefined);
   let left = q.quantity, subtotal = 0, filled = 0;
   for (const o of book) { if (left <= 0) break; const n = Math.min(left, o.qty_remaining); subtotal += n * o.price_minor; filled += n; left -= n; }
   const fee = q.side === 'sell' ? feeFromBps(subtotal, cfg.exchangeFeeBps) : 0;   // sellers pay the exchange fee; it is destroyed (a sink)
-  const id = `q-${tick}-${q.companyId}-${q.commodityId}-${q.side}-${q.quantity}-${q.limitPriceMinor}`;
-  db.run('INSERT OR REPLACE INTO quotes (id, company_id, commodity_id, side, qty, limit_minor, subtotal_minor, fee_minor, total_minor, tick) VALUES (?,?,?,?,?,?,?,?,?,?)', id, q.companyId, q.commodityId, q.side, q.quantity, q.limitPriceMinor, subtotal, fee, q.side === 'buy' ? subtotal : subtotal - fee, tick);
-  return { ok: true, quote: { id, tick, quantity: q.quantity, subtotalMinor: subtotal, feeMinor: fee, totalMinor: q.side === 'buy' ? subtotal : subtotal - fee, availableUnits: filled, revision: tick } };
+  const id = `q-${tick}-${q.companyId}-${q.commodityId}-${q.side}-${q.quantity}-${kind === 'market' ? `market-${slip}` : kind === 'direct' ? `${limitPrice}-direct-${q.fromCompanyId}` : limitPrice}`;
+  db.run('INSERT OR REPLACE INTO quotes (id, company_id, commodity_id, side, qty, limit_minor, subtotal_minor, fee_minor, total_minor, tick) VALUES (?,?,?,?,?,?,?,?,?,?)', id, q.companyId, q.commodityId, q.side, q.quantity, limitPrice, subtotal, fee, q.side === 'buy' ? subtotal : subtotal - fee, tick);
+  return { ok: true, quote: { id, tick, quantity: q.quantity, subtotalMinor: subtotal, feeMinor: fee, totalMinor: q.side === 'buy' ? subtotal : subtotal - fee, availableUnits: filled, revision: tick, kind, limitPriceMinor: limitPrice, reserveMinor: q.side === 'buy' ? limitPrice * q.quantity : 0, slippageBps: slip } };
 }
 
 /** commodity.order — places a real limit order (reserving coins or stock first). Requires a current-tick quote for the same terms. */
-export function placePlayerOrder(db: Sql, key: string, o: QuoteInput & { quoteId: string }): CommandResponse<{ orderId: number; filled: number; remaining: number }> {
+export function placePlayerOrder(db: Sql, key: string, o: QuoteInput & { quoteId: string }): CommandResponse<{ orderId: number; filled: number; remaining: number; status: string }> {
   return runCommand(db, key, 'commodity.order', (ctx) => {
     const c = owned(db, o.companyId); if (isErr(c)) return c;
     const quote = db.get<{ tick: number; company_id: string; commodity_id: string; side: string; qty: number; limit_minor: number }>('SELECT * FROM quotes WHERE id = ?', o.quoteId);
     if (!quote || quote.tick !== ctx.tick) return err('QUOTE_EXPIRED', 'This quote has expired; request a new quote.');
-    if (quote.company_id !== o.companyId || quote.commodity_id !== o.commodityId || quote.side !== o.side || quote.qty !== o.quantity || quote.limit_minor !== o.limitPriceMinor) return err('VALIDATION', 'The order does not match its quote.');
+    const kind = o.kind ?? 'limit';
+    if (quote.company_id !== o.companyId || quote.commodity_id !== o.commodityId || quote.side !== o.side || quote.qty !== o.quantity || (kind !== 'market' && quote.limit_minor !== o.limitPriceMinor) || o.quoteId.includes('-market-') !== (kind === 'market') || o.quoteId.includes('-direct-') !== (kind === 'direct') || (kind === 'direct' && !o.quoteId.endsWith(`-direct-${o.fromCompanyId}`))) return err('VALIDATION', 'The order does not match its quote.');
     const cfg = loadConfig(db);
-    const r = placeOrder(db, ctx, cfg.exchangeFeeBps, { company: o.companyId, commodity: o.commodityId, side: o.side, price: o.limitPriceMinor, qty: o.quantity, key: `player:${key}` });
+    const slip = kind === 'market' ? Number(/-market-(\d+)$/.exec(o.quoteId)?.[1] ?? cfg.marketSlippageBps) : undefined;
+    const expiresIn = kind !== 'limit' ? null : o.expiresInTicks === undefined ? 30 : o.expiresInTicks;
+    if (expiresIn !== null && (!Number.isSafeInteger(expiresIn) || expiresIn < 1 || expiresIn > cfg.maxOrderTicks)) return err('VALIDATION', `An order can last 1 to ${cfg.maxOrderTicks} days.`);
+    const r = placeOrder(db, ctx, cfg.exchangeFeeBps, { company: o.companyId, commodity: o.commodityId, side: o.side, price: kind === 'market' ? quote.limit_minor : o.limitPriceMinor, qty: o.quantity, key: `player:${key}`, kind, slippageBps: slip, expiresTick: expiresIn === null ? null : ctx.tick + expiresIn, onlyFrom: kind === 'direct' ? o.fromCompanyId : undefined });
     const filled = r.order.qty_original - r.order.qty_remaining;
-    return { ok: true, revision: ctx.tick, transactionId: String(r.order.id), refreshScreens: ['commodities', 'city', 'companies'], data: { orderId: r.order.id, filled, remaining: r.order.qty_remaining } };
-  }) as CommandResponse<{ orderId: number; filled: number; remaining: number }>;
+    return { ok: true, revision: ctx.tick, transactionId: String(r.order.id), refreshScreens: ['commodities', 'city', 'companies'], data: { orderId: r.order.id, filled, remaining: r.order.qty_remaining, status: r.order.status === 'cancelled' && filled > 0 ? 'partially_filled_remainder_cancelled' : r.order.status } };
+  }) as CommandResponse<{ orderId: number; filled: number; remaining: number; status: string }>;
 }
 
 /** order.cancel — releases exactly what the order still reserves (remaining units or remaining reserved coins). */

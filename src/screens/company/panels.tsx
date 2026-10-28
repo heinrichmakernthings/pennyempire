@@ -8,6 +8,8 @@ import { Button } from '@/ui/Button';
 import { Icon } from '@/ui/Icon';
 import { ErrorState, Skeleton } from '@/ui/States';
 import { ec } from '../OpportunitiesScreen';
+import { ProcureSheet } from '../exchange/ProcureSheet';
+import { ResponsiveSheet } from '@/ui/ResponsiveSheet';
 
 const money = (minor: number) => formatMoney(ec(minor));
 
@@ -88,8 +90,9 @@ export function ProductionPanel({ c, m }: { c: Company; m: Management }) {
 }
 const LIMIT_LABEL: Record<string, string> = { plan: 'Nothing (target met)', staff: 'Not enough staff', storage: 'Storage full or 5 days of unsold stock', inputs: 'Ran out of ingredients', cash: 'No cash for ingredients', supply: 'Nobody selling', condition: 'Worn equipment', closed: 'Closed' };
 
-export function SupplyChainPanel({ c, m, canAct }: { c: Company; m: Management; canAct: boolean }) {
+export function SupplyChainPanel({ c, m, canAct, onChanged }: { c: Company; m: Management; canAct: boolean; onChanged?: () => void }) {
   const { send, pending } = useCommand();
+  const [compare, setCompare] = useState<string | null>(null);
   const [batches, setBatches] = useState('2');
   const [key, setKey] = useState(newIdempotencyKey);
   if (m.supplyChain.length === 0) return <p className="pe-hint">This business makes its product from nothing but energy: no ingredients to buy.</p>;
@@ -101,10 +104,15 @@ export function SupplyChainPanel({ c, m, canAct }: { c: Company; m: Management; 
   return (
     <div className="pe-stack">
       <div className="pe-table-scroll"><table className="pe-table pe-small" aria-label="Ingredients and suppliers">
-        <thead><tr><th scope="col">Ingredient</th><th scope="col" className="pe-num">Per batch</th><th scope="col" className="pe-num">In stock</th><th scope="col" className="pe-num">For sale in Bristol</th><th scope="col" className="pe-num">Best price</th></tr></thead>
-        <tbody>{m.supplyChain.map((s) => <tr key={s.commodityId}><th scope="row">{commodityLabel(s.commodityId)}</th><td className="pe-financial-number">{s.perBatch}</td><td className="pe-financial-number">{formatUnits(s.inStock)}</td><td className={`pe-financial-number ${s.forSale < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'pe-neg' : ''}`}>{formatUnits(s.forSale)}</td><td className="pe-financial-number">{s.bestAskMinor === null ? `${money(s.stateFallbackMinor ?? 0)} (state supplier)` : money(s.bestAskMinor)}</td></tr>)}</tbody>
+        <thead><tr><th scope="col">Ingredient</th><th scope="col" className="pe-num">Per batch</th><th scope="col" className="pe-num">In stock</th><th scope="col" className="pe-num">For sale in Bristol</th><th scope="col" className="pe-num">Best price</th><th scope="col"><span className="pe-sr">Compare</span></th></tr></thead>
+        <tbody>{m.supplyChain.map((s) => <tr key={s.commodityId}><th scope="row">{commodityLabel(s.commodityId)}</th><td className="pe-financial-number">{s.perBatch}</td><td className="pe-financial-number">{formatUnits(s.inStock)}</td><td className={`pe-financial-number ${s.forSale < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'pe-neg' : ''}`}>{formatUnits(s.forSale)}</td><td className="pe-financial-number">{s.bestAskMinor === null ? `${money(s.stateFallbackMinor ?? 0)} (state supplier)` : money(s.bestAskMinor)}</td>
+          <td>{canAct && <Button onClick={() => setCompare(s.commodityId)} data-testid={`compare-${s.commodityId}`} aria-label={`Compare ${commodityLabel(s.commodityId)} suppliers`}>{s.inStock < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'Find supplier' : 'Compare'}</Button>}</td></tr>)}</tbody>
       </table></div>
       <p className="pe-hint">If nobody is selling, the state supplier (Bristol Provisions) sells a limited amount at a premium. Auto-purchasing buys what the day's target needs.</p>
+      {compare && (() => { const s = m.supplyChain.find((x) => x.commodityId === compare)!; return (
+        <ResponsiveSheet open onClose={() => setCompare(null)} title={`${commodityLabel(compare)} for ${c.name}`}>
+          <ProcureSheet companyId={c.id} commodityId={compare} needUnits={s.perBatch * Math.max(1, m.production.plannedBatches)} haveUnits={s.inStock} onBought={() => onChanged?.()} />
+        </ResponsiveSheet>); })()}
       {canAct && (
         <div className="pe-row">
           <label className="pe-row" htmlFor="batches-input">Batches to buy now <Tip>Buys ingredients immediately for this many batches from the cheapest sellers, using the company's cash.</Tip></label>

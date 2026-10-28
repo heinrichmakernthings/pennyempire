@@ -43,7 +43,7 @@ describe('read API — server data in the frontend contract shapes', () => {
     const comp = (get(db, '/api/screens/companies').body as Env<{ companies: { items: { id: string }[] }; recipes: { id: string }[] }>).envelope.data;
     expect(comp.companies.items.map((c) => c.id)).toEqual(['co-harbour-bean', 'co-mad-slices']); expect(comp.recipes.length).toBe(7);
     const com = (get(db, '/api/screens/commodities').body as Env<{ commodities: { id: string; history: { points: unknown[] } }[]; orders: { items: unknown[] }; history: { items: unknown[] } }>).envelope.data;
-    expect(com.commodities.map((c) => c.id)).toEqual(['cafe-drink', 'cheese', 'flour', 'milk', 'pizza', 'timber', 'wheat']);
+    expect(com.commodities.map((c) => c.id)).toEqual(['cafe-drink', 'cheese', 'coffee', 'flour', 'milk', 'packaging', 'pizza', 'timber', 'wheat']);
     expect(com.orders.items.length).toBeGreaterThan(0); expect(com.commodities.find((c) => c.id === 'flour')!.history.points.length).toBeGreaterThan(0);
     const pf = (get(db, '/api/screens/portfolio').body as Env<{ holdings: unknown[] }>).envelope.data; expect(pf.holdings).toEqual([]);
     expect(get(db, '/api/screens/wallet').status).toBe(404);              // wallet/stocks/prestige have no server data yet

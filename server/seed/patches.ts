@@ -3,7 +3,7 @@ import { loadConfig, saveConfig } from '../engine/config';
 import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
-import { CITY_ID, companyAccount } from './bristol';
+import { CITY_ID, EXCHANGE_ACCOUNT, companyAccount } from './bristol';
 
 /** One-off, versioned data patches applied after the base seed (new worlds) or on open (existing worlds). Each runs exactly once per database. */
 interface Patch { id: string; run(db: Sql, ctx: TickCtx): number /* coins issued, minor */ }
@@ -49,7 +49,20 @@ const companyManagement: Patch = {
   },
 };
 
-export const PATCHES: Patch[] = [companyManagement];
+/** The Penny Exchange: a state-owned account that receives trading fees. Fees are transferred to it; only an explicit per-tick burn destroys coins. */
+const exchangeV1: Patch = {
+  id: 'exchange-v1',
+  run(db) {
+    if (!db.get('SELECT 1 FROM accounts WHERE id = ?', EXCHANGE_ACCOUNT)) createAccount(db, EXCHANGE_ACCOUNT, 'state_treasury', 'Penny Exchange fee account');
+    // The two supplies named in docs/ECONOMY.md ("milk + supplies" for cafés; boxes for takeaway pizza). No producer industry exists yet: the state provisioner
+    // imports a bounded amount at a premium (see STATE_SUPPLIED), so they are real, finite, priced inputs rather than free ones.
+    db.run("INSERT OR IGNORE INTO commodities (id, name, unit_label, reference_price_minor) VALUES ('coffee', 'Coffee beans', 'sack', 100), ('packaging', 'Packaging', 'bundle', 40)");
+    db.run("INSERT OR IGNORE INTO recipe_inputs (recipe_id, commodity_id, units) VALUES ('recipe-coffee', 'coffee', 4), ('recipe-pizza', 'packaging', 2)");
+    return 0;
+  },
+};
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

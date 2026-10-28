@@ -66,7 +66,7 @@ describe('ticks', () => {
     const issuers = db.all<{ memo: string }>("SELECT DISTINCT memo FROM ledger_transactions WHERE kind = 'issuance' AND tick > 0");
     expect(issuers.map((i) => i.memo)).toEqual(['NPC citizen income grant']);
     const sinks = db.all<{ memo: string }>("SELECT DISTINCT memo FROM ledger_transactions WHERE kind IN ('sink','sink_fee') ORDER BY memo").map((r) => r.memo.replace(/ on trade \d+/, ''));
-    expect([...new Set(sinks)].every((m) => m === 'exchange fee' || m.startsWith('infrastructure upkeep'))).toBe(true);
+    expect([...new Set(sinks)].every((m) => m.startsWith('Penny Exchange fee burn') || m.startsWith('infrastructure upkeep'))).toBe(true);
     expect(balance(db, BURN)).toBe(supply(db).destroyed);
   });
   it('transfers to state companies are not sinks: rent, energy and advertising stay in circulation', () => {

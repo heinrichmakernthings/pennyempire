@@ -3,9 +3,11 @@ import { loadConfig, gameDate } from './config';
 import { allocateDemand, type Seller } from './demand';
 import { InventoryError, addStock, freeStock, removeStock, stock } from './inventory';
 import { LedgerError, available, balance, destroy, issue, supply, transfer, type LedgerKind, type TickCtx } from './ledger';
-import { MarketError, cancelOrder, placeOrder, type FillEvent } from './market';
+import { MarketError, cancelOrder, expireOrders, placeOrder, type FillEvent } from './market';
+import { runContractDeliveries } from './contracts';
+import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
-import { energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
+import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
 type Co = CompanyRow;
@@ -70,7 +72,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
 
     /* B. State provisioner: bounded fallback stock, created from nothing but sold for coins that go to the treasury. */
     phase('state_supply');
-    if (provisions) for (const c of ['wheat', 'milk', 'flour', 'cheese']) {
+    if (provisions) for (const c of STATE_SUPPLIED) {
       const add = Math.min(cfg.stateSupplyPerTick, cfg.stateSupplyCap - stock(db, provisions.id, c).qty);
       if (add > 0) addStock(db, ctx, provisions.id, c, add, 0, 'state_supply', 'fallback supply');
     }
@@ -112,14 +114,23 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       if (staff !== c.employees) { db.run('UPDATE companies SET employees = ? WHERE id = ?', staff, c.id); c.employees = staff; }
     }
 
+    /* C2. Orders whose expiry has arrived stop trading and release their reservations; then recurring supply contracts deliver from free stock
+     *     BEFORE the day's listings reserve it, so contracted goods are never double-sold. */
+    phase('order_expiry');
+    const expired = expireOrders(db, n);
+    if (expired.length) logEvent(db, n, 'orders_expired', 'info', null, `${expired.length} order(s) expired and released their reservations`);
+    // Yesterday's automatic listings are withdrawn first: their reservations must not hide stock a contract is owed. Today's listings are re-posted in step D.
+    for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE status = 'open' AND idempotency_key LIKE 'sys:%'")) cancelOrder(db, o.id);
+    phase('contracts');
+    for (const d of runContractDeliveries(db, ctx, cfg, safe)) if (d.status === 'delivered') { trades++; tradeValue += d.grossMinor; const sv = st(d.supplier!), bv = st(d.buyer!); sv.revenue += d.grossMinor; sv.cogs += d.costMinor!; sv.fees += d.feeMinor; sv.unitsSold += d.qty; bv.inputPurchases += d.grossMinor; }
+
     /* D. Refresh system sell orders (player-placed resting orders have idempotency keys and are left alone). */
     phase('listings');
-    for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE status = 'open' AND idempotency_key LIKE 'sys:%'")) cancelOrder(db, o.id);
     for (const c of order) {
       if (c.status !== 'operating') continue;
       safe('listing', c.id, () => {
         if (c.id === provisions?.id) {
-          for (const com of ['wheat', 'milk', 'flour', 'cheese']) { const q = freeStock(db, c.id, com); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: com, side: 'sell', price: Math.floor((refPrice(com) * cfg.stateSupplyMarkupBps) / 10_000), qty: q, key: `sys:${n}:${c.id}:${com}` }, onFill); }
+          for (const com of STATE_SUPPLIED) { const q = freeStock(db, c.id, com); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: com, side: 'sell', price: Math.floor((refPrice(com) * cfg.stateSupplyMarkupBps) / 10_000), qty: q, key: `sys:${n}:${c.id}:${com}` }, onFill); }
         } else if (!c.retail_commodity_id) {
           for (const l of linesOf(c.id)) { const q = freeStock(db, c.id, l.output_commodity_id); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: l.output_commodity_id, side: 'sell', price: l.ask_price_minor, qty: q, key: `sys:${n}:${c.id}:${l.output_commodity_id}` }, onFill); }
         }
@@ -269,6 +280,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       const surplus = available(db, c.treasury_account_id) - cfg.enterpriseReserveMinor;
       if (surplus > 0) safe('sweep', c.id, () => pay('transfer', c.treasury_account_id, city.treasury_account_id, surplus, `${c.name} surplus to treasury`));
     }
+    phase('exchange');
+    safe('exchange_sweep', 'penny-exchange', () => { sweepExchange(db, ctx, cfg, city.treasury_account_id); });
     phase('state_sink');
     const burn = Math.floor((Math.max(0, available(db, city.treasury_account_id) - cfg.stateReserveMinor) * cfg.stateBurnBps) / 10_000);
     if (burn > 0) destroy(db, ctx, key('upkeep'), city.treasury_account_id, burn, 'infrastructure upkeep (explicit burn)');
@@ -304,6 +317,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
 
     /* K. History + snapshot. */
+    phase('market_stats');
+    recordMarketStats(db, n);
     phase('history');
     let produced = 0;
     for (const c of all) {

@@ -1,0 +1,265 @@
+{
+  "files": [
+    {
+      "file": "assets/art/phase4/manifest.csv",
+      "bytes": 5907,
+      "sha256": "85f1751077885f3932599f87df12a41ea32b0af7ed148815b51c858575b397d7"
+    },
+    {
+      "file": "assets/art/phase4/manifest.json",
+      "bytes": 13229,
+      "sha256": "dd9f2d7b4409a4f936d42df374d356a865b88fd75b48ac13c9b65141f6ed9b22"
+    },
+    {
+      "file": "assets/art/phase4/ui/arrow.svg",
+      "bytes": 222,
+      "sha256": "9b10847400919e80ce37583853432fcd7bffcd39817a9b9ff1e99571f8dcc1db"
+    },
+    {
+      "file": "assets/art/phase4/ui/contract.svg",
+      "bytes": 248,
+      "sha256": "f9be9729dd19550aabaa829c9fd441218984cf27b7f4eaf2a603fd2ab46e41d8"
+    },
+    {
+      "file": "assets/art/phase4/ui/info.svg",
+      "bytes": 251,
+      "sha256": "903ad2ed30d74c462f50b277646623e72ccbda25f2e390f7d4a17ce7921ed826"
+    },
+    {
+      "file": "assets/art/phase4/ui/premises.svg",
+      "bytes": 233,
+      "sha256": "5e2de47923ecd76ecaa29643fd771112d19a088f1799b4a2e052aa82fe708ef4"
+    },
+    {
+      "file": "tools/company-marketplace/app.js",
+      "bytes": 40667,
+      "sha256": "667bb79f5950ed66001e1d348a81f504f1645a4727e3889664b23c2cb10000d0"
+    },
+    {
+      "file": "tools/company-marketplace/browser-checks.mjs",
+      "bytes": 5804,
+      "sha256": "a259d63b4cc7f3192ba8c0753db9678d880241c74d41382d3b18b53844408eff"
+    },
+    {
+      "file": "tools/company-marketplace/build-assets.py",
+      "bytes": 2988,
+      "sha256": "7396028bf54cfb7019a13724cd56482ff8a1c9a8141aefec8a8fdfb56ee76491"
+    },
+    {
+      "file": "tools/company-marketplace/components.js",
+      "bytes": 3769,
+      "sha256": "3600faa99d2b17b25e9719bdb8089b0c82fda2e7282b4ee16d29e9a07d34e5df"
+    },
+    {
+      "file": "tools/company-marketplace/components.test.mjs",
+      "bytes": 1157,
+      "sha256": "c5996585847f15f96eaca120ce61894e1480a7442ab439940a8b793c6f7c7b35"
+    },
+    {
+      "file": "tools/company-marketplace/data.js",
+      "bytes": 5277,
+      "sha256": "8022f378e58d2442f6291cd1675fa76757ef3521941b17a4be80aa5b9b4e196c"
+    },
+    {
+      "file": "tools/company-marketplace/icon-aliases.css",
+      "bytes": 1237,
+      "sha256": "a1c4f54d129a5b9c54ca9d93adcaef0be47f4f78f66e53cf00f9786a87b7f636"
+    },
+    {
+      "file": "tools/company-marketplace/index.html",
+      "bytes": 604,
+      "sha256": "d511db8d0535fbbdf2a86a411c71e74519f7376841d243f0ee3b0dc2363c68bf"
+    },
+    {
+      "file": "tools/company-marketplace/inventory.py",
+      "bytes": 2092,
+      "sha256": "53f681babbee2fbd0205ba2aa1d2a8c2c5cd8bc7d1922efb8522f7cb57a2b2c6"
+    },
+    {
+      "file": "tools/company-marketplace/qa.mjs",
+      "bytes": 5487,
+      "sha256": "ede0369cf1304df4f7082011869208a7f361071b13a55a2cd779eb6bf4cb49a5"
+    },
+    {
+      "file": "tools/company-marketplace/styles.css",
+      "bytes": 17012,
+      "sha256": "6151f2b0d55ba465136712e00007f1abf68305c04981fb45f4ccf6c10918f46b"
+    },
+    {
+      "file": "tools/company-marketplace/view-models.d.ts",
+      "bytes": 3658,
+      "sha256": "8cea8656ad6e8dc119ddb813ec402cff101fb7441a432a447810f037a949f9f3"
+    },
+    {
+      "file": "docs/art/phase4/CLAUDE-HANDOFF.md",
+      "bytes": 9673,
+      "sha256": "817d7f8e6f1d8ff7bce640ceb7f80204ad8a8ebbc621ebbdd1ec52b5d4222f99"
+    },
+    {
+      "file": "docs/art/phase4/COMPONENTS-AND-STATES.md",
+      "bytes": 7681,
+      "sha256": "b49acb46708647e69b19b1eee0c07bec9f4421216e66d8e3eee263fdc4a585d5"
+    },
+    {
+      "file": "docs/art/phase4/MISSING-AND-DEPENDENCIES.md",
+      "bytes": 2133,
+      "sha256": "7aee197fa602112499ccbe7aad77af6f4a2b0e339c7570182c8b040a18d037bb"
+    },
+    {
+      "file": "docs/art/phase4/QA.md",
+      "bytes": 4558,
+      "sha256": "c51dd449d5125aef87107ab9ba32399b7f91a8f299b33b463d76710c09478c9b"
+    },
+    {
+      "file": "docs/art/phase4/README.md",
+      "bytes": 3083,
+      "sha256": "c02a260f86d938a4ba4d75f8903f7fc89b941faf863d68ce530c580d3438f9e7"
+    },
+    {
+      "file": "docs/art/phase4/REVIEW.md",
+      "bytes": 1377,
+      "sha256": "96ab1081b901d7f82c33787fe9dabfa2d2645acc5c85f609c5e5d0a99cd1e862"
+    },
+    {
+      "file": "docs/art/phase4/SCREEN-SPECIFICATIONS.md",
+      "bytes": 8253,
+      "sha256": "fc393b76cffe520cb509c5abd632d4db46c129c47f9b85ec78d0dcbab5d243d6"
+    },
+    {
+      "file": "docs/art/phase4/qa/behaviour-report.json",
+      "bytes": 869,
+      "sha256": "a014dba8c76e13d9e7318bef8d60aa2bb47bba041e9965cd7a41cc67ea8631b1"
+    },
+    {
+      "file": "docs/art/phase4/qa/browser-report.json",
+      "bytes": 2652,
+      "sha256": "4fd9861814dfd4eae7b7bb81177147446a7a51e7cc5335d5738682e8b4cfd567"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-growth.png",
+      "bytes": 278394,
+      "sha256": "606725e4f5351bfd8b7e6282327d3ee7aa27ed3d55e4c89e7915d11fad7761c2"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-inventory.png",
+      "bytes": 181988,
+      "sha256": "0588b59d15e93f1ba2b2990136f034f2ce43d9572ec9739897f922d7d7d2c684"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-operations.png",
+      "bytes": 164118,
+      "sha256": "ec44c953393c3edb99b832fc4af34fd9e235747d3be07b0b85acdd592495cba7"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-overview.png",
+      "bytes": 267685,
+      "sha256": "d92294c651c53abd99a8b491d2e1cbaea7ebc295b48c924a73ec66e3fe6a533a"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-company-ownership.png",
+      "bytes": 138977,
+      "sha256": "faf4bc740ea9bd6ea4963d1c3bce086ae1a5a4e4ee1b6409a5bbf8e1f66de387"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-component-states.png",
+      "bytes": 232357,
+      "sha256": "320c0a1e91bcd999f5240dcf7ff9593a890a87af49664151339ad3ee028dde20"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-budget.png",
+      "bytes": 264037,
+      "sha256": "e2a473e32367714a639d50f4d6c75c18f91932de0f72b0aac96fb3fd3d5b7fd2"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-opportunity.png",
+      "bytes": 298969,
+      "sha256": "fdf738b25aa9892238d84a2aee4209fcca797bbd01c89ca4310d905faa70b51a"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-premises.png",
+      "bytes": 275513,
+      "sha256": "49f8ce707cc618916761a71880cc87c8dbd0b5fdad371822a0d7fd1e6a742274"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-create-review.png",
+      "bytes": 264242,
+      "sha256": "6760a6dac745489a6cdfd50423848e8b3586bccaa5ca9ff20586f502a44518d9"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-first-production.png",
+      "bytes": 133854,
+      "sha256": "36c5cce997d3dcd9dcb2529257e864f4aa3ae9b7457cfaff7fe7858f95eff7e5"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-marketplace.png",
+      "bytes": 246327,
+      "sha256": "300204e173621c33ae93fff8d107848847089ba6e897a7b2402767ea49822ed1"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-supplier-contract.png",
+      "bytes": 202604,
+      "sha256": "abc5c20da116de14a141f589f60fc681e59257b446161636ab1d52552f9e7671"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-supply-chain.png",
+      "bytes": 180858,
+      "sha256": "8925fbdfbba9b96a08dc30b95cf5f541568de864918500ae34f45715d950c8c1"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-trade-review.png",
+      "bytes": 207082,
+      "sha256": "b7221496a369360727a19de7bc4248f52c78eecf84b14c9dd4c7a96a9b8c8338"
+    },
+    {
+      "file": "docs/art/phase4/qa/desktop-upgrade-review.png",
+      "bytes": 244033,
+      "sha256": "ff839360b5ad710e9d6876340e59214438bb00148e6e14c7454644c6db7804d5"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-company-operations.png",
+      "bytes": 119171,
+      "sha256": "00d46a0aa7f99162359a46147afd6d016ceb94767ddbdf3c6b9a41a3f5d725e3"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-company-overview.png",
+      "bytes": 105055,
+      "sha256": "1502fd565a4bf7344764852a9268540f7cbe97f3e3befb302e83de07c0d6ead7"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-opportunity.png",
+      "bytes": 160745,
+      "sha256": "8afd49fa2be7064bed09115e797603e84e74718db56c32a63c9d941510680292"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-premises.png",
+      "bytes": 128623,
+      "sha256": "dbf18a762b7778760147b424d0ad9fb817d4a3a3b6b6d6239a1f6b4f847a630e"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-create-review.png",
+      "bytes": 118143,
+      "sha256": "f663c7e6213cf7af66d954c6aadda5face467dae674f7eba0c0f1f62a88246d2"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-marketplace.png",
+      "bytes": 131854,
+      "sha256": "950eba38c1729054729ef48d78880998f825f362d4f22ea19a0b7019166189b4"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-supplier-contract.png",
+      "bytes": 48413,
+      "sha256": "36969dab122ef8ae3693ba9ac9c0a5d7b6233446428dc79e34d18e72b672fcda"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-supply-chain.png",
+      "bytes": 156043,
+      "sha256": "a38b2d11c19d8e30f05e597b90a403100ed89fa46790c23ab256324d2c04c152"
+    },
+    {
+      "file": "docs/art/phase4/qa/mobile-trade-review.png",
+      "bytes": 70842,
+      "sha256": "34d0a2734c961d83313a54922766c7fb36cfadb6b60975331c05ed31c6133b06"
+    }
+  ],
+  "note": "Excludes this inventory to avoid recursive hash; approved reused assets are recorded in inherited manifests."
+}
