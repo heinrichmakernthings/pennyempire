@@ -4,27 +4,27 @@
 
 ## Setup
 - A player founds a pizza restaurant, runs it for 16 days, lists 3,000 new shares at 70% of the fundamental estimate, then declares a dividend each week from real treasury surplus.
-- Offer price 0.59 EC against an estimate of 0.85 EC a share.
+- Offer price 0.55 EC against an estimate of 0.79 EC a share.
 
 ## Headline
 - sharesSoldInOffering: 3000
-- raisedForCompanyEC: 1770
-- dividendsPaidEC: 6309.16
-- playerWalletChangeEC: 6728.35
-- founderStakeBps: 5576
+- raisedForCompanyEC: 1650
+- dividendsPaidEC: 5817.09
+- playerWalletChangeEC: 5849.18
+- founderStakeBps: 6317
 
-Circulating supply 145500.00 EC → 144422.90 EC (changes only by explicit scenario grants and recorded sinks).
+Circulating supply 145500.00 EC → 144316.14 EC (changes only by explicit scenario grants and recorded sinks).
 
 ## Timeline
 | day | last price | estimate | 7-day volume | index | note |
 |---|---|---|---|---|---|
-| 23 | 0.59 EC | 0.88 EC | 326 | 152.4 |  |
-| 30 | 0.59 EC | 1.09 EC | 1000 | 156.7 |  |
-| 37 | 0.62 EC | 1.25 EC | 2037 | 168.4 |  |
-| 44 | 0.65 EC | 1.17 EC | 387 | 169.8 |  |
-| 51 | 0.83 EC | 1.17 EC | 500 | 173.4 |  |
-| 58 | 0.96 EC | 1.03 EC | 250 | 176.1 |  |
-| 65 | 1.06 EC | 1.15 EC | 500 | 175.6 |  |
-| 72 | 1.11 EC | 1.06 EC | 131 | 179.9 |  |
-| 79 | 1.16 EC | 1.13 EC | 369 | 180.2 |  |
-| 86 | 1.21 EC | 1.00 EC | 508 | 182.3 |  |
+| 23 | 0.55 EC | 0.82 EC | 216 | 98.6 |  |
+| 30 | 0.55 EC | 0.96 EC | 240 | 101.0 |  |
+| 37 | 0.55 EC | 1.09 EC | 270 | 105.2 |  |
+| 44 | 0.55 EC | 1.17 EC | 282 | 111.6 |  |
+| 51 | 0.55 EC | 1.23 EC | 308 | 115.6 |  |
+| 58 | 0.55 EC | 1.16 EC | 584 | 116.5 |  |
+| 65 | 0.55 EC | 1.05 EC | 650 | 117.0 |  |
+| 72 | 0.55 EC | 1.05 EC | 378 | 118.2 |  |
+| 79 | 0.58 EC | 1.02 EC | 900 | 118.8 |  |
+| 86 | 0.58 EC | 1.08 EC | 585 | 119.9 |  |

@@ -77,9 +77,9 @@ export function runStockScenario(id: StockScenarioId, days: number): StockScenar
     headline.speculatorNetEC = spec.reduce((a, s, i) => a + (cashNow(db, s.account_id) + (holding(db, co, s.id).shares * (px(db, co) ?? 0)) - cash0[i]!), 0) / 100;
   } else if (id === 'D') {
     name = 'D — NPC Market'; setup.push('One human investor trades against the NPC market for the whole run: buys the listed companies whose price is below the fundamental estimate, sells those far above it, and collects dividends.');
-    co = 'co-bean-there'; step(db, 5); const cash0 = balance(db, PLAYER_WALLET);
+    co = 'co-bean-there'; step(db, 9); const cash0 = balance(db, PLAYER_WALLET);
     const listed = db.all<{ company_id: string }>("SELECT company_id FROM securities WHERE status = 'open' ORDER BY company_id").map((r) => r.company_id);
-    step(db, days - 5, (d) => {
+    step(db, days - 9, (d) => {
       if (d % 2) return;
       for (const c of listed) { const p = px(db, c), f = fair(db, c); const b = priceBand(db, loadConfig(db), c, lastTick(db)); if (!p || !f || !b) continue;
         if (p * 10 < f * 8) placePlayerShareOrder(db, key('scn:buy'), { companyId: c, side: 'buy', quantity: 150, limitPriceMinor: Math.min(b.high, Math.ceil(p * 1.02)), expiresInTicks: 2 });
@@ -92,9 +92,9 @@ export function runStockScenario(id: StockScenarioId, days: number): StockScenar
     const npc = db.get<{ v: number }>("SELECT COALESCE(SUM(t.qty),0) v FROM share_trades t JOIN investors i ON (i.id = t.buyer_id OR i.id = t.seller_id) WHERE i.kind = 'npc'")!.v; const all = db.get<{ v: number }>('SELECT COALESCE(SUM(qty),0) v FROM share_trades')!.v; headline.npcInvestorShareOfVolumePct = all ? Math.round((npc * 100) / all) : 0;
   } else if (id === 'E') {
     name = 'E — Acquisition'; setup.push('A well-funded investor (the human player) buys a controlling interest in an NPC café through the order book over several days. Control passes by the published majority rule; the café’s cash stays in the café.');
-    co = 'co-bean-there'; issue(db, ctx0(db), key('scn:whale'), PLAYER_WALLET, 40_000_000, 'scenario grant: acquisition budget'); step(db, 3);
+    co = 'co-bean-there'; issue(db, ctx0(db), key('scn:whale'), PLAYER_WALLET, 40_000_000, 'scenario grant: acquisition budget'); step(db, 9);
     const holder = db.get<{ owner_id: string }>('SELECT owner_id FROM companies WHERE id = ?', co)!.owner_id; const cash = balance(db, companyAccount(co)); let controlDay = -1;
-    step(db, days - 3, (d) => {
+    step(db, days - 9, (d) => {
       const b = buyBand(db, co); const held = holding(db, co, holder);
       if (outstanding(db, co) > 0 && controlDay < 0) { order(db, co, holder, 'sell', Math.min(b.high, Math.ceil(b.ref * 1.05)), Math.min(held.shares - held.reserved, 2_000)); placePlayerShareOrder(db, key('scn:take'), { companyId: co, side: 'buy', quantity: 2_000, limitPriceMinor: Math.min(b.high, Math.ceil(b.ref * 1.05)), expiresInTicks: 1 }); }
       const own = db.get<{ owner_kind: string }>('SELECT owner_kind FROM companies WHERE id = ?', co)!.owner_kind; if (own === 'player' && controlDay < 0) { controlDay = d; sample('control passed'); }

@@ -4,8 +4,7 @@ import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
 import { ownerInvestor, registerCapital } from '../engine/capital';
-import { seedNpcInvestors } from '../engine/securitiesTick';
-import { computeValuation } from '../engine/valuation';
+import { LISTED_AT_OPENING, seedNpcInvestors } from '../engine/securitiesTick';
 import { createProfile, type Strategy } from '../engine/npc';
 import { CITY_ID, EXCHANGE_ACCOUNT, companyAccount } from './bristol';
 
@@ -102,18 +101,12 @@ const npcV1: Patch = {
  * Penny Exchange opens with its first listings: the established NPC firms (each a real operating business) and the three state enterprises that earn real revenue.
  * Their founding holders (the NPC shareholders and the state) keep a majority and offer a float; six NPC investors arrive with finite, recorded seed capital.
  */
-const LISTED_AT_OPENING: Record<string, string> = { 'co-bristol-energy': 'BENR', 'co-bristol-estates': 'BEST', 'co-bristol-provisions': 'BPRV', 'co-clifton-slice': 'CSLC', 'co-bean-there': 'BNTH', 'co-severn-farm': 'SVFM', 'co-brunel-mill': 'BRML', 'co-clifton-dairy': 'CLDY', 'co-avon-timber': 'AVTM' };
 const securitiesV1: Patch = {
   id: 'securities-v1',
   run(db, ctx) {
-    const cfg = loadConfig(db);
-    const issued = seedNpcInvestors(db, ctx, cfg);
-    for (const [company, ticker] of Object.entries(LISTED_AT_OPENING)) {
-      const sec = db.get<{ status: string }>('SELECT status FROM securities WHERE company_id = ?', company);
-      if (!sec || sec.status !== 'unlisted') continue;
-      const v = computeValuation(db, cfg, company, ctx.tick);
-      db.run("UPDATE securities SET status = 'open', ticker = ?, listed_tick = ?, listing_price_minor = ? WHERE company_id = ?", ticker, ctx.tick, v?.fairValuePerShareMinor ?? 100, company);
-    }
+    // Investors arrive now; the opening listings are made on `exchangeOpensTick`, once a week of real trading gives each company an earnings record to be valued on.
+    const issued = seedNpcInvestors(db, ctx, loadConfig(db));
+    for (const [company, ticker] of Object.entries(LISTED_AT_OPENING)) db.run("UPDATE securities SET ticker = ? WHERE company_id = ? AND status = 'unlisted'", ticker, company);
     return issued;
   },
 };

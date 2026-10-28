@@ -7,7 +7,7 @@ import { declareDividend, dividendCapacity, payDueDividends, cancelOpenDividends
 import { available, createAccount, issue, transfer, type TickCtx } from './ledger';
 import { cancelShareOrder, expireShareOrders, orderBook, placeShareOrder, priceBand, matchCompany, type ShareOrderRow } from './shareMarket';
 import { shareCfg } from './listing';
-import { recordValuations } from './valuation';
+import { computeValuation, recordValuations } from './valuation';
 import { logEvent } from './stats';
 import type { CompanyRow } from './operations';
 import { HOUSEHOLDS } from '../seed/bristol';
@@ -21,6 +21,23 @@ export const INVESTOR_BLURB: Record<string, string> = {
   contrarian: 'Buys sharp falls in companies that are still sound, sells sharp rises.',
   balanced: 'Spreads a modest budget across listed companies and rebalances slowly.',
 };
+
+/** Penny Exchange opening listings: established NPC firms and the three state enterprises that earn real revenue. */
+export const LISTED_AT_OPENING: Record<string, string> = { 'co-bristol-energy': 'BENR', 'co-bristol-estates': 'BEST', 'co-bristol-provisions': 'BPRV', 'co-clifton-slice': 'CSLC', 'co-bean-there': 'BNTH', 'co-severn-farm': 'SVFM', 'co-brunel-mill': 'BRML', 'co-clifton-dairy': 'CLDY', 'co-avon-timber': 'AVTM' };
+
+/** Opens the exchange once: each opening company is listed at its fundamental estimate (an opening reference only; every later price comes from orders). */
+function openExchange(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
+  if (ctx.tick < cfg.exchangeOpensTick || db.get("SELECT 1 FROM meta WHERE key = 'exchange_opened'")) return;
+  for (const company of Object.keys(LISTED_AT_OPENING)) {
+    const sec = db.get<{ status: string }>('SELECT status FROM securities WHERE company_id = ?', company);
+    const c = db.get<CompanyRow>('SELECT * FROM companies WHERE id = ?', company);
+    if (!sec || sec.status !== 'unlisted' || !c || c.bankrupt_tick !== null) continue;
+    const v = computeValuation(db, cfg, company, ctx.tick);
+    db.run("UPDATE securities SET status = 'open', listed_tick = ?, listing_price_minor = ? WHERE company_id = ?", ctx.tick, v?.fairValuePerShareMinor ?? 100, company);
+    logEvent(db, ctx.tick, 'ipo', 'info', company, `${c.name} listed on the Penny Exchange at an opening reference of ${((v?.fairValuePerShareMinor ?? 100) / 100).toFixed(2)} EC a share`, { opening: true });
+  }
+  db.run("INSERT INTO meta (key, value) VALUES ('exchange_opened', ?)", String(ctx.tick));
+}
 
 /** Start of day: stale orders expire and declared dividends reach their payment day. */
 export function runShareOpening(db: Sql, ctx: TickCtx) {
@@ -171,6 +188,7 @@ function runDividendPolicy(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
 
 /** Decision phase (after NPC company reviews). */
 export function runShareDecisions(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
+  openExchange(db, ctx, cfg);
   runHolderFloat(db, ctx, cfg);
   runInvestors(db, ctx, cfg);
   runDividendPolicy(db, ctx, cfg);
