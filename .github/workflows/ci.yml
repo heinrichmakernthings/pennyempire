@@ -14,4 +14,5 @@ jobs:
       - run: npm run typecheck
       - run: npm test
       - run: npm run art:validate
+      - run: npm run sim -- 360
       - run: npm run build

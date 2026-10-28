@@ -1,9 +1,11 @@
 // Real-browser acceptance checks (Chromium via Playwright). Usage: npm run build && npm run qa:browser
-// Serves ./dist with `vite preview`, then drives the actual UI. Playwright is resolved from the project or a global install.
+// Starts the real economic engine server (temp SQLite DB, fast ticks) and `vite preview` (proxying /api), then drives the actual UI. Playwright is resolved from the project or a global install.
 import { createRequire } from 'node:module';
 import { spawn } from 'node:child_process';
 import assert from 'node:assert/strict';
-import { mkdirSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 
 const require = createRequire(import.meta.url);
 let chromium;
@@ -14,10 +16,12 @@ if (!chromium) { console.error('Playwright not found. Install it (npm i -D playw
 
 const PORT = 4173, BASE = `http://127.0.0.1:${PORT}`, OUT = process.env.QA_OUT ?? 'qa-output';
 mkdirSync(OUT, { recursive: true });
+const tmp = mkdtempSync(join(tmpdir(), 'pe-qa-'));
+const engine = spawn('npx', ['tsx', 'server/node.ts'], { stdio: 'ignore', env: { ...process.env, PENNY_DB: join(tmp, 'qa.db'), PENNY_TICK_MS: '2500', PORT: '8787' } });
 const server = spawn('npx', ['vite', 'preview', '--port', String(PORT), '--host', '127.0.0.1', '--strictPort'], { stdio: 'ignore' });
-const stop = () => server.kill();
+const stop = () => { server.kill(); engine.kill(); try { rmSync(tmp, { recursive: true, force: true }); } catch { /* ignore */ } };
 process.on('exit', stop);
-for (let i = 0; i < 50; i++) { try { if ((await fetch(BASE)).ok) break; } catch { /* waiting */ } await new Promise((r) => setTimeout(r, 200)); }
+for (let i = 0; i < 100; i++) { try { if ((await fetch(BASE)).ok && (await fetch(`${BASE}/api/health`)).ok) break; } catch { /* waiting */ } await new Promise((r) => setTimeout(r, 200)); }
 
 const routes = ['/city', '/companies', '/commodities', '/stocks', '/portfolio', '/prestige', '/wallet'];
 const viewports = [{ name: 'mobile-390', width: 390, height: 844, mobile: true }, { name: 'tablet-768', width: 768, height: 1024, mobile: false }, { name: 'desktop-1440', width: 1440, height: 900, mobile: false }];
@@ -60,11 +64,12 @@ try {
 
     // select via pointer
     if (vp.mobile) await page.touchscreen.tap(cx, cy); else await page.mouse.click(cx, cy);
-    const insp = page.getByRole('article', { name: 'Mad Slices' });
+    const insp = page.getByRole('article').first();
     await insp.waitFor({ timeout: 4000 }).catch(() => {});
-    check(`${vp.name} city: clicking the building opens its company panel`, await insp.isVisible(), 'Mad Slices');
+    const selectedName = (await insp.locator('h2').first().textContent().catch(() => '')) ?? '';
+    check(`${vp.name} city: clicking the building opens its company panel`, await insp.isVisible() && ['Mad Slices', 'Harbour Bean'].includes(selectedName), selectedName);
     if (await insp.isVisible()) {
-      for (const t of ['Pizza restaurant · Level 2', 'Your company', 'Operating', 'Owner:', 'Revenue / day']) check(`${vp.name} city: panel shows "${t}"`, (await insp.getByText(t, { exact: false }).count()) > 0);
+      for (const t of ['Your company', 'Operating', 'Owner:', 'Revenue / day']) check(`${vp.name} city: panel shows "${t}"`, (await insp.getByText(t, { exact: false }).count()) > 0);
       await page.screenshot({ path: `${OUT}/${vp.name}-city-selected.png` });
       await page.keyboard.press('Escape');
       await page.waitForTimeout(300);
@@ -72,7 +77,7 @@ try {
     // management link
     if (!vp.mobile) {
       await page.mouse.click(cx, cy); await page.getByRole('link', { name: 'Manage company' }).first().click();
-      await page.waitForURL(/\/companies\?company=co-mad-slices/);
+      await page.waitForURL(/\/companies\?company=co-/);
       check(`${vp.name} city: "Manage company" opens the company-management view`, await page.getByRole('tab', { name: 'Operations' }).waitFor({ timeout: 4000 }).then(() => true, () => false));
       await page.goto(BASE + '/city', { waitUntil: 'networkidle' }); await wrap.waitFor(); await page.waitForTimeout(500);
     }
@@ -99,7 +104,7 @@ try {
     // accessible list alternative
     if (vp.width >= 1200) check(`${vp.name} city: accessible business list is present`, await page.getByRole('list', { name: 'Businesses in Bristol' }).isVisible());
     else {
-      await page.getByRole('button', { name: /Businesses \(6\)/ }).click();
+      await page.getByRole('button', { name: /Businesses \(8\)/ }).click();
       const dlg = page.getByRole('dialog', { name: 'Businesses in Bristol' });
       check(`${vp.name} city: business list dialog opens`, await dlg.isVisible());
       await dlg.getByRole('button', { name: /Brunel Milling/ }).click();
@@ -128,13 +133,40 @@ try {
   // loading / error / empty states via fixture mode
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
-  await page.goto(BASE + '/companies?fixture=error', { waitUntil: 'networkidle' });
+  await page.goto(BASE + '/companies?source=fixture&fixture=error', { waitUntil: 'networkidle' });
   check('error state renders with retry', await page.getByRole('button', { name: 'Try again' }).isVisible());
-  await page.goto(BASE + '/companies?fixture=empty', { waitUntil: 'networkidle' });
+  await page.goto(BASE + '/companies?source=fixture&fixture=empty', { waitUntil: 'networkidle' });
   check('empty state renders with next action', await page.getByText("You don't own a company yet").isVisible());
-  await page.goto(BASE + '/wallet?fixture=slow');
+  await page.goto(BASE + '/wallet?source=fixture&fixture=slow');
   check('loading skeleton shows while data is pending', await page.getByRole('status', { name: /Loading Wallet/ }).first().waitFor({ timeout: 2000 }).then(() => true, () => false));
   await ctx.close();
+
+  // ── Live economic engine behaviour ──
+  const live = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const lp = await live.newPage(); const lproblems = [];
+  lp.on('console', (m) => { if (['error', 'warning'].includes(m.type())) lproblems.push(m.text()); }); lp.on('pageerror', (e) => lproblems.push(e.message));
+  await lp.goto(BASE + '/city', { waitUntil: 'networkidle' });
+  const badge = lp.locator('.pe-live').first(); await badge.waitFor();
+  const day = async () => Number(/Day (\d+)/.exec((await badge.textContent()) ?? '')?.[1] ?? -1);
+  const d0 = await day();
+  check('HUD labels data as a live simulation (not illustrative) and shows real balances', d0 >= 0 && (await lp.getByText('Demo data').count()) === 0 && (await lp.locator('.pe-hud-stats dd').first().textContent()).includes('15,000 EC'), `Day ${d0}`);
+  let d1 = d0; for (let i = 0; i < 40 && d1 === d0; i++) { await lp.waitForTimeout(500); d1 = await day(); }
+  check('the economy advances by itself: HUD day increases with nobody clicking', d1 > d0, `Day ${d0} → ${d1}`);
+  await lp.goto(BASE + '/companies?company=co-mad-slices', { waitUntil: 'networkidle' });
+  await lp.getByRole('tab', { name: 'Operations' }).click();
+  const price = lp.getByLabel(/Price per unit/); await price.fill('10.50'); await lp.getByRole('button', { name: 'Save changes' }).click();
+  check('saving company settings is accepted by the server and persists', await lp.getByText('Settings saved').waitFor({ timeout: 5000 }).then(() => true, () => false));
+  const after = await (await fetch(`${BASE}/api/companies/co-mad-slices`)).json();
+  check('server state reflects the change (price and revision)', after.envelope.data.price.minor === 1050 && after.envelope.data.revision >= 2);
+  await lp.getByRole('tab', { name: 'Financials' }).click();
+  check('financials show the stored daily operating statement', await lp.getByRole('region', { name: 'Daily operating statement' }).locator('tbody tr').first().waitFor({ timeout: 5000 }).then(() => true, () => false));
+  await lp.goto(BASE + '/wallet', { waitUntil: 'networkidle' });
+  check('screens without server data (wallet) stay explicitly illustrative', (await lp.getByText('Illustrative data').count()) > 0 && (await lp.getByText('SIMULATED').count()) > 0);
+  await lp.goto(BASE + '/dev/economy', { waitUntil: 'networkidle' });
+  check('developer economy dashboard shows live ledger statistics', await lp.getByText('Ledger reconciles').waitFor({ timeout: 6000 }).then(() => true, () => false) && (await lp.getByText('Circulating supply').count()) > 0);
+  await lp.screenshot({ path: `${OUT}/dev-economy.png`, fullPage: false });
+  check('live pages produced no console errors or warnings', lproblems.length === 0, lproblems.slice(0, 3).join(' | '));
+  await live.close();
 } finally { await browser.close(); stop(); }
 
 const failed = results.filter((r) => !r.ok);

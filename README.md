@@ -31,7 +31,12 @@ A player starts in Bristol, sees demand for flour, creates a flour mill or pizza
 npm install && npm run dev      # http://localhost:5173
 npm run typecheck && npm test && npm run build
 ```
-See [docs/FRONTEND.md](docs/FRONTEND.md). All values on screen are illustrative fixtures and are labelled as such.
+See [docs/FRONTEND.md](docs/FRONTEND.md) and [docs/ECONOMIC-ENGINE.md](docs/ECONOMIC-ENGINE.md).
+```bash
+npm run dev:all    # persistent economic engine (SQLite) + web UI; data is live simulation
+npm run sim -- 360 # audit a 12-month simulation
+```
+If the engine is not running the UI falls back to illustrative fixtures and labels them as such. Internal economy dashboard: `/dev/economy`.
 
 ## Project rules
 See [AGENTS.md](AGENTS.md). Work on feature branches and submit pull requests. Never enable live financial transfers merely by changing a feature flag.

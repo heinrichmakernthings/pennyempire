@@ -41,3 +41,6 @@ Fixture test hooks: `?fixture=slow` (loading state), `?fixture=error` (error + r
 
 ## Known art gaps (unchanged from PRODUCTION-READINESS.md)
 Static art only: no walk cycles, upgrade variants, production FX or prestige art for car/HQ/yacht (those items show *Artwork pending* and are unbuyable). Railing prop is not used. Pixel density across AI-generated sources is not perfectly uniform; footprints are integration values. The atlas sources are loaded as the original ~1–3 MB PNGs (≈11 MB total) — an optimised packed atlas is the first performance follow-up.
+
+## Update (Prompt 2): live engine data
+`createServerDataSource` (src/data/serverSource.ts) now feeds city, companies, commodities and portfolio from the economic engine (`authority: 'server'`, HUD shows **Live simulation · Day N**, polling every 5 s). Stocks, prestige and the SIMULATED test wallet have no server model yet and stay labelled fixtures; `?source=fixture` forces fixtures, and an unreachable server falls back to fixtures with a visible warning. See docs/ECONOMIC-ENGINE.md.
