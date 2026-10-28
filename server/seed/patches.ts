@@ -62,7 +62,27 @@ const exchangeV1: Patch = {
   },
 };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1];
+/** Neighbourhood consumer segments and per-capita household budgets. The budgets reproduce the earlier fixed spending at 100% confidence and an average season. */
+const consumersV1: Patch = {
+  id: 'consumers-v1',
+  run(db) {
+    const segs: [string, string, string, number, number, number, number, number, number, number][] = [
+      ['seg-clifton-professionals', 'dist-clifton', 'Clifton professionals', 2_000, 13_000, -1, 8_000, 5_000, 1, 12],
+      ['seg-clifton-families', 'dist-clifton', 'Clifton families', 1_500, 10_000, 0, 5_000, 7_000, 1, 12],
+      ['seg-redcliffe-workers', 'dist-redcliffe', 'Redcliffe workers', 2_500, 8_500, 1, 3_000, 4_000, 6, 12],
+      ['seg-redcliffe-students', 'dist-redcliffe', 'Redcliffe students', 1_500, 6_500, 2, 2_000, 2_000, 6, 12],
+      ['seg-harbour-commuters', 'dist-harbourside', 'Harbourside commuters', 1_500, 10_500, 0, 5_000, 3_000, 11, 9],
+      ['seg-harbour-creatives', 'dist-harbourside', 'Harbourside creatives', 1_000, 11_500, -1, 7_000, 4_500, 11, 9],
+    ];
+    for (const [id, d, name, pop, inc, delta, qp, loy, col, row] of segs) db.run('INSERT OR IGNORE INTO consumer_segments (id, city_id, district_id, name, population_bps, income_bps, price_sens_delta, quality_pref_bps, loyalty_trait_bps, center_col, center_row) VALUES (?,?,?,?,?,?,?,?,?,?,?)', id, CITY_ID, d, name, pop, inc, delta, qp, loy, col, row);
+    // pizza leans summer, coffee leans winter; both average 100% over the year
+    db.run("UPDATE demand_rules SET per_thousand_minor = 3600, confidence_exposure_bps = 10000, segmented = 1, seasonality = '[9500,9500,9800,10000,10300,10500,10700,10600,10200,10000,9800,10100]' WHERE id = 'dem-pizza'");
+    db.run("UPDATE demand_rules SET per_thousand_minor = 1000, confidence_exposure_bps = 10000, segmented = 1, seasonality = '[11500,11000,10500,10000,9500,9000,8800,8900,9500,10200,10800,11300]' WHERE id = 'dem-coffee'");
+    return 0;
+  },
+};
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

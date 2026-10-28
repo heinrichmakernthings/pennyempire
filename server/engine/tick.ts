@@ -1,12 +1,12 @@
 import type { Sql } from '../db/sql';
 import { loadConfig, gameDate } from './config';
-import { allocateDemand, type Seller } from './demand';
 import { InventoryError, addStock, freeStock, removeStock, stock } from './inventory';
 import { LedgerError, available, balance, destroy, issue, supply, transfer, type LedgerKind, type TickCtx } from './ledger';
 import { MarketError, cancelOrder, expireOrders, placeOrder, type FillEvent } from './market';
 import { runContractDeliveries } from './contracts';
 import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
+import { runConsumers } from './consumers';
 import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
@@ -190,33 +190,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
 
     /* G. Consumer demand: every budget comes from a named funder account and is capped by that account's balance. */
     phase('consumers');
-    const rules = db.all<{ id: string; label: string; commodity_id: string; funder_account_id: string; mode: 'pool_share' | 'fixed'; amount: number; payment_kind: 'consumer_sale' | 'state_payment'; goods_reason: 'consumer_purchase' | 'public_works'; price_sensitivity: number }>('SELECT * FROM demand_rules WHERE city_id = ? ORDER BY id', city.id);
-    const startBal = new Map<string, number>(); for (const r of rules) if (!startBal.has(r.funder_account_id)) startBal.set(r.funder_account_id, available(db, r.funder_account_id));
-    const committed = new Map<string, number>();
-    for (const r of rules) {
-      const base = startBal.get(r.funder_account_id)!;
-      const want = r.mode === 'pool_share' ? Math.floor((base * r.amount) / 10_000) : r.amount;
-      const budget = Math.max(0, Math.min(want, base - (committed.get(r.funder_account_id) ?? 0), available(db, r.funder_account_id)));
-      committed.set(r.funder_account_id, (committed.get(r.funder_account_id) ?? 0) + budget);
-      const ref = refPrice(r.commodity_id);
-      const sellers = order.filter((c) => c.status === 'operating' && c.retail_commodity_id === r.commodity_id);
-      for (const c of sellers) if (freeStock(db, c.id, r.commodity_id) === 0) st(c.id).stockedOut = true;
-      const live = sellers.filter((c) => freeStock(db, c.id, r.commodity_id) > 0);
-      const res = allocateDemand(budget, ref, r.price_sensitivity, live.map((c): Seller => ({ id: c.id, price: c.price_minor, stock: freeStock(db, c.id, r.commodity_id), quality: c.quality, reputationBps: c.reputation_bps, awarenessBps: c.awareness_bps })));
-      let spent = 0, sold = 0;
-      for (const a of res.allocations) {
-        const c = byId.get(a.id)!; st(c.id).demanded += Math.floor((res.unitsWanted * a.share) / 10_000);
-        if (a.units <= 0) continue;
-        safe('consumer_sale', c.id, () => {
-          pay(r.payment_kind, r.funder_account_id, c.treasury_account_id, a.spend, `${a.units} ${r.commodity_id} to ${r.id}`);
-          const cost = removeStock(db, ctx, c.id, r.commodity_id, a.units, r.goods_reason, r.id);
-          const s = st(c.id); s.revenue += a.spend; s.cogs += cost; s.unitsSold += a.units; spent += a.spend; sold += a.units;
-        });
-      }
-      consumerSpend += spent; unmet += Math.max(0, res.unitsWanted - sold);
-      db.run('INSERT INTO demand_tick_stats (tick, rule_id, budget_minor, spent_minor, units_wanted, units_sold, unmet_units) VALUES (?,?,?,?,?,?,?)', n, r.id, budget, spent, res.unitsWanted, sold, Math.max(0, res.unitsWanted - sold));
-      if (res.unitsWanted > 0 && sold * 10 < res.unitsWanted * 7) logEvent(db, n, 'shortage', 'warning', r.commodity_id, `${r.label}: only ${sold} of ${res.unitsWanted} units could be served`, { rule: r.id });
-    }
+    const consumed = runConsumers(db, ctx, cfg, { order, byId, refPrice, cityId: city.id, population: city.population, householdsAccount: city.households_account_id, st, pay, safe });
+    consumerSpend += consumed.spend; unmet += consumed.unmet;
 
     /* H. Operating expenses (accrual): wages → households; energy, rent, advertising → state enterprises. Unpaid amounts become arrears. */
     phase('expenses');

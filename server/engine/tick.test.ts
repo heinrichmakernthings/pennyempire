@@ -161,7 +161,7 @@ describe('company financials come from real state', () => {
     expect(pa.pre - pb.pre).toBe(50_000);             // exactly the extra rent comes off profit
   });
   it('profit responds to price: undercutting wins share, overpricing loses it', () => {
-    const share = (price: number) => { const db = memWorld(); db.run("UPDATE demand_rules SET amount = 70000 WHERE id = 'dem-pizza'"); db.run("UPDATE companies SET price_minor = ? WHERE id = 'co-mad-slices'", price); advance(db, 2); return one<{ u: number }>(db, "SELECT units_sold u FROM company_tick_stats WHERE tick = 2 AND company_id = 'co-mad-slices'").u; };
+    const share = (price: number) => { const db = memWorld(); db.run("UPDATE demand_rules SET per_thousand_minor = 1400 WHERE id = 'dem-pizza'"); db.run("UPDATE companies SET price_minor = ? WHERE id = 'co-mad-slices'", price); advance(db, 2); return one<{ u: number }>(db, "SELECT units_sold u FROM company_tick_stats WHERE tick = 2 AND company_id = 'co-mad-slices'").u; };
     const cheap = share(700), normal = share(1_000), dear = share(1_500);
     expect(cheap).toBeGreaterThan(normal); expect(normal).toBeGreaterThan(dear);
   });
