@@ -21,3 +21,7 @@ The three multi-object sheets still contain coloured semi-transparent haze after
 ## Follow-up audit
 
 Read ASSET-AUDIT.md for updated alpha findings and new inventory/actor/UI assets. Its evidence supersedes the earlier categorical haze diagnosis. The connection study failed orientation review and must not be used as a runtime road atlas.
+
+## Production-readiness pass supersedes this draft
+
+Read PRODUCTION-READINESS.md, DESIGN-SYSTEM.md, SCREEN-SPECIFICATIONS.md and CLAUDE-PROMPT-1.md. Runtime atlas frames now exist in assets/art/runtime/manifest.json; integration review tools are in tools/art-review. The final readiness decision and known blockers are in PRODUCTION-READINESS.md.

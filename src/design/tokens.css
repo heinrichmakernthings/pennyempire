@@ -20,3 +20,20 @@
 }
 .pe-financial-number { font-variant-numeric: tabular-nums; }
 .pe-pixel-art { image-rendering: pixelated; }
+:root {
+  --pe-font: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --pe-body-size: 16px;
+  --pe-body-line: 24px;
+  --pe-small-size: 14px;
+  --pe-small-line: 20px;
+  --pe-radius-control: 4px;
+  --pe-radius-panel: 8px;
+  --pe-hud-height: 64px;
+  --pe-bottom-nav-height: 56px;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  :root { --pe-nav-width: 72px; --pe-inspector-width: 360px; }
+}
+@media (max-width: 767px) {
+  :root { --pe-nav-width: 0px; --pe-inspector-width: 100%; }
+}

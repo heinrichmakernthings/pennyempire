@@ -28,3 +28,7 @@ A player starts in Bristol, sees demand for flour, creates a flour mill or pizza
 
 ## Project rules
 See [AGENTS.md](AGENTS.md). Work on feature branches and submit pull requests. Never enable live financial transfers merely by changing a feature flag.
+
+## Phase 1 implementation package
+
+Start with [production readiness](docs/design/PRODUCTION-READINESS.md), then [Claude Code Prompt 1](docs/design/CLAUDE-PROMPT-1.md). The package includes screen specifications, shared TypeScript DTOs, a measured atlas manifest and a standalone art acceptance bench. Static integration is supported; final art certification and browser QA remain open. See the readiness report rather than treating source-image counts as completed production assets.
