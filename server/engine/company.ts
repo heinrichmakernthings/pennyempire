@@ -1,11 +1,11 @@
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { runCommand, type CommandErr, type CommandResponse } from './commands';
-import { available, destroy, transfer, createAccount } from './ledger';
+import { available, destroy, transfer, createAccount, type TickCtx } from './ledger';
 import { logEvent } from './stats';
 import { procureInputs, refPriceOf, type CompanyRow } from './operations';
 import type { StartupLine, StartupQuote } from '../../src/shared/management';
-import { PLAYER_ID, PLAYER_WALLET, companyAccount } from '../seed/bristol';
+import { PLAYER_ID, companyAccount } from '../seed/bristol';
 
 const err = (code: CommandErr['error']['code'], message: string, fieldErrors?: Record<string, string>): CommandErr => ({ ok: false, error: { code, message, ...(fieldErrors ? { fieldErrors } : {}) } });
 const stateAccount = (db: Sql, industry: string) => db.get<{ a: string }>("SELECT treasury_account_id a FROM companies WHERE owner_kind = 'state' AND industry_id = ? LIMIT 1", industry)?.a;
@@ -28,7 +28,9 @@ export const LOT_SQL = "(p.id LIKE 'lot-%' OR (p.id IN ('plot-pizza','plot-cafe'
 export const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9 '&.,-]{2,31}$/;
 
 /** Itemised startup cost and every reason it could be refused. Pure read; `createCompany` re-runs it inside the transaction, so the client never sets a price. */
-export function startupQuote(db: Sql, input: StartupInput): StartupQuote {
+export interface Founder { kind: 'player' | 'npc'; ownerId: string; fundingAccount: string; idPrefix: string; limited: boolean }
+export const playerFounder = (db: Sql): Founder => ({ kind: 'player', ownerId: PLAYER_ID, fundingAccount: db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w, idPrefix: 'co-pl', limited: true });
+export function startupQuote(db: Sql, input: StartupInput, founder: Founder = playerFounder(db)): StartupQuote {
   const cfg = loadConfig(db);
   const issues: { field: string; message: string }[] = [];
   const spec = specOf(db, input.industry);
@@ -39,15 +41,14 @@ export function startupQuote(db: Sql, input: StartupInput): StartupQuote {
   if (!plot) issues.push({ field: 'plotId', message: 'That location does not exist.' });
   else if (plot.company_id || plot.asset_id) issues.push({ field: 'plotId', message: 'That location is already taken.' });
   else if (spec && (plot.width !== spec.plot_width || plot.depth !== spec.plot_depth)) issues.push({ field: 'plotId', message: `${spec.label} needs a ${spec.plot_width}×${spec.plot_depth} plot; this one is ${plot.width}×${plot.depth}.` });
-  const owned = db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL", PLAYER_ID)!.n;
-  if (owned >= cfg.maxCompaniesPerPlayer) issues.push({ field: 'industry', message: `You already own ${owned} companies (the limit is ${cfg.maxCompaniesPerPlayer}).` });
+  const owned = founder.limited ? db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE owner_kind = ? AND owner_id = ? AND bankrupt_tick IS NULL", founder.kind, founder.ownerId)!.n : 0;
+  if (founder.limited && owned >= cfg.maxCompaniesPerPlayer) issues.push({ field: 'industry', message: `You already own ${owned} companies (the limit is ${cfg.maxCompaniesPerPlayer}).` });
   if (input.name !== undefined) {
     const name = input.name.trim();
     if (!NAME_RE.test(name)) issues.push({ field: 'name', message: 'Use 3–32 letters, numbers or . , & \' - and start with a letter or number.' });
     else if (db.get('SELECT 1 FROM companies WHERE lower(name) = lower(?)', name)) issues.push({ field: 'name', message: 'A company with that name already exists in Bristol.' });
   }
-  const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w;
-  const walletAvail = available(db, wallet);
+  const walletAvail = available(db, founder.fundingAccount);
   const staff = spec && tier ? defaultStaff(spec, tier) : 0;
   const rent = spec && tier ? rentFor(db, spec, tier, plot?.district_id ?? null) : 0;
   const dailyFixed = spec ? staff * spec.wage_minor + rent : 0;
@@ -71,40 +72,47 @@ export function startupQuote(db: Sql, input: StartupInput): StartupQuote {
 
 export interface CreateInput extends StartupInput { name: string; expectedTotalMinor: number }
 /**
- * Atomic incorporation. One transaction: re-quote → check funds, lot, name, limits → licence (destroyed), fit-out and equipment (transfers to state companies),
- * working capital (into the new treasury) → company, ownership, production line, lot assignment. Any failure rolls everything back; the idempotency key makes a retry a no-op.
+ * Atomic incorporation, shared by players and NPC entrepreneurs (same prices, same ledger path, same lot rules). One transaction: re-quote → check funds, lot, name, limits →
+ * licence (destroyed), fit-out and equipment (transfers to state companies), working capital (into the new treasury) → company, ownership, production line, lot assignment.
+ * Any failure throws/returns without side effects (the caller's transaction rolls back).
  */
+export function foundCompany(db: Sql, ctx: TickCtx, key: string, input: StartupInput & { name: string }, founder: Founder, expectedTotalMinor?: number): { ok: true; companyId: string; totalMinor: number } | { ok: false; error: CommandErr['error'] } {
+  const q = startupQuote(db, input, founder);
+  if (!q.ok) { const first = q.issues[0]!; return { ok: false, error: { code: first.field === 'total' ? 'INSUFFICIENT_FUNDS' : 'VALIDATION', message: first.message, fieldErrors: Object.fromEntries(q.issues.map((i) => [i.field, i.message])) } }; }
+  if (expectedTotalMinor !== undefined && q.totalMinor !== expectedTotalMinor) return { ok: false, error: { code: 'QUOTE_EXPIRED', message: `Prices changed: the total is now ${q.totalMinor / 100} EC. Review the quote and confirm again.` } };
+  const spec = specOf(db, input.industry)!, tier = tierOf(db, input.industry, input.tier)!;
+  const plot = db.get<{ district_id: string | null }>('SELECT district_id FROM plots WHERE id = ?', input.plotId)!;
+  const name = input.name.trim();
+  const seq = (db.get<{ n: number }>('SELECT COUNT(*) n FROM companies WHERE id LIKE ?', `${founder.idPrefix}-%`)!.n) + 1;
+  const id = `${founder.idPrefix}-${input.industry}-${seq}`, acct = companyAccount(id);
+  // 1. claim the lot first: a concurrent claim changes 0 rows and the whole transaction fails
+  const claimed = db.run('UPDATE plots SET company_id = ?, asset_id = ? WHERE id = ? AND company_id IS NULL AND asset_id IS NULL', id, tier.asset_id, input.plotId).changes;
+  if (claimed !== 1) return { ok: false, error: { code: 'VALIDATION', message: 'That location was just taken.' } };
+  createAccount(db, acct, 'company', `${name} treasury`);
+  const rent = rentFor(db, spec, tier, plot.district_id), staff = defaultStaff(spec, tier);
+  const batches = Math.min(spec.default_batches, tier.capacity_batches);
+  db.run(`INSERT INTO companies (id, name, city_id, district_id, plot_id, industry_id, asset_id, owner_kind, owner_id, treasury_account_id, level, status, retail_commodity_id, price_minor, min_price_minor, max_price_minor, quality, employees, max_employees, wage_minor, capacity_batches, storage_cap_units, property_minor, marketing_minor, reputation_bps, created_tick, premises_tier, equipment_cost_minor)
+    VALUES (?,?,?,?,?,?,?, ?, ?, ?, ?, 'operating', ?,?,?,?, 'standard', ?,?,?,?,?,?, 0, 5000, ?, ?, ?)`,
+    id, name, 'city-bristol', plot.district_id, input.plotId, input.industry, tier.asset_id, founder.kind, founder.ownerId, acct, input.tier, spec.retail_commodity_id, spec.default_price_minor, spec.min_price_minor, spec.max_price_minor,
+    staff, tier.max_employees, spec.wage_minor, tier.capacity_batches, tier.storage_cap_units, rent, ctx.tick, input.tier, spec.equipment_minor);
+  db.run('INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, ?, ?, 10000)', id, founder.kind, founder.ownerId);
+  db.run('INSERT INTO production_lines (company_id, recipe_id, planned_batches, ask_price_minor) VALUES (?,?,?,?)', id, spec.primary_recipe_id, batches, spec.default_price_minor);
+  // 2. money, all through the ledger
+  const estates = stateAccount(db, 'property')!, works = stateAccount(db, 'works')!;
+  const [lic, fit, eq, wc] = q.lines.map((l) => l.amountMinor) as [number, number, number, number];
+  if (lic > 0) destroy(db, ctx, `${key}:licence`, founder.fundingAccount, lic, `incorporation licence: ${name}`, 'sink');
+  if (fit > 0) transfer(db, ctx, `${key}:premises`, founder.fundingAccount, estates, fit, 'state_payment', `premises fit-out: ${name}`);
+  if (eq > 0) transfer(db, ctx, `${key}:equipment`, founder.fundingAccount, works, eq, 'state_payment', `equipment: ${name}`);
+  if (wc > 0) transfer(db, ctx, `${key}:capital`, founder.fundingAccount, acct, wc, 'capital_injection', `working capital: ${name}`);
+  logEvent(db, ctx.tick, founder.kind === 'player' ? 'company_created' : 'company_opened', 'info', id, founder.kind === 'player' ? `You founded ${name} (${spec.label}) for ${q.totalMinor / 100} EC` : `${name} opened in Bristol as a new ${spec.label.toLowerCase()}`, { industry: input.industry, plot: input.plotId, tier: input.tier, owner: founder.kind, startupMinor: q.totalMinor });
+  return { ok: true, companyId: id, totalMinor: q.totalMinor };
+}
+
 export function createCompany(db: Sql, key: string, input: CreateInput): CommandResponse<{ companyId: string }> {
   return runCommand(db, key, 'company.create', (ctx) => {
-    const q = startupQuote(db, input);
-    if (!q.ok) { const first = q.issues[0]!; return err(first.field === 'total' ? 'INSUFFICIENT_FUNDS' : 'VALIDATION', first.message, Object.fromEntries(q.issues.map((i) => [i.field, i.message]))); }
-    if (q.totalMinor !== input.expectedTotalMinor) return err('QUOTE_EXPIRED', `Prices changed: the total is now ${q.totalMinor / 100} EC. Review the quote and confirm again.`);
-    const spec = specOf(db, input.industry)!, tier = tierOf(db, input.industry, input.tier)!;
-    const plot = db.get<{ district_id: string | null }>('SELECT district_id FROM plots WHERE id = ?', input.plotId)!;
-    const name = input.name.trim();
-    const seq = (db.get<{ n: number }>("SELECT COUNT(*) n FROM companies WHERE id LIKE 'co-pl-%'")!.n) + 1;
-    const id = `co-pl-${input.industry}-${seq}`, acct = companyAccount(id);
-    // 1. claim the lot first: a concurrent claim changes 0 rows and the whole transaction fails
-    const claimed = db.run('UPDATE plots SET company_id = ?, asset_id = ? WHERE id = ? AND company_id IS NULL AND asset_id IS NULL', id, tier.asset_id, input.plotId).changes;
-    if (claimed !== 1) return err('VALIDATION', 'That location was just taken.');
-    createAccount(db, acct, 'company', `${name} treasury`);
-    const rent = rentFor(db, spec, tier, plot.district_id), staff = defaultStaff(spec, tier);
-    const batches = Math.min(spec.default_batches, tier.capacity_batches);
-    db.run(`INSERT INTO companies (id, name, city_id, district_id, plot_id, industry_id, asset_id, owner_kind, owner_id, treasury_account_id, level, status, retail_commodity_id, price_minor, min_price_minor, max_price_minor, quality, employees, max_employees, wage_minor, capacity_batches, storage_cap_units, property_minor, marketing_minor, reputation_bps, created_tick, premises_tier, equipment_cost_minor)
-      VALUES (?,?,?,?,?,?,?, 'player', ?, ?, ?, 'operating', ?,?,?,?, 'standard', ?,?,?,?,?,?, 0, 5000, ?, ?, ?)`,
-      id, name, 'city-bristol', plot.district_id, input.plotId, input.industry, tier.asset_id, PLAYER_ID, acct, input.tier, spec.retail_commodity_id, spec.default_price_minor, spec.min_price_minor, spec.max_price_minor,
-      staff, tier.max_employees, spec.wage_minor, tier.capacity_batches, tier.storage_cap_units, rent, ctx.tick, input.tier, spec.equipment_minor);
-    db.run('INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, ?, ?, 10000)', id, 'player', PLAYER_ID);
-    db.run('INSERT INTO production_lines (company_id, recipe_id, planned_batches, ask_price_minor) VALUES (?,?,?,?)', id, spec.primary_recipe_id, batches, spec.default_price_minor);
-    // 2. money, all through the ledger
-    const estates = stateAccount(db, 'property')!, works = stateAccount(db, 'works')!;
-    const [lic, fit, eq, wc] = q.lines.map((l) => l.amountMinor) as [number, number, number, number];
-    if (lic > 0) destroy(db, ctx, `cmd:${key}:licence`, PLAYER_WALLET, lic, `incorporation licence: ${name}`, 'sink');
-    if (fit > 0) transfer(db, ctx, `cmd:${key}:premises`, PLAYER_WALLET, estates, fit, 'state_payment', `premises fit-out: ${name}`);
-    if (eq > 0) transfer(db, ctx, `cmd:${key}:equipment`, PLAYER_WALLET, works, eq, 'state_payment', `equipment: ${name}`);
-    if (wc > 0) transfer(db, ctx, `cmd:${key}:capital`, PLAYER_WALLET, acct, wc, 'capital_injection', `working capital: ${name}`);
-    logEvent(db, ctx.tick, 'company_created', 'info', id, `You founded ${name} (${spec.label}) for ${q.totalMinor / 100} EC`, { industry: input.industry, plot: input.plotId, tier: input.tier });
-    return { ok: true, revision: 1, transactionId: id, refreshScreens: ['city', 'companies', 'commodities'], data: { companyId: id } };
+    const r = foundCompany(db, ctx, `cmd:${key}`, input, playerFounder(db), input.expectedTotalMinor);
+    if (!r.ok) return { ok: false, error: r.error };
+    return { ok: true, revision: 1, transactionId: r.companyId, refreshScreens: ['city', 'companies', 'commodities'], data: { companyId: r.companyId } };
   }) as CommandResponse<{ companyId: string }>;
 }
 
@@ -139,6 +147,18 @@ export function upgradeBlocker(db: Sql, c: CompanyRow, u: UpgradeRow, owned: Set
   return null;
 }
 
+/** Buys and installs one upgrade for a company (player or NPC): pays Bristol Works from the company's own cash, records it, recomputes parameters. Throws LedgerError if unaffordable. */
+export function installUpgrade(db: Sql, ctx: TickCtx, c: CompanyRow, u: UpgradeRow, key: string): number {
+  const works = stateAccount(db, 'works')!;
+  const tx = transfer(db, ctx, key, c.treasury_account_id, works, u.cost_minor, 'state_payment', `upgrade "${u.name}" for ${c.name}`);
+  db.run('INSERT INTO company_upgrades (company_id, upgrade_id, purchased_tick, cost_minor) VALUES (?,?,?,?)', c.id, u.id, ctx.tick, u.cost_minor);
+  if (u.kind === 'tier') db.run('UPDATE companies SET premises_tier = ?, level = ? WHERE id = ?', u.to_tier, u.to_tier, c.id);
+  db.run('UPDATE companies SET equipment_cost_minor = equipment_cost_minor + ?, revision = revision + 1 WHERE id = ?', u.cost_minor, c.id);
+  recomputeOperating(db, c.id);
+  logEvent(db, ctx.tick, 'company_upgraded', 'info', c.id, `${c.name} installed "${u.name}" for ${u.cost_minor / 100} EC`, { upgrade: u.id, kind: u.kind, costMinor: u.cost_minor, toTier: u.to_tier });
+  return tx.txId;
+}
+
 export function upgradeCompany(db: Sql, key: string, companyId: string, upgradeId: string): CommandResponse {
   return runCommand(db, key, 'company.upgrade', (ctx) => {
     const c = own(db, companyId); if (bad(c)) return c; const a = active(c); if (a) return a;
@@ -147,15 +167,19 @@ export function upgradeCompany(db: Sql, key: string, companyId: string, upgradeI
     const owned = new Set(db.all<{ upgrade_id: string }>('SELECT upgrade_id FROM company_upgrades WHERE company_id = ?', companyId).map((r) => r.upgrade_id));
     const blocker = upgradeBlocker(db, c, u, owned); if (blocker) return err('VALIDATION', blocker);
     if (available(db, c.treasury_account_id) < u.cost_minor) return err('INSUFFICIENT_FUNDS', `This upgrade costs ${u.cost_minor / 100} EC; the company has ${available(db, c.treasury_account_id) / 100} EC. Move cash in from your wallet first.`);
-    const works = stateAccount(db, 'works')!;
-    const tx = transfer(db, ctx, `cmd:${key}`, c.treasury_account_id, works, u.cost_minor, 'state_payment', `upgrade "${u.name}" for ${c.name}`);
-    db.run('INSERT INTO company_upgrades (company_id, upgrade_id, purchased_tick, cost_minor) VALUES (?,?,?,?)', companyId, upgradeId, ctx.tick, u.cost_minor);
-    if (u.kind === 'tier') db.run('UPDATE companies SET premises_tier = ?, level = ? WHERE id = ?', u.to_tier, u.to_tier, companyId);
-    db.run('UPDATE companies SET equipment_cost_minor = equipment_cost_minor + ?, revision = revision + 1 WHERE id = ?', u.cost_minor, companyId);
-    recomputeOperating(db, companyId);
-    logEvent(db, ctx.tick, 'company_upgraded', 'info', companyId, `${c.name} installed "${u.name}" for ${u.cost_minor / 100} EC`, { upgrade: upgradeId });
-    return { ok: true, revision: c.revision + 1, transactionId: String(tx.txId), refreshScreens: ['city', 'companies'] };
+    const tx = installUpgrade(db, ctx, c, u, `cmd:${key}`);
+    return { ok: true, revision: c.revision + 1, transactionId: String(tx), refreshScreens: ['city', 'companies'] };
   });
+}
+
+/** Cost to restore a company's equipment to 100%. */
+export const serviceCost = (cfg: { serviceCostBps: number }, c: Pick<CompanyRow, 'equipment_cost_minor' | 'condition_bps'>) => Math.ceil((c.equipment_cost_minor * (10_000 - c.condition_bps) * cfg.serviceCostBps) / 100_000_000);
+/** Services equipment (player or NPC): paid to Bristol Works now, recognised as maintenance in the next day's profit. Returns the cost, or 0 if nothing to do. Throws if unaffordable. */
+export function applyService(db: Sql, ctx: TickCtx, cfg: { serviceCostBps: number }, c: CompanyRow, key: string): number {
+  const cost = serviceCost(cfg, c); if (cost <= 0) return 0;
+  transfer(db, ctx, key, c.treasury_account_id, stateAccount(db, 'works')!, cost, 'operating_cost', `equipment service for ${c.name}`);
+  db.run('UPDATE companies SET condition_bps = 10000, pending_maintenance_minor = pending_maintenance_minor + ?, revision = revision + 1 WHERE id = ?', cost, c.id);
+  return cost;
 }
 
 /** Equipment service: cost scales with the wear being repaired; paid to Bristol Works now, recognised as a maintenance expense in the next day's profit. */
@@ -163,12 +187,11 @@ export function serviceEquipment(db: Sql, key: string, companyId: string): Comma
   return runCommand(db, key, 'company.service', (ctx) => {
     const c = own(db, companyId); if (bad(c)) return c; const a = active(c); if (a) return a;
     const cfg = loadConfig(db);
-    const cost = Math.ceil((c.equipment_cost_minor * (10_000 - c.condition_bps) * cfg.serviceCostBps) / 100_000_000);
+    const cost = serviceCost(cfg, c);
     if (cost <= 0) return err('VALIDATION', 'The equipment is already in perfect condition.');
     if (available(db, c.treasury_account_id) < cost) return err('INSUFFICIENT_FUNDS', `Servicing costs ${cost / 100} EC; the company has ${available(db, c.treasury_account_id) / 100} EC.`);
-    const tx = transfer(db, ctx, `cmd:${key}`, c.treasury_account_id, stateAccount(db, 'works')!, cost, 'operating_cost', `equipment service for ${c.name}`);
-    db.run('UPDATE companies SET condition_bps = 10000, pending_maintenance_minor = pending_maintenance_minor + ?, revision = revision + 1 WHERE id = ?', cost, companyId);
-    return { ok: true, revision: c.revision + 1, transactionId: String(tx.txId), refreshScreens: ['companies'] };
+    applyService(db, ctx, cfg, c, `cmd:${key}`);
+    return { ok: true, revision: c.revision + 1, transactionId: key, refreshScreens: ['companies'] };
   });
 }
 
