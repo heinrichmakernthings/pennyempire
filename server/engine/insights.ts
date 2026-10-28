@@ -4,6 +4,7 @@ import { energyPerBatch, inputUnitsPerBatch, linesOf, recipeInputs, type Company
 import { LOT_SQL, defaultStaff, rentFor, tierOf, upgradeBlocker, type Spec, type Tier, type UpgradeRow } from './company';
 import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
 import { PLAYER_ID } from '../seed/bristol';
+import { directory as directoryRows } from './exchange';
 import { feeFromBps } from '../../src/domain/money';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -196,3 +197,36 @@ export function management(db: Sql, companyId: string): Management | null {
 }
 
 export type { LotInfo, Management, Opportunity, RankRow, Ranking };
+
+export interface MarketShortage {
+  commodityId: string; label: string; industry: string | null; industryLabel: string | null;
+  demandUnitsPerDay: number; supplyUnitsPerDay: number; shortageUnitsPerDay: number; listedUnits: number; competitors: number;
+  recentPriceMinor: number; priceBasis: 'trades' | 'reference'; unitCostMinor: number; unitProfitMinor: number; status: 'shortage' | 'balanced' | 'surplus';
+  explanation: string;
+}
+/** Per-commodity market gaps for the opportunity finder. Demand = funded consumer budgets + production plans that use it; supply = what producers plan to make; all computed live. */
+export function marketShortages(db: Sql): MarketShortage[] {
+  const cfg = loadConfig(db), tick = lastTick(db);
+  const out: MarketShortage[] = [];
+  for (const d of directoryRows(db)) {
+    const producers = db.all<{ company: string; u: number; ind: string; owner: string }>("SELECT c.id company, SUM(l.planned_batches * r.output_units) u, c.industry_id ind, c.owner_kind owner FROM production_lines l JOIN recipes r ON r.id = l.recipe_id JOIN companies c ON c.id = l.company_id WHERE r.output_commodity_id = ? AND c.bankrupt_tick IS NULL AND c.status = 'operating' GROUP BY c.id", d.commodityId);
+    const real = producers.filter((p) => p.owner !== 'state');
+    const supply = real.reduce((a, p) => a + p.u, 0) + (d.commodityId === 'energy' ? 0 : 0);
+    const spec = db.get<Spec & { rid: string }>('SELECT s.*, s.primary_recipe_id rid FROM industry_specs s JOIN recipes r ON r.id = s.primary_recipe_id WHERE s.startable = 1 AND r.output_commodity_id = ?', d.commodityId);
+    const demand = d.demandUnitsPerDay;
+    const shortage = Math.max(0, demand - supply);
+    const price = d.vwap7dMinor ?? d.lastTradePriceMinor ?? d.referencePriceMinor;
+    const rec = spec ? db.get<{ energy_units: number; output_units: number }>('SELECT energy_units, output_units FROM recipes WHERE id = ?', spec.primary_recipe_id) : undefined;
+    const inputCost = spec ? recipeInputs(db, spec.primary_recipe_id).reduce((a, i) => a + inputUnitsPerBatch(cfg, 'standard', i.units) * Math.max(db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', i.commodity_id)!.p, db.get<{ p: number | null }>("SELECT MIN(price_minor) p FROM orders WHERE commodity_id = ? AND side='sell' AND status='open'", i.commodity_id)?.p ?? 0), 0) : 0;
+    const energyRef = db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', cfg.energyCommodityId)?.p ?? 0;
+    const unitCost = rec && rec.output_units > 0 ? Math.ceil((inputCost + rec.energy_units * energyRef) / rec.output_units) : 0;
+    const status: MarketShortage['status'] = demand > 0 && shortage * 10 >= demand * 2 ? 'shortage' : demand > 0 && supply * 10 >= demand * 15 ? 'surplus' : 'balanced';
+    out.push({
+      commodityId: d.commodityId, label: d.name, industry: spec?.industry_id ?? null, industryLabel: spec?.label ?? null, demandUnitsPerDay: demand, supplyUnitsPerDay: supply, shortageUnitsPerDay: shortage, listedUnits: d.listedUnits, competitors: real.length,
+      recentPriceMinor: price, priceBasis: d.vwap7dMinor !== null || d.lastTradePriceMinor !== null ? 'trades' : 'reference', unitCostMinor: unitCost, unitProfitMinor: unitCost > 0 ? price - unitCost : 0, status,
+      explanation: `Bristol ${d.name.toLowerCase()} market: demand ${demand.toLocaleString('en-GB')}/day, producers plan ${supply.toLocaleString('en-GB')}/day${shortage > 0 ? `, a shortage of ${shortage.toLocaleString('en-GB')}/day` : ''}; ${d.listedUnits.toLocaleString('en-GB')} units are listed for sale now.`,
+    });
+  }
+  void tick;
+  return out.sort((a, b) => b.shortageUnitsPerDay - a.shortageUnitsPerDay || a.commodityId.localeCompare(b.commodityId));
+}

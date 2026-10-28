@@ -81,6 +81,8 @@ export function DevEconomyScreen() {
           columns={[{ key: 'l', header: 'Demand rule (funder)', render: (r) => r.label }, { key: 'b', header: 'Budget', align: 'end', render: (r) => ec(r.budget) }, { key: 's', header: 'Spent', align: 'end', render: (r) => ec(r.spent) }, { key: 'w', header: 'Units wanted', align: 'end', render: (r) => r.unitsWanted }, { key: 'u', header: 'Units sold', align: 'end', render: (r) => r.unitsSold }, { key: 'm', header: 'Unmet', align: 'end', render: (r) => <span className={r.unmet > 0 ? 'pe-neg' : ''}>{r.unmet}</span> }]} />
       </section>
 
+      <ExchangeSection x={d.exchange} />
+
       <section aria-labelledby="co-t"><h2 id="co-t" className="pe-h2">Companies and profitability</h2>
         <p className="pe-hint">{d.companies.count} companies · {d.companies.operating} operating · {d.companies.paused} paused · <span className={d.companies.insolvent ? 'pe-neg' : ''}>{d.companies.insolvent} insolvent</span> · {d.companies.profitable} profitable (7-day average)</p>
         <DataTable caption="Company profitability" rowKey={(r) => r.id} rows={d.companies.list}
@@ -91,7 +93,7 @@ export function DevEconomyScreen() {
       <section aria-labelledby="tk-t"><h2 id="tk-t" className="pe-h2">Tick processing</h2>
         <DataTable caption="Recent economic ticks" rowKey={(r) => String(r.tick)} rows={d.ticks}
           columns={[{ key: 't', header: 'Day', render: (r) => `Day ${r.tick}` }, { key: 's', header: 'Status', render: (r) => <StatusLabel tone={r.status === 'complete' ? 'positive' : 'negative'}>{r.status}</StatusLabel> }, { key: 'd', header: 'Duration', align: 'end', render: (r) => (r.durationMs === null ? '—' : `${r.durationMs} ms`) }, { key: 'tr', header: 'Trades', align: 'end', render: (r) => r.trades ?? '—' }, { key: 'i', header: 'Issued', align: 'end', render: (r) => (r.issued === null ? '—' : ec(r.issued)) }, { key: 'de', header: 'Destroyed', align: 'end', render: (r) => (r.destroyed === null ? '—' : ec(r.destroyed)) }, { key: 'ci', header: 'Circulating', align: 'end', render: (r) => (r.circulating === null ? '—' : ec(r.circulating)) }, { key: 'f', header: 'Failures', align: 'end', render: (r) => r.failures ?? '—' }]} />
-        <p className="pe-hint">Config: 1 tick = 1 in-game day = {d.config.realMsPerTick / 1000}s real time; offline catch-up capped at {d.config.maxCatchupTicks} ticks; exchange fee {pct(d.config.exchangeFeeBps)} (seller pays, destroyed); insolvency after {d.config.insolvencyAfterTicks} unpaid days.</p>
+        <p className="pe-hint">Config: 1 tick = 1 in-game day = {d.config.realMsPerTick / 1000}s real time; offline catch-up capped at {d.config.maxCatchupTicks} ticks; exchange fee {pct(d.config.exchangeFeeBps)} (seller pays; transferred to the Penny Exchange, {pct(d.config.exchangeBurnBps)} of its income burned each day); insolvency after {d.config.insolvencyAfterTicks} unpaid days.</p>
       </section>
 
       <section aria-labelledby="er-t"><h2 id="er-t" className="pe-h2">Errors and failed transactions</h2>
@@ -102,5 +104,35 @@ export function DevEconomyScreen() {
           columns={[{ key: 't', header: 'Day', render: (r) => r.tick }, { key: 'sv', header: 'Severity', render: (r) => <StatusLabel tone={r.severity === 'error' ? 'negative' : 'warning'}>{r.severity}</StatusLabel> }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'm', header: 'Message', render: (r) => r.message }]} />
       </section>
     </div>
+  );
+}
+
+function ExchangeSection({ x }: { x: EconomyDashboard['exchange'] }) {
+  return (
+    <section aria-labelledby="ex-t"><h2 id="ex-t" className="pe-h2">Penny Exchange</h2>
+      <dl className="pe-stats pe-stats--wide">
+        <div><dt>Fee income held (now)</dt><dd>{ec(x.fees.balance)}</dd></div>
+        <div><dt>Fees collected (7d)</dt><dd>{ec(x.fees.collected7d)}</dd></div>
+        <div><dt>Fees burned (total)</dt><dd>{ec(x.fees.burnedTotal)}</dd></div>
+        <div><dt>Fees swept to treasury (total)</dt><dd>{ec(x.fees.sweptTotal)}</dd></div>
+        <div><dt>Trades / value (7d)</dt><dd>{x.trades.count7d} · {ec(x.trades.value7d)}</dd></div>
+        <div><dt>Open orders (buy / sell)</dt><dd>{x.orders.open} ({x.orders.openBuy} / {x.orders.openSell})</dd></div>
+        <div><dt>Reserved funds / units</dt><dd>{ec(x.orders.reservedFunds)} / {x.orders.reservedUnits}</dd></div>
+        <div><dt>Reservations consistent</dt><dd><StatusLabel tone={x.reservations.consistent ? 'positive' : 'negative'}>{x.reservations.consistent ? 'Yes' : 'MISMATCH'}</StatusLabel></dd></div>
+        <div><dt>Contracts (active / pending)</dt><dd>{x.contracts.active} / {x.contracts.pending}</dd></div>
+        <div><dt>Deliveries 7d (ok / missed)</dt><dd>{x.contracts.delivered7d} / {x.contracts.missed7d}</dd></div>
+      </dl>
+      <DataTable caption="Commodity markets" rowKey={(r) => r.id} rows={x.commodities}
+        columns={[{ key: 'c', header: 'Commodity', render: (r) => r.id }, { key: 'l', header: 'Last', align: 'end', render: (r) => (r.lastPrice === null ? '—' : ec(r.lastPrice)) }, { key: 'v', header: 'VWAP 7d', align: 'end', render: (r) => (r.vwap7d === null ? '—' : ec(r.vwap7d)) }, { key: 'ref', header: 'Reference', align: 'end', render: (r) => ec(r.reference) },
+          { key: 'bid', header: 'Best bid', align: 'end', render: (r) => (r.bestBid === null ? '—' : ec(r.bestBid)) }, { key: 'ask', header: 'Best ask', align: 'end', render: (r) => (r.bestAsk === null ? '—' : ec(r.bestAsk)) }, { key: 'sp', header: 'Spread', align: 'end', render: (r) => (r.spreadBps === null ? '—' : pct(r.spreadBps)) },
+          { key: 'vol', header: 'Vol today / 7d', align: 'end', render: (r) => `${r.volumeToday} / ${r.volume7d}` }, { key: 'lst', header: 'Listed', align: 'end', render: (r) => r.listed }, { key: 'dem', header: 'Demand/day', align: 'end', render: (r) => r.demand },
+          { key: 'st', header: 'Status', render: (r) => <StatusLabel tone={r.status === 'shortage' ? 'negative' : r.status === 'surplus' ? 'warning' : 'neutral'}>{r.status}</StatusLabel> }]} />
+      <div className="pe-forms">
+        <DataTable caption="Who trades with whom (7d)" rowKey={(r) => r.pair} rows={x.trades.byPair} empty={<p className="pe-hint">No trades yet.</p>} columns={[{ key: 'p', header: 'Pair', render: (r) => r.pair }, { key: 'n', header: 'Trades', align: 'end', render: (r) => r.trades }, { key: 'v', header: 'Value', align: 'end', render: (r) => ec(r.value) }]} />
+        <DataTable caption="NPC and state trading activity (7d)" rowKey={(r) => r.company} rows={x.npcActivity} empty={<p className="pe-hint">None.</p>} columns={[{ key: 'n', header: 'Company', render: (r) => r.name }, { key: 'b', header: 'Bought', align: 'end', render: (r) => `${r.boughtUnits} · ${ec(r.boughtValue)}` }, { key: 's', header: 'Sold', align: 'end', render: (r) => `${r.soldUnits} · ${ec(r.soldValue)}` }]} />
+      </div>
+      <DataTable caption="Failed settlements and refusals (30d)" rowKey={(r) => r.kind} rows={x.failedSettlements} empty={<p className="pe-hint">No failed settlements.</p>} columns={[{ key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'n', header: 'Count', align: 'end', render: (r) => r.n }, { key: 'r', header: 'Latest reason', render: (r) => r.lastReason ?? '—' }]} />
+      <DataTable caption="Anomalies and market alerts" rowKey={(r) => r.kind + r.detail} rows={x.anomalies} empty={<p className="pe-dev-ok">No anomalies detected.</p>} columns={[{ key: 's', header: 'Severity', render: (r) => <StatusLabel tone={r.severity === 'error' ? 'negative' : 'warning'}>{r.severity}</StatusLabel> }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'd', header: 'Detail', render: (r) => r.detail }]} />
+    </section>
   );
 }

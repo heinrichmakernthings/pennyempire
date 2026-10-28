@@ -5,7 +5,7 @@ import { advanceToNow, nextTickAtMs, runTickSafely } from '../engine/clock';
 import { cancelPlayerOrder, configureCompany, fundCompany, placePlayerOrder, quoteOrder, reopenCompany, withdrawFromCompany, type CommandResponse } from '../engine/commands';
 import { gameDate, loadConfig } from '../engine/config';
 import { createCompany, procureNow, serviceEquipment, startupQuote, upgradeCompany } from '../engine/company';
-import { lots, management, opportunities, rankings } from '../engine/insights';
+import { lots, management, marketShortages, opportunities, rankings } from '../engine/insights';
 import { cancelContract, proposeContract, respondContract } from '../engine/contracts';
 import { commodityDetail, directory } from '../engine/exchange';
 import { contractCandidates, contracts, holdings, ownOrders, ownTrades } from './exchangeApi';
@@ -54,7 +54,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       if (seg[1] === 'trades') return json(200, { authority: 'server', trades: ownTrades(db, q.commodity) });
       if (seg[1] === 'contracts') return json(200, { authority: 'server', contracts: contracts(db) });
     }
-    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db) });
+    if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db), shortages: marketShortages(db) });
     if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
     if (method === 'GET' && seg[0] === 'rankings') return json(200, { authority: 'server', rankings: rankings(db) });
     if (method === 'GET' && seg[0] === 'startup-quote') {

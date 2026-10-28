@@ -5,6 +5,7 @@ import { cancelPlayerOrder, configureCompany, fundCompany, placePlayerOrder, quo
 import { createCompany, startupQuote } from './company';
 import { cancelContract, proposeContract, respondContract, upcomingDeliveries, type ContractRow } from './contracts';
 import { directory, commodityDetail } from './exchange';
+import { marketShortages } from './insights';
 import { expireOrders, marketLimit, placeOrder, cancelOrder, MarketError } from './market';
 import { freeStock, stock, addStock } from './inventory';
 import { handleApi } from '../api/router';
@@ -186,6 +187,34 @@ describe('market statistics derive from real activity', () => {
     // volume reported = trades actually stored
     const stored = db.get<{ q: number }>('SELECT COALESCE(SUM(qty),0) q FROM trades WHERE commodity_id = ? AND tick > ?', 'wheat', ctxOf(db).tick - 7)!.q;
     expect(wheat.volume7d).toBe(stored);
+  });
+});
+
+describe('shortages in the opportunity finder come from live state', () => {
+  it('a new pizza restaurant raises the flour shortage by exactly its planned need; wheat shows its own demand from the mill', () => {
+    const db = world(); advance(db, 2);
+    const before = marketShortages(db).find((m) => m.commodityId === 'flour')!;
+    expect(before.demandUnitsPerDay).toBeGreaterThan(0); expect(before.industry).toBe('mill'); expect(before.explanation).toContain('Bristol flour market');
+    found(db, 'pizza', 'plot-pizza', 'Shortage Pizza');
+    const after = marketShortages(db).find((m) => m.commodityId === 'flour')!;
+    const need = db.get<{ u: number }>("SELECT l.planned_batches * i.units u FROM production_lines l JOIN recipe_inputs i ON i.recipe_id = l.recipe_id WHERE l.company_id LIKE 'co-pl-pizza%' AND i.commodity_id = 'flour'")!.u;
+    expect(after.demandUnitsPerDay - before.demandUnitsPerDay).toBe(need);
+    expect(after.shortageUnitsPerDay).toBeGreaterThanOrEqual(before.shortageUnitsPerDay);
+  });
+});
+
+describe('developer dashboard', () => {
+  it('exposes exchange statistics, reservation consistency and anomaly detection derived from live state', async () => {
+    const { economyDashboard } = await import('../api/dashboard');
+    const db = world(); advance(db, 3);
+    const x = economyDashboard(db).exchange;
+    expect(x.reservations.consistent).toBe(true);
+    expect(x.commodities.length).toBeGreaterThan(5); expect(x.trades.count7d).toBeGreaterThan(0); expect(x.npcActivity.length).toBeGreaterThan(0);
+    // break an invariant on purpose: the dashboard must notice
+    db.run("UPDATE orders SET reserved_funds_minor = reserved_funds_minor WHERE 0");
+    const farm = found(db, 'farm', 'lot-3', 'Dash Farm'); give(db, farm, 'wheat', 50);
+    place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 9_999, qty: 50 });
+    expect(economyDashboard(db).exchange.reservations.consistent).toBe(true);
   });
 });
 

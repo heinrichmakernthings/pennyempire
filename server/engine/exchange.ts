@@ -55,7 +55,7 @@ export function directory(db: Sql): DirectoryRow[] {
     const vwap = w.q > 0 ? Math.floor(w.value / w.q) : null;
     const listed = today?.listed_units ?? db.get<{ q: number }>("SELECT COALESCE(SUM(qty_remaining),0) q FROM orders WHERE commodity_id = ? AND side='sell' AND status='open'", c.id)!.q;
     const bestAsk = today?.best_ask_minor ?? null, bestBid = today?.best_bid_minor ?? null;
-    const demand = today?.demand_units ?? demandFor(db, c.id, tick).total;
+    const demand = demandFor(db, c.id, tick).total;   // live: production plans change the moment a company opens or retargets
     const shortage = Math.max(0, demand - listed), surplus = Math.max(0, listed - demand);
     const status: DirectoryRow['status'] = demand === 0 && listed === 0 ? 'no-market' : shortage * 10 >= demand * 2 ? 'shortage' : surplus * 10 >= Math.max(1, demand) * 5 ? 'surplus' : 'balanced';
     const price = last ?? c.reference_price_minor;
