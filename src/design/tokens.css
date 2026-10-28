@@ -1,0 +1,22 @@
+:root {
+  --pe-bg: #141c20;
+  --pe-surface: #1d282d;
+  --pe-raised: #26343b;
+  --pe-divider: #38464c;
+  --pe-text: #f0e8d7;
+  --pe-muted: #a9b5b9;
+  --pe-accent: #ffc45e;
+  --pe-positive: #62dbaf;
+  --pe-negative: #f08076;
+  --pe-space-1: 4px;
+  --pe-space-2: 8px;
+  --pe-space-3: 12px;
+  --pe-space-4: 16px;
+  --pe-space-6: 24px;
+  --pe-space-8: 32px;
+  --pe-nav-width: 184px;
+  --pe-inspector-width: 336px;
+  --pe-touch-target: 44px;
+}
+.pe-financial-number { font-variant-numeric: tabular-nums; }
+.pe-pixel-art { image-rendering: pixelated; }

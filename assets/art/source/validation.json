@@ -1,0 +1,92 @@
+[
+  {
+    "file": "props-sheet.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      254
+    ],
+    "transparent_fraction": 0.6606,
+    "opaque_fraction": 0.0,
+    "status": "needs background repair and extraction"
+  },
+  {
+    "file": "industry-sheet.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      254
+    ],
+    "transparent_fraction": 0.4561,
+    "opaque_fraction": 0.0,
+    "status": "needs background repair and extraction"
+  },
+  {
+    "file": "terrain-sheet.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      254
+    ],
+    "transparent_fraction": 0.6302,
+    "opaque_fraction": 0.0,
+    "status": "needs background repair and extraction"
+  },
+  {
+    "file": "pizza-shop.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.545,
+    "opaque_fraction": 0.0001,
+    "status": "transparent source; needs scale and pivot validation"
+  },
+  {
+    "file": "cafe.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.4938,
+    "opaque_fraction": 0.0001,
+    "status": "transparent source; needs scale and pivot validation"
+  },
+  {
+    "file": "flour-mill.png",
+    "size": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "alpha_range": [
+      0,
+      255
+    ],
+    "transparent_fraction": 0.6655,
+    "opaque_fraction": 0.0001,
+    "status": "transparent source; needs scale and pivot validation"
+  }
+]
