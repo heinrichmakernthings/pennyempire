@@ -2,6 +2,7 @@ import type { Sql } from '../db/sql';
 import { DEFAULT_CONFIG, gameDate, loadConfig, saveConfig, validateConfig, type EngineConfig } from '../engine/config';
 import { applySeedPatches } from './patches';
 import { addStock } from '../engine/inventory';
+import { ownerInvestor, registerCapital } from '../engine/capital';
 import { BURN, ISSUANCE, createAccount, issue, type TickCtx } from '../engine/ledger';
 import { MAP_BLOCKS, mapTiles } from '../../src/shared/bristolMap';
 
@@ -128,7 +129,7 @@ export function seedBristol(db: Sql, overrides: Partial<EngineConfig> = {}, prof
         VALUES (?,?,?,?,?,?,?,?,?,?,?, 'operating', ?,?,?,?,?,?,?,?,?,?,?,?,?,0)`,
         c.id, c.name, CITY_ID, c.district, c.plot, c.industry, MAP_BLOCKS.find((b) => b.plotId === c.plot)?.assetId ?? null, c.owner[0], c.owner[1], acct, c.level ?? 1,
         c.retail ?? null, c.price, c.min, c.max, c.quality, c.employees, c.maxEmployees, c.wage, c.capacity, c.storage, property, c.marketing, c.reputation);
-      db.run('INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?,?,?,10000)', c.id, c.owner[0], c.owner[1]);
+      registerCapital(db, ctx, c.id, ownerInvestor(db, c.owner[1], c.owner[0] as 'player' | 'npc' | 'state'), 0, 'genesis cap table');
       for (const [recipe, planned] of c.lines) {
         const out = RECIPES.find((r) => r.id === recipe)!.out[0];
         db.run('INSERT INTO production_lines (company_id, recipe_id, planned_batches, ask_price_minor) VALUES (?,?,?,?)', c.id, recipe, planned, COMMODITIES.find((x) => x[0] === out)![3]);

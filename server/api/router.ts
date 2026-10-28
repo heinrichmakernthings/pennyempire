@@ -10,6 +10,10 @@ import { cancelContract, proposeContract, respondContract } from '../engine/cont
 import { commodityDetail, directory } from '../engine/exchange';
 import { contractCandidates, contracts, holdings, ownOrders, ownTrades } from './exchangeApi';
 import { cityActivity, competitorProfile, news, standings } from './livingApi';
+import { exchangeHome, securityDetail, sharePortfolio } from './shareApi';
+import { cancelPlayerShareOrder, declarePlayerDividend, listPlayerCompany, placePlayerShareOrder, quoteShareOrder, retirePlayerShares, withdrawPlayerOffering } from '../engine/shareCommands';
+import { listingQuote } from '../engine/listing';
+import { PLAYER_ID } from '../seed/bristol';
 import { economyDashboard } from './dashboard';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
@@ -19,7 +23,7 @@ export interface ApiOptions { devEndpoints: boolean; now?: () => number }
 
 const json = (status: number, body: unknown): ApiResponse => ({ status, body });
 const apiErr = (status: number, code: ApiError['code'], message: string): ApiResponse => json(status, { ok: false, error: { code, message } });
-const UNAVAILABLE_TYPES = new Set(['shares.order', 'prestige.buy', 'wallet.testDeposit', 'wallet.testWithdraw']);
+const UNAVAILABLE_TYPES = new Set(['prestige.buy', 'wallet.testDeposit', 'wallet.testWithdraw']);
 
 /** Envelope with real tick revision and clock; `authority: 'server'` tells the UI to drop the "illustrative" badges. */
 function envelope<T>(db: Sql, data: T) {
@@ -58,6 +62,15 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     if (method === 'GET' && seg[0] === 'opportunities') return json(200, { authority: 'server', forecastNote: 'Estimates from the last 7 days of simulated Bristol data. Real results depend on your choices and on competitors.', opportunities: opportunities(db), shortages: marketShortages(db) });
     if (method === 'GET' && seg[0] === 'lots') return json(200, { authority: 'server', lots: lots(db) });
     if (method === 'GET' && seg[0] === 'city' && seg[1] === 'activity') return json(200, { authority: 'server', ...cityActivity(db) });
+    if (method === 'GET' && seg[0] === 'securities') {
+      if (!seg[1]) return json(200, { authority: 'server', exchange: exchangeHome(db) });
+      if (seg[1] === 'listing-quote') {
+        try { const cfg = loadConfig(db); const t = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t; return json(200, { authority: 'server', quote: listingQuote(db, cfg, q.companyId ?? '', Number(q.newShares ?? 0), Number(q.offerPriceMinor ?? 0), t, { kind: 'player', id: PLAYER_ID }, { fromTreasury: q.fromTreasury === 'true' }) }); } catch (e) { return apiErr(404, 'VALIDATION', (e as Error).message); }
+      }
+      if (seg[1] === 'order-quote') return json(200, { authority: 'server', quote: quoteShareOrder(db, { companyId: q.companyId ?? '', investorId: q.investorId, side: q.side === 'sell' ? 'sell' : 'buy', quantity: Number(q.quantity ?? 0), limitPriceMinor: q.limitPriceMinor === undefined ? undefined : Number(q.limitPriceMinor), kind: q.kind === 'market' ? 'market' : 'limit', slippageBps: q.slippageBps === undefined ? undefined : Number(q.slippageBps) }) });
+      const d = securityDetail(db, seg[1]); return d ? json(200, { authority: 'server', detail: d }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[1]}`);
+    }
+    if (method === 'GET' && seg[0] === 'portfolio' && seg[1] === 'securities') return json(200, { authority: 'server', portfolio: sharePortfolio(db) });
     if (method === 'GET' && seg[0] === 'standings') return json(200, { authority: 'server', standings: standings(db) });
     if (method === 'GET' && seg[0] === 'news') return json(200, { authority: 'server', articles: news(db, Number(q.limit ?? 30)) });
     if (method === 'GET' && seg[0] === 'competitors' && seg[1]) { const p = competitorProfile(db, seg[1]); return p ? json(200, { authority: 'server', profile: p }) : apiErr(404, 'VALIDATION', `Unknown competitor ${seg[1]}`); }
@@ -115,6 +128,12 @@ function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>): ApiResp
     case 'contract.propose': res = proposeContract(db, key, { actorCompanyId: cmd.companyId as string, counterpartyId: cmd.counterpartyId as string, role: cmd.role as 'buyer', commodityId: cmd.commodityId as string, qtyPerDelivery: cmd.qtyPerDelivery as number, priceMinor: cmd.priceMinor as number, everyTicks: cmd.everyTicks as number, durationTicks: cmd.durationTicks as number }); break;
     case 'contract.respond': res = respondContract(db, key, Number(cmd.contractId), cmd.accept === true); break;
     case 'contract.cancel': res = cancelContract(db, key, Number(cmd.contractId)); break;
+    case 'share.order': res = placePlayerShareOrder(db, key, { companyId: cmd.companyId as string, investorId: cmd.investorId as string | undefined, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number | undefined, kind: cmd.orderKind as 'limit' | 'market' | undefined, slippageBps: cmd.slippageBps as number | undefined, expiresInTicks: cmd.expiresInTicks as number | null | undefined, acknowledgeControlLoss: cmd.acknowledgeControlLoss === true }); break;
+    case 'share.cancel': res = cancelPlayerShareOrder(db, key, Number(cmd.orderId)); break;
+    case 'share.list': res = listPlayerCompany(db, key, { companyId: cmd.companyId as string, newShares: cmd.newShares as number, offerPriceMinor: cmd.offerPriceMinor as number, fromTreasury: cmd.fromTreasury === true }); break;
+    case 'share.withdraw': res = withdrawPlayerOffering(db, key, Number(cmd.offeringId)); break;
+    case 'share.retire': res = retirePlayerShares(db, key, cmd.companyId as string, cmd.quantity as number); break;
+    case 'dividend.declare': res = declarePlayerDividend(db, key, cmd.companyId as string, cmd.perShareMinor as number); break;
     case 'company.create': res = createCompany(db, key, { industry: cmd.industry as string, plotId: cmd.plotId as string, tier: Number(cmd.tier ?? 1), name: String(cmd.name ?? ''), workingCapitalMinor: cmd.workingCapitalMinor as number | undefined, expectedTotalMinor: cmd.expectedTotalMinor as number }); break;
     case 'company.upgrade': res = upgradeCompany(db, key, cmd.companyId as string, cmd.upgradeId as string); break;
     case 'company.service': res = serviceEquipment(db, key, cmd.companyId as string); break;

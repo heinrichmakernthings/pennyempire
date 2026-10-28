@@ -93,3 +93,21 @@
 .pe-news-item[data-importance="3"] { border-left: 3px solid var(--pe-negative); }
 .pe-news-item[data-importance="2"] { border-left: 3px solid var(--pe-accent); }
 .pe-news-item h2 { margin: 0; }
+
+/* ───────── Penny Exchange (shares) ───────── */
+.pe-shares { display: grid; grid-template-columns: minmax(250px, 340px) minmax(0, 1fr); gap: var(--pe-space-5); align-items: start; }
+.pe-shares-list, .pe-shares-main { min-width: 0; display: flex; flex-direction: column; gap: var(--pe-space-4); }
+.pe-shares-cols { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: var(--pe-space-5); align-items: start; }
+.pe-shares-ticket { position: sticky; top: var(--pe-space-4); }
+@media (max-width: 1199px) { .pe-shares { grid-template-columns: minmax(0, 1fr); } .pe-shares-cols { grid-template-columns: minmax(0, 1fr); } .pe-shares-ticket { position: static; } }
+.pe-listing-btn { display: flex; align-items: center; gap: var(--pe-space-2); text-align: left; background: none; border: 0; color: inherit; font: inherit; cursor: pointer; min-height: var(--pe-touch-target); }
+.pe-listing-btn small { display: block; color: var(--pe-muted); font-weight: 400; }
+.pe-marketbar { display: flex; flex-direction: row; flex-wrap: wrap; align-items: center; gap: var(--pe-space-4); }
+.pe-marketbar .pe-stats { flex: 1 1 360px; }
+.pe-marketbar .pe-spark { width: 160px; height: 48px; color: var(--pe-accent); }
+.pe-marketbar > .pe-hint { flex: 1 1 100%; margin: 0; }
+.pe-detail-head { align-items: center; gap: var(--pe-space-3); flex-wrap: wrap; }
+.pe-checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--pe-space-2); }
+.pe-check { display: flex; gap: var(--pe-space-2); align-items: flex-start; }
+.pe-alloc { display: flex; gap: 2px; min-height: 28px; font-size: 13px; }
+.pe-alloc span { background: var(--pe-raised); border: 1px solid var(--pe-divider); padding: 2px 6px; overflow: hidden; white-space: nowrap; }

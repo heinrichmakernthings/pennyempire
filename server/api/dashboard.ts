@@ -3,6 +3,7 @@ import { gameDate, loadConfig, type EngineConfig } from '../engine/config';
 import { BURN, ISSUANCE, balance, reconcile, supply } from '../engine/ledger';
 import { directory } from '../engine/exchange';
 import { livingDashboard, type LivingDashboard } from './livingDashboard';
+import { marketDashboard, type MarketDashboard } from './marketDashboard';
 import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 
 /** Everything the developer economy dashboard shows. Read-only, computed from the ledger and history tables — no cached or invented numbers. */
@@ -19,6 +20,7 @@ export interface EconomyDashboard {
   reconciliation: { ok: boolean; problems: string[]; transactions: number; accounts: number };
   exchange: ExchangeDashboard;
   living: LivingDashboard;
+  market: MarketDashboard;
 }
 
 export interface ExchangeDashboard {
@@ -46,7 +48,9 @@ function exchangeDashboard(db: Sql, tick: number): ExchangeDashboard {
   const pairs = db.all<{ b: string; s: string; n: number; v: number }>("SELECT cb.owner_kind b, cs.owner_kind s, COUNT(*) n, COALESCE(SUM(t.qty * t.price_minor),0) v FROM trades t JOIN companies cb ON cb.id = t.buyer_company_id JOIN companies cs ON cs.id = t.seller_company_id WHERE t.tick > ? GROUP BY cb.owner_kind, cs.owner_kind ORDER BY v DESC", since);
   const acctRes = db.get<{ r: number }>('SELECT COALESCE(SUM(reserved_minor),0) r FROM accounts')!.r;
   const invRes = db.get<{ r: number }>('SELECT COALESCE(SUM(reserved),0) r FROM inventory')!.r;
-  const consistent = acctRes === o.rf && invRes === o.ru;
+  const shareBuyRes = db.get<{ r: number }>("SELECT COALESCE(SUM(reserved_funds_minor),0) r FROM share_orders WHERE status = 'open' AND side = 'buy'")!.r;
+  const divRes = db.get<{ r: number }>("SELECT COALESCE(SUM(total_minor - paid_minor),0) r FROM dividends WHERE status = 'declared'")!.r;
+  const consistent = acctRes === o.rf + shareBuyRes + divRes && invRes === o.ru;
   const npc = db.all<{ id: string; name: string; bu: number; su: number; bv: number; sv: number }>(`SELECT c.id, c.name,
       COALESCE((SELECT SUM(qty) FROM trades WHERE buyer_company_id = c.id AND tick > ?),0) bu, COALESCE((SELECT SUM(qty) FROM trades WHERE seller_company_id = c.id AND tick > ?),0) su,
       COALESCE((SELECT SUM(qty*price_minor) FROM trades WHERE buyer_company_id = c.id AND tick > ?),0) bv, COALESCE((SELECT SUM(qty*price_minor) FROM trades WHERE seller_company_id = c.id AND tick > ?),0) sv
@@ -55,7 +59,7 @@ function exchangeDashboard(db: Sql, tick: number): ExchangeDashboard {
   const del = db.get<{ d: number; m: number }>("SELECT COALESCE(SUM(status = 'delivered'),0) d, COALESCE(SUM(status <> 'delivered'),0) m FROM contract_deliveries WHERE due_tick > ?", since)!;
   const failed = db.all<{ kind: string; n: number }>('SELECT kind, COUNT(*) n FROM failed_transactions WHERE tick > ? GROUP BY kind ORDER BY n DESC', Math.max(0, tick - 30)).map((f) => ({ ...f, lastReason: db.get<{ r: string }>('SELECT reason r FROM failed_transactions WHERE kind = ? ORDER BY id DESC LIMIT 1', f.kind)?.r ?? null }));
   const anomalies: ExchangeDashboard['anomalies'] = [];
-  if (!consistent) anomalies.push({ kind: 'reservation_mismatch', severity: 'error', detail: `Account reservations ${acctRes} vs open buy orders ${o.rf}; inventory reservations ${invRes} vs open sell units ${o.ru}.` });
+  if (!consistent) anomalies.push({ kind: 'reservation_mismatch', severity: 'error', detail: `Account reservations ${acctRes} vs open buy orders ${o.rf}, share buy orders ${shareBuyRes} and declared dividends ${divRes}; inventory reservations ${invRes} vs open sell units ${o.ru}.` });
   const selfTrades = db.get<{ n: number }>('SELECT COUNT(*) n FROM trades WHERE buyer_company_id = seller_company_id')!.n; if (selfTrades) anomalies.push({ kind: 'self_trade', severity: 'error', detail: `${selfTrades} trade(s) where buyer and seller are the same company.` });
   const stale = db.get<{ n: number }>("SELECT COUNT(*) n FROM orders WHERE status = 'open' AND expires_tick IS NOT NULL AND expires_tick < ?", tick)!.n; if (stale) anomalies.push({ kind: 'expired_order_open', severity: 'warning', detail: `${stale} expired order(s) are still open.` });
   for (const c of commodities) {
@@ -115,5 +119,6 @@ export function economyDashboard(db: Sql): EconomyDashboard {
     reconciliation: { ok: rec.ok, problems: rec.problems, transactions: rec.checked.transactions, accounts: rec.checked.accounts },
     exchange: exchangeDashboard(db, tick),
     living: livingDashboard(db, tick),
+    market: marketDashboard(db, tick),
   };
 }

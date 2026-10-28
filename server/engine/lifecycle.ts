@@ -4,6 +4,9 @@ import { addStock, removeStock } from './inventory';
 import { available, balance, transfer, type TickCtx } from './ledger';
 import { cancelOrder } from './market';
 import { logEvent } from './stats';
+import { cancelShares, companyInvestorId, security } from './capital';
+import { cancelAllOrders } from './shareMarket';
+import { cancelOpenDividends } from './dividends';
 import type { CompanyRow } from './operations';
 import { PLAYER_WALLET, TREASURY } from '../seed/bristol';
 
@@ -19,6 +22,7 @@ export interface LiquidationResult { stockProceedsMinor: number; arrearsPaidMino
 export function liquidateCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: CompanyRow): LiquidationResult {
   return db.transaction(() => {
     const acct = c.treasury_account_id;
+    cancelOpenDividends(db, c.id);   // an earmarked dividend must not block the creditors
     for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE company_id = ? AND status = 'open'", c.id)) cancelOrder(db, o.id);
     const provisions = db.get<{ id: string }>("SELECT id FROM companies WHERE industry_id = 'wholesale' AND owner_kind = 'state' LIMIT 1");
     let proceeds = 0, units = 0;
@@ -34,12 +38,24 @@ export function liquidateCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Co
     if (arrearsPaid > 0) transfer(db, ctx, `liq:${c.id}:arrears`, acct, TREASURY, arrearsPaid, 'state_payment', `administrator: arrears of ${c.name}`);
     const writtenOff = c.unpaid_minor - arrearsPaid;
     const residual = balance(db, acct);
-    if (residual > 0) {
-      if (c.owner_kind === 'player') transfer(db, ctx, `liq:${c.id}:owner`, acct, PLAYER_WALLET, residual, 'owner_withdrawal', `residual cash returned to owner of ${c.name}`);
-      else transfer(db, ctx, `liq:${c.id}:owner`, acct, 'acct:households:bristol', residual, 'transfer', `residual cash of ${c.name} to its shareholders`);
-    }
-    db.run("DELETE FROM ownership WHERE company_id = ?", c.id);
-    db.run("INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, 'state', 'state-bristol', 10000)", c.id);
+    // Shareholders are paid LAST, pro rata, from whatever is left after stock sales and arrears (creditor priority). Then every share is cancelled and the security delisted.
+    const sec = security(db, c.id);
+    if (sec) {
+      cancelAllOrders(db, c.id, 'delisted');
+      const own = companyInvestorId(c.id);
+      const holders = db.all<{ investor_id: string; shares: number; cost_basis_minor: number; account_id: string }>('SELECT h.investor_id, h.shares, h.cost_basis_minor, i.account_id FROM share_holdings h JOIN investors i ON i.id = h.investor_id WHERE h.company_id = ? AND h.shares > 0 AND h.investor_id <> ? ORDER BY h.shares DESC, h.investor_id', c.id, own);
+      const total = holders.reduce((a, h) => a + h.shares, 0);
+      let left = residual;
+      holders.forEach((h, i) => {
+        const part = i === holders.length - 1 ? left : Math.min(left, Math.floor((residual * h.shares) / total));
+        left -= part;
+        if (part > 0) transfer(db, ctx, `liq:${c.id}:holder:${h.investor_id}`, acct, h.account_id, part, 'transfer', `liquidation distribution of ${c.name} to ${h.investor_id}`);
+        db.run("INSERT INTO share_pnl (tick, investor_id, company_id, qty, proceeds_minor, cost_minor, pnl_minor, kind, ref) VALUES (?,?,?,?,?,?,?, 'liquidation', ?)", ctx.tick, h.investor_id, c.id, h.shares, part, h.cost_basis_minor, part - h.cost_basis_minor, `liq:${c.id}`);
+      });
+      for (const h of db.all<{ investor_id: string; shares: number }>('SELECT investor_id, shares FROM share_holdings WHERE company_id = ? AND shares > 0', c.id)) cancelShares(db, ctx, c.id, h.investor_id, h.shares, `liq:${c.id}`, 'liquidation', 'cancelled on liquidation');
+      db.run("UPDATE securities SET status = 'delisted', delisted_tick = ?, suspended_reason = 'company liquidated' WHERE company_id = ?", ctx.tick, c.id);
+      logEvent(db, ctx.tick, 'delisted', 'error', c.id, `${c.name} was delisted: its shares were cancelled and ${(residual / 100).toFixed(2)} EC was distributed to shareholders`, { distributedMinor: residual, holders: holders.length });
+    } else if (residual > 0) transfer(db, ctx, `liq:${c.id}:owner`, acct, c.owner_kind === 'player' ? PLAYER_WALLET : 'acct:households:bristol', residual, c.owner_kind === 'player' ? 'owner_withdrawal' : 'transfer', `residual cash of ${c.name} to its owner`);
     db.run('UPDATE production_lines SET planned_batches = 0 WHERE company_id = ?', c.id);
     db.run("UPDATE companies SET status = 'insolvent', bankrupt_tick = ?, unpaid_minor = 0, written_off_minor = ?, employees = 0, property_minor = 0, marketing_minor = 0, revision = revision + 1 WHERE id = ?", ctx.tick, writtenOff, c.id);   // closed: no more wages, rent or advertising accrue
     if (c.plot_id) db.run('UPDATE plots SET company_id = NULL, asset_id = NULL WHERE id = ? AND company_id = ?', c.lot_id ?? c.plot_id, c.id);

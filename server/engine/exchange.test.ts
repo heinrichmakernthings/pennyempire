@@ -110,7 +110,7 @@ describe('matching engine', () => {
 
 describe('automatic listings yield to deliberate orders', () => {
   it('a player sell order reclaims stock reserved by the company\'s automatic daily listing, and only for that company', () => {
-    const db = world(); const farm = found(db, 'farm', 'lot-3', 'Auto Farm'); give(db, farm, 'wheat', 100);
+    const db = world(); clearBook(db); const farm = found(db, 'farm', 'lot-3', 'Auto Farm'); give(db, farm, 'wheat', 100);
     place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 50, qty: 100, key: 'sys:test:auto' });
     expect(freeStock(db, farm, 'wheat')).toBe(0);
     const r = place(db, { company: farm, commodity: 'wheat', side: 'sell', price: 80, qty: 40 });

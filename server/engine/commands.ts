@@ -5,6 +5,7 @@ import { LedgerError, available, reconcile, transfer, type TickCtx } from './led
 import { applyStaffChange } from './staffing';
 import { MarketError, cancelOrder, liveBook, marketLimit, placeOrder } from './market';
 import { gameDate } from './config';
+import { ShareError } from './capital';
 import { logEvent } from './stats';
 import { PLAYER_ID, TREASURY } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
@@ -31,6 +32,7 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
     try { res = db.transaction(() => fn(ctx)); } catch (e) {
       if (e instanceof LedgerError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : 'VALIDATION', e.message);
       else if (e instanceof MarketError) res = err(e.code === 'INSUFFICIENT_STOCK' ? 'INSUFFICIENT_STOCK' : e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : e.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'VALIDATION', e.message);
+      else if (e instanceof ShareError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : e.code === 'INSUFFICIENT_SHARES' ? 'INSUFFICIENT_STOCK' : e.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'VALIDATION', e.message);
       else throw e;
     }
     if (!res.ok) db.run('INSERT INTO failed_transactions (tick, idempotency_key, kind, reason) VALUES (?,?,?,?)', ctx.tick, key, name, res.error.message);

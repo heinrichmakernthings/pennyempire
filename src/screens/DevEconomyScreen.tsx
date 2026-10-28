@@ -82,6 +82,7 @@ export function DevEconomyScreen() {
       </section>
 
       <ExchangeSection x={d.exchange} />
+      <ShareMarketSection m={d.market} />
 
       <section aria-labelledby="co-t"><h2 id="co-t" className="pe-h2">Companies and profitability</h2>
         <p className="pe-hint">{d.companies.count} companies · {d.companies.operating} operating · {d.companies.paused} paused · <span className={d.companies.insolvent ? 'pe-neg' : ''}>{d.companies.insolvent} insolvent</span> · {d.companies.profitable} profitable (7-day average)</p>
@@ -133,6 +134,33 @@ function ExchangeSection({ x }: { x: EconomyDashboard['exchange'] }) {
       </div>
       <DataTable caption="Failed settlements and refusals (30d)" rowKey={(r) => r.kind} rows={x.failedSettlements} empty={<p className="pe-hint">No failed settlements.</p>} columns={[{ key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'n', header: 'Count', align: 'end', render: (r) => r.n }, { key: 'r', header: 'Latest reason', render: (r) => r.lastReason ?? '—' }]} />
       <DataTable caption="Anomalies and market alerts" rowKey={(r) => r.kind + r.detail} rows={x.anomalies} empty={<p className="pe-dev-ok">No anomalies detected.</p>} columns={[{ key: 's', header: 'Severity', render: (r) => <StatusLabel tone={r.severity === 'error' ? 'negative' : 'warning'}>{r.severity}</StatusLabel> }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'd', header: 'Detail', render: (r) => r.detail }]} />
+    </section>
+  );
+}
+
+function ShareMarketSection({ m }: { m: EconomyDashboard['market'] }) {
+  const p = (v: number | null) => (v === null ? '—' : ec(v));
+  return (
+    <section aria-labelledby="sm-t" data-testid="share-market-dashboard"><h2 id="sm-t" className="pe-h2">Share market</h2>
+      <dl className="pe-stats pe-stats--wide">
+        <div><dt>Share register consistent</dt><dd><StatusLabel tone={m.integrity.ok ? 'positive' : 'negative'}>{m.integrity.ok ? 'Yes' : `${m.integrity.problems.length} problem(s)`}</StatusLabel></dd></div>
+        <div><dt>Listed companies</dt><dd>{m.totals.listedCount}</dd></div><div><dt>Total market value</dt><dd>{ec(m.totals.marketCapMinor)}</dd></div>
+        <div><dt>Volume / value (7d)</dt><dd>{m.totals.volume7d} · {ec(m.totals.value7d)}</dd></div><div><dt>Fees collected (all time)</dt><dd>{ec(m.totals.feesCollected)}</dd></div>
+        <div><dt>Dividends declared / paid</dt><dd>{ec(m.totals.dividendsDeclared)} / {ec(m.totals.dividendsPaid)}</dd></div>
+        <div><dt>Shares issued / cancelled</dt><dd>{m.totals.sharesIssued} / {m.totals.sharesCancelled}</dd></div><div><dt>IPOs</dt><dd>{m.totals.ipos}</dd></div>
+      </dl>
+      {m.integrity.problems.map((x) => <p key={x} className="pe-neg">{x}</p>)}
+      <DataTable caption="Listed companies" rowKey={(r) => r.ticker} rows={m.listed}
+        columns={[{ key: 't', header: 'Ticker', render: (r) => `${r.ticker}${r.status === 'suspended' ? ' (suspended)' : ''}` }, { key: 'o', header: 'Outstanding / issued', align: 'end', render: (r) => `${r.outstanding} / ${r.issued}` }, { key: 'p', header: 'Last', align: 'end', render: (r) => p(r.lastPrice) }, { key: 'f', header: 'Estimate', align: 'end', render: (r) => p(r.fair) },
+          { key: 'c', header: 'Market cap', align: 'end', render: (r) => p(r.marketCap) }, { key: 'v', header: 'Vol 7d', align: 'end', render: (r) => r.volume7d }, { key: 's', header: 'Spread', align: 'end', render: (r) => (r.spreadBps === null ? '—' : pct(r.spreadBps)) }, { key: 'd', header: 'Depth bid/ask', align: 'end', render: (r) => `${r.depthBid} / ${r.depthAsk}` },
+          { key: 'h', header: 'Top holder / HHI', align: 'end', render: (r) => `${pct(r.top1Bps)} / ${r.hhiBps}` }, { key: 'vol', header: 'Volatility', align: 'end', render: (r) => pct(r.volatilityBps) }]} />
+      <div className="pe-forms">
+        <DataTable caption="Participation by holder type (7d)" rowKey={(r) => r.kind} rows={m.participation} empty={<p className="pe-hint">No trades.</p>} columns={[{ key: 'k', header: 'Type', render: (r) => r.kind }, { key: 'b', header: 'Bought', align: 'end', render: (r) => `${r.buyShares} · ${ec(r.buyValue)}` }, { key: 's', header: 'Sold', align: 'end', render: (r) => `${r.sellShares} · ${ec(r.sellValue)}` }]} />
+        <DataTable caption="NPC investors" rowKey={(r) => r.id} rows={m.investors} columns={[{ key: 'n', header: 'Investor', render: (r) => `${r.name} (${r.strategy ?? '—'})` }, { key: 'c', header: 'Cash', align: 'end', render: (r) => ec(r.cashMinor) }, { key: 'p', header: 'Positions', align: 'end', render: (r) => r.positions }, { key: 'd', header: 'Last decision', render: (r) => r.lastDecisions[0] ? `${r.lastDecisions[0].action}: ${r.lastDecisions[0].reason}` : '—' }]} />
+      </div>
+      <DataTable caption="Suspicious trading and alerts" rowKey={(r) => r.kind + r.detail} rows={m.suspicious} empty={<p className="pe-dev-ok">Nothing suspicious detected.</p>} columns={[{ key: 's', header: 'Severity', render: (r) => <StatusLabel tone={r.severity === 'error' ? 'negative' : r.severity === 'warning' ? 'warning' : 'neutral'}>{r.severity}</StatusLabel> }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'd', header: 'Detail', render: (r) => r.detail }]} />
+      <DataTable caption="Share audit trail: issuances, cancellations and recent transfers" rowKey={(r) => String(r.id)} rows={m.audit.journal} columns={[{ key: 'i', header: '#', render: (r) => r.id }, { key: 't', header: 'Day', render: (r) => r.tick }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'c', header: 'Company', render: (r) => r.company }, { key: 'f', header: 'From → to', render: (r) => `${r.from ?? '—'} → ${r.to ?? '—'}` }, { key: 'q', header: 'Shares', align: 'end', render: (r) => r.qty }, { key: 'p', header: 'Price', align: 'end', render: (r) => (r.price ? ec(r.price) : '—') }]} />
+      <DataTable caption="Dividend audit trail" rowKey={(r) => String(r.id)} rows={m.audit.dividends} empty={<p className="pe-hint">No dividends.</p>} columns={[{ key: 'i', header: '#', render: (r) => r.id }, { key: 'c', header: 'Company', render: (r) => r.company }, { key: 'p', header: 'Per share', align: 'end', render: (r) => ec(r.perShare) }, { key: 't', header: 'Total', align: 'end', render: (r) => ec(r.total) }, { key: 's', header: 'Status', render: (r) => r.status }, { key: 'b', header: 'Declared by', render: (r) => r.declaredBy }]} />
     </section>
   );
 }

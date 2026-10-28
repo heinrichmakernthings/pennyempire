@@ -31,7 +31,7 @@ describe('company creation', () => {
     expect(wallet(db)).toBe(w0 - q.totalMinor);
     expect(balance(db, `acct:co:${id}`)).toBe(q.lines.find((l) => l.kind === 'working_capital')!.amountMinor);
     expect(before.circulating - supply(db).circulating).toBe(q.lines.find((l) => l.kind === 'licence')!.amountMinor);
-    expect(db.get<{ holder_id: string; shares: number }>('SELECT * FROM ownership WHERE company_id = ?', id)).toMatchObject({ holder_id: 'player-demo', shares: 10_000 });
+    expect(db.get<{ investor_id: string; shares: number; cost_basis_minor: number }>('SELECT * FROM share_holdings WHERE company_id = ?', id)).toMatchObject({ investor_id: 'player-demo', shares: 10_000, cost_basis_minor: q.totalMinor });
     expect(db.get<{ company_id: string }>("SELECT company_id FROM plots WHERE id = 'lot-1'")!.company_id).toBe(id);
     expect(reconcile(db).ok).toBe(true);
   });
