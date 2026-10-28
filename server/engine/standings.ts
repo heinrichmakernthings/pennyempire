@@ -76,14 +76,17 @@ export function recordLeaderboards(db: Sql, n: number) {
 
 /** The Penny Post: every article is generated from a recorded economic event (`event_id` is unique, so re-running a tick never duplicates a story) and states only what the event says. */
 export function recordNews(db: Sql, n: number) {
-  const events = db.all<{ id: number; kind: string; subject: string | null; message: string; data_json: string | null }>("SELECT id, kind, subject, message, data_json FROM economic_events WHERE tick = ? AND kind IN ('company_opened','company_created','company_closed','bankruptcy','title_changed','company_upgraded') ORDER BY id", n);
+  const events = db.all<{ id: number; kind: string; subject: string | null; message: string; data_json: string | null }>("SELECT id, kind, subject, message, data_json FROM economic_events WHERE tick = ? AND kind IN ('company_opened','company_created','company_closed','bankruptcy','title_changed','company_upgraded','ipo','follow_on','dividend_declared','dividend_paid','trading_suspended','trading_resumed','delisted','control_change','large_holder','record_profit','major_loss','market_crash') ORDER BY id", n);
   const put = (e: { id: number }, kind: string, headline: string, body: string, importance: number, subject: string | null, industry: string | null, data: unknown) =>
     db.run('INSERT OR IGNORE INTO news_articles (tick, kind, headline, body, importance, subject_company_id, industry_id, event_id, data_json) VALUES (?,?,?,?,?,?,?,?,?)', n, kind, headline, body, importance, subject, industry, e.id, JSON.stringify(data));
   for (const e of events) {
     const co = e.subject ? db.get<{ name: string; industry_id: string; owner_kind: string }>('SELECT name, industry_id, owner_kind FROM companies WHERE id = ?', e.subject) : undefined;
     const ind = co ? (db.get<{ label: string }>('SELECT label FROM industry_specs WHERE industry_id = ?', co.industry_id)?.label ?? co.industry_id).toLowerCase() : '';
     const data = e.data_json ? JSON.parse(e.data_json) : {};
+    if (e.kind === 'market_crash') { put(e, 'market', 'Penny Exchange index tumbles', `${e.message}.`, 3, null, null, data); continue; }
     if (!co) continue;
+    const MARKET: Record<string, [string, string, number]> = { ipo: ['ipo', `${co.name} lists on the Penny Exchange`, 2], follow_on: ['ipo', `${co.name} offers more shares`, 1], dividend_declared: ['dividend', `${co.name} declares a dividend`, 1], dividend_paid: ['dividend', `${co.name} pays its dividend`, 1], trading_suspended: ['suspension', `Trading in ${co.name} suspended`, 3], trading_resumed: ['suspension', `Trading in ${co.name} resumes`, 2], delisted: ['delisting', `${co.name} delisted`, 3], control_change: ['control', `${co.name} changes hands`, 3], large_holder: ['holder', `New large shareholder in ${co.name}`, 1], record_profit: ['earnings', `${co.name} reports record profit`, 2], major_loss: ['earnings', `${co.name} reports a major loss`, 2] };
+    if (MARKET[e.kind]) { const [kind, headline, imp] = MARKET[e.kind]!; put(e, kind, headline, `${e.message}.`, imp, e.subject, co.industry_id, data); continue; }
     if (e.kind === 'company_opened') put(e, 'opening', `${co.name} opens its doors`, `A new ${ind} has opened in Bristol. ${e.message}.`, 2, e.subject, co.industry_id, data);
     else if (e.kind === 'company_created' && co.owner_kind === 'player') put(e, 'opening', `${co.name} opens its doors`, `A new ${ind} has opened in Bristol.`, 2, e.subject, co.industry_id, data);
     else if (e.kind === 'company_closed') put(e, 'closure', `${co.name} closes`, `${co.name}, a Bristol ${ind}, has closed after a run of losses.`, 2, e.subject, co.industry_id, data);
