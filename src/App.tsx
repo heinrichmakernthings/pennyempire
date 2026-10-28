@@ -13,6 +13,8 @@ const Prestige = lazy(() => import('./screens/PrestigeScreen').then((m) => ({ de
 const DevEconomy = lazy(() => import('./screens/DevEconomyScreen').then((m) => ({ default: m.DevEconomyScreen })));
 const Opportunities = lazy(() => import('./screens/OpportunitiesScreen').then((m) => ({ default: m.OpportunitiesScreen })));
 const StartCompany = lazy(() => import('./screens/StartCompanyScreen').then((m) => ({ default: m.StartCompanyScreen })));
+const Bristol = lazy(() => import('./screens/BristolScreen').then((m) => ({ default: m.BristolScreen })));
+const Competitor = lazy(() => import('./screens/CompetitorScreen').then((m) => ({ default: m.CompetitorScreen })));
 const Wallet = lazy(() => import('./screens/WalletScreen').then((m) => ({ default: m.WalletScreen })));
 
 export function App() {
@@ -22,6 +24,8 @@ export function App() {
         <Route index element={<Navigate to="/city" replace />} />
         <Route path="/city" element={<CityScreen />} />
         <Route path="/opportunities" element={<Opportunities />} />
+        <Route path="/bristol" element={<Bristol />} />
+        <Route path="/competitors/:id" element={<Competitor />} />
         <Route path="/start" element={<StartCompany />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/commodities" element={<Commodities />} />

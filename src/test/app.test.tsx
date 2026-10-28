@@ -22,10 +22,10 @@ describe('navigation and the eight sections', () => {
     setup(path);
     expect(await screen.findByRole('heading', { name: heading, level: path === '/city' ? 2 : 1 })).toBeInTheDocument();
   });
-  it('the main navigation links to all eight sections (seven game sections plus Opportunities) and switches screens', async () => {
+  it('the main navigation links to all nine sections (seven game sections plus Opportunities and News & Rankings) and switches screens', async () => {
     const user = setup('/city');
     const nav = await screen.findByRole('navigation', { name: 'Main' });
-    expect(within(nav).getAllByRole('link')).toHaveLength(8);
+    expect(within(nav).getAllByRole('link')).toHaveLength(9);
     await user.click(within(nav).getByRole('link', { name: /Stock Exchange/ }));
     expect(await screen.findByRole('heading', { name: 'Stock Exchange', level: 1 })).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: /Stock Exchange/ })).toHaveAttribute('aria-current', 'page');

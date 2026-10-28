@@ -4,6 +4,7 @@ export interface RouteDef { path: string; label: string; short: string; icon: st
 export const ROUTES: RouteDef[] = [
   { path: '/city', label: 'City', short: 'City', icon: 'city', mobile: 'primary' },
   { path: '/opportunities', label: 'Opportunities', short: 'Ideas', icon: 'startup', mobile: 'more' },
+  { path: '/bristol', label: 'News & Rankings', short: 'News', icon: 'ranking', mobile: 'more' },
   { path: '/companies', label: 'My Companies', short: 'Companies', icon: 'companies', mobile: 'primary' },
   { path: '/commodities', label: 'Commodity Exchange', short: 'Market', icon: 'marketplace', mobile: 'primary' },
   { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
