@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "industries": {
+    "farm": {
+      "producing": "production-farm",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    },
+    "mill": {
+      "producing": "production-mill",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    },
+    "dairy": {
+      "producing": "production-dairy",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    },
+    "pizza": {
+      "producing": "production-pizza",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    },
+    "cafe": {
+      "producing": "production-cafe",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    },
+    "timber": {
+      "producing": "production-timber",
+      "missing-inputs": "missing-inputs",
+      "low-stock": "low-stock",
+      "high-demand": "high-demand",
+      "overproduction": "overproduction",
+      "loss": "loss",
+      "upgrading": "construction",
+      "closed": "closed"
+    }
+  },
+  "lifecycle": {
+    "startup": "startup",
+    "profitable": "profit",
+    "expansion": "expansion",
+    "major-success": "major-success",
+    "financial-difficulty": "loss",
+    "bankruptcy": "bankrupt",
+    "new-ownership": "new-ownership"
+  },
+  "placement": {
+    "space": "screen",
+    "anchor": "above building top centre",
+    "offset": [
+      0,
+      -8
+    ],
+    "badgeSize": [
+      32,
+      32
+    ],
+    "maxPrimaryBadges": 1,
+    "secondaryStates": "accessible inspector list"
+  },
+  "priority": [
+    "bankrupt",
+    "closed",
+    "upgrading",
+    "missing-inputs",
+    "loss",
+    "low-stock",
+    "overproduction",
+    "high-demand",
+    "producing"
+  ]
+}

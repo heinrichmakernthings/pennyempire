@@ -1,0 +1,16 @@
+commodity_id,icon_asset_id,individual_file,width,height,pivot_x,pivot_y,legacy_icon,contract_status
+wheat,commodity-wheat,assets/art/phase3/runtime/commodities/wheat.png,48,48,24,48,wheat,existing fixture ID
+milk,commodity-milk,assets/art/phase3/runtime/commodities/milk.png,48,48,24,48,milk,existing fixture ID
+timber,commodity-timber,assets/art/phase3/runtime/commodities/timber.png,48,48,24,48,timber-item,existing fixture ID
+water,commodity-water,assets/art/phase3/runtime/commodities/water.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+energy,commodity-energy,assets/art/phase3/runtime/commodities/energy.png,48,48,24,48,energy,existing fixture ID
+animal-feed,commodity-animal-feed,assets/art/phase3/runtime/commodities/animal-feed.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+flour,commodity-flour,assets/art/phase3/runtime/commodities/flour.png,48,48,24,48,flour,existing fixture ID
+cheese,commodity-cheese,assets/art/phase3/runtime/commodities/cheese.png,48,48,24,48,cheese,existing fixture ID
+coffee,commodity-coffee,assets/art/phase3/runtime/commodities/coffee.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+packaging,commodity-packaging,assets/art/phase3/runtime/commodities/packaging.png,48,48,24,48,delivery,proposed commodity ID; map engine aliases explicitly
+building-materials,commodity-building-materials,assets/art/phase3/runtime/commodities/building-materials.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+pizza,commodity-pizza,assets/art/phase3/runtime/commodities/pizza.png,48,48,24,48,pizza-item,existing fixture ID
+coffee-drinks,commodity-coffee-drinks,assets/art/phase3/runtime/commodities/coffee-drinks.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+bakery-products,commodity-bakery-products,assets/art/phase3/runtime/commodities/bakery-products.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly
+furniture,commodity-furniture,assets/art/phase3/runtime/commodities/furniture.png,48,48,24,48,,proposed commodity ID; map engine aliases explicitly

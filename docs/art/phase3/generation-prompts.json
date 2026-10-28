@@ -1,0 +1,34 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "assets/art/source/commodities-sheet.png",
+  "prompts": [
+    {
+      "id": "water",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a short open blue steel water pail, clear blue water visible inside, small metal handle; no milk bottle. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "animal-feed",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a squat olive canvas feed sack with a few golden feed pellets at its foot and a simple leaf emblem, visibly different from a flour sack. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "coffee",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a small open dark brown burlap sack filled with distinctly brown roasted coffee beans, two beans at its foot. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "building-materials",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a small compact stack of terracotta bricks and one grey cement sack, read as a single commodity bundle. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "coffee-drinks",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a cream ceramic coffee cup with dark coffee and a small saucer, one restrained curl of steam. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "bakery-products",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a golden scored loaf with one croissant beside it, a single compact bakery commodity icon. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    },
+    {
+      "id": "furniture",
+      "prompt": "Use case: stylized-concept. Asset type: individual Penny Empire commodity inventory sprite. Reference image is STYLE ONLY, do not reproduce the sheet. Create ONE isolated a single wooden upholstered dining chair, warm oak frame and muted teal seat. Match the approved detailed isometric pixel-art commodity icons in the reference: 2:1 isometric impression, warm light from upper left, dark brown outline, crisp square pixel clusters, warm cream/gold/wood with restrained teal. Designed to remain readable in a 48x48 logical pixel slot. Simple strongly distinguishable silhouette, limited tiny details. Center the single whole object on genuine transparent alpha, no floor, no backdrop, no glow, no shadow outside object, no lettering or words, no grid. Entire object visible, tightly framed. Do not create multiple variants or other reference objects."
+    }
+  ]
+}
