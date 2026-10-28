@@ -5,3 +5,6 @@ dist
 .DS_Store
 qa-output
 tsconfig.tsbuildinfo
+data/
+*.db
+*.db-*

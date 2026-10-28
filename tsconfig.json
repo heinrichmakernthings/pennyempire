@@ -17,5 +17,5 @@
     "types": ["node", "vite/client", "vitest/globals", "@testing-library/jest-dom"],
     "paths": { "@/*": ["./src/*"], "@art/*": ["./assets/art/*"] }
   },
-  "include": ["src", "vite.config.ts", "assets/art/runtime/manifest.json"]
+  "include": ["src", "server", "vite.config.ts", "assets/art/runtime/manifest.json"]
 }

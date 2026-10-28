@@ -11,7 +11,13 @@
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
     "art:validate": "node tools/art-review/validate.mjs",
-    "qa:browser": "node scripts/qa/browser-check.mjs"
+    "qa:browser": "node scripts/qa/browser-check.mjs",
+    "server": "tsx server/node.ts",
+    "dev:all": "node scripts/dev-all.mjs",
+    "db:migrate": "tsx server/cli.ts migrate",
+    "db:seed": "tsx server/cli.ts seed",
+    "db:reset": "tsx server/cli.ts reset",
+    "sim": "tsx server/cli.ts sim"
   },
   "dependencies": {
     "react": "^19.3.1",
@@ -28,6 +34,7 @@
     "@types/react-dom": "^19.3.0",
     "@vitejs/plugin-react": "^6.1.2",
     "jsdom": "^29.1.1",
+    "tsx": "^4.23.15",
     "typescript": "^7.0.2",
     "vite": "^8.3.5",
     "vitest": "^5.0.5"
