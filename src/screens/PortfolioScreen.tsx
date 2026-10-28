@@ -3,6 +3,7 @@ import { summarizePortfolio } from '@/domain/portfolio';
 import { formatBps, formatUnits } from '@/domain/money';
 import { DataTable } from '@/ui/DataTable';
 import { MoneyValue } from '@/ui/MoneyValue';
+import { SharePortfolioPanel } from './shares/SharePortfolioPanel';
 import { ScreenData } from '@/ui/ScreenData';
 import { EmptyState } from '@/ui/States';
 
@@ -10,7 +11,7 @@ import { EmptyState } from '@/ui/States';
 export function PortfolioScreen() {
   return (
     <ScreenData screen="portfolio" title="Portfolio">
-      {({ player, holdings, listings }) => {
+      {({ player, holdings, listings }, loaded) => {
         const s = summarizePortfolio(holdings, listings);
         return (
           <div className="pe-stack">
@@ -23,6 +24,7 @@ export function PortfolioScreen() {
               <div><dt>Unrealised P&amp;L</dt><dd><MoneyValue value={s.unrealized} signed /></dd></div>
               <div><dt>Dividends received</dt><dd><MoneyValue value={s.dividends} tone="neutral" /></dd></div>
             </dl>
+            {loaded.authority === 'server' ? <SharePortfolioPanel /> : <>
             <h2 className="pe-h2">Holdings</h2>
             <DataTable caption="Portfolio holdings" rowKey={(l) => l.holding.listingId} rows={s.lines}
               empty={<EmptyState title="Your portfolio is empty" action={<Link className="pe-btn pe-btn--primary" to="/stocks">Browse the Stock Exchange</Link>}>Buy shares in fictional companies to build a portfolio.</EmptyState>}
@@ -34,6 +36,7 @@ export function PortfolioScreen() {
                 { key: 'p', header: 'P&L', align: 'end', render: (l) => <MoneyValue value={l.holding.unrealizedPnl} signed /> },
               ]} />
             {s.lines.length > 0 && <div className="pe-alloc" role="img" aria-label={`Allocation: ${s.lines.map((l) => `${l.listing?.companyName ?? l.holding.listingId} ${formatBps(l.shareOfValueBps)}`).join(', ')}`}>{s.lines.map((l, i) => <span key={l.holding.listingId} className={`pe-alloc-${i % 4}`} style={{ width: `${l.shareOfValueBps / 100}%` }} />)}</div>}
+            </>}
           </div>
         );
       }}

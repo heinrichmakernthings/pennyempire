@@ -57,8 +57,9 @@ const logInv = (db: Sql, tick: number, inv: string, company: string | null, acti
 
 function tryOrder(db: Sql, ctx: TickCtx, cfg: EngineConfig, inv: Investor, company: string, side: 'buy' | 'sell', price: number, qty: number, why: string, inputs: unknown): boolean {
   if (qty <= 0 || price <= 0) return false;
+  // A participant never trades outside its own limit: a bid is capped at the band's top (and skipped if its limit is below the band's floor), an ask is floored at the band's bottom (and skipped if above the ceiling).
   const band = priceBand(db, cfg, company, ctx.tick);
-  if (band) price = Math.min(Math.max(price, band.low), band.high);
+  if (band) { if (side === 'buy') { if (price < band.low) { logInv(db, ctx.tick, inv.id, company, 'buy skipped', `limit ${(price / 100).toFixed(2)} is below today's range`, inputs, false); return false; } price = Math.min(price, band.high); } else { if (price > band.high) { logInv(db, ctx.tick, inv.id, company, 'sell skipped', `limit ${(price / 100).toFixed(2)} is above today's range`, inputs, false); return false; } price = Math.max(price, band.low); } }
   if (side === 'buy') qty = Math.min(qty, Math.floor(available(db, inv.account_id) / price));
   if (qty <= 0) return false;
   try {
@@ -132,8 +133,10 @@ function runHolderFloat(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
     const holder = getInvestor(db, c.owner_id); if (!holder || holder.kind === 'company') continue;
     const out = outstanding(db, s.company_id); if (out <= 0) continue;
     const h = holding(db, s.company_id, holder.id);
-    const floorShares = Math.ceil((out * 5_500) / 10_000);                 // a holder never sells itself out of control
-    const target = Math.max(0, Math.min(Math.floor((out * cfg.holderFloatBps) / 10_000), h.shares - floorShares));
+    const fvNow = fairOf(db, s.company_id, ctx.tick); const refPx = priceBand(db, cfg, s.company_id, ctx.tick)?.ref ?? 0;
+    const rich = fvNow !== null && refPx * 10 > fvNow * 13;                 // a holder sells into strength: well above the estimate it offers more, but never below 51% (it keeps control)
+    const floorShares = Math.ceil((out * (rich ? 5_100 : 5_500)) / 10_000);
+    const target = Math.max(0, Math.min(Math.floor((out * (cfg.holderFloatBps + (rich ? 2_000 : 0))) / 10_000), h.shares - floorShares));
     const onOffer = db.get<{ q: number }>("SELECT COALESCE(SUM(qty_remaining),0) q FROM share_orders WHERE investor_id = ? AND company_id = ? AND side = 'sell' AND status = 'open'", holder.id, s.company_id)!.q;
     const band = priceBand(db, cfg, s.company_id, ctx.tick); if (!band) continue;
     if (onOffer > 0 && ctx.tick % 3 !== 0) continue;                       // refresh the ladder every third day

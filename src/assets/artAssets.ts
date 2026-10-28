@@ -89,3 +89,9 @@ const commodityPngs = import.meta.glob('/assets/art/phase3/runtime/commodities/*
 /** Engine commodity id → Phase 3 icon file (the art uses `coffee-drinks` for the engine's `cafe-drink`). */
 const COMMODITY_ICON_FILE: Record<string, string> = { 'cafe-drink': 'coffee-drinks' };
 export const commodityIconUrl = (id: string): string | undefined => commodityPngs[`/assets/art/phase3/runtime/commodities/${COMMODITY_ICON_FILE[id] ?? id}.png`];
+
+/** Approved Phase 5 institution sprites (static, native size). Only the ones the exchange screens use are bundled. */
+const phase5Pngs = import.meta.glob('/assets/art/phase5/runtime/*.png', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+export const phase5Url = (id: string): string | undefined => phase5Pngs[`/assets/art/phase5/runtime/${id}.png`];
+/** Which approved institution sprite represents a state-owned company on the exchange. */
+export const STATE_SPRITE: Record<string, string> = { 'co-bristol-energy': 'penny-energy', 'co-bristol-estates': 'central-property', 'co-bristol-media': 'penny-ads' };
