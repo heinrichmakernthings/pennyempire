@@ -54,6 +54,10 @@ const exchangeV1: Patch = {
   id: 'exchange-v1',
   run(db) {
     if (!db.get('SELECT 1 FROM accounts WHERE id = ?', EXCHANGE_ACCOUNT)) createAccount(db, EXCHANGE_ACCOUNT, 'state_treasury', 'Penny Exchange fee account');
+    // The two supplies named in docs/ECONOMY.md ("milk + supplies" for cafés; boxes for takeaway pizza). No producer industry exists yet: the state provisioner
+    // imports a bounded amount at a premium (see STATE_SUPPLIED), so they are real, finite, priced inputs rather than free ones.
+    db.run("INSERT OR IGNORE INTO commodities (id, name, unit_label, reference_price_minor) VALUES ('coffee', 'Coffee beans', 'sack', 100), ('packaging', 'Packaging', 'bundle', 40)");
+    db.run("INSERT OR IGNORE INTO recipe_inputs (recipe_id, commodity_id, units) VALUES ('recipe-coffee', 'coffee', 4), ('recipe-pizza', 'packaging', 2)");
     return 0;
   },
 };

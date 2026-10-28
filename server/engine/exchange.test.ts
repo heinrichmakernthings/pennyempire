@@ -321,7 +321,7 @@ describe('supply contracts', () => {
 
 describe('the whole chain: farm → mill → pizza restaurant → consumers, all through the exchange', () => {
   it('every company is paid correctly and every unit is accounted for', () => {
-    const db = world({ stateSupplyPerTick: 0 });
+    const db = world();
     const farm = found(db, 'farm', 'lot-3', 'Chain Farm'), mill = found(db, 'mill', 'lot-7', 'Chain Mill'), pizza = found(db, 'pizza', 'plot-pizza', 'Chain Pizza');
     // undercut the NPC rivals so the player's own companies supply each other (vertical integration through the exchange)
     configureCompany(db, 'p1', farm, 1, { askPriceMinor: 40 });

@@ -7,7 +7,7 @@ import { MarketError, cancelOrder, expireOrders, placeOrder, type FillEvent } fr
 import { runContractDeliveries } from './contracts';
 import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
-import { energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
+import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
 type Co = CompanyRow;
@@ -72,7 +72,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
 
     /* B. State provisioner: bounded fallback stock, created from nothing but sold for coins that go to the treasury. */
     phase('state_supply');
-    if (provisions) for (const c of ['wheat', 'milk', 'flour', 'cheese']) {
+    if (provisions) for (const c of STATE_SUPPLIED) {
       const add = Math.min(cfg.stateSupplyPerTick, cfg.stateSupplyCap - stock(db, provisions.id, c).qty);
       if (add > 0) addStock(db, ctx, provisions.id, c, add, 0, 'state_supply', 'fallback supply');
     }
@@ -129,7 +129,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       if (c.status !== 'operating') continue;
       safe('listing', c.id, () => {
         if (c.id === provisions?.id) {
-          for (const com of ['wheat', 'milk', 'flour', 'cheese']) { const q = freeStock(db, c.id, com); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: com, side: 'sell', price: Math.floor((refPrice(com) * cfg.stateSupplyMarkupBps) / 10_000), qty: q, key: `sys:${n}:${c.id}:${com}` }, onFill); }
+          for (const com of STATE_SUPPLIED) { const q = freeStock(db, c.id, com); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: com, side: 'sell', price: Math.floor((refPrice(com) * cfg.stateSupplyMarkupBps) / 10_000), qty: q, key: `sys:${n}:${c.id}:${com}` }, onFill); }
         } else if (!c.retail_commodity_id) {
           for (const l of linesOf(c.id)) { const q = freeStock(db, c.id, l.output_commodity_id); if (q > 0) placeOrder(db, ctx, cfg.exchangeFeeBps, { company: c.id, commodity: l.output_commodity_id, side: 'sell', price: l.ask_price_minor, qty: q, key: `sys:${n}:${c.id}:${l.output_commodity_id}` }, onFill); }
         }

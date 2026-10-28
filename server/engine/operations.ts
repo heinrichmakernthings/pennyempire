@@ -88,3 +88,6 @@ export function procureInputs(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Compa
   }
   return { purchases, batches: total, limit };
 }
+
+/** Commodities the state provisioner can supply as bounded, premium-priced fallback stock (imports). Finished goods and energy are never state-supplied. */
+export const STATE_SUPPLIED = ['wheat', 'milk', 'flour', 'cheese', 'coffee', 'packaging'] as const;
