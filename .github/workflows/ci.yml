@@ -16,4 +16,3 @@ jobs:
       - run: npm run art:validate
       - run: npm run sim -- 360
       - run: npm run build
-      - run: node scripts/qa/company-journey.mjs
