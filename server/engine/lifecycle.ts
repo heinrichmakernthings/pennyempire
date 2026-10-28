@@ -41,7 +41,7 @@ export function liquidateCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Co
     db.run("DELETE FROM ownership WHERE company_id = ?", c.id);
     db.run("INSERT INTO ownership (company_id, holder_kind, holder_id, shares) VALUES (?, 'state', 'state-bristol', 10000)", c.id);
     db.run('UPDATE production_lines SET planned_batches = 0 WHERE company_id = ?', c.id);
-    db.run('UPDATE companies SET bankrupt_tick = ?, unpaid_minor = 0, written_off_minor = ?, employees = 0, revision = revision + 1 WHERE id = ?', ctx.tick, writtenOff, c.id);
+    db.run("UPDATE companies SET status = 'insolvent', bankrupt_tick = ?, unpaid_minor = 0, written_off_minor = ?, employees = 0, property_minor = 0, marketing_minor = 0, revision = revision + 1 WHERE id = ?", ctx.tick, writtenOff, c.id);   // closed: no more wages, rent or advertising accrue
     if (c.plot_id) db.run('UPDATE plots SET company_id = NULL, asset_id = NULL WHERE id = ? AND company_id = ?', c.lot_id ?? c.plot_id, c.id);
     logEvent(db, ctx.tick, 'bankruptcy', 'error', c.id, `${c.name} went bankrupt: stock sold for ${proceeds / 100} EC, ${arrearsPaid / 100} EC of arrears paid, ${writtenOff / 100} EC written off, ${residual / 100} EC returned to the owner`, { proceeds, arrearsPaid, writtenOff, residual });
     return { stockProceedsMinor: proceeds, arrearsPaidMinor: arrearsPaid, writtenOffMinor: writtenOff, returnedToOwnerMinor: residual, unitsSold: units };

@@ -10,6 +10,7 @@ import { PLAYER_WALLET, companyAccount } from './seed/bristol';
 
 export interface BotResult { bot: string; strategy: string; companies: string[]; startWorth: number; endWorth: number; profit: number; trades: number; unitsBought: number; unitsSold: number; feesPaid: number; status: string }
 export interface MarketSimReport {
+  /** the finished world, for inspection by tests and tools */ world?: Sql;
   days: number; anomalies: string[]; reconciliation: boolean; supplyStart: number; supplyEnd: number; supplyChangeBps: number;
   bots: BotResult[];
   commodities: { id: string; vwapFirst: number | null; vwapLast: number | null; minVwap: number | null; maxVwap: number | null; reference: number; volatilityBps: number; volume: number; shortageDays: number; avgSpreadBps: number | null; hhiBps: number; topSupplier: string; topShareBps: number }[];
@@ -108,10 +109,10 @@ export function runMarketSim(days: number): MarketSimReport {
   const sumTx = (like: string, acct: string) => db.get<{ a: number }>('SELECT COALESCE(SUM(p.amount_minor),0) a FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.memo LIKE ? AND p.amount_minor > 0 AND p.account_id = ?', like, acct)!.a;
   void mine;
   return {
-    days, anomalies, reconciliation: rec.ok, supplyStart, supplyEnd: supply(db).circulating, supplyChangeBps: Math.round(((supply(db).circulating - supplyStart) * 10_000) / supplyStart), bots, commodities: comm,
+    world: db, days, anomalies, reconciliation: rec.ok, supplyStart, supplyEnd: supply(db).circulating, supplyChangeBps: Math.round(((supply(db).circulating - supplyStart) * 10_000) / supplyStart), bots, commodities: comm,
     failures: db.all<{ kind: string; reason: string; n: number }>('SELECT kind, reason, COUNT(*) n FROM failed_transactions GROUP BY kind, reason ORDER BY n DESC LIMIT 8'), contractOffers,
     exchange: { feesCollected: fee, burned: sumTx('Penny Exchange fee burn%', 'acct:burn'), swept: sumTx('Penny Exchange fee income%', 'acct:state:bristol-treasury'), trades: db.get<{ n: number }>('SELECT COUNT(*) n FROM trades')!.n, value: db.get<{ v: number }>('SELECT COALESCE(SUM(qty*price_minor),0) v FROM trades')!.v, contractDeliveries: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status = 'delivered'")!.n, contractMisses: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status <> 'delivered'")!.n, failedSettlements: db.get<{ n: number }>('SELECT COUNT(*) n FROM failed_transactions')!.n },
-  npc: { minStateStock: [...stateMin].map(([commodity, units]) => ({ commodity, units })), insolventNpc: db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'npc' AND status = 'insolvent'").map((x) => x.id), bankruptcies: db.all<{ id: string }>('SELECT id FROM companies WHERE bankrupt_tick IS NOT NULL').map((x) => x.id) },
+  npc: { minStateStock: [...stateMin].map(([commodity, units]) => ({ commodity, units })), insolventNpc: db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'npc' AND status = 'insolvent' AND bankrupt_tick IS NULL").map((x) => x.id), bankruptcies: db.all<{ id: string }>('SELECT id FROM companies WHERE bankrupt_tick IS NOT NULL').map((x) => x.id) },
   };
 }
 

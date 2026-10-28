@@ -79,7 +79,7 @@ describe('ticks', () => {
 
 describe('production recipes (docs/ECONOMY.md)', () => {
   it('consume exactly the documented inputs and yield exactly the documented outputs', () => {
-    const db = memWorld(); advance(db, 30);
+    const db = memWorld({ npcDecisionsPerTick: 0 }); advance(db, 30);   // NPC reviews off: they may switch quality grade, which changes ingredient use by design
     const sum = (company: string, commodity: string, reason: string) => one<{ s: number }>(db, 'SELECT COALESCE(SUM(delta),0) s FROM inventory_movements WHERE company_id = ? AND commodity_id = ? AND reason = ?', company, commodity, reason).s;
     for (const pizza of ['co-mad-slices', 'co-clifton-slice']) {                                   // 1 flour + 1 cheese → 1 pizza
       const made = sum(pizza, 'pizza', 'production_output'); expect(made).toBeGreaterThan(0);
@@ -132,9 +132,11 @@ describe('consumer demand with one human player and no actions', () => {
     expect(one<{ s: number }>(db, "SELECT COALESCE(SUM(p.amount_minor),0) s FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.kind = 'consumer_sale' AND p.account_id = 'acct:households:bristol'").s).toBeLessThan(0);
     expect(spend).toBeGreaterThan(0);
   });
-  it('the economy stays alive: no company becomes insolvent in the first year', () => {
+  it('the economy stays alive: state enterprises never fail, failures are orderly closures (never zombies), most firms keep trading', () => {
     const db = memWorld(); advance(db, 360);
-    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'insolvent'").n).toBe(0);
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE owner_kind = 'state' AND status = 'insolvent'").n).toBe(0);
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL").n).toBe(0);     // an insolvent firm is liquidated within bankruptcyAfterTicks
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'operating' AND owner_kind <> 'state'").n).toBeGreaterThanOrEqual(5);
     expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM failed_transactions').n).toBe(0);
   });
 });

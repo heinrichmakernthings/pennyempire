@@ -3,6 +3,7 @@ import { loadConfig, saveConfig } from '../engine/config';
 import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
+import { createProfile, type Strategy } from '../engine/npc';
 import { CITY_ID, EXCHANGE_ACCOUNT, companyAccount } from './bristol';
 
 /** One-off, versioned data patches applied after the base seed (new worlds) or on open (existing worlds). Each runs exactly once per database. */
@@ -82,7 +83,18 @@ const consumersV1: Patch = {
   },
 };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1];
+/** Gives every NPC-owned operating company a named strategy. Starting markup stays at the long-calibrated 105%; reviews then move it within the strategy's band. */
+const npcV1: Patch = {
+  id: 'npc-v1',
+  run(db, ctx) {
+    const plan: Record<string, Strategy> = { 'co-clifton-slice': 'premium', 'co-bean-there': 'budget', 'co-severn-farm': 'conservative', 'co-brunel-mill': 'growth', 'co-clifton-dairy': 'opportunistic', 'co-avon-timber': 'budget', 'co-mad-slices': 'budget', 'co-harbour-bean': 'conservative' };
+    const every = loadConfig(db).npcDecisionEveryTicks;
+    for (const c of db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'npc' AND bankrupt_tick IS NULL ORDER BY id")) createProfile(db, ctx.tick, c.id, plan[c.id] ?? 'budget', every);
+    return 0;
+  },
+};
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

@@ -7,6 +7,8 @@ import { runContractDeliveries } from './contracts';
 import { recordMarketStats, sweepExchange } from './exchange';
 import { liquidateCompany } from './lifecycle';
 import { runConsumers } from './consumers';
+import { runNpcDecisions, runNpcEntry, type Profile } from './npc';
+import { npcStaffTo } from './staffing';
 import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
 
@@ -48,6 +50,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const pay = (kind: Exclude<LedgerKind, 'issuance' | 'sink' | 'sink_fee'>, from: string, to: string, amount: number, memo: string) => { if (amount > 0) transfer(db, ctx, key(kind), from, to, amount, kind, memo); };
 
     const all = db.all<Co>('SELECT * FROM companies ORDER BY id');
+    const profiles = new Map(db.all<Profile>('SELECT * FROM npc_profiles').map((p) => [p.company_id, p]));
     const rot = n % Math.max(1, all.length);
     const order = [...all.slice(rot), ...all.slice(0, rot)];            // fair rotation: nobody always shops first
     const byId = new Map(all.map((c) => [c.id, c]));
@@ -93,7 +96,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         const soldLast = db.get<{ u: number }>("SELECT COALESCE(-SUM(delta),0) u FROM inventory_movements WHERE tick = ? AND company_id = ? AND commodity_id = ? AND reason IN ('trade_out','consumer_purchase','public_works')", n - 1, c.id, l.output_commodity_id)!.u;
         const expected = Math.max(1, soldLast, Math.floor((c.capacity_batches * l.output_units) / lines.length / 4));
         const unitCost = inv.qty > 0 ? Math.floor(inv.value_minor / inv.qty) : Math.floor(l.ref_price / 2);
-        const target = Math.ceil(((unitCost + Math.ceil(fixedLine / expected)) * 105) / 100);
+        const target = Math.ceil(((unitCost + Math.ceil(fixedLine / expected)) * (profiles.get(c.id)?.markup_bps ?? 10_500)) / 10_000);
         const stockPct = Math.floor((inv.qty * 100) / c.storage_cap_units);
         const current = c.retail_commodity_id ? c.price_minor : l.ask_price_minor;
         let next = current;
@@ -110,9 +113,17 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         capLeft = Math.max(0, capLeft - planned); plannedTotal += planned;
         if (planned !== l.planned_batches) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ? AND recipe_id = ?', planned, c.id, l.recipe_id);
       }
+      // Staffing follows planned output, but through the same hiring rules as a player: daily limits, a fee per hire/dismissal, never on credit.
       const staff = staffNeeded(c, plannedTotal);
-      if (staff !== c.employees) { db.run('UPDATE companies SET employees = ? WHERE id = ?', staff, c.id); c.employees = staff; }
+      if (staff !== c.employees) safe('npc_staffing', c.id, () => { npcStaffTo(db, ctx, cfg, c as never, staff, key('npc-staff')); });
     }
+
+    /* C1. Periodic strategic reviews (staggered and capped per tick) and, rarely, market entry by a new NPC entrepreneur. Both use the same cores as players. */
+    phase('npc_decisions');
+    const exitMark = { tick: Number(db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'npc_last_exit'")?.value ?? -999) };
+    safe('npc_decisions', 'npc', () => { runNpcDecisions(db, ctx, cfg, exitMark); });
+    db.run("INSERT INTO meta (key, value) VALUES ('npc_last_exit', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(exitMark.tick));
+    safe('npc_entry', 'npc', () => { runNpcEntry(db, ctx, cfg); });
 
     /* C2. Orders whose expiry has arrived stop trading and release their reservations; then recurring supply contracts deliver from free stock
      *     BEFORE the day's listings reserve it, so contracted goods are never double-sold. */
@@ -244,7 +255,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     // NPC shareholders are citizens: cash above a reserve of N ticks of fixed costs is paid out to households (a transfer, never minted).
     for (const c of order) {
       if (c.owner_kind !== 'npc' || c.status !== 'operating' || cfg.npcPayoutBps === 0) continue;
-      const reserve = cfg.npcReserveTicks * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
+      const reserve = (profiles.get(c.id)?.reserve_days ?? cfg.npcReserveTicks) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
       const excess = available(db, c.treasury_account_id) - reserve;
       const dividend = Math.floor((Math.max(0, excess) * cfg.npcPayoutBps) / 10_000);
       if (dividend > 0) safe('dividend', c.id, () => pay('transfer', c.treasury_account_id, city.households_account_id, dividend, `${c.name} dividend to NPC shareholders`));
