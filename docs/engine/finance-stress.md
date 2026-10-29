@@ -4,7 +4,7 @@ Deterministic except the lottery draw (secure randomness). Everything uses the r
 
 ## S1 — Mass withdrawal
 
-300 players each deposit £10 (simulated) and request a £10 cash-out at the same moment; the treasury holds only the deposits (player funds), no business funds.
+300 players each deposit £10 (simulated) and request a £10 cash-out at the same moment; the treasury holds only the deposits (player funds) and no business money: payments are fully backed because processor fees are a business liability and are never taken from player funds.
 
 GBP ledger reconciles: **true** · Empire Coin ledger reconciles: **true**
 

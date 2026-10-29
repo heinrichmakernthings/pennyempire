@@ -37,6 +37,7 @@ export function simulate(a: Assumptions): ScenarioResult {
   const rewardBudget = Math.max(0, r((net * a.rewardAllocationBps) / 10_000)), sustainable = Math.max(0, Math.min(rewardBudget, profit));      // never budget more than the operating profit can bear
   const wdPlayers = r((a.monthlyActivePlayers * a.withdrawalPlayersBps) / 10_000), cashNeeded = wdPlayers * a.avgWithdrawalPence;
   if (profit < 0) warnings.push('Operating loss: no reward budget is sustainable.'); if (cashNeeded > sustainable) warnings.push('Expected withdrawals exceed the sustainable reward budget: payouts would need funding from reserves.');
+  if (gross > 0 && (profit * 10_000) / gross > 8_000) warnings.push('Margin above 80%: staff, marketing, legal, tax, support and refunds are NOT modelled, so this margin is not realistic.');
   if (a.rewardedEcpmPence > 2_000 || a.adEcpmPence > 600) warnings.push('eCPM assumptions are high; real figures vary widely by region, format and fill rate.');
   return { assumptions: a, label: 'ASSUMPTION-BASED SCENARIO — NOT A FORECAST, NOTHING BOOKED', grossAdPence: ad, grossRewardedAdPence: rewarded, grossPremiumPence: premium, grossCosmeticPence: cosmetic, grossRevenuePence: gross, paymentFeesPence: fees, netRevenuePence: net, hostingPence: hosting, opexPence: opex, operatingProfitPence: profit,
     operatingMarginBps: gross > 0 ? r((profit * 10_000) / gross) : 0, arppuPence: a.monthlyActivePlayers ? r(net / a.monthlyActivePlayers) : 0, arpuPence: a.monthlyActivePlayers ? r(gross / a.monthlyActivePlayers) : 0,
