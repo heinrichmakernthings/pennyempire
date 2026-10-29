@@ -23,12 +23,17 @@ function wholesale(db: Sql, tick: number): number {
 export function basketPrices(db: Sql, tick: number): Record<string, number> {
   const ref = (id: string) => db.get<{ p: number }>('SELECT reference_price_minor p FROM commodities WHERE id = ?', id)?.p ?? 1;
   const tariff = db.get<{ t: number }>('SELECT tariff_minor t FROM energy_daily ORDER BY tick DESC LIMIT 1')?.t ?? ref('energy');
-  const rentAvg = db.get<{ r: number | null }>("SELECT AVG(base_rent_minor) r FROM leases WHERE status = 'active' AND kind = 'lease'")?.r ?? 1;
-  return { pizza: avgPosted(db, 'pizza', ref('pizza')), 'cafe-drink': avgPosted(db, 'cafe-drink', ref('cafe-drink')), electricity: tariff, rent: Math.round(rentAvg * currentMods(db).rentBps / 10_000), 'wholesale-food': wholesale(db, tick) };
+  // Rent is measured as a fixed reference unit times the rent modifier: adding shops with different premises must not look like a price change.
+  const rentRef = 6_000;
+  return { pizza: avgPosted(db, 'pizza', ref('pizza')), 'cafe-drink': avgPosted(db, 'cafe-drink', ref('cafe-drink')), electricity: tariff, rent: Math.round((rentRef * currentMods(db).rentBps) / 10_000), 'wholesale-food': wholesale(db, tick) };
 }
 
 export function recordCpi(db: Sql, tick: number) {
-  const prices = basketPrices(db, tick);
+  const raw = basketPrices(db, tick);
+  // Each component is the 7-day average of its daily observation: one busy day or one new shop cannot swing the index.
+  const prev = db.all<{ components_json: string }>('SELECT components_json FROM cpi_index WHERE tick < ? ORDER BY tick DESC LIMIT 6', tick).map((r) => (JSON.parse(r.components_json) as { raw?: Record<string, number> }).raw).filter((x): x is Record<string, number> => !!x);
+  const prices: Record<string, number> = {};
+  for (const k of Object.keys(raw)) prices[k] = Math.round([raw, ...prev].reduce((a, p) => a + (p[k] ?? raw[k]!), 0) / (prev.length + 1));
   let baseRow = db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'cpi_base'");
   if (!baseRow) { db.run("INSERT INTO meta (key, value) VALUES ('cpi_base', ?)", JSON.stringify(prices)); baseRow = { value: JSON.stringify(prices) }; }
   const base = JSON.parse(baseRow.value) as Record<string, number>;
@@ -36,7 +41,7 @@ export function recordCpi(db: Sql, tick: number) {
   for (const b of BASKET) { const rel = Math.round((prices[b.id]! * 10_000) / Math.max(1, base[b.id] ?? prices[b.id]!)); comps[b.id] = rel; index += Math.round((rel * b.weightBps) / 10_000); }
   const prior = db.get<{ index_bps: number }>('SELECT index_bps FROM cpi_index WHERE tick <= ? ORDER BY tick DESC LIMIT 1', tick - 30);
   const change = prior ? Math.round(((index - prior.index_bps) * 10_000) / prior.index_bps) : 0;
-  db.run('INSERT OR REPLACE INTO cpi_index (tick, index_bps, change_30d_bps, components_json) VALUES (?,?,?,?)', tick, index, change, JSON.stringify({ relative: comps, prices }));
+  db.run('INSERT OR REPLACE INTO cpi_index (tick, index_bps, change_30d_bps, components_json) VALUES (?,?,?,?)', tick, index, change, JSON.stringify({ relative: comps, prices, raw }));
 }
 export const latestCpi = (db: Sql) => db.get<{ tick: number; index_bps: number; change_30d_bps: number; components_json: string }>('SELECT * FROM cpi_index ORDER BY tick DESC LIMIT 1');
 /** 30-day inflation in bps, or 0 until a month of history exists. */
