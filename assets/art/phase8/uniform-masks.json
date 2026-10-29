@@ -1,0 +1,453 @@
+{
+  "version": 1,
+  "masks": [
+    {
+      "actor": "farm-worker",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-sw.png",
+      "target": "assets/art/phase8/runtime/farm-worker-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "farm-worker",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-se.png",
+      "target": "assets/art/phase8/runtime/farm-worker-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "farm-worker",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-ne.png",
+      "target": "assets/art/phase8/runtime/farm-worker-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "farm-worker",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-nw.png",
+      "target": "assets/art/phase8/runtime/farm-worker-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "mill-worker",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-sw.png",
+      "target": "assets/art/phase8/runtime/mill-worker-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "mill-worker",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-se.png",
+      "target": "assets/art/phase8/runtime/mill-worker-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "mill-worker",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-ne.png",
+      "target": "assets/art/phase8/runtime/mill-worker-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "mill-worker",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-nw.png",
+      "target": "assets/art/phase8/runtime/mill-worker-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "dairy-worker",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-sw.png",
+      "target": "assets/art/phase8/runtime/dairy-worker-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "dairy-worker",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-se.png",
+      "target": "assets/art/phase8/runtime/dairy-worker-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "dairy-worker",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-ne.png",
+      "target": "assets/art/phase8/runtime/dairy-worker-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "dairy-worker",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-nw.png",
+      "target": "assets/art/phase8/runtime/dairy-worker-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "pizza-chef",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-sw.png",
+      "target": "assets/art/phase8/runtime/pizza-chef-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "pizza-chef",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-se.png",
+      "target": "assets/art/phase8/runtime/pizza-chef-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "pizza-chef",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-ne.png",
+      "target": "assets/art/phase8/runtime/pizza-chef-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "pizza-chef",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-nw.png",
+      "target": "assets/art/phase8/runtime/pizza-chef-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "barista",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/barista-idle-sw.png",
+      "target": "assets/art/phase8/runtime/barista-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "barista",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/barista-idle-se.png",
+      "target": "assets/art/phase8/runtime/barista-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "barista",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/barista-idle-ne.png",
+      "target": "assets/art/phase8/runtime/barista-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "barista",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/barista-idle-nw.png",
+      "target": "assets/art/phase8/runtime/barista-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "timber-worker",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-sw.png",
+      "target": "assets/art/phase8/runtime/timber-worker-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "timber-worker",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-se.png",
+      "target": "assets/art/phase8/runtime/timber-worker-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "timber-worker",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-ne.png",
+      "target": "assets/art/phase8/runtime/timber-worker-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "timber-worker",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-nw.png",
+      "target": "assets/art/phase8/runtime/timber-worker-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "delivery-driver",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-sw.png",
+      "target": "assets/art/phase8/runtime/delivery-driver-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "delivery-driver",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-se.png",
+      "target": "assets/art/phase8/runtime/delivery-driver-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "delivery-driver",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-ne.png",
+      "target": "assets/art/phase8/runtime/delivery-driver-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "delivery-driver",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-nw.png",
+      "target": "assets/art/phase8/runtime/delivery-driver-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "warehouse-worker",
+      "direction": "sw",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-sw.png",
+      "target": "assets/art/phase8/runtime/warehouse-worker-uniform-sw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "warehouse-worker",
+      "direction": "se",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-se.png",
+      "target": "assets/art/phase8/runtime/warehouse-worker-uniform-se.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "warehouse-worker",
+      "direction": "ne",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-ne.png",
+      "target": "assets/art/phase8/runtime/warehouse-worker-uniform-ne.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    },
+    {
+      "actor": "warehouse-worker",
+      "direction": "nw",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-nw.png",
+      "target": "assets/art/phase8/runtime/warehouse-worker-uniform-nw.png",
+      "region": [
+        7,
+        16,
+        10,
+        9
+      ],
+      "purpose": "central-garment-accent",
+      "wholeUniform": false
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+> Updated status: [Phase 8 completion pass](../phase8/README.md) supersedes overlapping items below. This file records the original delivery boundary.
+
 # Completion and remaining work
 
 ## Finished exports, pending visual acceptance

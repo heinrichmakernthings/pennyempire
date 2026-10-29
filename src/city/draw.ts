@@ -6,6 +6,7 @@ import { pointInPolygon, project, type Vec } from './geometry';
 import type { Scene, SceneBuilding, SceneLot } from './scene';
 import { uiIconUrl } from '@/assets/artAssets';
 import type { CompanyActivity } from '@/shared/living';
+import { activityCounts, activityIsFresh, customerMotion, WORKER_BY_INDUSTRY, type DeliveryReplay } from './activityMotion';
 
 export const PALETTE = { water: '#23606b', waterHi: '#377887', road: '#343c40', grass: '#64724b', paving: '#80796b', seam: 'rgba(20,28,32,.18)', quay: '#b3a48b', dash: '#d6c8a6', amber: '#ffc45e', mint: '#62dbaf', cream: '#f0e8d7', bg: '#17252a' };
 
@@ -57,7 +58,7 @@ export function createTerrainLayer(scene: Scene): { canvas: HTMLCanvasElement; o
 }
 
 export interface ViewState { cam: Camera; width: number; height: number; dpr: number }
-export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null; activity?: Map<string, CompanyActivity>; redraw?: () => void }
+export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null; activity?: Map<string, CompanyActivity>; activityReceivedAt?: number; now?: number; reducedMotion?: boolean; deliveries?: DeliveryReplay; redraw?: () => void }
 
 /** Approved Phase 2/3 state icons, loaded once. Missing icons simply don't draw. */
 const BADGE: Record<string, string> = { closed: 'state-closed', construction: 'state-construction', 'missing-inputs': 'state-missing-inputs', 'high-demand': 'state-high-demand', delivery: 'state-delivery', customers: 'state-customer-entry', production: 'state-production' };
@@ -68,17 +69,30 @@ function badgeImg(state: string, redraw?: () => void): HTMLImageElement | null {
   const url = uiIconUrl(name); if (!url || typeof Image === 'undefined') { badgeImgs.set(name, null); return null; }
   const img = new Image(); badgeImgs.set(name, null); img.onload = () => { badgeImgs.set(name, img); redraw?.(); }; img.src = url; return null;
 }
-const FACING = ['se', 'sw', 'ne', 'nw'] as const;
 /** Residents, vans and workers around a building; positions are a fixed function of the company and the count, so nothing jitters between frames. */
-function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: SceneBuilding, a: CompanyActivity, ox: number, oy: number, k: number, dpr: number, redraw?: () => void) {
+function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: SceneBuilding, a: CompanyActivity, ox: number, oy: number, k: number, dpr: number, ui: UiState) {
   void dpr;
   const f = frameById.get(b.assetId); if (!f) return;
   const seed = [...b.plotId].reduce((h, ch) => (h * 31 + ch.charCodeAt(0)) >>> 0, 7);
   const foot = (i: number, spread: number): [number, number] => [b.anchor[0] + ((hash(seed, i) - 0.5) * spread), b.anchor[1] + 6 + hash(i, seed) * 14];
-  for (let i = 0; i < a.customers; i++) { const [x, y] = foot(i, 70); drawFrame(ctx, atlas, `resident-${FACING[(seed + i) % 4]}`, ox + x * k, oy + y * k, k); }
-  for (let i = 0; i < a.workers; i++) { const [x, y] = foot(10 + i, 40); drawFrame(ctx, atlas, `worker-${FACING[(seed + i + 1) % 4]}`, ox + (x - 20) * k, oy + (y - 8) * k, k); }
-  for (let i = 0; i < a.vans; i++) drawFrame(ctx, atlas, i % 2 ? 'van-sw' : 'van-se', ox + (b.anchor[0] + 52 + i * 26) * k, oy + (b.anchor[1] + 24 + i * 6) * k, k);
-  const img = badgeImg(a.state, redraw);
+  const now=ui.now??0, reduced=ui.reducedMotion??true;
+  const counts=activityCounts(a,activityIsFresh(ui.activityReceivedAt,now));
+  const industry=b.assetId.split('-')[0]!,worker=WORKER_BY_INDUSTRY[industry]??'warehouse-worker';
+  for (let i=0;i<counts.customers;i++) {
+    const p=customerMotion(i,now+seed%9600,reduced);
+    drawFrame(ctx,atlas,`courier-${p.pose}-${p.direction}-${p.frame}`,ox+(b.anchor[0]+p.dx)*k,oy+(b.anchor[1]+p.dy)*k,k);
+  }
+  for (let i=0;i<counts.workers;i++) {
+    const [x,y]=foot(10+i,40), phase=counts.working&&!reduced?(Math.floor(now/240+i)%2?'work-a':'work-b'):'idle';
+    drawFrame(ctx,atlas,`${worker}-${phase}`,ox+(x-20)*k,oy+(y-8)*k,k);
+  }
+  const delivery=counts.vans&&!reduced?ui.deliveries?.sample(a.companyId,now):null;
+  for (let i=0;i<counts.vans;i++) {
+    const vehicle=industry==='farm'?'farm-pickup-sw':industry==='mill'||industry==='timber'?'lorry-sw':'delivery-van-sw';
+    drawFrame(ctx,atlas,vehicle,ox+(b.anchor[0]+62+i*30+(delivery?.dx??0))*k,oy+(b.anchor[1]+30+i*6)*k,k);
+  }
+  if(delivery?.stage==='unload') drawFrame(ctx,atlas,`delivery-driver-load-sw-${Math.floor(now/160)%4}`,ox+(b.anchor[0]+30)*k,oy+(b.anchor[1]+27)*k,k);
+  const img = badgeImg(a.state, ui.redraw);
   if (img) { const sz = 30 * k; const sx = ox + b.anchor[0] * k, sy = oy + (b.anchor[1] - f.pivot[1] - 6) * k; ctx.save(); ctx.imageSmoothingEnabled = true; if (a.state === 'closed') ctx.globalAlpha = .95; ctx.drawImage(img, Math.round(sx - sz / 2), Math.round(sy - sz), sz, sz); ctx.restore(); }
 }
 
@@ -87,6 +101,7 @@ function drawFrame(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, id: st
   if (!f) return false;
   const [w, h] = f.logicalSize;
   const dx = Math.round(ax - f.pivot[0] * zoom), dy = Math.round(ay - f.pivot[1] * zoom);
+  if(dx+w*zoom<0||dy+h*zoom<0||dx>ctx.canvas.width||dy>ctx.canvas.height)return true;
   if (!img) { // missing asset: visible, non-crashing placeholder
     ctx.save(); ctx.strokeStyle = '#f08076'; ctx.setLineDash([6, 4]); ctx.lineWidth = 2; ctx.strokeRect(dx, dy, w * zoom, h * zoom);
     ctx.fillStyle = '#f08076'; ctx.font = `${12 * zoom}px system-ui`; ctx.fillText(`missing: ${id}`, dx + 4, dy + 16 * zoom); ctx.restore(); return false;
@@ -150,12 +165,14 @@ export function renderScene(ctx: CanvasRenderingContext2D, scene: Scene, atlas: 
   for (const d of scene.drawables) {
     const [wx, wy] = d.type === 'building' ? d.building.anchor : d.prop.anchor;
     const id = d.type === 'building' ? d.building.assetId : d.prop.assetId;
-    drawFrame(ctx, atlas, id, ox + wx * k, oy + wy * k, k);
+    const isClosed=d.type==='building'&&d.building.companyId&&ui.activity?.get(d.building.companyId)?.state==='closed';
+    ctx.save();if(isClosed)ctx.filter='brightness(0.45) saturate(0.35)';
+    drawFrame(ctx, atlas, id, ox + wx * k, oy + wy * k, k);ctx.restore();
     if (d.type === 'building' && d.building.companyId) {
       const a = ui.activity?.get(d.building.companyId);
       if (a) {
         if (a.state === 'closed') { ctx.save(); ctx.scale(dpr, dpr); strokePolygon(ctx, d.building.polygon, view, { stroke: '#8a8f93', width: 2, fill: 'rgba(30,34,38,.45)', dash: [4, 4] }); ctx.restore(); }
-        drawActivity(ctx, atlas, d.building, a, ox, oy, k, dpr, ui.redraw);
+        drawActivity(ctx, atlas, d.building, a, ox, oy, k, dpr, ui);
       }
     }
   }

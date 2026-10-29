@@ -10,7 +10,7 @@ export default defineConfig({
   resolve: { alias: { '@': r('./src'), '@art': r('./assets/art') } },
   server: { proxy: { '/api': `http://127.0.0.1:${process.env.PENNY_API_PORT ?? 8787}` } },
   preview: { proxy: { '/api': `http://127.0.0.1:${process.env.PENNY_API_PORT ?? 8787}` } },
-  build: { target: 'es2022', sourcemap: true },
+  build: { assetsInlineLimit: 0, target: 'es2022', sourcemap: true },
   test: {
     environment: 'jsdom',
     testTimeout: 120_000,
