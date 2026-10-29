@@ -65,6 +65,15 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     };
     const pay = (kind: Exclude<LedgerKind, 'issuance' | 'sink' | 'sink_fee'>, from: string, to: string, amount: number, memo: string) => { if (amount > 0) transfer(db, ctx, key(kind), from, to, amount, kind, memo); };
 
+    /* 0a. Trades players placed between ticks settled instantly (coins and goods moved then); they belong in today's operating statement. */
+    const cursorRow = db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'stats_trade_cursor'");
+    if (cursorRow) for (const f of db.all<{ seller_company_id: string; buyer_company_id: string; qty: number; price_minor: number; fee_minor: number; cost_minor: number | null }>('SELECT seller_company_id, buyer_company_id, qty, price_minor, fee_minor, cost_minor FROM trades WHERE id > ? ORDER BY id', Number(cursorRow.value))) {
+      trades++; tradeValue += f.qty * f.price_minor;
+      const sv = st(f.seller_company_id); sv.revenue += f.qty * f.price_minor; sv.cogs += f.cost_minor ?? 0; sv.fees += f.fee_minor; sv.unitsSold += f.qty;
+      st(f.buyer_company_id).inputPurchases += f.qty * f.price_minor;
+    }
+    if (cursorRow) db.run('UPDATE trades SET stat_tick = ? WHERE id > ? AND stat_tick IS NULL', n, Number(cursorRow.value));
+
     /* 0. Economic events: expire, (deterministically) start, one-shots, and today's derived modifiers. */
     runEvents(db, ctx, cfg);
 
@@ -119,14 +128,18 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     for (const c of order) {
       if (c.owner_kind !== 'npc' || c.status !== 'operating') continue;
       const lines = linesOf(c.id); if (lines.length === 0) continue;
-      const fixedLine = Math.ceil((c.employees * c.wage_minor + c.property_minor + c.marketing_minor) / lines.length);
+      // Fixed costs (wages, rent, advertising) are recovered across everything the company actually sells. Splitting them evenly per line let a
+      // line that had stopped selling (its buyer failed) hide its share, so the surviving line was priced below the company's real cost.
+      const fixedTotal = c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
+      const soldOf = (commodity: string) => db.get<{ u: number }>("SELECT COALESCE(-SUM(delta),0) u FROM inventory_movements WHERE tick = ? AND company_id = ? AND commodity_id = ? AND reason IN ('trade_out','consumer_purchase','public_works')", n - 1, c.id, commodity)!.u;
+      const soldBy = new Map(lines.map((l) => [l.output_commodity_id, soldOf(l.output_commodity_id)]));
+      const unitsExpected = Math.max(1, [...soldBy.values()].reduce((a, u) => a + u, 0), Math.floor((c.capacity_batches * Math.min(...lines.map((l) => l.output_units))) / 4));
       let capLeft = c.capacity_batches; let plannedTotal = 0;
       for (const l of lines) {
         const inv = stock(db, c.id, l.output_commodity_id);
-        const soldLast = db.get<{ u: number }>("SELECT COALESCE(-SUM(delta),0) u FROM inventory_movements WHERE tick = ? AND company_id = ? AND commodity_id = ? AND reason IN ('trade_out','consumer_purchase','public_works')", n - 1, c.id, l.output_commodity_id)!.u;
-        const expected = Math.max(1, soldLast, Math.floor((c.capacity_batches * l.output_units) / lines.length / 4));
+        const soldLast = soldBy.get(l.output_commodity_id) ?? 0;
         const unitCost = inv.qty > 0 ? Math.floor(inv.value_minor / inv.qty) : Math.floor(l.ref_price / 2);
-        const target = Math.ceil(((unitCost + Math.ceil(fixedLine / expected)) * (profiles.get(c.id)?.markup_bps ?? 10_500)) / 10_000);
+        const target = Math.ceil(((unitCost + Math.ceil(fixedTotal / unitsExpected)) * (profiles.get(c.id)?.markup_bps ?? 10_500)) / 10_000);
         const stockPct = Math.floor((inv.qty * 100) / c.storage_cap_units);
         const current = c.retail_commodity_id ? c.price_minor : l.ask_price_minor;
         let next = current;
@@ -206,10 +219,13 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       safe('production', c.id, () => {
         for (const { line, batches, wanted, reason } of planCompany(db, c, cfg)) {
           const inputs = inputsOf(line.recipe_id).map((i) => ({ ...i, need: inputUnitsPerBatch(cfg, c.quality, i.units) }));
-          const byInputs = Math.min(batches, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.need)));
+          // A disclosed production boost raises CAPACITY (extra batches), never output by itself: boosted batches still consume recipe inputs and energy and must fit in storage.
+          let capacity = batches;
+          if (c.owner_kind === 'player' && batches > 0) { const roomBatches = Math.floor((c.storage_cap_units - stock(db, c.id, line.output_commodity_id).qty) / line.output_units) - batches; capacity += productionExtra(db, c.owner_id, n, batches, roomBatches); }
+          const byInputs = Math.min(capacity, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.need)));
           let b = Math.max(0, byInputs);
           let limited: LimitReason = reason;
-          if (b < batches) limited = procLimit.get(c.id) ?? 'inputs';
+          if (b < capacity) limited = procLimit.get(c.id) ?? 'inputs';
           // Events can throttle a whole industry (strike, supply disruption): a recorded 'disruption', never a hidden penalty.
           const ind = mods.productionByIndustry[c.industry_id];
           if (ind !== undefined && ind < 10_000 && b > 0) { const cut = Math.floor((b * ind) / 10_000); if (cut < b) { b = cut; limited = 'disruption'; } }
@@ -225,8 +241,6 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
             const energy = b * energyPerBatch(c, line.energy_units) * energyPrice; st(c.id).energyDue += energy;
             addStock(db, ctx, c.id, line.output_commodity_id, b * line.output_units, basis + energy, 'production_output', line.recipe_id);
             st(c.id).unitsProduced += b * line.output_units;
-            // Disclosed production boost (bought or earned): extra units for the owner's lines, limited by free storage; a unit's cost basis is zero because it cost nothing extra to make.
-            if (c.owner_kind === 'player') { const room = c.storage_cap_units - stock(db, c.id, line.output_commodity_id).qty; const extra = productionExtra(db, c.owner_id, n, b * line.output_units, room); if (extra > 0) { addStock(db, ctx, c.id, line.output_commodity_id, extra, 0, 'production_output', `${line.recipe_id}:boost`); st(c.id).unitsProduced += extra; } }
             producedBatches.set(c.id, (producedBatches.get(c.id) ?? 0) + b);
           }
           db.run('INSERT INTO production_log (tick, company_id, recipe_id, planned_batches, produced_batches, limited_by, output_units, inputs_json) VALUES (?,?,?,?,?,?,?,?)', n, c.id, line.recipe_id, wanted, b, limited, b * line.output_units, JSON.stringify(used));
@@ -397,6 +411,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const snap = db.get<{ issued_tick_minor: number; destroyed_tick_minor: number; circulating_minor: number }>('SELECT * FROM supply_snapshots WHERE tick = ?', n)!;
     const summary: TickSummary = { tick: n, issuedMinor: snap.issued_tick_minor, destroyedMinor: snap.destroyed_tick_minor, circulatingMinor: snap.circulating_minor, trades, tradeValueMinor: tradeValue, consumerSpendMinor: consumerSpend, unmetUnits: unmet, unitsProduced: produced, insolvencies, failures: failures.n, supportMinor: support };
     db.run("UPDATE ticks SET status = 'complete', finished_at = ?, duration_ms = ?, summary_json = ? WHERE tick = ?", ctx.gameDate, Date.now() - t0, JSON.stringify(summary), n);
+    db.run('UPDATE trades SET stat_tick = ? WHERE stat_tick IS NULL AND tick = ?', n, n);   // today's own trades are in today's statement
+    db.run("INSERT INTO meta (key, value) VALUES ('stats_trade_cursor', (SELECT COALESCE(MAX(id),0) FROM trades)) ON CONFLICT(key) DO UPDATE SET value = excluded.value");   // later trades are folded into the next day
     db.run('UPDATE engine_state SET last_tick = ? WHERE id = 1', n);
     return { status: 'complete', tick: n, summary } as const;
   });

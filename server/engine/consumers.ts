@@ -49,6 +49,19 @@ export function potentialBudget(_cfg: EngineConfig, rule: DemandRule, population
   return { potential: b, seasonBps: season };
 }
 
+/**
+ * The consumption function. Income that households do not spend would otherwise pile up forever (wages, payroll and dividends exceed a fixed,
+ * population-based budget), starving the businesses that pay them. Households aim to hold `householdBufferDays` of their baseline spending:
+ * above that they spend proportionally more, below it less, within [min, max]. Deterministic and published; 10000 = neutral.
+ */
+export function savingsMultiplierBps(cfg: EngineConfig, householdsBalance: number, householdRules: Pick<DemandRule, 'per_thousand_minor'>[], population: number): number {
+  if (cfg.householdBufferDays <= 0) return 10_000;
+  const baseline = householdRules.reduce((a, r) => a + Math.max(0, Math.floor((population / 1_000) * r.per_thousand_minor)), 0);
+  const buffer = baseline * cfg.householdBufferDays; if (buffer <= 0) return 10_000;
+  const raw = 10_000 + Math.trunc(((householdsBalance - buffer) * cfg.wealthSpendGainBps) / buffer);
+  return Math.max(cfg.wealthSpendMinBps, Math.min(cfg.wealthSpendMaxBps, raw));
+}
+
 export interface ConsumerSeller { id: string; price: number; stock: number; quality: CompanyRow['quality']; reputationBps: number; awarenessBps: number; ageTicks: number; distance: number; loyaltyBps: number }
 const GRADE_BPS = { basic: 8_000, standard: 10_000, premium: 13_000 } as const;
 
@@ -99,6 +112,7 @@ export function runConsumers(db: Sql, ctx: TickCtx, cfg: EngineConfig, deps: Pha
   const loyalty = new Map(db.all<{ company_id: string; segment_id: string; loyalty_bps: number }>('SELECT * FROM customer_loyalty').map((l) => [`${l.company_id}|${l.segment_id}`, l.loyalty_bps]));
   const startBal = new Map<string, number>(); for (const r of rules) if (!startBal.has(r.funder_account_id)) startBal.set(r.funder_account_id, available(db, r.funder_account_id));
   const householdCap = Math.floor((hh * cfg.consumerSpendCapBps) / 10_000); let householdCommitted = 0;
+  const wealthBps = savingsMultiplierBps(cfg, hh, rules.filter((r) => r.funder_account_id === deps.householdsAccount), deps.population);
   const committed = new Map<string, number>();
   let totalSpend = 0, totalUnmet = 0;
   const rot = segments.length ? ctx.tick % segments.length : 0;
@@ -108,8 +122,9 @@ export function runConsumers(db: Sql, ctx: TickCtx, cfg: EngineConfig, deps: Pha
     const wantRaw = r.per_thousand_minor > 0 ? potential : r.mode === 'pool_share' ? Math.floor((base * r.amount) / 10_000) : potential;
     const want = r.per_thousand_minor > 0 ? Math.floor((wantRaw * (currentMods(db).demandByCommodity[r.commodity_id] ?? 10_000)) / 10_000) : wantRaw;   // event: commodity-specific demand (tourism, construction)
     const isHouseholdFunded = r.funder_account_id === deps.householdsAccount;
+    const wantAdj = isHouseholdFunded && r.per_thousand_minor > 0 ? Math.floor((want * wealthBps) / 10_000) : want;
     const capLeft = isHouseholdFunded ? Math.max(0, householdCap - householdCommitted) : Number.MAX_SAFE_INTEGER;
-    const budget = Math.max(0, Math.min(want, capLeft, base - (committed.get(r.funder_account_id) ?? 0), available(db, r.funder_account_id)));
+    const budget = Math.max(0, Math.min(wantAdj, capLeft, base - (committed.get(r.funder_account_id) ?? 0), available(db, r.funder_account_id)));
     committed.set(r.funder_account_id, (committed.get(r.funder_account_id) ?? 0) + budget);
     if (isHouseholdFunded) householdCommitted += budget;
     const ref = deps.refPrice(r.commodity_id);

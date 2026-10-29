@@ -4,6 +4,7 @@ import type { EngineConfig } from './config';
 import { balance } from './ledger';
 import { security } from './capital';
 import type { CompanyRow } from './operations';
+import { relatedPartyByTick } from './relatedParty';
 
 export interface Valuation {
   companyId: string; shares: number; fairValuePerShareMinor: number; equityMinor: number; earningsValueMinor: number; dailyEarningsMinor: number; growthBps: number; riskBps: number; liquidationFloorMinor: number;
@@ -25,7 +26,10 @@ export function computeValuation(db: Sql, cfg: EngineConfig, companyId: string, 
   const declared = db.get<{ v: number }>("SELECT COALESCE(SUM(total_minor - paid_minor),0) v FROM dividends WHERE company_id = ? AND status = 'declared'", companyId)!.v;
   const arrears = c.unpaid_minor;
   const equity = Math.max(0, cash + inventory + equipment - arrears - declared);
-  const rows = db.all<{ tick: number; net: number; rev: number }>('SELECT tick, net_profit_minor net, revenue_minor rev FROM company_tick_stats WHERE company_id = ? AND tick > 0 AND tick <= ? ORDER BY tick DESC LIMIT 14', companyId, tick);
+  // Arm's-length earnings: margin and revenue from sales to sister companies (same owner, owner-chosen prices) are excluded, so they cannot inflate the estimate.
+  const raw = db.all<{ tick: number; net: number; rev: number }>('SELECT tick, net_profit_minor net, revenue_minor rev FROM company_tick_stats WHERE company_id = ? AND tick > 0 AND tick <= ? ORDER BY tick DESC LIMIT 14', companyId, tick);
+  const rp = raw.length ? relatedPartyByTick(db, companyId, raw[raw.length - 1]!.tick - 1, raw[0]!.tick) : new Map<number, { revenue: number; margin: number }>();
+  const rows = raw.map((r) => ({ tick: r.tick, net: r.net - (rp.get(r.tick)?.margin ?? 0), rev: r.rev - (rp.get(r.tick)?.revenue ?? 0) }));
   const n = rows.length;
   const mean = n ? rows.reduce((a, r) => a + r.net, 0) / n : 0;
   const recent = rows.slice(0, 7), prior = rows.slice(7, 14);

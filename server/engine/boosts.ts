@@ -10,7 +10,7 @@ export type BoostKind = 'production' | 'marketing';
 export const MAX_BOOST_BPS = 1_000;
 export interface BoostOffer { id: string; kind: BoostKind; label: string; bps: number; days: number; priceMinor: number; description: string }
 export const BOOST_OFFERS: BoostOffer[] = [
-  { id: 'boost-production-3', kind: 'production', label: 'Production efficiency +3%', bps: 300, days: 7, priceMinor: 60_000, description: 'About 3% extra output from every production line of your companies for 7 game days (fractions accumulate, so a small shop gains a unit every few days). Needs staff, inputs and storage room like normal output.' },
+  { id: 'boost-production-3', kind: 'production', label: 'Production capacity +3%', bps: 300, days: 7, priceMinor: 60_000, description: 'About 3% more production capacity on every line of your companies for 7 game days (fractions accumulate, so a small shop gains an extra batch every few days). Extra batches consume their inputs and energy like any other and need storage room: nothing is produced for free.' },
   { id: 'boost-marketing-5', kind: 'marketing', label: 'Marketing effectiveness +5%', bps: 500, days: 7, priceMinor: 40_000, description: 'Your advertising counts 5% more towards awareness for 7 game days. Awareness still has its hard ceiling.' },
 ];
 const offer = (id: string) => BOOST_OFFERS.find((o) => o.id === id);
@@ -43,9 +43,10 @@ export function grantBoost(db: Sql, ctx: TickCtx, a: { ownerId: string; kind: Bo
   return Number(r.lastInsertRowid);
 }
 /** Production boost for one line today: whole extra units, with the fraction carried so small shops still benefit. Returns the extra units (bounded by free storage). */
-export function productionExtra(db: Sql, owner: string, tick: number, outputUnits: number, freeRoom: number): number {
-  const b = effectiveBoost(db, owner, 'production', tick); if (!b || outputUnits <= 0 || freeRoom <= 0) return 0;
-  const raw = outputUnits * b.bps + b.carry; const extra = Math.min(Math.floor(raw / 10_000), freeRoom);
+/** Extra BATCHES of capacity a production boost grants today (fractions carry over, so a +3% boost on 10 batches yields 3 extra batches every 10 days). Capped by free storage. */
+export function productionExtra(db: Sql, owner: string, tick: number, batches: number, freeRoomBatches: number): number {
+  const b = effectiveBoost(db, owner, 'production', tick); if (!b || batches <= 0 || freeRoomBatches <= 0) return 0;
+  const raw = batches * b.bps + b.carry; const extra = Math.min(Math.floor(raw / 10_000), freeRoomBatches);
   db.run('UPDATE boosts SET carry = ? WHERE id = ?', raw - extra * 10_000, b.id);
   return extra;
 }

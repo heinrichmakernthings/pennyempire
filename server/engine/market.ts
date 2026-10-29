@@ -166,6 +166,7 @@ function settle(db: Sql, ctx: TickCtx, feeBps: number, buy: OrderRow, sell: Orde
   // 2. goods
   const cost = removeStock(db, ctx, sell.company_id, sell.commodity_id, qty, 'trade_out', `trade:${trade}`, { fromReserved: true });
   addStock(db, ctx, buy.company_id, buy.commodity_id, qty, gross, 'trade_in', `trade:${trade}`);
+  db.run('UPDATE trades SET cost_minor = ? WHERE id = ?', cost, trade);
   // 3. order bookkeeping
   for (const o of [buy, sell]) {
     db.run("UPDATE orders SET qty_remaining = qty_remaining - ?, status = CASE WHEN qty_remaining - ? = 0 THEN 'filled' ELSE 'open' END WHERE id = ?", qty, qty, o.id);

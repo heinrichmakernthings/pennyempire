@@ -7,8 +7,8 @@ import { logEvent } from './stats';
 import { cancelShares, companyInvestorId, security } from './capital';
 import { cancelAllOrders } from './shareMarket';
 import { cancelOpenDividends } from './dividends';
-import type { CompanyRow } from './operations';
-import { settleLoansAtLiquidation } from './bank';
+import { refPriceOf, type CompanyRow } from './operations';
+import { recallDepositsAtLiquidation, settleLoansAtLiquidation } from './bank';
 import { PLAYER_WALLET, TREASURY } from '../seed/bristol';
 
 export interface LiquidationResult { stockProceedsMinor: number; arrearsPaidMinor: number; writtenOffMinor: number; returnedToOwnerMinor: number; unitsSold: number }
@@ -25,10 +25,14 @@ export function liquidateCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Co
     const acct = c.treasury_account_id;
     cancelOpenDividends(db, c.id);   // an earmarked dividend must not block the creditors
     for (const o of db.all<{ id: number }>("SELECT id FROM orders WHERE company_id = ? AND status = 'open'", c.id)) cancelOrder(db, o.id);
+    recallDepositsAtLiquidation(db, ctx, c.id, acct);   // savings held at the National Bank are the company's asset: they go to its creditors and owners, not the bank
     const provisions = db.get<{ id: string }>("SELECT id FROM companies WHERE industry_id = 'wholesale' AND owner_kind = 'state' LIMIT 1");
     let proceeds = 0, units = 0;
     for (const inv of db.all<{ commodity_id: string; qty: number; value_minor: number }>('SELECT commodity_id, qty, value_minor FROM inventory WHERE company_id = ? AND qty > 0', c.id)) {
-      const want = Math.floor((inv.value_minor * cfg.liquidationBps) / 10_000);
+      // Stock is valued at the LOWER of its cost basis and its market reference value: a cost basis inflated by buying from a sister company at an
+      // owner-chosen price must not turn into a claim on the state treasury.
+      const fair = Math.min(inv.value_minor, inv.qty * refPriceOf(db, inv.commodity_id));
+      const want = Math.floor((fair * cfg.liquidationBps) / 10_000);
       const pay = Math.min(want, Math.max(0, available(db, TREASURY)));
       if (pay > 0) transfer(db, ctx, `liq:${c.id}:${inv.commodity_id}`, TREASURY, acct, pay, 'state_payment', `administrator buys stock of ${c.name}`);
       removeStock(db, ctx, c.id, inv.commodity_id, inv.qty, 'trade_out', `liquidation:${c.id}`, { fromReserved: false });
