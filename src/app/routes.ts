@@ -1,6 +1,6 @@
 export interface RouteDef { path: string; label: string; short: string; icon: string; mobile: 'primary' | 'more' }
 
-/** The seven main game sections. `icon` names a file in assets/art/ui. */
+/** The game navigation sections. `icon` names a file in assets/art/ui. */
 export const ROUTES: RouteDef[] = [
   { path: '/city', label: 'City', short: 'City', icon: 'city', mobile: 'primary' },
   { path: '/opportunities', label: 'Opportunities', short: 'Ideas', icon: 'startup', mobile: 'more' },
@@ -10,6 +10,7 @@ export const ROUTES: RouteDef[] = [
   { path: '/state', label: 'State Services', short: 'State', icon: 'city', mobile: 'more' },
   { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
   { path: '/portfolio', label: 'Portfolio', short: 'Portfolio', icon: 'portfolio', mobile: 'primary' },
+  { path: '/world', label: 'Beyond Bristol', short: 'World', icon: 'globe', mobile: 'more' },
   { path: '/prestige', label: 'Prestige', short: 'Prestige', icon: 'prestige', mobile: 'more' },
   { path: '/rewards', label: 'Rewards & Lottery', short: 'Rewards', icon: 'prestige', mobile: 'more' },
   { path: '/membership', label: 'Premium', short: 'Premium', icon: 'prestige', mobile: 'more' },

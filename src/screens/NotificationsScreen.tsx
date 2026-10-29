@@ -8,7 +8,7 @@ import { useAuth } from '@/data/authClient';
 export function NotificationsScreen() {
   const { items, unread, loaded, refresh, markRead } = useNotifications();
   const status = useAuth((s) => s.status);
-  useEffect(() => { void refresh(); }, [refresh]);
+  useEffect(() => { if (status === 'signed-in') void refresh(); }, [refresh, status]);
   if (status !== 'signed-in') return <section className="pe-screen"><h1 className="pe-h">Notifications</h1><p className="pe-hint">Notifications are available when you are signed in to the private alpha.</p></section>;
   return (
     <section className="pe-screen">

@@ -1,0 +1,478 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> pennyempire@0.1.0 build
+> tsc -b && vite build
+
+vite v8.3.5 building client environment for production...
+transforming...
+✓ 555 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/assets/barista-uniform-ne-DY6PSx_z.png                  0.11 kB
+dist/assets/barista-uniform-nw-DALzjwKA.png                  0.11 kB
+dist/assets/barista-uniform-se-BPq2nSHU.png                  0.11 kB
+dist/assets/barista-uniform-sw-BMtwalWb.png                  0.11 kB
+dist/assets/delivery-driver-uniform-ne-B8kNe2zR.png          0.11 kB
+dist/assets/pizza-chef-uniform-se-Ez_5SJrQ.png               0.11 kB
+dist/assets/pizza-chef-uniform-ne--8wHwcre.png               0.11 kB
+dist/assets/delivery-driver-uniform-nw-DmRPsaTc.png          0.12 kB
+dist/assets/warehouse-worker-uniform-ne-CVyfpt7K.png         0.12 kB
+dist/assets/delivery-driver-uniform-sw-BaVrXKzd.png          0.12 kB
+dist/assets/delivery-driver-uniform-se-DjCzbc40.png          0.12 kB
+dist/assets/warehouse-worker-uniform-se-OQOTrwU1.png         0.13 kB
+dist/assets/warehouse-worker-uniform-nw-DXauAPTB.png         0.13 kB
+dist/assets/timber-worker-uniform-se-CrD8FTwG.png            0.13 kB
+dist/assets/farm-worker-uniform-se-Dm6EvrUR.png              0.13 kB
+dist/assets/farm-worker-uniform-sw-DOJxihQf.png              0.13 kB
+dist/assets/mill-worker-uniform-ne-C2p7lwf3.png              0.14 kB
+dist/assets/warehouse-worker-uniform-sw-qoCSnxIf.png         0.14 kB
+dist/assets/dairy-worker-uniform-se-CHPo125Q.png             0.14 kB
+dist/assets/dairy-worker-uniform-nw-sEWrwdxl.png             0.14 kB
+dist/assets/dairy-worker-uniform-sw-NC79-Zip.png             0.14 kB
+dist/assets/timber-worker-uniform-sw-DRqg2xhf.png            0.14 kB
+dist/assets/mill-worker-uniform-sw-DhdzUiAo.png              0.14 kB
+dist/assets/pizza-chef-uniform-sw-DvdbWNlc.png               0.14 kB
+dist/assets/mill-worker-uniform-se-B2YS6zzk.png              0.14 kB
+dist/assets/timber-worker-uniform-nw-BGnL3aJV.png            0.14 kB
+dist/assets/timber-worker-uniform-ne-OSDQU3OK.png            0.14 kB
+dist/assets/farm-worker-uniform-ne-DquvlDW2.png              0.15 kB
+dist/assets/footprint-selected-NEIZ4x9w.svg                  0.15 kB │ gzip:   0.15 kB
+dist/assets/mill-worker-uniform-nw-BrrDG-gk.png              0.15 kB
+dist/assets/dairy-worker-uniform-ne-DwMdRarp.png             0.15 kB
+dist/assets/pizza-chef-uniform-nw-CdWd_hk5.png               0.15 kB
+dist/assets/farm-worker-uniform-nw-2XC-L_ZH.png              0.17 kB
+dist/assets/footprint-hover-TOp5NQvQ.svg                     0.17 kB │ gzip:   0.16 kB
+dist/assets/minus-DoCEwLCr.svg                               0.18 kB │ gzip:   0.15 kB
+dist/assets/plus-TCFzAv0i.svg                                0.19 kB │ gzip:   0.16 kB
+dist/assets/close-D1ZKxEca.svg                               0.19 kB │ gzip:   0.16 kB
+dist/assets/ownership-C_Jblp8T.svg                           0.20 kB │ gzip:   0.17 kB
+dist/assets/prestige-B3FWcqHE.svg                            0.20 kB │ gzip:   0.17 kB
+dist/assets/warning-DbY5lM5o.svg                             0.20 kB │ gzip:   0.17 kB
+dist/assets/stocks-COl30QFz.svg                              0.21 kB │ gzip:   0.17 kB
+dist/assets/portfolio-m1YzTJ95.svg                           0.21 kB │ gzip:   0.17 kB
+dist/assets/order-filled-C0e0FYiH.svg                        0.21 kB │ gzip:   0.17 kB
+dist/assets/notification-B_aqXM-2.svg                        0.22 kB │ gzip:   0.18 kB
+dist/assets/order-cancelled-D-9cs4dA.svg                     0.22 kB │ gzip:   0.17 kB
+dist/assets/arrow-Bi47u1ZA.svg                               0.22 kB │ gzip:   0.17 kB
+dist/assets/price-down-RdMahNrk.svg                          0.22 kB │ gzip:   0.17 kB
+dist/assets/price-flat-BSlQOdAB.svg                          0.22 kB │ gzip:   0.17 kB
+dist/assets/price-up-ZBByOcOW.svg                            0.22 kB │ gzip:   0.17 kB
+dist/assets/companies-Ct-ZfEM0.svg                           0.22 kB │ gzip:   0.18 kB
+dist/assets/settings-tsjdTm7f.svg                            0.22 kB │ gzip:   0.17 kB
+dist/assets/wallet-CO3NTKZ2.svg                              0.22 kB │ gzip:   0.18 kB
+dist/assets/marketplace-B2eT7n29.svg                         0.22 kB │ gzip:   0.18 kB
+dist/assets/order-partial-NhdUmiKb.svg                       0.23 kB │ gzip:   0.18 kB
+dist/assets/premises-CNGH0LYA.svg                            0.23 kB │ gzip:   0.18 kB
+dist/assets/order-open-CSTMy37h.svg                          0.23 kB │ gzip:   0.18 kB
+dist/assets/collection-CXmlsoQH.svg                          0.23 kB │ gzip:   0.18 kB
+dist/assets/loss-BLDa2sC5.svg                                0.23 kB │ gzip:   0.18 kB
+dist/assets/order-buy-BFBpZ1wg.svg                           0.23 kB │ gzip:   0.18 kB
+dist/assets/order-sell-DTa6U0s8.svg                          0.23 kB │ gzip:   0.18 kB
+dist/assets/vacant-DWoJZDp8.svg                              0.23 kB │ gzip:   0.18 kB
+dist/assets/for-sale-BcZT8ozZ.svg                            0.23 kB │ gzip:   0.19 kB
+dist/assets/queue-sxIauCci.svg                               0.23 kB │ gzip:   0.18 kB
+dist/assets/profit-B0djO2dt.svg                              0.23 kB │ gzip:   0.18 kB
+dist/assets/staff-B9v6CWIE.svg                               0.23 kB │ gzip:   0.18 kB
+dist/assets/market-crash-B8Dquc9A.svg                        0.23 kB │ gzip:   0.19 kB
+dist/assets/ranking-CPdfJg8g.svg                             0.23 kB │ gzip:   0.18 kB
+dist/assets/inventory-CnuFy7aq.svg                           0.24 kB │ gzip:   0.18 kB
+dist/assets/energy-crisis-CdoX16YS.svg                       0.24 kB │ gzip:   0.19 kB
+dist/assets/cargo-BUtxHNGD.svg                               0.24 kB │ gzip:   0.19 kB
+dist/assets/owner-state-BKlseCKv.svg                         0.24 kB │ gzip:   0.19 kB
+dist/assets/clock-VfvCKhYc.svg                               0.24 kB │ gzip:   0.18 kB
+dist/assets/reputation-R7Ln4qW9.svg                          0.24 kB │ gzip:   0.19 kB
+dist/assets/supply-chain-pcqOdwm_.svg                        0.24 kB │ gzip:   0.19 kB
+dist/assets/vote-DgFBlCdN.svg                                0.24 kB │ gzip:   0.19 kB
+dist/assets/city-Bag3G5IH.svg                                0.24 kB │ gzip:   0.19 kB
+dist/assets/contract-1aYbdiAY.svg                            0.24 kB │ gzip:   0.19 kB
+dist/assets/customs-BRRAvutH.svg                             0.24 kB │ gzip:   0.20 kB
+dist/assets/owner-player-DC_FqzDJ.svg                        0.25 kB │ gzip:   0.19 kB
+dist/assets/bankruptcy-Cy_TBXV_.svg                          0.25 kB │ gzip:   0.19 kB
+dist/assets/campaign-fICvunWW.svg                            0.25 kB │ gzip:   0.20 kB
+dist/assets/info-CkeoPslV.svg                                0.25 kB │ gzip:   0.19 kB
+dist/assets/missing-inputs-BkCcsjYg.svg                      0.25 kB │ gzip:   0.20 kB
+dist/assets/notification-economic-DZi_FdVd.svg               0.25 kB │ gzip:   0.20 kB
+dist/assets/warehouse-arrival-CkUGcObJ.svg                   0.25 kB │ gzip:   0.20 kB
+dist/assets/overproduction-C38oYBr-.svg                      0.25 kB │ gzip:   0.20 kB
+dist/assets/owner-npc-DZzl3H8-.svg                           0.25 kB │ gzip:   0.20 kB
+dist/assets/route-broken-C0P9kh4B.svg                        0.25 kB │ gzip:   0.20 kB
+dist/assets/spending-Cl1GDJ5a.svg                            0.25 kB │ gzip:   0.20 kB
+dist/assets/supplier-BXa3bDsO.svg                            0.25 kB │ gzip:   0.20 kB
+dist/assets/construction-CuEw2zIU.svg                        0.26 kB │ gzip:   0.20 kB
+dist/assets/new-ownership-DsooLX3Z.svg                       0.26 kB │ gzip:   0.20 kB
+dist/assets/vip-frame-C7XmW6G9.svg                           0.26 kB │ gzip:   0.20 kB
+dist/assets/shipment-BQANaYY3.svg                            0.26 kB │ gzip:   0.21 kB
+dist/assets/startup-B8dgL4Er.svg                             0.26 kB │ gzip:   0.19 kB
+dist/assets/stimulus-DnIvXlP9.svg                            0.26 kB │ gzip:   0.20 kB
+dist/assets/rewards-CabLU_Ck.svg                             0.27 kB │ gzip:   0.21 kB
+dist/assets/major-success-BISW7022.svg                       0.28 kB │ gzip:   0.21 kB
+dist/assets/inflation-CcmgYGKD.svg                           0.28 kB │ gzip:   0.21 kB
+dist/assets/penny-post-DNOoLIM6.svg                          0.29 kB │ gzip:   0.22 kB
+dist/assets/globe-DaOJi5OB.svg                               0.29 kB │ gzip:   0.21 kB
+dist/assets/state-collection-CmCf6ALw.svg                    0.56 kB │ gzip:   0.24 kB
+dist/assets/state-loss-CSEtJXmJ.svg                          0.56 kB │ gzip:   0.24 kB
+dist/assets/state-profit-hZTWUhpm.svg                        0.57 kB │ gzip:   0.24 kB
+dist/assets/production-dairy-BKxjQvXq.svg                    0.59 kB │ gzip:   0.24 kB
+dist/assets/production-farm-DwMNBm3d.svg                     0.60 kB │ gzip:   0.25 kB
+dist/assets/state-campaign-Da7YEX8G.svg                      0.62 kB │ gzip:   0.26 kB
+dist/assets/state-missing-inputs-BdKZxQ_f.svg                0.62 kB │ gzip:   0.25 kB
+dist/index.html                                              0.63 kB │ gzip:   0.38 kB
+dist/assets/state-warehouse-arrival-ChikjMxF.svg             0.64 kB │ gzip:   0.26 kB
+dist/assets/production-cafe-C1QmQMIh.svg                     0.64 kB │ gzip:   0.27 kB
+dist/assets/state-overproduction-CR7-3q35.svg                0.65 kB │ gzip:   0.26 kB
+dist/assets/production-pizza-BJPLan8g.svg                    0.66 kB │ gzip:   0.26 kB
+dist/assets/state-new-ownership-C7v3Do6I.svg                 0.66 kB │ gzip:   0.26 kB
+dist/assets/state-shipment-CcDWjsoZ.svg                      0.68 kB │ gzip:   0.26 kB
+dist/assets/state-startup-DTgHCQPY.svg                       0.68 kB │ gzip:   0.26 kB
+dist/assets/production-timber-DEIS7xtL.svg                   0.69 kB │ gzip:   0.25 kB
+dist/assets/state-major-success-bMA2668a.svg                 0.77 kB │ gzip:   0.27 kB
+dist/assets/state-success-DXDFhYSP.svg                       0.80 kB │ gzip:   0.24 kB
+dist/assets/production-mill-CMCRysL3.svg                     0.81 kB │ gzip:   0.27 kB
+dist/assets/state-low-stock-CRuUh-p7.svg                     0.84 kB │ gzip:   0.25 kB
+dist/assets/barista-idle-se-BjgLzdwx.png                     0.84 kB
+dist/assets/state-customer-entry-CTQc7_-f.svg                0.84 kB │ gzip:   0.24 kB
+dist/assets/state-bankrupt-l5M4ZsHF.svg                      0.85 kB │ gzip:   0.24 kB
+dist/assets/state-expansion-B6gQ89pe.svg                     0.86 kB │ gzip:   0.25 kB
+dist/assets/state-construction-CTukF42u.svg                  0.88 kB │ gzip:   0.25 kB
+dist/assets/state-production-CMDwmzhQ.svg                    0.88 kB │ gzip:   0.25 kB
+dist/assets/state-closed-DvhsLAZL.svg                        0.89 kB │ gzip:   0.25 kB
+dist/assets/state-delivery-3DB4HDLM.svg                      0.89 kB │ gzip:   0.26 kB
+dist/assets/barista-idle-ne-D4BaUtiB.png                     0.93 kB
+dist/assets/pizza-chef-idle-ne-CvtINo1e.png                  0.99 kB
+dist/assets/state-high-demand-BCVICZMG.svg                   1.02 kB │ gzip:   0.27 kB
+dist/assets/pizza-chef-idle-se-By-zvjXR.png                  1.04 kB
+dist/assets/barista-idle-nw-BDKUIMgv.png                     1.27 kB
+dist/assets/imogen-shaw-idle-nw-bW94_wyg.png                 1.31 kB
+dist/assets/imogen-shaw-idle-sw-Di5Q-ydb.png                 1.31 kB
+dist/assets/imogen-shaw-idle-ne-BWWFMq-F.png                 1.35 kB
+dist/assets/courier-idle-ne-BGGtJ300.png                     1.35 kB
+dist/assets/farah-ali-idle-sw-0VFe8sGu.png                   1.37 kB
+dist/assets/owen-price-idle-sw-DniyOCTF.png                  1.37 kB
+dist/assets/barista-idle-sw-BQzNvWh4.png                     1.39 kB
+dist/assets/aisha-cole-idle-sw-OrXNSntj.png                  1.39 kB
+dist/assets/dev-patel-idle-sw-DSquOnjZ.png                   1.40 kB
+dist/assets/courier-idle-nw-fLkIQjIT.png                     1.41 kB
+dist/assets/pizza-chef-idle-nw-JL1awulr.png                  1.42 kB
+dist/assets/maya-reed-idle-sw-5RVD8lZY.png                   1.44 kB
+dist/assets/kit-morgan-idle-sw-9g1OJ5li.png                  1.44 kB
+dist/assets/pizza-chef-idle-sw-BxnEw01y.png                  1.45 kB
+dist/assets/evelyn-park-idle-sw-B_G45Ob_.png                 1.46 kB
+dist/assets/delivery-driver-idle-ne-BqkWb6Vp.png             1.46 kB
+dist/assets/rafael-costa-idle-sw-ungNJhXp.png                1.49 kB
+dist/assets/courier-idle-se-DkHKw-Y8.png                     1.50 kB
+dist/assets/timber-worker-idle-ne-_tQvkqg2.png               1.50 kB
+dist/assets/delivery-driver-idle-nw-DSmL75iq.png             1.52 kB
+dist/assets/warehouse-worker-idle-ne-D26frYT_.png            1.52 kB
+dist/assets/arthur-vale-idle-sw-C98ir3iI.png                 1.52 kB
+dist/assets/farah-ali-idle-ne-DSiJ46Ga.png                   1.52 kB
+dist/assets/timber-worker-idle-nw-D8WSrrFF.png               1.52 kB
+dist/assets/farm-worker-idle-ne-BSoxNbss.png                 1.53 kB
+dist/assets/farah-ali-idle-nw-pxR70HRF.png                   1.53 kB
+dist/assets/dairy-worker-idle-se-CBPaCkcL.png                1.53 kB
+dist/assets/warehouse-worker-idle-nw-UOp--S71.png            1.53 kB
+dist/assets/nora-bell-idle-sw-aNoohMSJ.png                   1.54 kB
+dist/assets/dairy-worker-idle-ne-CrgL3w7X.png                1.54 kB
+dist/assets/farm-worker-idle-nw-C4Ai1lpg.png                 1.55 kB
+dist/assets/courier-idle-sw-DnQK4pgm.png                     1.55 kB
+dist/assets/dairy-worker-idle-nw-BQc63B_N.png                1.55 kB
+dist/assets/delivery-driver-idle-sw-pe-V3zJI.png             1.55 kB
+dist/assets/delivery-driver-idle-se-2sADYZxl.png             1.56 kB
+dist/assets/dairy-worker-idle-sw-Vss1c_D0.png                1.58 kB
+dist/assets/mill-worker-idle-nw-r3B6MgLg.png                 1.58 kB
+dist/assets/mill-worker-idle-ne-D0QdDUds.png                 1.58 kB
+dist/assets/farm-worker-idle-se-CDCvHbr0.png                 1.60 kB
+dist/assets/mill-worker-idle-se-KpOx2DOh.png                 1.60 kB
+dist/assets/mill-worker-idle-sw-Rbv7a_u-.png                 1.61 kB
+dist/assets/warehouse-worker-idle-sw-DdG6_m0S.png            1.61 kB
+dist/assets/timber-worker-idle-sw-dh-tG_WS.png               1.62 kB
+dist/assets/warehouse-worker-idle-se-C0YGNk_v.png            1.63 kB
+dist/assets/farm-worker-idle-sw-CGvQ_r2V.png                 1.63 kB
+dist/assets/dev-patel-idle-ne-BDMdwpuR.png                   1.63 kB
+dist/assets/rafael-costa-idle-ne-DNzEGnNa.png                1.64 kB
+dist/assets/arthur-vale-idle-nw-BXsgx1aD.png                 1.64 kB
+dist/assets/nora-bell-idle-nw-BTwMyqDg.png                   1.64 kB
+dist/assets/maya-reed-idle-nw-DYOcd7oM.png                   1.65 kB
+dist/assets/dev-patel-idle-nw-DM4nW1zk.png                   1.65 kB
+dist/assets/arthur-vale-idle-ne-wUVLzWoC.png                 1.66 kB
+dist/assets/kit-morgan-idle-ne-DyYJW8dX.png                  1.66 kB
+dist/assets/timber-worker-idle-se-BTy_04a9.png               1.66 kB
+dist/assets/kit-morgan-idle-nw-CJIHq5dA.png                  1.66 kB
+dist/assets/nora-bell-idle-ne-JJLiagKq.png                   1.67 kB
+dist/assets/rafael-costa-idle-nw-dgk4_3BA.png                1.67 kB
+dist/assets/maya-reed-idle-ne-Bu4Lqzow.png                   1.67 kB
+dist/assets/leo-marsh-idle-sw-B9K8UVjs.png                   1.68 kB
+dist/assets/imogen-shaw-idle-se-CcNzqDrm.png                 1.69 kB
+dist/assets/evelyn-park-idle-ne-1MiosW8m.png                 1.71 kB
+dist/assets/evelyn-park-idle-nw-DqWM0BB0.png                 1.73 kB
+dist/assets/maya-reed-idle-se-Dt64zDVa.png                   1.78 kB
+dist/assets/farah-ali-idle-se-CSll388e.png                   1.82 kB
+dist/assets/nora-bell-idle-se-ZX_QhBUW.png                   1.84 kB
+dist/assets/evelyn-park-idle-se-ClMqFCQT.png                 1.85 kB
+dist/assets/owen-price-idle-nw-D0KirCE2.png                  1.89 kB
+dist/assets/dev-patel-idle-se-DF0BaGIO.png                   1.89 kB
+dist/assets/kit-morgan-idle-se-DK9HLVoA.png                  1.89 kB
+dist/assets/owen-price-idle-ne-DeCC58hw.png                  1.89 kB
+dist/assets/owen-price-idle-se-B0QkopAX.png                  1.90 kB
+dist/assets/arthur-vale-idle-se-CSATqSBR.png                 1.91 kB
+dist/assets/leo-marsh-idle-ne-Cx6KnQjf.png                   1.91 kB
+dist/assets/leo-marsh-idle-nw-ewFbs5u4.png                   1.92 kB
+dist/assets/aisha-cole-idle-se-CaBmJnBA.png                  1.94 kB
+dist/assets/leo-marsh-idle-se-DB1HYR-t.png                   1.97 kB
+dist/assets/street-ad-X75I9x2M.png                           2.00 kB
+dist/assets/aisha-cole-idle-nw-CHSHEvfY.png                  2.01 kB
+dist/assets/aisha-cole-idle-ne-CEvu5yup.png                  2.05 kB
+dist/assets/rafael-costa-idle-se-B93_se1f.png                2.05 kB
+dist/assets/digital-sign-0qNbfQQb.png                        2.15 kB
+dist/assets/milk-CJcwm9yq.png                                2.28 kB
+dist/assets/shopfront-display-CsVq6h-I.png                   2.32 kB
+dist/assets/construction-worker-sw-BvmOTVCc.png              2.33 kB
+dist/assets/customer-sw-B9phm1l9.png                         2.48 kB
+dist/assets/trophy-display-BCPq8z-t.png                      2.56 kB
+dist/assets/maintenance-crate-AjaThIaY.png                   2.67 kB
+dist/assets/energy-9NRp56Mu.png                              2.87 kB
+dist/assets/crates-b1-a4Yg_.png                              3.25 kB
+dist/assets/furniture-IJXpxIoZ.png                           3.30 kB
+dist/assets/bakery-products-DHL7TrTq.png                     3.64 kB
+dist/assets/boarded-window-panel-CoMBt0xZ.png                4.01 kB
+dist/assets/imogen-shaw-avatar-neutral-xVF5T7ab.png          4.04 kB
+dist/assets/imogen-shaw-avatar-negative-r3YrA5yT.png         4.08 kB
+dist/assets/imogen-shaw-avatar-positive-D0CMjKMR.png         4.12 kB
+dist/assets/dev-patel-avatar-neutral-Mv1mqdcE.png            4.23 kB
+dist/assets/kit-morgan-avatar-negative-BCkuWZIq.png          4.24 kB
+dist/assets/kit-morgan-avatar-positive-BJU9r9o3.png          4.29 kB
+dist/assets/kit-morgan-avatar-neutral-BqTRqc4z.png           4.29 kB
+dist/assets/farah-ali-avatar-neutral-B8dD0UWi.png            4.30 kB
+dist/assets/maya-reed-avatar-negative-BK2gGja3.png           4.33 kB
+dist/assets/wheat-BWxGlc5Q.png                               4.33 kB
+dist/assets/owen-price-avatar-negative-nbobx3Om.png          4.33 kB
+dist/assets/farah-ali-avatar-negative-BQki2bDL.png           4.33 kB
+dist/assets/dev-patel-avatar-positive-rFSOXbXa.png           4.34 kB
+dist/assets/owen-price-avatar-neutral-D1GrU-ns.png           4.34 kB
+dist/assets/dev-patel-avatar-negative-BOZ1urQ5.png           4.36 kB
+dist/assets/farah-ali-avatar-positive-fOL2rsWT.png           4.36 kB
+dist/assets/warehouse-worker-C476_LS-.png                    4.37 kB
+dist/assets/maya-reed-avatar-neutral-1exGzEyv.png            4.38 kB
+dist/assets/aisha-cole-avatar-neutral-CbfMAp6Z.png           4.38 kB
+dist/assets/cheese-mzaH7OgS.png                              4.41 kB
+dist/assets/maya-reed-avatar-positive-D3RhpWe3.png           4.41 kB
+dist/assets/aisha-cole-avatar-positive-B_I3hvAB.png          4.44 kB
+dist/assets/owen-price-avatar-positive-CJYYu3vh.png          4.45 kB
+dist/assets/aisha-cole-avatar-negative-BH-XGJF6.png          4.45 kB
+dist/assets/packaging-BsvUF5Z9.png                           4.49 kB
+dist/assets/rafael-costa-avatar-neutral-tNOObhoI.png         4.50 kB
+dist/assets/arthur-vale-avatar-neutral-BfcAvrpV.png          4.56 kB
+dist/assets/rafael-costa-avatar-positive-Bm3bcwjl.png        4.58 kB
+dist/assets/arthur-vale-avatar-positive-BKEMtkkt.png         4.59 kB
+dist/assets/rafael-costa-avatar-negative-Do38sRiJ.png        4.60 kB
+dist/assets/arthur-vale-avatar-negative-Cwjl2Kc6.png         4.61 kB
+dist/assets/coffee-drinks-CX__rd9J.png                       4.62 kB
+dist/assets/leo-marsh-avatar-neutral-DKUEcrhr.png            4.71 kB
+dist/assets/leo-marsh-avatar-negative-I5Z8PPVp.png           4.76 kB
+dist/assets/leo-marsh-avatar-positive-DscJY-OE.png           4.78 kB
+dist/assets/imogen-shaw-world-BkFn8b8o.png                   4.82 kB
+dist/assets/evelyn-park-avatar-negative-C68YpC4y.png         4.94 kB
+dist/assets/evelyn-park-avatar-neutral-CEvECLXr.png          4.95 kB
+dist/assets/nora-bell-avatar-neutral-Cyawvktc.png            4.98 kB
+dist/assets/building-materials-DHw69o1u.png                  5.01 kB
+dist/assets/evelyn-park-avatar-positive-DQwSu5Sr.png         5.02 kB
+dist/assets/nora-bell-avatar-positive-C3iiK24g.png           5.03 kB
+dist/assets/owen-price-world-GZOXPCSs.png                    5.04 kB
+dist/assets/nora-bell-avatar-negative-DU05eHxJ.png           5.04 kB
+dist/assets/water-CW1f3QnT.png                               5.10 kB
+dist/assets/timber-CIzQb6oE.png                              5.14 kB
+dist/assets/kit-morgan-world-D0dBsRYv.png                    5.15 kB
+dist/assets/maya-reed-world-B-Kq3vyF.png                     5.16 kB
+dist/assets/rafael-costa-world-Bc8OiWlt.png                  5.16 kB
+dist/assets/dev-patel-world-U3_buTuD.png                     5.17 kB
+dist/assets/farm-worker-CTzndjLV.png                         5.18 kB
+dist/assets/aisha-cole-world-D_eC1fYJ.png                    5.19 kB
+dist/assets/wall-advert-C4PN2FVW.png                         5.20 kB
+dist/assets/farah-ali-world-Brj2aN-5.png                     5.24 kB
+dist/assets/evelyn-park-world-zi1D13vo.png                   5.27 kB
+dist/assets/barista-BONUJbPM.png                             5.31 kB
+dist/assets/nora-bell-world-DOosKN3u.png                     5.40 kB
+dist/assets/pizza-chef-CAqSLIZf.png                          5.50 kB
+dist/assets/pizza-BgAyQHSS.png                               5.52 kB
+dist/assets/flour-Di9SYvX_.png                               5.58 kB
+dist/assets/roof-billboard-B0PnoifZ.png                      5.63 kB
+dist/assets/delivery-driver-CTZLvn5N.png                     5.63 kB
+dist/assets/timber-worker-BJ9yl0_7.png                       5.63 kB
+dist/assets/arthur-vale-world-FWls9x7G.png                   5.64 kB
+dist/assets/lisbon-retaining-wall-fpPm6AI_.png               5.66 kB
+dist/assets/sports-car-sw-BuzxPYe7.png                       5.69 kB
+dist/assets/dairy-worker-JXEx5gfU.png                        5.72 kB
+dist/assets/executive-car-sw-D3rgWWLF.png                    5.73 kB
+dist/assets/leo-marsh-world-CIWbxzYA.png                     5.80 kB
+dist/assets/animal-feed-D7cTZEk_.png                         5.80 kB
+dist/assets/coffee-Ba8EGKme.png                              5.85 kB
+dist/assets/mill-worker-CN-CuWIn.png                         5.97 kB
+dist/assets/exclusive-sculpture-CdAfTfHA.png                 6.35 kB
+dist/assets/supercar-sw-BPzcHAqR.png                         6.60 kB
+dist/assets/luxury-suv-sw-Ds16WDdc.png                       7.09 kB
+dist/assets/forklift-sw-BKsrlRPD.png                         8.40 kB
+dist/assets/prestige-monument-0ncvWcT0.png                   9.05 kB
+dist/assets/closed-shutter-D4NzoLmv.png                     10.22 kB
+dist/assets/promotion-kiosk-zbYTRVxM.png                    10.42 kB
+dist/assets/mexico-city-market-stall-BTyTlKpy.png           10.85 kB
+dist/assets/bus-shelter-BhabcXhG.png                        11.10 kB
+dist/assets/empty-stock-rack-BBdpeebk.png                   11.35 kB
+dist/assets/imogen-shaw-portrait-negative-Bn-lXVL6.png      13.54 kB
+dist/assets/imogen-shaw-portrait-neutral-XAzU18qv.png       13.64 kB
+dist/assets/imogen-shaw-portrait-positive-5Im9lOiw.png      13.87 kB
+dist/assets/dev-patel-portrait-neutral-C3-vVNVi.png         14.46 kB
+dist/assets/maya-reed-portrait-negative-BGtiu1gA.png        14.55 kB
+dist/assets/maya-reed-portrait-neutral-DgBUfV4A.png         14.60 kB
+dist/assets/owen-price-portrait-negative-B3DQhPEM.png       14.61 kB
+dist/assets/kit-morgan-portrait-negative-DRk6Lvn6.png       14.62 kB
+dist/assets/maya-reed-portrait-positive-B7v9dOTu.png        14.62 kB
+dist/assets/owen-price-portrait-neutral-CGAu791k.png        14.62 kB
+dist/assets/kit-morgan-portrait-neutral-B33I8i7Q.png        14.66 kB
+dist/assets/dev-patel-portrait-negative-DzBxEPCB.png        14.74 kB
+dist/assets/farah-ali-portrait-negative-C-3uBHzA.png        14.75 kB
+dist/assets/kit-morgan-portrait-positive-BGsHo8D_.png       14.80 kB
+dist/assets/dev-patel-portrait-positive-nH7KP67l.png        14.81 kB
+dist/assets/farah-ali-portrait-neutral-Ds7uy7Br.png         14.84 kB
+dist/assets/farah-ali-portrait-positive-CM0XT7La.png        14.89 kB
+dist/assets/aisha-cole-portrait-positive-D13KuRd3.png       15.07 kB
+dist/assets/owen-price-portrait-positive-DTim9zYf.png       15.07 kB
+dist/assets/aisha-cole-portrait-negative-BY-rQqkR.png       15.17 kB
+dist/assets/aisha-cole-portrait-neutral-CNbKnSjd.png        15.25 kB
+dist/assets/rafael-costa-portrait-neutral-isnR87hk.png      15.32 kB
+dist/assets/rafael-costa-portrait-negative-C_eMKzxM.png     15.52 kB
+dist/assets/rafael-costa-portrait-positive-DgPCd_9D.png     15.59 kB
+dist/assets/arthur-vale-portrait-neutral-D-B5SZo2.png       15.63 kB
+dist/assets/leo-marsh-portrait-neutral-OlfsQsn0.png         15.77 kB
+dist/assets/arthur-vale-portrait-negative-ZhepXfcQ.png      15.83 kB
+dist/assets/arthur-vale-portrait-positive-CH6do9X3.png      16.03 kB
+dist/assets/leo-marsh-portrait-negative-C92wuba-.png        16.06 kB
+dist/assets/leo-marsh-portrait-positive-B8BAkJzJ.png        16.30 kB
+dist/assets/evelyn-park-portrait-negative-BjkK-s57.png      16.79 kB
+dist/assets/evelyn-park-portrait-neutral-NXRDERO9.png       16.85 kB
+dist/assets/nora-bell-portrait-neutral-BN7m6X11.png         16.97 kB
+dist/assets/nora-bell-portrait-positive-CFNFLyKX.png        17.10 kB
+dist/assets/evelyn-park-portrait-positive-eTeqX5xK.png      17.15 kB
+dist/assets/nora-bell-portrait-negative-B9CE8Hab.png        17.34 kB
+dist/assets/luxury-boat-sw-DbMW1Kvt.png                     17.92 kB
+dist/assets/lorry-se-BZVGduN-.png                           17.94 kB
+dist/assets/lorry-nw-BBiTnLt9.png                           18.34 kB
+dist/assets/lorry-sw-nw7adQS_.png                           18.85 kB
+dist/assets/farm-pickup-sw-3Q7J7F5Z.png                     18.92 kB
+dist/assets/lorry-ne-Ap4gDGpz.png                           19.31 kB
+dist/assets/freight-container-BZQSTV7o.png                  19.49 kB
+dist/assets/farm-pickup-ne-BMms6uzL.png                     20.64 kB
+dist/assets/farm-pickup-nw-DkXkbFkn.png                     20.72 kB
+dist/assets/farm-pickup-se-B0Oymtta.png                     21.77 kB
+dist/assets/farm-pickup-sw-NVetuDmD.png                     21.79 kB
+dist/assets/crane-C0qPPJDa.png                              28.13 kB
+dist/assets/actor-atlas-5CkGVc0m.png                        32.06 kB
+dist/assets/barista-motion-Dyd4YZWi.png                     33.79 kB
+dist/assets/pizza-chef-motion-DFMq2BIy.png                  37.59 kB
+dist/assets/imogen-shaw-portraits-DhOt0tR4.png              40.13 kB
+dist/assets/imogen-shaw-motion-NuFPNNf5.png                 40.57 kB
+dist/assets/delivery-driver-motion-dVPPvZ4T.png             41.47 kB
+dist/assets/dairy-worker-motion-BVmi7ch_.png                42.29 kB
+dist/assets/worker-atlas-DbTelmDH.png                       42.46 kB
+dist/assets/farm-worker-motion-B6MvpMEl.png                 42.57 kB
+dist/assets/maya-reed-portraits-CUwFg8ZV.png                42.91 kB
+dist/assets/dev-patel-portraits-DyeeKEAg.png                43.12 kB
+dist/assets/kit-morgan-portraits-PGNMQcxk.png               43.18 kB
+dist/assets/owen-price-portraits-CVOGueII.png               43.22 kB
+dist/assets/courier-motion-Df9vEVy0.png                     43.26 kB
+dist/assets/warehouse-worker-motion-CIB-bm8G.png            43.37 kB
+dist/assets/mill-worker-motion-BTYTe0zF.png                 43.49 kB
+dist/assets/farah-ali-portraits-CaUj8vMR.png                43.55 kB
+dist/assets/timber-worker-motion-7XRDVPsE.png               43.67 kB
+dist/assets/maya-reed-motion-Vt8EvOxC.png                   43.89 kB
+dist/assets/farah-ali-motion-nn47g4oE.png                   44.09 kB
+dist/assets/aisha-cole-portraits-DhtQAa3M.png               44.72 kB
+dist/assets/rafael-costa-portraits-3C5D1QZH.png             45.48 kB
+dist/assets/nora-bell-motion-wNMB1tLI.png                   45.54 kB
+dist/assets/evelyn-park-motion-B1gtHq5I.png                 45.65 kB
+dist/assets/rafael-costa-motion-B3j6PIKA.png                46.00 kB
+dist/assets/kit-morgan-motion-DJtQwX9k.png                  46.57 kB
+dist/assets/arthur-vale-portraits-l1qumSgc.png              46.69 kB
+dist/assets/dev-patel-motion-CauaiWUA.png                   46.75 kB
+dist/assets/leo-marsh-portraits-DrtGjO2y.png                47.23 kB
+dist/assets/arthur-vale-motion-BfS88YvE.png                 48.60 kB
+dist/assets/evelyn-park-portraits-CNnbvxod.png              49.82 kB
+dist/assets/owen-price-motion-C1SNERdj.png                  50.01 kB
+dist/assets/cargo-aircraft-sw-6DUzxnZT.png                  50.02 kB
+dist/assets/nora-bell-portraits-DyBwjhsg.png                50.41 kB
+dist/assets/aisha-cole-motion-z0KdLfR7.png                  51.86 kB
+dist/assets/leo-marsh-motion-CS1A9_dN.png                   52.46 kB
+dist/assets/owner-world-atlas-BGFv9jIe.png                  61.42 kB
+dist/assets/national-bank-branch-BL4v5n5c.png               74.01 kB
+dist/assets/penny-energy-F9kLK3b3.png                       79.65 kB
+dist/assets/customs-office--c6Q93Xn.png                     83.63 kB
+dist/assets/luxury-townhouse-C9rE9kF4.png                   97.16 kB
+dist/assets/terrace-module-BRbPVjBR.png                     98.68 kB
+dist/assets/lisbon-tiled-shop-Cr-GAeik.png                 107.46 kB
+dist/assets/london-commercial-Cbs8HU1m.png                 110.38 kB
+dist/assets/cargo-ship-sw-Btjwczp0.png                     111.70 kB
+dist/assets/shop-module-CKL1Ok4u.png                       112.78 kB
+dist/assets/central-property-NXrYhm5F.png                  117.29 kB
+dist/assets/mexico-city-shop-BtPap011.png                  120.08 kB
+dist/assets/national-bank-DaJGQnG0.png                     125.15 kB
+dist/assets/london-office-CEqh9xUc.png                     133.59 kB
+dist/assets/penthouse-dhvAbNJq.png                         135.59 kB
+dist/assets/air-freight-terminal-SOtsJ3rJ.png              136.93 kB
+dist/assets/penny-logistics-DEtowXOo.png                   145.86 kB
+dist/assets/avatar-atlas-DCSDrLKg.png                      155.78 kB
+dist/assets/lisbon-waterfront-store--lvFqWHL.png           156.38 kB
+dist/assets/mansion-vFX_BKEM.png                           156.98 kB
+dist/assets/warehouse-module-BZNcqoo5.png                  160.29 kB
+dist/assets/penny-exchange-JjmHXTSg.png                    161.07 kB
+dist/assets/penny-ads-hmUIGEF1.png                         163.57 kB
+dist/assets/mexico-city-workshop-C65TdQJJ.png              164.02 kB
+dist/assets/vehicle-atlas-Coe5dw3e.png                     165.19 kB
+dist/assets/corporate-hq-CvNZnCUX.png                      167.45 kB
+dist/assets/executive-office-B3pE5psQ.png                  271.04 kB
+dist/assets/airport-layout-1W25V9Qb.png                    355.83 kB
+dist/assets/environment-atlas-DCQZ-Hmf.png                 439.28 kB
+dist/assets/port-layout-Qz2d7WfR.png                       483.94 kB
+dist/assets/portrait-atlas-BD86TTtD.png                    542.90 kB
+dist/assets/lisbon-layout-Dq5wZZ-E.png                     632.60 kB
+dist/assets/mexico-city-layout-Cry5jKkh.png                657.86 kB
+dist/assets/actors-idle-sheet-ChLSBw-2.png                 663.60 kB
+dist/assets/london-layout-BLhgqQyz.png                     746.06 kB
+dist/assets/state-atlas-Cdjmply3.png                       800.56 kB
+dist/assets/flour-mill-DjjsWEPP.png                      1,186.52 kB
+dist/assets/pizza-shop-jFAPJAOG.png                      1,395.59 kB
+dist/assets/cafe-Bxd5ZeNi.png                            1,477.71 kB
+dist/assets/building-atlas-BjAGtMQN.png                  1,574.57 kB
+dist/assets/commodities-sheet-DTnAuc47.png               1,803.22 kB
+dist/assets/props-sheet-f0G5mZ4V.png                     2,153.75 kB
+dist/assets/industry-sheet-CJ_lB_gU.png                  2,763.09 kB
+dist/assets/index-az78m3Ho.css                              38.60 kB │ gzip:   7.08 kB
+dist/assets/port-layout-kbk4-iVT.js                          0.29 kB │ gzip:   0.20 kB │ map:     0.90 kB
+dist/assets/Field-UvTscqRJ.js                                0.60 kB │ gzip:   0.39 kB │ map:     1.78 kB
+dist/assets/useCommand-BDdDF5Ba.js                           0.75 kB │ gzip:   0.50 kB │ map:     2.92 kB
+dist/assets/DataTable-BQ04QpD1.js                            1.01 kB │ gzip:   0.52 kB │ map:     2.96 kB
+dist/assets/Tabs-Bsk2NqJK.js                                 1.03 kB │ gzip:   0.58 kB │ map:     3.02 kB
+dist/assets/shareClient-C0WCbl0s.js                          1.54 kB │ gzip:   0.83 kB │ map:     5.48 kB
+dist/assets/WorldScreen-Br1PZ5Ug.js                          2.09 kB │ gzip:   0.97 kB │ map:     4.03 kB
+dist/assets/FinancialChart-CNGyuTJ-.js                       2.77 kB │ gzip:   1.36 kB │ map:     8.16 kB
+dist/assets/ArtReviewScreen-DZBGNTtc.js                      3.53 kB │ gzip:   1.55 kB │ map:     7.97 kB
+dist/assets/TradeTicket-Dbgh4875.js                          4.77 kB │ gzip:   2.05 kB │ map:    13.03 kB
+dist/assets/BristolScreen-CRli1b-s.js                        5.40 kB │ gzip:   1.97 kB │ map:    12.33 kB
+dist/assets/PrestigeScreen-SI4nbEuQ.js                       5.68 kB │ gzip:   2.22 kB │ map:    14.11 kB
+dist/assets/IpoScreen-CCk0mWp-.js                            5.72 kB │ gzip:   2.17 kB │ map:    12.84 kB
+dist/assets/WalletScreen-D8OK0UBe.js                         6.45 kB │ gzip:   2.24 kB │ map:    16.45 kB
+dist/assets/StartCompanyScreen-Bn5BVIAN.js                   8.47 kB │ gzip:   3.01 kB │ map:    20.59 kB
+dist/assets/jsx-runtime-Wy9s6hX0.js                          8.96 kB │ gzip:   3.43 kB │ map:    32.88 kB
+dist/assets/OpportunitiesScreen-BzjxPi3h.js                  8.96 kB │ gzip:   2.65 kB │ map:    19.65 kB
+dist/assets/PortfolioScreen-D-MMAxMW.js                      9.53 kB │ gzip:   2.58 kB │ map:    21.41 kB
+dist/assets/CompetitorScreen-C9B0qYiA.js                    14.29 kB │ gzip:   3.58 kB │ map:    27.06 kB
+dist/assets/CompaniesScreen-CLuZMgQG.js                     19.51 kB │ gzip:   6.41 kB │ map:    46.69 kB
+dist/assets/DevEconomyScreen-D8HkL5Bg.js                    20.34 kB │ gzip:   5.12 kB │ map:    44.09 kB
+dist/assets/panels-036qaq4f.js                              29.40 kB │ gzip:   9.29 kB │ map:    71.21 kB
+dist/assets/CommodityScreen-DD9ScTRu.js                     32.84 kB │ gzip:   9.00 kB │ map:    77.45 kB
+dist/assets/SharesScreen-B1CbV2vf.js                        36.07 kB │ gzip:   9.84 kB │ map:    81.17 kB
+dist/assets/index-Cc2Cg8YQ.js                              725.06 kB │ gzip: 140.64 kB │ map: 1,810.05 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 564ms

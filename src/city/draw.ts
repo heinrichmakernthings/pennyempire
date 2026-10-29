@@ -101,7 +101,7 @@ function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: 
   const delivery=counts.vans&&!reduced?ui.deliveries?.sample(a.companyId,now):null;
   for (let i=0;i<counts.vans;i++) {
     const vehicle=industry==='farm'?'farm-pickup-sw':industry==='mill'||industry==='timber'?'lorry-sw':'delivery-van-sw';
-    drawFrame(ctx,atlas,vehicle,ox+(b.anchor[0]+62+i*30+(delivery?.dx??0))*k,oy+(b.anchor[1]+30+i*6)*k,k);
+    drawFrame(ctx,atlas,vehicle,ox+(b.anchor[0]+62+i*30+(delivery?.dx??0))*k,oy+(b.anchor[1]+30+i*6-(delivery?.dx??0)/2)*k,k);
   }
   if(delivery?.stage==='unload') drawFrame(ctx,atlas,`delivery-driver-load-sw-${Math.floor(now/160)%4}`,ox+(b.anchor[0]+30)*k,oy+(b.anchor[1]+27)*k,k);
   for (const asset of a.luxury ?? []) {

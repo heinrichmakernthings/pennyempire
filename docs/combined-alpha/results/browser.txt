@@ -1,0 +1,171 @@
+PASS  mobile-390 /city: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /city: touch targets ≥44px
+PASS  mobile-390 /opportunities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /opportunities: touch targets ≥44px
+PASS  mobile-390 /companies: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /companies: touch targets ≥44px
+PASS  mobile-390 /commodities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /commodities: touch targets ≥44px
+PASS  mobile-390 /stocks: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 shares: search has an honest empty state
+PASS  mobile-390 shares: clearing search restores listings
+PASS  mobile-390 /stocks: touch targets ≥44px
+PASS  mobile-390 /portfolio: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /portfolio: touch targets ≥44px
+PASS  mobile-390 /prestige: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /prestige: touch targets ≥44px
+PASS  mobile-390 /wallet: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /wallet: touch targets ≥44px
+PASS  mobile-390 /bristol: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /bristol: touch targets ≥44px
+PASS  mobile-390 /world: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /world: touch targets ≥44px
+PASS  mobile-390 /state: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /state: touch targets ≥44px
+PASS  mobile-390 /rewards: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /rewards: touch targets ≥44px
+PASS  mobile-390 /membership: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /membership: touch targets ≥44px
+PASS  mobile-390 /notifications: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /notifications: touch targets ≥44px
+PASS  mobile-390 /account: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  mobile-390 /account: touch targets ≥44px
+PASS  mobile-390 city: canvas draws real artwork — 237 distinct sampled colours
+PASS  mobile-390 city: crisp pixel rendering
+PASS  mobile-390 city: clicking the building opens its company panel — Harbour Bean
+PASS  mobile-390 city: panel shows "Your company"
+PASS  mobile-390 city: panel shows "Operating"
+PASS  mobile-390 city: panel shows "Owner:"
+PASS  mobile-390 city: panel shows "Revenue / day"
+PASS  mobile-390 city: zoom in snaps to 2×
+PASS  mobile-390 city: zoom in snaps to 3× (max)
+PASS  mobile-390 city: zoom out returns to 1×
+PASS  mobile-390 city: dragging pans the map
+PASS  mobile-390 city: a drag does not select a building
+PASS  mobile-390 city: keyboard arrows pan the map
+PASS  mobile-390 city: recentre resets zoom
+PASS  mobile-390 city: business list dialog opens
+PASS  mobile-390 city: choosing from the list selects and focuses the company
+PASS  mobile-390 city: Escape closes the sheet
+PASS  mobile-390 nav: More sheet reaches Wallet
+PASS  mobile-390: ad placements per breakpoint
+PASS  mobile-390: no console errors/warnings or failed requests
+PASS  tablet-768 /city: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /city: touch targets ≥44px
+PASS  tablet-768 /opportunities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /opportunities: touch targets ≥44px
+PASS  tablet-768 /companies: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /companies: touch targets ≥44px
+PASS  tablet-768 /commodities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /commodities: touch targets ≥44px
+PASS  tablet-768 /stocks: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 shares: search has an honest empty state
+PASS  tablet-768 shares: clearing search restores listings
+PASS  tablet-768 /stocks: touch targets ≥44px
+PASS  tablet-768 /portfolio: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /portfolio: touch targets ≥44px
+PASS  tablet-768 /prestige: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /prestige: touch targets ≥44px
+PASS  tablet-768 /wallet: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /wallet: touch targets ≥44px
+PASS  tablet-768 /bristol: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /bristol: touch targets ≥44px
+PASS  tablet-768 /world: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /world: touch targets ≥44px
+PASS  tablet-768 /state: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /state: touch targets ≥44px
+PASS  tablet-768 /rewards: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /rewards: touch targets ≥44px
+PASS  tablet-768 /membership: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /membership: touch targets ≥44px
+PASS  tablet-768 /notifications: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /notifications: touch targets ≥44px
+PASS  tablet-768 /account: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  tablet-768 /account: touch targets ≥44px
+PASS  tablet-768 city: canvas draws real artwork — 112 distinct sampled colours
+PASS  tablet-768 city: crisp pixel rendering
+PASS  tablet-768 city: clicking the building opens its company panel — Harbour Bean
+PASS  tablet-768 city: panel shows "Your company"
+PASS  tablet-768 city: panel shows "Operating"
+PASS  tablet-768 city: panel shows "Owner:"
+PASS  tablet-768 city: panel shows "Revenue / day"
+PASS  tablet-768 city: "Manage company" opens the company-management view
+PASS  tablet-768 city: zoom in snaps to 2×
+PASS  tablet-768 city: zoom in snaps to 3× (max)
+PASS  tablet-768 city: zoom out returns to 1×
+PASS  tablet-768 city: mouse wheel zooms
+PASS  tablet-768 city: dragging pans the map
+PASS  tablet-768 city: a drag does not select a building
+PASS  tablet-768 city: keyboard arrows pan the map
+PASS  tablet-768 city: recentre resets zoom
+PASS  tablet-768 city: business list dialog opens
+PASS  tablet-768 city: choosing from the list selects and focuses the company
+PASS  tablet-768 city: Escape closes the sheet
+PASS  tablet-768 nav: sidebar/rail navigates
+PASS  tablet-768: ad placements per breakpoint
+PASS  tablet-768: no console errors/warnings or failed requests
+PASS  desktop-1440 /city: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /city: touch targets ≥44px
+PASS  desktop-1440 /opportunities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /opportunities: touch targets ≥44px
+PASS  desktop-1440 /companies: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /companies: touch targets ≥44px
+PASS  desktop-1440 /commodities: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /commodities: touch targets ≥44px
+PASS  desktop-1440 /stocks: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 shares: search has an honest empty state
+PASS  desktop-1440 shares: clearing search restores listings
+PASS  desktop-1440 /stocks: touch targets ≥44px
+PASS  desktop-1440 /portfolio: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /portfolio: touch targets ≥44px
+PASS  desktop-1440 /prestige: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /prestige: touch targets ≥44px
+PASS  desktop-1440 /wallet: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /wallet: touch targets ≥44px
+PASS  desktop-1440 /bristol: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /bristol: touch targets ≥44px
+PASS  desktop-1440 /world: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /world: touch targets ≥44px
+PASS  desktop-1440 /state: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /state: touch targets ≥44px
+PASS  desktop-1440 /rewards: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /rewards: touch targets ≥44px
+PASS  desktop-1440 /membership: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /membership: touch targets ≥44px
+PASS  desktop-1440 /notifications: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /notifications: touch targets ≥44px
+PASS  desktop-1440 /account: no horizontal overflow — {"docOverflow":0,"mainOverflow":0}
+PASS  desktop-1440 /account: touch targets ≥44px
+PASS  desktop-1440 city: canvas draws real artwork — 126 distinct sampled colours
+PASS  desktop-1440 city: crisp pixel rendering
+PASS  desktop-1440 city: clicking the building opens its company panel — Harbour Bean
+PASS  desktop-1440 city: panel shows "Your company"
+PASS  desktop-1440 city: panel shows "Operating"
+PASS  desktop-1440 city: panel shows "Owner:"
+PASS  desktop-1440 city: panel shows "Revenue / day"
+PASS  desktop-1440 city: "Manage company" opens the company-management view
+PASS  desktop-1440 city: zoom in snaps to 2×
+PASS  desktop-1440 city: zoom in snaps to 3× (max)
+PASS  desktop-1440 city: zoom out returns to 1×
+PASS  desktop-1440 city: mouse wheel zooms
+PASS  desktop-1440 city: dragging pans the map
+PASS  desktop-1440 city: a drag does not select a building
+PASS  desktop-1440 city: keyboard arrows pan the map
+PASS  desktop-1440 city: recentre resets zoom
+PASS  desktop-1440 city: accessible business list is present
+PASS  desktop-1440 nav: sidebar/rail navigates
+PASS  desktop-1440: ad placements per breakpoint
+PASS  desktop-1440: no console errors/warnings or failed requests
+PASS  error state renders with retry
+PASS  empty state renders with next action
+PASS  loading skeleton shows while data is pending
+PASS  HUD labels data as a live simulation (not illustrative) and shows real balances — Day 38
+PASS  the economy advances by itself: HUD day increases with nobody clicking — Day 38 → 40
+PASS  saving company settings is accepted by the server and persists
+PASS  server state reflects the change (price and revision)
+PASS  financials show the stored daily operating statement
+PASS  the test wallet is server-backed and labelled SIMULATED everywhere
+PASS  developer economy dashboard shows live ledger statistics
+PASS  live pages produced no console errors or warnings
+
+169/169 browser checks passed

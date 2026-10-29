@@ -22,13 +22,18 @@ describe('navigation and the eight sections', () => {
     setup(path);
     expect(await screen.findByRole('heading', { name: heading, level: path === '/city' ? 2 : 1 })).toBeInTheDocument();
   });
-  it('the main navigation links to all nine sections (seven game sections plus Opportunities and News & Rankings) and switches screens', async () => {
+  it('the main navigation includes all fifteen sections and opens destination previews', async () => {
     const user = setup('/city');
     const nav = await screen.findByRole('navigation', { name: 'Main' });
-    expect(within(nav).getAllByRole('link')).toHaveLength(14);
+    expect(within(nav).getAllByRole('link')).toHaveLength(15);
     await user.click(within(nav).getByRole('link', { name: /Stock Exchange/ }));
     expect(await screen.findByRole('heading', { name: 'Stock Exchange', level: 1 })).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: /Stock Exchange/ })).toHaveAttribute('aria-current', 'page');
+    await user.click(within(nav).getByRole('link', { name: /Beyond Bristol/ }));
+    expect(await screen.findByRole('heading', { name: 'Beyond Bristol', level: 1 })).toBeInTheDocument();
+    await user.click(screen.getByRole('tab', { name: 'Air freight' }));
+    expect(screen.getByRole('img', { name: /Air freight: An apron/ })).toBeInTheDocument();
+    expect(screen.getByText(/international expansion and freight routes are not open yet/)).toBeInTheDocument();
   });
   it('unknown routes show a not-found state with a way back', async () => {
     setup('/nope');

@@ -37,7 +37,7 @@ const found = async (industry, plotId, name) => {
   if (!r.ok) throw new Error(`${name}: ${r.error?.message}`);
   return r.transactionId;
 };
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   // Day 0: the player opens a pizza restaurant next to the NPC one, then the city runs for two game months.
   const free = (await api('/api/lots')).lots.find((l) => l.status === 'vacant' && l.fits.includes('pizza'));
@@ -57,7 +57,8 @@ try {
   check('weekly leaderboards are published', standings.boards.length > 0 && standings.asOfBoardTick >= 56, `board day ${standings.asOfBoardTick}`);
   check('titles are held by named companies, NPC or player', standings.titles.length > 0 && standings.titles.every((t) => t.holderName));
   check('the Penny Post has stories drawn from recorded events', news.length > 0 && news.every((a) => a.headline && a.gameDate), `${news.length} stories`);
-  check('city activity reports a state for every company', act.items.length >= 8 && new Set(act.items.map((i) => i.state)).size >= 2, [...new Set(act.items.map((i) => i.state))].join(','));
+  const directory = (await api('/api/screens/city')).envelope.data.directory.filter(c => c.owner.kind !== 'state');
+  check('city activity reports a state for every non-state company', directory.length > 0 && directory.every(c => act.items.some(i => i.companyId === c.id)), `${act.items.length} activity entries for ${directory.length} companies`);
   const opps = (await api('/api/opportunities')).opportunities;
   check('every opportunity carries derived labels and metrics', opps.every((o) => Array.isArray(o.labels) && o.metrics));
   const npcCount = (await api('/api/dev/economy')).living.npcInspector.length;

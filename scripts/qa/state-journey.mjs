@@ -28,7 +28,7 @@ const cmd = async (body) => api('/api/command', { method: 'POST', headers: { 'co
 const admin = (path, body) => api(`/api/admin/${path}`, { method: 'POST', headers: { 'content-type': 'application/json', 'x-admin-token': TOKEN }, body: JSON.stringify(body) });
 const tick = (count) => api('/api/dev/tick', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ count }) });
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   const free = (await api('/api/lots')).lots.find((l) => l.status === 'vacant' && l.fits.includes('pizza'));
   const q = (await api(`/api/startup-quote?industry=pizza&plotId=${free.id}&tier=1&name=Quay%20Pizza`)).quote;

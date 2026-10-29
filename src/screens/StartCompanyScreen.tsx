@@ -1,3 +1,4 @@
+import { ConnectionNotice } from '@/ui/ConnectionNotice';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { fetchLots, fetchOpportunities, fetchStartupQuote, useQuery, type LotInfo, type Opportunity, type StartupQuote } from '@/data/managementApi';
@@ -18,8 +19,8 @@ export function StartCompanyScreen() {
   const source = useDataSource();
   const [params, setParams] = useSearchParams();
   const nav = useNavigate();
-  const ops = useQuery((s) => fetchOpportunities(s), [], false);
-  const lots = useQuery((s) => fetchLots(s), [], false);
+  const ops = useQuery((s) => fetchOpportunities(s), [], false, source.authority === 'server');
+  const lots = useQuery((s) => fetchLots(s), [], false, source.authority === 'server');
   const industry = params.get('industry') ?? '';
   const lotId = params.get('lot') ?? '';
   const tier = Number(params.get('tier') ?? 1);
@@ -30,10 +31,10 @@ export function StartCompanyScreen() {
   const [formError, setFormError] = useState<string | null>(null);
   const set = (k: string, v: string) => setParams((p) => { const n = new URLSearchParams(p); if (v) n.set(k, v); else n.delete(k); if (k === 'industry') n.delete('lot'); return n; }, { replace: true });
   const capitalMinor = capital.trim() === '' ? undefined : parseDecimalToMinor(capital) ?? NaN;
-  const quote = useQuery((s) => (industry && lotId ? fetchStartupQuote({ industry, plotId: lotId, tier, name: name.trim() || undefined, workingCapitalMinor: Number.isNaN(capitalMinor) ? undefined : capitalMinor }, s) : Promise.resolve(null)), [industry, lotId, tier, name, capitalMinor], false);
+  const quote = useQuery((s) => (industry && lotId ? fetchStartupQuote({ industry, plotId: lotId, tier, name: name.trim() || undefined, workingCapitalMinor: Number.isNaN(capitalMinor) ? undefined : capitalMinor }, s) : Promise.resolve(null)), [industry, lotId, tier, name, capitalMinor], false, source.authority === 'server');
   useEffect(() => { setKey(newIdempotencyKey()); }, [industry, lotId, tier, name, capitalMinor]);
 
-  if (source.authority !== 'server') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><IllustrativeBadge /><EmptyState title="Company creation needs the game server">Start the game server (npm run dev:all) to found a real company.</EmptyState></div>;
+  if (source.authority !== 'server') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><IllustrativeBadge /><ConnectionNotice /></div>;
   if (ops.status === 'loading' || lots.status === 'loading') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><Skeleton lines={6} label="Loading" /></div>;
   if (ops.status === 'error' || lots.status === 'error') return <div className="pe-screen"><h1 className="pe-h1">Start a company</h1><ErrorState message={ops.status === 'error' ? ops.error : lots.status === 'error' ? lots.error : ''} onRetry={() => { ops.reload(); lots.reload(); }} /></div>;
   const industries = ops.data.opportunities;

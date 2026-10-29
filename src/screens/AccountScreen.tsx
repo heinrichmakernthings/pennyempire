@@ -25,6 +25,10 @@ export function AccountScreen() {
     if (r.status !== 200) { setErr(errorText(r)); return; }
     setPw({ current: '', next: '' }); notify({ tone: 'success', title: 'Password changed', message: 'Other devices have been signed out.' });
   };
+  const logout = async (all: boolean) => {
+    setPending('logout'); setErr(null);
+    try { await signOut(all); } catch (e) { setErr(e instanceof Error ? e.message : 'Could not sign out. Please try again.'); } finally { setPending(null); }
+  };
   const toggle = (k: keyof AuthUser['settings']) => save({ settings: { [k]: !user.settings[k] } }, k);
 
   return (
@@ -55,7 +59,7 @@ export function AccountScreen() {
         </form>
         <div className="pe-card">
           <h2>Sessions</h2>
-          <div className="pe-actions"><Button onClick={() => void signOut(false)}>Sign out</Button><Button variant="destructive" onClick={() => void signOut(true)}>Sign out everywhere</Button></div>
+          <div className="pe-actions"><Button pending={pending === 'logout'} onClick={() => void logout(false)}>Sign out</Button><Button variant="destructive" pending={pending === 'logout'} onClick={() => void logout(true)}>Sign out everywhere</Button></div>
         </div>
       </div>
     </section>

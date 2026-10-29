@@ -4,7 +4,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { App } from './App';
 import { DataProvider } from './data/store';
 import { chooseDataSource } from './data/serverSource';
-import { useUi } from './state/ui';
+import { ErrorState } from './ui/States';
 import { AuthGate } from './app/AuthGate';
 import './design/tokens.css';
 import './design/global.css';
@@ -12,9 +12,16 @@ import './design/management.css';
 import './design/economy.css';
 
 const root = createRoot(document.getElementById('root')!);
-// The server-authoritative engine is used when /api/health answers; otherwise we say so and fall back to labelled fixtures.
+// A failed connection never enters a pretend saved game. Illustrative previews require an explicit choice.
 void chooseDataSource(window.location.search).then(({ source, fallbackReason }) => {
-  if (fallbackReason) useUi.getState().notify({ tone: 'warning', title: 'Illustrative data only', message: fallbackReason });
+  if (fallbackReason) {
+    root.render(<main className="pe-auth" id="main"><div className="pe-stack">
+      <ErrorState title="Bristol is temporarily unavailable" message="The game server isn’t responding. Your saved progress has not been replaced. Reconnect to continue playing." onRetry={() => window.location.reload()} />
+      <a className="pe-btn pe-btn--ghost" href="/city?source=fixture">Explore an illustrative preview</a>
+      <p className="pe-hint">Preview data is fictional. Purchases and management changes in the preview cannot be saved.</p>
+    </div></main>);
+    return;
+  }
   root.render(
     <StrictMode>
       <BrowserRouter>

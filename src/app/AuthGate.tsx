@@ -1,7 +1,7 @@
 import { useEffect, type ReactNode } from 'react';
 import { useAuth } from '@/data/authClient';
 import { AuthScreen } from '@/screens/AuthScreen';
-import { Skeleton } from '@/ui/States';
+import { ErrorState, Skeleton } from '@/ui/States';
 
 /**
  * Private alpha: when the server requires accounts, nothing of the game renders until the player signs in. `children` is a function
@@ -12,6 +12,7 @@ export function AuthGate({ server, children }: { server: boolean; children: (pla
   useEffect(() => { if (server) void check(); }, [server, check]);
   if (!server) return <>{children('fixture')}</>;
   if (status === 'unknown') return <main className="pe-auth" id="main"><Skeleton lines={3} label="Connecting to Bristol" /></main>;
+  if (status === 'error') return <main className="pe-auth" id="main"><ErrorState title="Bristol is temporarily unavailable" message="We couldn’t verify your session. Your saved game has not been replaced. Try connecting again." onRetry={() => void check()} /></main>;
   if (status === 'signed-out') return <AuthScreen />;
   return <>{children(user?.playerId ?? 'local')}</>;
 }

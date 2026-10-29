@@ -36,7 +36,7 @@ const found = async (industry, plotId, name) => {
   if (!r.ok) throw new Error(`${name}: ${r.error?.message}`);
   return r.transactionId;
 };
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   const farm = await found('farm', 'lot-3', 'Avon Wheat'), mill = await found('mill', 'lot-7', 'Severn Flour'), pizza = await found('pizza', 'plot-pizza', 'Quay Pizza');
   for (const c of [farm, mill, pizza]) await cmd({ type: 'company.fund', companyId: c, amountMinor: 150_000 });

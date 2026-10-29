@@ -1,0 +1,20 @@
+PASS  the restaurant earned Empire Coins from real sales
+PASS  ad placements are labelled simulated and inert
+PASS  the car was bought with Empire Coins (price deducted) — 9000 EC
+PASS  the car is in the prestige collection
+PASS  the car appears beside the company on the city map — ["sports-car-sw"]
+PASS  the disclosed production boost is active
+PASS  the rewarded video paid the fictional coins once, issued by the server — 50 EC
+PASS  a 50p simulated deposit reached the GBP wallet and left coins untouched
+PASS  the £5 prize came from the funded programme
+PASS  the £5 minimum is enforced in the form
+PASS  £5 is reserved as pending; the rest stays available
+PASS  the mock payout settled once (duplicate webhook ignored)
+PASS  the simulated premium subscription is active
+PASS  the lottery shows published odds and the ticket was bought with coins
+PASS  the GBP ledger reconciles and deposits/prizes are not revenue — liabilities 50p, rewards 500p
+PASS  the Empire Coin ledger reconciles
+PASS  the mobile layout does not scroll sideways
+PASS  no console errors
+
+18/18 checks passed

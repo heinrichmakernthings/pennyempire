@@ -1,0 +1,25 @@
+PASS  health outage shows recovery, never a substitute game
+PASS  offline preview is an explicit choice and clearly labelled
+PASS  session outage keeps the private game closed
+PASS  session retry recovers to sign-in
+PASS  signed-out visitors see the sign-in screen, not the game
+PASS  the game API refuses anonymous requests
+PASS  A lands in Bristol with one first-business guide
+PASS  founding a company completes the first onboarding step in under 60 seconds — 2s
+PASS  mobile: no horizontal scrolling on the city screen
+PASS  B buys 40 wheat directly from A (player-to-player trade) — {"orderId":56,"filled":40,"remaining":0,"status":"filled"}
+PASS  B cannot control A's farm
+PASS  A is notified that the farm sold wheat
+PASS  B is notified of the purchase
+PASS  mobile: notifications fit the screen
+PASS  admin console shows reconciled Empire Coin and GBP_TEST ledgers
+PASS  admin sees all three players
+PASS  admin views never show password material
+PASS  a player opening /admin is refused
+PASS  after sign-out the session cookie no longer works
+PASS  after signing back in A still owns Alice Acres
+PASS  mobile: account page fits the screen
+PASS  the shared world still reconciles after the journey
+PASS  no page errors in any browser
+
+23/23 checks passed

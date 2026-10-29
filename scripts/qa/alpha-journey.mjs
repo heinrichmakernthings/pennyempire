@@ -41,12 +41,26 @@ async function order(api, companyId, commodityId, side, quantity, limitPriceMino
   return api.cmd({ type: 'commodity.order', companyId, commodityId, side, quantity, limitPriceMinor, quoteId: q.quote.id, ...extra });
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 const problems = [];
 const watch = (page, who) => { page.on('pageerror', (e) => problems.push(`${who} pageerror: ${e.message}`)); page.on('console', (m) => { if (m.type() === 'error' && !/401|403|Failed to load resource/.test(m.text())) problems.push(`${who}: ${m.text()}`); }); };
 try {
   // 0. the game is closed to anyone without an account
   const anon = await (await browser.newContext({ viewport: { width: 1280, height: 900 } })).newPage(); watch(anon, 'anon');
+  await anon.route('**/api/health', route => route.fulfill({ status: 503, contentType: 'text/html', body: 'Unavailable' }));
+  await anon.goto(`${BASE}/city`, { waitUntil: 'networkidle' });
+  check('health outage shows recovery, never a substitute game', await anon.getByRole('heading', { name: 'Bristol is temporarily unavailable' }).isVisible() && await anon.getByRole('navigation', { name: 'Main' }).count() === 0);
+  await anon.screenshot({ path: `${OUT}/combined-outage.png` });
+  await anon.getByRole('link', { name: 'Explore an illustrative preview' }).click();
+  check('offline preview is an explicit choice and clearly labelled', await anon.getByLabel('Preview mode').waitFor({ timeout: 10_000 }).then(() => true, () => false));
+  await anon.unroute('**/api/health');
+  await anon.route('**/api/auth/me', route => route.fulfill({ status: 503, contentType: 'text/html', body: 'Unavailable' }));
+  await anon.goto(`${BASE}/city`, { waitUntil: 'networkidle' });
+  check('session outage keeps the private game closed', await anon.getByRole('heading', { name: 'Bristol is temporarily unavailable' }).isVisible() && await anon.getByRole('navigation', { name: 'Main' }).count() === 0);
+  await anon.unroute('**/api/auth/me');
+  await anon.getByRole('button', { name: 'Try again' }).click();
+  await anon.getByRole('button', { name: 'Sign in' }).waitFor();
+  check('session retry recovers to sign-in', await anon.getByRole('button', { name: 'Sign in' }).isVisible());
   await anon.goto(`${BASE}/city`, { waitUntil: 'networkidle' });
   check('signed-out visitors see the sign-in screen, not the game', await anon.getByRole('button', { name: 'Sign in' }).isVisible() && !(await anon.getByRole('navigation', { name: 'Main' }).count()));
   check('the game API refuses anonymous requests', (await anon.request.get(`${BASE}/api/screens/city`)).status() === 401);
@@ -56,7 +70,7 @@ try {
   const t0 = Date.now();
   const A = await (await browser.newContext({ viewport: { width: 1440, height: 1000 } })).newPage(); watch(A, 'A');
   await joinGame(A, await invite(), 'alice', 'Alice');
-  check('A lands in Bristol with the getting-started checklist', await A.getByRole('complementary', { name: 'Getting started' }).waitFor({ timeout: 10_000 }).then(() => true, () => false));
+  check('A lands in Bristol with one first-business guide', await A.getByRole('heading', { name: 'Your first business starts here.' }).waitFor({ timeout: 10_000 }).then(() => true, () => false) && await A.getByRole('complementary', { name: 'Getting started' }).count() === 0);
   await A.screenshot({ path: `${OUT}/alpha-2-onboarding.png` });
   const a = as(A);
   const fq = (await a.get('/api/startup-quote?industry=farm&plotId=lot-3&tier=1')).quote;

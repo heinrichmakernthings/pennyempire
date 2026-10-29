@@ -1,3 +1,4 @@
+import '@/design/phase10.css';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useBreakpoint } from '@/app/useBreakpoint';
@@ -48,6 +49,7 @@ export function SharesScreen() {
         : home.status === 'error' ? <ErrorState title="Couldn’t load the exchange" message={home.error} onRetry={home.reload} />
         : (
           <div className="pe-stack">
+            <details className="pe-market-guide"><summary>New to fictional shares?</summary><p>Buy a stake in a company using Empire Coins. Your available cash is spendable; share value and unrealised gains are estimates, not extra cash. Realised gains come from completed sales. Dividends are separate payments from company earnings. Orders can remain unfilled when nobody offers the other side of the trade.</p><Link to="/portfolio">Review your holdings and realised results</Link></details>
             <MarketBar ex={home.data.exchange} />
             <div className="pe-shares">
               <aside className="pe-shares-list" aria-label="Listed companies">
@@ -88,12 +90,15 @@ function MarketBar({ ex }: { ex: ExchangeHome }) {
 }
 
 function Listings({ rows, selected, onSelect, compact }: { rows: SecurityListing[]; selected: string | null; onSelect: (id: string) => void; compact: boolean }) {
+  const [search, setSearch] = useState('');
+  const matches = rows.filter(l => `${l.name} ${l.ticker}`.toLowerCase().includes(search.trim().toLowerCase()));
   return (
+    <div><div className="pe-listings-search"><Field label="Find a listed company"><input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder="Company or ticker" /></Field><p className="pe-hint" role="status">{matches.length} of {rows.length} companies</p></div>
     <div className="pe-table-wrap" role="region" aria-label="Listed companies" tabIndex={0}>
       <table className="pe-table pe-small" data-testid="listings">
         <caption className="pe-sr">Listed companies on the Penny Exchange</caption>
         <thead><tr><th scope="col">Company</th><th scope="col" className="pe-end">Price</th>{!compact && <><th scope="col" className="pe-end">Change</th><th scope="col" className="pe-end">vs estimate</th><th scope="col" className="pe-end">Yield</th></>}</tr></thead>
-        <tbody>{rows.map((l) => (
+        <tbody>{matches.length === 0 && <tr><td colSpan={compact ? 2 : 5}>No matching companies. Try another name or clear your search.</td></tr>}{matches.map((l) => (
           <tr key={l.companyId} className={l.companyId === selected ? 'is-selected' : ''}>
             <th scope="row"><button type="button" className="pe-link-btn pe-listing-btn" aria-pressed={l.companyId === selected} onClick={() => onSelect(l.companyId)} data-testid={`listing-${l.ticker}`}><Logo l={l} size={24} /><span>{l.ticker}<small>{l.name}{l.status === 'suspended' ? ' · suspended' : ''}</small></span></button></th>
             <td className="pe-end pe-financial-number">{ec(l.priceMinor)}{l.priceBasis !== 'trade' && l.priceMinor !== null ? <small className="pe-hint"> ({l.priceBasis})</small> : null}</td>
@@ -101,7 +106,7 @@ function Listings({ rows, selected, onSelect, compact }: { rows: SecurityListing
           </tr>
         ))}</tbody>
       </table>
-    </div>
+    </div></div>
   );
 }
 

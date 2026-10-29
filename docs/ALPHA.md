@@ -25,7 +25,7 @@ Penny Empire's private alpha is one shared, server-authoritative Bristol on Clou
 - There is **no route that edits a balance.** Coins only move through ledger rules, and simulated pounds only through the GBP_TEST ledger's own operations.
 
 ## Setting up the alpha on Cloudflare
-1. Deploy the `release/private-alpha-v01` build (see `docs/DEPLOYMENT.md`).
+1. Deploy the reviewed combined release from `integration/combined-playable-alpha` (or its merged commit on `main`) (see `docs/DEPLOYMENT.md`).
 2. Set the operator token as a secret, never in `wrangler.jsonc`:
    ```bash
    npx wrangler secret put ADMIN_TOKEN

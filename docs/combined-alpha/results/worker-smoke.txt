@@ -1,0 +1,16 @@
+PASS  Worker health answers from the local Durable Object
+PASS  anonymous game access is refused
+PASS  SPA deep link serves the built game
+PASS  worker_a registers with a single-use invite
+PASS  worker_a has an authenticated session
+PASS  worker_b registers with a single-use invite
+PASS  worker_b has an authenticated session
+PASS  company creation settles in Durable Object SQLite
+PASS  the second player cannot withdraw from the first company
+PASS  cross-origin writes are refused
+PASS  developer tick endpoint stays disabled
+PASS  administrator health is available
+PASS  logout is accepted by the Worker
+PASS  the old account cannot access the game after logout
+
+14/14 local Worker checks passed

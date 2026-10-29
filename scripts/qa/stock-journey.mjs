@@ -38,7 +38,7 @@ const found = async (industry, plotId, name) => {
   return r.transactionId;
 };
 const tick = (count) => fetch(`${BASE}/api/dev/tick`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ count }) });
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   const free = (await api('/api/lots')).lots.find((l) => l.status === 'vacant' && l.fits.includes('pizza'));
   const pizza = await found('pizza', free.id, 'Quay Pizza');

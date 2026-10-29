@@ -26,6 +26,7 @@ export function ProcureSheet({ companyId, commodityId, needUnits, haveUnits, onB
   const mine = new Set(v.holdings.map((h) => h.companyId));
   return (
     <div className="pe-stack" data-testid="procure-sheet">
+      <p className="pe-hint">Purchases use this company’s cash. Filled orders arrive directly in its inventory; there is no extra delivery click. A limit order may remain open until a supplier matches your price.</p>
       <p>{deficit > 0 ? <>Your plan needs <strong>{formatUnits(needUnits)}</strong> {unit}s of {commodityLabel(commodityId).toLowerCase()} per day and you hold <strong>{formatUnits(haveUnits)}</strong>: short by <strong>{formatUnits(deficit)}</strong>.</> : <>You hold enough {commodityLabel(commodityId).toLowerCase()} for today's plan ({formatUnits(haveUnits)} on hand vs {formatUnits(needUnits)} needed); you can still stock up.</>}</p>
       <div className="pe-table-scroll"><table className="pe-table pe-small" aria-label={`${commodityLabel(commodityId)} suppliers`}>
         <thead><tr><th scope="col">Supplier</th><th scope="col">Type</th><th scope="col" className="pe-num">Price</th><th scope="col" className="pe-num">Available</th><th scope="col"><span className="pe-sr">Action</span></th></tr></thead>

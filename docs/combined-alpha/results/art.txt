@@ -1,0 +1,6 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> pennyempire@0.1.0 art:validate
+> node tools/art-review/validate.mjs
+
+PASS: 41 unique frame bounds, all source references, six industries, 48px icons, 40px actors, projection and all 16 road/quay masks.

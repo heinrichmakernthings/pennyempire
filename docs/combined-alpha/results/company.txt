@@ -1,0 +1,29 @@
+PASS  Bristol shows real starting capital and a first-business action
+PASS  new player can reach opportunities within 60 seconds
+PASS  new player sees an empty state with a next step
+PASS  new player starts with 20,000 EC and no company — 2000000
+PASS  opportunity finder lists six industries
+PASS  every forecast is labelled FORECAST
+PASS  details explain the forecast (reasons and cost breakdown)
+PASS  location step lists only plots that fit the industry
+PASS  bill is itemised and the confirm button states the exact price — Pay 3,100 EC and found Avon Beans
+PASS  company is created and the player lands on its dashboard
+PASS  wallet was debited by the quoted price through the ledger — 310000 minor
+PASS  journey from opportunity to open business took under 5 minutes
+PASS  ledger reconciles after creation
+PASS  dashboard shows diagnosis, tabs and activity
+PASS  company briefing links real results and renders approved worker art
+PASS  daily-results shortcut opens Financials
+PASS  "Buy supplies now" is accepted by the server and confirmed in the UI
+PASS  marketing help opens on click
+PASS  Escape closes marketing help
+PASS  price change is saved by the server
+PASS  after several simulated days the company has real revenue and expenses — rev 27200 exp 20223
+PASS  upgrade is bought with company cash and changes real capacity
+PASS  city map lists plots for lease
+PASS  mobile /opportunities: no horizontal overflow — 0
+PASS  mobile /start?industry=pizza: no horizontal overflow — 0
+PASS  mobile /companies?company=co-pl-cafe-1: no horizontal overflow — 0
+PASS  no console errors during the journey
+
+27/27 checks passed

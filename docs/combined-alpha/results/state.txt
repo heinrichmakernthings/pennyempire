@@ -1,0 +1,17 @@
+PASS  six state companies are shown with real treasuries
+PASS  a campaign bought in the browser exists on the server
+PASS  the city activity feed reports the active billboard campaign — ad=billboard
+PASS  premises show a real daily cost from Central Property
+PASS  the bank reads the company’s real record and states its grade and reasons — grade B: Profitable for two weeks or more.
+PASS  administration without a token is refused
+PASS  an administrator can start an event (logged) — Started Energy shortage (evt-29-1). Its effects apply from the next tick; the Penny Post reports it.
+PASS  an administrator can set the base rate (logged)
+PASS  the base rate shown is the server’s 8.00%
+PASS  the active energy event is listed with its effects
+PASS  grid capacity is reduced by the event — 180 of 400
+PASS  the Penny Post reports the energy crisis and the rate decision
+PASS  the developer dashboard shows genuine figures and the ledger reconciles
+PASS  every administrative action and refusal is in the admin log
+PASS  no console errors
+
+15/15 checks passed
