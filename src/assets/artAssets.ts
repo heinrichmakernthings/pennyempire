@@ -63,7 +63,7 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 export async function loadArtAtlas(frameIds?: string[]): Promise<ArtAtlas> {
   // City loading excludes portrait convenience exports and international scenery until requested.
   const cityIds = new Set([...base.assets, ...(phase2Json as unknown as Manifest).assets].map(a => a.id));
-  const wanted = manifest.assets.filter(a => frameIds ? frameIds.includes(a.id) : cityIds.has(a.id) || /^(farm-worker|mill-worker|dairy-worker|pizza-chef|barista|timber-worker|delivery-driver|warehouse-worker)-(idle|work-)/.test(a.id) || a.id.startsWith('courier-') || a.id.startsWith('farm-pickup-') || a.id.startsWith('delivery-driver-load-'));
+  const wanted = manifest.assets.filter(a => frameIds ? frameIds.includes(a.id) : cityIds.has(a.id) || /^(farm-worker|mill-worker|dairy-worker|pizza-chef|barista|timber-worker|delivery-driver|warehouse-worker)-(idle|work-)/.test(a.id) || a.id.startsWith('courier-') || a.id.startsWith('farm-pickup-') || a.id.startsWith('delivery-driver-load-') || a.id === 'cargo-ship-sw');
   const sources = [...new Set(wanted.map((a) => a.source))];
   const images = new Map<string, HTMLImageElement>();
   const failedSources: string[] = [];

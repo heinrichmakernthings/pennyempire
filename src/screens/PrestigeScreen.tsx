@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Plot, PrestigeItem, Quote } from '@/contracts/game-state';
-import { frameById } from '@/assets/artAssets';
+import { artUrl, frameById } from '@/assets/artAssets';
 import { useArtAtlas } from '@/city/useArtAtlas';
 import { useDataSource } from '@/data/store';
 import { newIdempotencyKey, useCommand } from '@/data/useCommand';
@@ -21,6 +21,11 @@ function PrestigeView({ items, plots, cityId }: { items: PrestigeItem[]; plots: 
   return (
     <div className="pe-prestige">
       <p className="pe-callout" role="note">Prestige items are cosmetic status goods bought with Empire Coins. Any boost is disclosed below with its exact size and duration. Items without finished artwork are listed but cannot be bought.</p>
+      <section className="pe-card" aria-labelledby="office-preview-title">
+        <h2 id="office-preview-title" className="pe-h2">Executive office</h2>
+        <img className="pe-pixel-art" src={artUrl('assets/art/phase8/runtime/executive-office.png')} alt="Executive office with a desk, meeting area and city-facing windows" width={384} height={320} style={{ maxWidth: '100%', height: 'auto' }} />
+        <p>A future cosmetic interior for your headquarters. Preview only; not available to purchase yet.</p>
+      </section>
       <ItemGrid items={items} selectedId={id} onSelect={setId} />
       {item && <ItemDetails key={item.id} item={item} plots={plots} cityId={cityId} />}
     </div>

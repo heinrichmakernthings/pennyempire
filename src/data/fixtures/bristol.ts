@@ -69,7 +69,7 @@ export const city: City = {
 const decor: DecorPlacement[] = [
   { assetId: 'crane', column: 11, row: 12 }, { assetId: 'crates', column: 12, row: 11 }, { assetId: 'crates', column: 12, row: 12 },
   { assetId: 'bollard', column: 12, row: 5 }, { assetId: 'bollard', column: 12, row: 8 }, { assetId: 'bollard', column: 12, row: 13 },
-  { assetId: 'boat', column: 14, row: 3 }, { assetId: 'boat', column: 14, row: 10 },
+  { assetId: 'boat', column: 14, row: 3 }, { assetId: 'cargo-ship-sw', column: 15, row: 10 },
   { assetId: 'tree', column: 3, row: 0 }, { assetId: 'tree', column: 8, row: 0 }, { assetId: 'tree', column: 3, row: 5 }, { assetId: 'tree', column: 8, row: 5 },
   { assetId: 'tree', column: 3, row: 10 }, { assetId: 'tree', column: 12, row: 10 }, { assetId: 'tree', column: 3, row: 14 },
   { assetId: 'lamp', column: 3, row: 3 }, { assetId: 'lamp', column: 5, row: 5 }, { assetId: 'lamp', column: 8, row: 3 }, { assetId: 'lamp', column: 10, row: 5 }, { assetId: 'lamp', column: 12, row: 3 },
