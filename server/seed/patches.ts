@@ -1,3 +1,5 @@
+import { ensurePrestigeCatalogue } from '../engine/prestige';
+import { ensureGbpBooks } from '../engine/gbpLedger';
 import type { Sql } from '../db/sql';
 import { loadConfig, saveConfig } from '../engine/config';
 import { createAccount, issue, type TickCtx } from '../engine/ledger';
@@ -115,7 +117,10 @@ const securitiesV1: Patch = {
 /** Six state enterprises, the central bank and the lease register (Prompt 8). */
 const stateEconomyV1: Patch = { id: 'state-economy-v1', run(db, ctx) { return ensureStateCompanies(db, ctx, loadConfig(db)); } };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1];
+/** Prestige catalogue and the (simulated) GBP books (Prompt 9). */
+const prestigeWalletV1: Patch = { id: 'prestige-wallet-v1', run(db) { ensurePrestigeCatalogue(db); ensureGbpBooks(db); return 0; } };
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

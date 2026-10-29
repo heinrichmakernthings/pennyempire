@@ -66,7 +66,8 @@ CREATE TABLE prestige_owned (
 );
 CREATE INDEX idx_owned_owner ON prestige_owned(owner_id);
 CREATE TABLE prestige_history (id INTEGER PRIMARY KEY AUTOINCREMENT, tick INTEGER NOT NULL, owned_id TEXT NOT NULL REFERENCES prestige_owned(id), item_id TEXT NOT NULL, kind TEXT NOT NULL CHECK (kind IN ('purchase','list','unlist','trade','reward')), from_owner TEXT, to_owner TEXT, price_minor INTEGER NOT NULL DEFAULT 0, fee_minor INTEGER NOT NULL DEFAULT 0, ledger_tx_id INTEGER);
-CREATE TABLE prestige_listings (id TEXT PRIMARY KEY, owned_id TEXT NOT NULL UNIQUE REFERENCES prestige_owned(id), seller_id TEXT NOT NULL, ask_minor INTEGER NOT NULL CHECK (ask_minor > 0), status TEXT NOT NULL CHECK (status IN ('open','sold','cancelled')), created_tick INTEGER NOT NULL, closed_tick INTEGER, buyer_id TEXT, idempotency_key TEXT UNIQUE);
+CREATE TABLE prestige_listings (id TEXT PRIMARY KEY, owned_id TEXT NOT NULL REFERENCES prestige_owned(id), seller_id TEXT NOT NULL, ask_minor INTEGER NOT NULL CHECK (ask_minor > 0), status TEXT NOT NULL CHECK (status IN ('open','sold','cancelled')), created_tick INTEGER NOT NULL, closed_tick INTEGER, buyer_id TEXT, idempotency_key TEXT UNIQUE);
+CREATE UNIQUE INDEX idx_one_open_listing ON prestige_listings(owned_id) WHERE status = 'open';
 CREATE TABLE prestige_scores (tick INTEGER NOT NULL, owner_id TEXT NOT NULL, score INTEGER NOT NULL, breakdown_json TEXT NOT NULL, PRIMARY KEY (tick, owner_id));
 
 -- ───────── Boosts and membership ─────────

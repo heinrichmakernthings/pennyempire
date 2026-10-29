@@ -16,6 +16,8 @@ import { logEvent, logFailure, takeSnapshot } from './stats';
 import { closeEnergyDay, drawEnergy, startEnergyDay } from './energy';
 import { currentMods } from './economyState';
 import { runEvents } from './events';
+import { marketingFactorBps, productionExtra } from './boosts';
+import { recordPrestige } from './prestige';
 import { runLogistics } from './logistics';
 import { payDepositInterest, runLoans, runNpcCredit } from './bank';
 import { liquidityOps, reviewPolicy } from './centralBank';
@@ -221,6 +223,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
             const energy = b * energyPerBatch(c, line.energy_units) * energyPrice; st(c.id).energyDue += energy;
             addStock(db, ctx, c.id, line.output_commodity_id, b * line.output_units, basis + energy, 'production_output', line.recipe_id);
             st(c.id).unitsProduced += b * line.output_units;
+            // Disclosed production boost (bought or earned): extra units for the owner's lines, limited by free storage; a unit's cost basis is zero because it cost nothing extra to make.
+            if (c.owner_kind === 'player') { const room = c.storage_cap_units - stock(db, c.id, line.output_commodity_id).qty; const extra = productionExtra(db, c.owner_id, n, b * line.output_units, room); if (extra > 0) { addStock(db, ctx, c.id, line.output_commodity_id, extra, 0, 'production_output', `${line.recipe_id}:boost`); st(c.id).unitsProduced += extra; } }
             producedBatches.set(c.id, (producedBatches.get(c.id) ?? 0) + b);
           }
           db.run('INSERT INTO production_log (tick, company_id, recipe_id, planned_batches, produced_batches, limited_by, output_units, inputs_json) VALUES (?,?,?,?,?,?,?,?)', n, c.id, line.recipe_id, wanted, b, limited, b * line.output_units, JSON.stringify(used));
@@ -349,7 +353,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         const rival = paidBase > 0 ? rivalSpendFor(c.industry_id, c.id) : 0;
         const baseDilution = Math.min(5_000, Math.floor((5_000 * rival) / (rival + paidBase + cfg.awarenessHalfSpendMinor)));
         const baseEff = Math.floor((((paidBase * mods.adReachBps) / 10_000) * (10_000 - baseDilution)) / 10_000);
-        const m = baseEff + (ads.effective.get(c.id) ?? 0) + Math.max(0, (ads.industryPool.get(c.industry_id) ?? 0) - (ads.ownPool.get(c.id) ?? 0));
+        const m0 = baseEff + (ads.effective.get(c.id) ?? 0) + Math.max(0, (ads.industryPool.get(c.industry_id) ?? 0) - (ads.ownPool.get(c.id) ?? 0));
+        const m = c.owner_kind === 'player' ? Math.floor((m0 * marketingFactorBps(db, c.owner_id, n)) / 10_000) : m0;   // disclosed marketing boost (the awareness ceiling below still applies)
         const target = awarenessTarget(cfg, m);
         const next = Math.floor((c.awareness_bps * (10_000 - cfg.awarenessDecayBps)) / 10_000) + Math.floor((target * cfg.awarenessDecayBps) / 10_000);
         if (next !== c.awareness_bps) db.run('UPDATE companies SET awareness_bps = ? WHERE id = ?', Math.min(cfg.awarenessMaxBps, next), c.id);
@@ -378,6 +383,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
+    if (n % 7 === 0) recordPrestige(db, n);
     recordCpi(db, n);
     recordMonetaryStats(db, ctx, cfg, { consumerSpend, tradeValue, creditIssued: db.get<{ a: number }>("SELECT COALESCE(SUM(amount_minor),0) a FROM monetary_ops WHERE tick = ? AND kind = 'liquidity_issue'", n)!.a });
     phase('share_closing');
