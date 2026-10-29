@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "icons": [
+    {
+      "id": "queue",
+      "file": "assets/art/phase3/ui/queue.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "queue"
+    },
+    {
+      "id": "inventory",
+      "file": "assets/art/phase3/ui/inventory.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "inventory"
+    },
+    {
+      "id": "supplier",
+      "file": "assets/art/phase3/ui/supplier.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "supplier"
+    },
+    {
+      "id": "missing-inputs",
+      "file": "assets/art/phase3/ui/missing-inputs.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "missing inputs"
+    },
+    {
+      "id": "overproduction",
+      "file": "assets/art/phase3/ui/overproduction.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "overproduction"
+    },
+    {
+      "id": "loss",
+      "file": "assets/art/phase3/ui/loss.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "loss"
+    },
+    {
+      "id": "profit",
+      "file": "assets/art/phase3/ui/profit.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "profit"
+    },
+    {
+      "id": "order-buy",
+      "file": "assets/art/phase3/ui/order-buy.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order buy"
+    },
+    {
+      "id": "order-sell",
+      "file": "assets/art/phase3/ui/order-sell.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order sell"
+    },
+    {
+      "id": "order-open",
+      "file": "assets/art/phase3/ui/order-open.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order open"
+    },
+    {
+      "id": "order-partial",
+      "file": "assets/art/phase3/ui/order-partial.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order partial"
+    },
+    {
+      "id": "order-filled",
+      "file": "assets/art/phase3/ui/order-filled.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order filled"
+    },
+    {
+      "id": "order-cancelled",
+      "file": "assets/art/phase3/ui/order-cancelled.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "order cancelled"
+    },
+    {
+      "id": "ranking",
+      "file": "assets/art/phase3/ui/ranking.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "ranking"
+    },
+    {
+      "id": "supply-chain",
+      "file": "assets/art/phase3/ui/supply-chain.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "supply chain"
+    },
+    {
+      "id": "price-up",
+      "file": "assets/art/phase3/ui/price-up.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "price up"
+    },
+    {
+      "id": "price-down",
+      "file": "assets/art/phase3/ui/price-down.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "price down"
+    },
+    {
+      "id": "price-flat",
+      "file": "assets/art/phase3/ui/price-flat.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "price flat"
+    },
+    {
+      "id": "notification-economic",
+      "file": "assets/art/phase3/ui/notification-economic.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "notification economic"
+    },
+    {
+      "id": "startup",
+      "file": "assets/art/phase3/ui/startup.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "startup"
+    },
+    {
+      "id": "new-ownership",
+      "file": "assets/art/phase3/ui/new-ownership.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "new ownership"
+    },
+    {
+      "id": "major-success",
+      "file": "assets/art/phase3/ui/major-success.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "major success"
+    },
+    {
+      "id": "collection",
+      "file": "assets/art/phase3/ui/collection.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "collection"
+    },
+    {
+      "id": "warehouse-arrival",
+      "file": "assets/art/phase3/ui/warehouse-arrival.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "warehouse arrival"
+    },
+    {
+      "id": "shipment",
+      "file": "assets/art/phase3/ui/shipment.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "shipment"
+    },
+    {
+      "id": "campaign",
+      "file": "assets/art/phase3/ui/campaign.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "campaign"
+    },
+    {
+      "id": "cargo",
+      "file": "assets/art/phase3/ui/cargo.svg",
+      "size": [
+        24,
+        24
+      ],
+      "usage": "terminal-icon",
+      "colour": "currentColor",
+      "label": "cargo"
+    }
+  ]
+}
