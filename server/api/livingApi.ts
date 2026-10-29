@@ -81,7 +81,8 @@ export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] 
     else if (consumer > 0) state = 'customers';
     else if (s && s.units_produced > 0) state = 'production';
     const open = state !== 'closed' && state !== 'construction';
-    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0 };
+    const ad = open ? (db.get<{ k: string }>("SELECT kind k FROM ad_campaigns WHERE company_id = ? AND status = 'active' ORDER BY CASE kind WHEN 'billboard' THEN 0 WHEN 'digital' THEN 1 WHEN 'industry' THEN 2 WHEN 'contract' THEN 3 ELSE 4 END LIMIT 1", c.id)?.k as CompanyActivity['ad'] | undefined) ?? null : null;
+    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0, ad, energy: limited === 'energy' || limited === 'disruption' };
   });
   return { tick: t, items };
 }

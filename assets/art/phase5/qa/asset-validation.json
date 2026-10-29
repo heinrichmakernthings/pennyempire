@@ -1,0 +1,578 @@
+{
+  "checked": 26,
+  "passed": true,
+  "assets": [
+    {
+      "id": "executive-car-sw",
+      "dimensions": [
+        68,
+        62
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        19,
+        68,
+        43
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "sports-car-sw",
+      "dimensions": [
+        68,
+        62
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        20,
+        68,
+        42
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "supercar-sw",
+      "dimensions": [
+        68,
+        62
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        15,
+        68,
+        47
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "luxury-suv-sw",
+      "dimensions": [
+        68,
+        62
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        0,
+        12,
+        68,
+        50
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "penthouse",
+      "dimensions": [
+        224,
+        285
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        8,
+        0,
+        208,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "luxury-townhouse",
+      "dimensions": [
+        224,
+        234
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        13,
+        0,
+        198,
+        234
+      ],
+      "pivot": [
+        112,
+        234
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "mansion",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        4,
+        0,
+        280,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "corporate-hq",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        15,
+        0,
+        257,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "luxury-boat-sw",
+      "dimensions": [
+        128,
+        91
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        13,
+        128,
+        78
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "trophy-display",
+      "dimensions": [
+        32,
+        39
+      ],
+      "alphaRange": [
+        0,
+        253
+      ],
+      "contentRect": [
+        5,
+        0,
+        22,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "exclusive-sculpture",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        13,
+        0,
+        38,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "prestige-monument",
+      "dimensions": [
+        80,
+        89
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        20,
+        0,
+        40,
+        89
+      ],
+      "pivot": [
+        40,
+        89
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "national-bank-branch",
+      "dimensions": [
+        224,
+        194
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        24,
+        0,
+        175,
+        194
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "shopfront-display",
+      "dimensions": [
+        32,
+        39
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        1,
+        0,
+        29,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "wall-advert",
+      "dimensions": [
+        64,
+        49
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        1,
+        0,
+        62,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "promotion-kiosk",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaRange": [
+        0,
+        255
+      ],
+      "contentRect": [
+        1,
+        0,
+        62,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "reusedFrom": null
+    },
+    {
+      "id": "penny-energy",
+      "dimensions": [
+        224,
+        194
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        16,
+        224,
+        178
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "reusedFrom": "penny-energy"
+    },
+    {
+      "id": "penny-ads",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        1,
+        0,
+        286,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": "penny-ads"
+    },
+    {
+      "id": "penny-logistics",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        28,
+        288,
+        255
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": "penny-logistics"
+    },
+    {
+      "id": "central-property",
+      "dimensions": [
+        224,
+        285
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        39,
+        224,
+        246
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "reusedFrom": "central-property"
+    },
+    {
+      "id": "national-bank",
+      "dimensions": [
+        224,
+        285
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        38,
+        224,
+        247
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "reusedFrom": "national-bank"
+    },
+    {
+      "id": "penny-exchange",
+      "dimensions": [
+        288,
+        283
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        10,
+        0,
+        267,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "reusedFrom": "penny-exchange"
+    },
+    {
+      "id": "roof-billboard",
+      "dimensions": [
+        64,
+        49
+      ],
+      "alphaRange": [
+        0,
+        253
+      ],
+      "contentRect": [
+        7,
+        0,
+        50,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "reusedFrom": "roof-billboard"
+    },
+    {
+      "id": "street-ad",
+      "dimensions": [
+        22,
+        83
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        43,
+        22,
+        40
+      ],
+      "pivot": [
+        11,
+        83
+      ],
+      "reusedFrom": "street-ad"
+    },
+    {
+      "id": "digital-sign",
+      "dimensions": [
+        22,
+        83
+      ],
+      "alphaRange": [
+        0,
+        253
+      ],
+      "contentRect": [
+        0,
+        41,
+        22,
+        42
+      ],
+      "pivot": [
+        11,
+        83
+      ],
+      "reusedFrom": "digital-sign"
+    },
+    {
+      "id": "bus-shelter",
+      "dimensions": [
+        64,
+        81
+      ],
+      "alphaRange": [
+        0,
+        254
+      ],
+      "contentRect": [
+        0,
+        12,
+        64,
+        69
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "reusedFrom": "bus-shelter"
+    }
+  ]
+}

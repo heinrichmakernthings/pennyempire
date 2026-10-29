@@ -28,9 +28,9 @@ const sourceUrls = import.meta.glob(
   { query: '?url', import: 'default', eager: true },
 ) as Record<string, string>;
 
-const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg', '/assets/art/phase4/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg', '/assets/art/phase4/ui/*.svg', '/assets/art/phase6/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 /** UI icons: the base terminal set first, then the Phase 3 economy icons, then the Phase 2 state icons. */
-export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase4/ui/${name}.svg`];
+export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase4/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase6/ui/${name}.svg`];
 
 export interface ArtAtlas {
   images: Map<string, HTMLImageElement>;
@@ -94,4 +94,7 @@ export const commodityIconUrl = (id: string): string | undefined => commodityPng
 const phase5Pngs = import.meta.glob('/assets/art/phase5/runtime/*.png', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 export const phase5Url = (id: string): string | undefined => phase5Pngs[`/assets/art/phase5/runtime/${id}.png`];
 /** Which approved institution sprite represents a state-owned company on the exchange. */
-export const STATE_SPRITE: Record<string, string> = { 'co-bristol-energy': 'penny-energy', 'co-bristol-estates': 'central-property', 'co-bristol-media': 'penny-ads', 'co-national-bank': 'national-bank', 'co-penny-exchange': 'penny-exchange' };
+export const STATE_SPRITE: Record<string, string> = { 'co-bristol-energy': 'penny-energy', 'co-bristol-estates': 'central-property', 'co-bristol-media': 'penny-ads', 'co-national-bank': 'national-bank', 'co-penny-exchange': 'penny-exchange', 'co-penny-logistics': 'penny-logistics' };
+
+/** Approved Phase 6 economy-event icons, by event type; Penny Post kinds map to the same set. */
+export const EVENT_ICON: Record<string, string> = { energy_shortage: 'energy-crisis', inflation_shock: 'inflation', recession: 'market-crash', government_stimulus: 'stimulus', consumer_boom: 'spending', tourism_surge: 'spending', supply_chain_disruption: 'route-broken', construction_boom: 'construction', credit_crunch: 'bankruptcy', corporate_scandal: 'bankruptcy', agricultural_disruption: 'route-broken', advertising_boom: 'spending' };

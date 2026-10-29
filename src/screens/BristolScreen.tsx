@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { fetchNews, fetchStandings, useQuery, type Article, type Standings } from '@/data/managementApi';
 import { useDataSource } from '@/data/store';
 import { formatBps, formatMoney } from '@/domain/money';
+import { uiIconUrl } from '@/assets/artAssets';
 import { Icon } from '@/ui/Icon';
 import { EmptyState, ErrorState, Skeleton } from '@/ui/States';
 import { StatusLabel } from '@/ui/StatusLabel';
@@ -10,6 +11,7 @@ import { Tabs } from '@/ui/Tabs';
 
 const TABS = [{ id: 'news', label: 'The Penny Post' }, { id: 'boards', label: 'Leaderboards' }, { id: 'titles', label: 'Titles' }];
 const KIND_ICON: Record<string, string> = { opening: 'startup', closure: 'warning', bankruptcy: 'warning', title: 'prestige', expansion: 'companies', shortage: 'marketplace', economy: 'city', policy: 'prestige', credit: 'warning', scandal: 'warning' };
+const POST_ART: Record<string, string> = { economy: 'inflation', policy: 'penny-post', credit: 'bankruptcy', scandal: 'bankruptcy', market: 'market-crash' };
 const day = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 /** Bristol at a glance: what happened (news from recorded events), who leads (persisted weekly boards) and who holds which title. NPC and player companies are listed on exactly the same footing. */
@@ -37,7 +39,7 @@ function News() {
     <ol className="pe-news" aria-label="Penny Post articles" data-testid="penny-post">
       {q.data.articles.map((a: Article) => (
         <li key={a.id} className="pe-card pe-news-item" data-importance={a.importance}>
-          <header className="pe-row"><Icon name={KIND_ICON[a.kind] ?? 'city'} size={22} /><div><h2 className="pe-h3">{a.companyId ? <Link to={`/competitors/${a.companyId}`}>{a.headline}</Link> : a.headline}</h2><p className="pe-hint"><time dateTime={a.gameDate}>{day(a.gameDate)}</time> · {a.kind}</p></div></header>
+          <header className="pe-row">{POST_ART[a.kind] && uiIconUrl(POST_ART[a.kind]!) ? <img src={uiIconUrl(POST_ART[a.kind]!)} alt="" width={28} height={28} style={{ filter: 'invert(1) brightness(1.1)' }} /> : <Icon name={KIND_ICON[a.kind] ?? 'city'} size={22} />}<div><h2 className="pe-h3">{a.companyId ? <Link to={`/competitors/${a.companyId}`}>{a.headline}</Link> : a.headline}</h2><p className="pe-hint"><time dateTime={a.gameDate}>{day(a.gameDate)}</time> · {a.kind}</p></div></header>
           <p>{a.body}</p>
         </li>
       ))}

@@ -50,7 +50,13 @@ try {
   const camps = (await api(`/api/state/company/${co}`)).services.advertising.campaigns;
   check('a campaign bought in the browser exists on the server', camps.length === 1 && camps[0].status === 'active');
   await page.screenshot({ path: `${OUT}/state-2-advertising.png`, fullPage: true });
+  await cmd({ type: 'ad.start', companyId: co, kind: 'billboard', tier: 2, days: 10 });   // a second, billboard campaign: shown on the city map as the approved roof-billboard sprite
   await tick(3);
+  const act = (await api('/api/city/activity')).items.find((i) => i.companyId === co);
+  check('the city activity feed reports the active billboard campaign', act?.ad === 'billboard', `ad=${act?.ad}`);
+  await page.goto(`${BASE}/city`, { waitUntil: 'networkidle' }); await page.waitForTimeout(1500);
+  await page.screenshot({ path: `${OUT}/state-2b-city-billboard.png` });
+  await page.goto(`${BASE}/state`, { waitUntil: 'networkidle' }); await page.getByRole('tab', { name: 'Premises' }).click();
 
   await page.getByRole('tab', { name: 'Premises' }).click(); await page.getByTestId('premises-tab').waitFor();
   check('premises show a real daily cost from Central Property', (await page.getByTestId('premises-tab').textContent()).includes('Daily cost'));

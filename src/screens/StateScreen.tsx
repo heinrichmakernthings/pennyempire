@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchCompanyServices, fetchLoanQuote, fetchStateOverview, useStateCommand, type StateOverview } from '@/data/stateClient';
 import { useQuery } from '@/data/managementApi';
-import { phase5Url, STATE_SPRITE } from '@/assets/artAssets';
+import { EVENT_ICON, phase5Url, STATE_SPRITE, uiIconUrl } from '@/assets/artAssets';
 import { formatMoney } from '@/domain/money';
 import { Button } from '@/ui/Button';
 import { Field } from '@/ui/Field';
@@ -67,7 +67,7 @@ function Economy({ o }: { o: StateOverview }) {
       <section className="pe-card" aria-labelledby="ev-h"><h2 id="ev-h" className="pe-h3">Economic events</h2>
         {o.events.list.length === 0 ? <p className="pe-hint">No events yet. Events start after day 30 under published, seeded rules; they change real fundamentals (energy, deliveries, rents, credit, demand), never prices directly.</p> : (
           <ul className="pe-list">{o.events.list.slice(0, 8).map((e: any) => (
-            <li key={e.id}><StatusLabel tone={e.status === 'active' ? 'warning' : 'neutral'}>{e.status}</StatusLabel> <strong>{e.headline}</strong><br /><small className="pe-hint">days {e.startTick}–{e.endTick} · {SEV[e.severity - 1]} · {e.effects.join('; ')} · {e.trigger === 'random' ? `random roll ${e.roll}` : e.trigger}</small></li>))}</ul>)}
+            <li key={e.id}>{uiIconUrl(EVENT_ICON[e.type] ?? 'clock') ? <img src={uiIconUrl(EVENT_ICON[e.type] ?? 'clock')} alt="" width={24} height={24} style={{ verticalAlign: 'middle', marginRight: 6, filter: 'invert(1) brightness(1.1)' }} /> : null}<StatusLabel tone={e.status === 'active' ? 'warning' : 'neutral'}>{e.status}</StatusLabel> <strong>{e.headline}</strong><br /><small className="pe-hint">days {e.startTick}–{e.endTick} · {SEV[e.severity - 1]} · {e.effects.join('; ')} · {e.trigger === 'random' ? `random roll ${e.roll}` : e.trigger}</small></li>))}</ul>)}
       </section>
       <section className="pe-card" aria-labelledby="pl-h"><h2 id="pl-h" className="pe-h3">Central bank decisions</h2>
         <table className="pe-table pe-small"><caption className="pe-sr">Central bank policy log</caption><thead><tr><th scope="col">Day</th><th scope="col">Decision</th><th scope="col" className="pe-num">Rate</th><th scope="col">Reason</th></tr></thead>
