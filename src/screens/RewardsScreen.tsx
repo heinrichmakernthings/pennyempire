@@ -17,7 +17,7 @@ export function RewardsScreen() {
   return (
     <div className="pe-screen" data-testid="rewards-screen">
       <div className="pe-screen-head"><h1 className="pe-h1">Rewards &amp; lottery</h1></div>
-      <p className="pe-callout" role="note">Everything here is optional and fictional. Rewards are issued by the server only. Lotteries use Empire Coins, which cannot be withdrawn. Cash-style prizes are SIMULATED GBP_TEST from a reserved test treasury.</p>
+      <div className="pe-callout" role="note"><p>Everything here is optional and fictional. Rewards are issued by the server only. Lotteries use Empire Coins, which cannot be withdrawn. Cash-style prizes are SIMULATED GBP_TEST from a reserved test treasury.</p></div>
       {!server ? <EmptyState title="Rewards need the game server">Start it with npm run dev:all.</EmptyState> : q.status === 'loading' ? <Skeleton lines={5} label="Loading rewards" /> : q.status === 'error' ? <ErrorState title="Couldn’t load rewards" message={q.error} onRetry={q.reload} /> : (
         <Tabs tabs={TABS} value={tab} onChange={setTab} label="Reward sections">{tab === 'ads' ? <Ads d={q.data} reload={q.reload} /> : tab === 'lottery' ? <Lottery d={q.data} reload={q.reload} /> : <Prizes d={q.data} reload={q.reload} />}</Tabs>
       )}
@@ -64,7 +64,7 @@ function Ads({ d, reload }: { d: Record<string, any>; reload: () => void }) {
 }
 
 function Lottery({ d, reload }: { d: Record<string, any>; reload: () => void }) {
-  const { send, pending } = useGameCommand(); const open = (d.lotteries as any[]).filter((l) => l.status === 'open').sort((a, b) => a.drawTick - b.drawTick)[0]; const done = (d.lotteries as any[]).filter((l) => l.status !== 'open');
+  const { send, pending } = useGameCommand(); const open = (d.lotteries as any[]).filter((l) => l.status === 'open' && l.daysLeft > 0).sort((a, b) => a.drawTick - b.drawTick)[0]; const done = (d.lotteries as any[]).filter((l) => l.status !== 'open');
   return (
     <div className="pe-stack" data-testid="lottery">
       {!open ? <EmptyState title="No draw is open">A new weekly draw opens automatically.</EmptyState> : (

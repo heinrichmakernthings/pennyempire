@@ -24,6 +24,7 @@ import { walletCommand } from '../engine/walletCommands';
 import { membershipView } from '../engine/membership';
 import { providerAttest, recordImpression } from '../engine/rewards';
 import { treasuryView } from '../engine/commercial';
+import { runScheduledServices } from '../engine/services';
 import { treasuryAction } from '../engine/treasuryAdmin';
 import { leaderboard } from '../engine/prestige';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
@@ -155,6 +156,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
         const count = Math.max(1, Math.min(400, Number((req.body as { count?: number } | undefined)?.count ?? 1)));
         const results = [];
         for (let i = 0; i < count; i++) { const last = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t; const r = runTickSafely(db, last + 1); results.push(r.status === 'complete' ? { tick: r.tick, status: r.status } : r); if (r.status === 'failed') break; }
+        runScheduledServices(db, now);
         return json(200, { ran: results.length, results: results.slice(-5), gameDate: gameDate(loadConfig(db), db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t) });
       }
     }

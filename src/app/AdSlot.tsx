@@ -16,7 +16,7 @@ export function AdSlot({ placement = 'top' }: { placement?: AdPlacement }) {
   useEffect(() => {
     const el = ref.current; if (!el || !server || typeof IntersectionObserver === 'undefined') return;
     const io = new IntersectionObserver((entries) => {
-      if (entries.some((e) => e.isIntersecting && e.intersectionRatio > 0.5)) { io.disconnect(); void fetch('/api/ads/impression', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ slot: SLOT[placement] }) }).catch(() => undefined); }
+      if (entries.some((e) => e.isIntersecting && e.intersectionRatio > 0.5)) { io.disconnect(); void fetch('/api/ads/impression', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ slot: SLOT[placement] }) }).then((r) => r.text()).catch(() => undefined); }
     }, { threshold: 0.5 });
     io.observe(el); return () => io.disconnect();
   }, [placement, server]);

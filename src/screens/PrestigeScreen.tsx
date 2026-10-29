@@ -28,7 +28,7 @@ function ServerPrestige() {
   return (
     <div className="pe-screen" data-testid="prestige-screen">
       <div className="pe-screen-head"><h1 className="pe-h1">Prestige</h1></div>
-      <p className="pe-callout" role="note">Prestige items are fictional status goods bought with <strong>Empire Coins</strong>. The price is destroyed (a currency sink). Coins are not money and cannot be withdrawn; the simulated GBP wallet is completely separate.</p>
+      <div className="pe-callout" role="note"><p>Prestige items are fictional status goods bought with <strong>Empire Coins</strong>. The price is destroyed (a currency sink). Coins are not money and cannot be withdrawn; the simulated GBP wallet is completely separate.</p></div>
       {source.authority !== 'server' ? <EmptyState title="The Prestige Store needs the game server">Purchases, ownership and rankings are stored by the server. Start it with npm run dev:all.</EmptyState> : q.status === 'loading' ? <Skeleton lines={6} label="Loading the Prestige Store" /> : q.status === 'error' ? <ErrorState title="Couldn’t load the Prestige Store" message={q.error} onRetry={q.reload} /> : (
         <Tabs tabs={TABS} value={tab} onChange={setTab} label="Prestige sections">
           {tab === 'store' ? <Store d={q.data} reload={q.reload} /> : tab === 'collection' ? <Collection d={q.data} reload={q.reload} /> : tab === 'market' ? <Market reload={q.reload} /> : tab === 'boosts' ? <Boosts d={q.data} reload={q.reload} /> : <Ranks d={q.data} />}
@@ -101,7 +101,7 @@ function Boosts({ d, reload }: { d: Record<string, any>; reload: () => void }) {
   const { send, pending } = useGameCommand(); const b = d.boosts;
   return (
     <div className="pe-stack" data-testid="boosts-tab">
-      <p className="pe-callout" role="note">{b.note}</p>
+      <div className="pe-callout" role="note"><p>{b.note}</p></div>
       <ul className="pe-shopgrid">{b.offers.map((o: any) => { const live = (b.active as any[]).find((a) => a.kind === o.kind && a.source === 'purchase'); return (
         <li key={o.id} className="pe-shopitem"><header><h3>{o.label}</h3></header><p className="pe-hint">{o.description}</p><p className="pe-financial-number">{ecm(o.priceMinor)} · {o.days} days</p>
           {live ? <StatusLabel tone="positive">Active until day {live.endTick}</StatusLabel> : <Button variant="primary" pending={pending} onClick={() => void send({ type: 'boost.buy', offerId: o.id }, { success: 'Boost activated', failure: 'Couldn’t activate' }, reload)}>Activate for {ecm(o.priceMinor)}</Button>}</li>); })}</ul>
