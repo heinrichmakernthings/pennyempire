@@ -60,6 +60,7 @@ export function competitorProfile(db: Sql, id: string): CompetitorProfile | null
   };
 }
 
+import { displayItems } from '../engine/prestige';
 import type { CompanyActivity, ActivityState } from '../../src/shared/living';
 /**
  * What each building looks like today. Every flag is computed from recorded rows (the last completed day's sales, production and shipments):
@@ -67,7 +68,7 @@ import type { CompanyActivity, ActivityState } from '../../src/shared/living';
  */
 export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] } {
   const t = lastTick(db);
-  const items = db.all<{ id: string; status: string; bankrupt_tick: number | null; created_tick: number; employees: number }>("SELECT id, status, bankrupt_tick, created_tick, employees FROM companies WHERE owner_kind <> 'state' ORDER BY id").map((c): CompanyActivity => {
+  const items = db.all<{ id: string; status: string; bankrupt_tick: number | null; created_tick: number; employees: number; owner_kind: string; owner_id: string }>("SELECT id, status, bankrupt_tick, created_tick, employees, owner_kind, owner_id FROM companies WHERE owner_kind <> 'state' ORDER BY id").map((c): CompanyActivity => {
     const s = db.get<{ revenue_minor: number; units_sold: number; units_produced: number; inventory_value_minor: number }>('SELECT revenue_minor, units_sold, units_produced, inventory_value_minor FROM company_tick_stats WHERE company_id = ? AND tick = ?', c.id, t);
     const consumer = db.get<{ u: number }>('SELECT COALESCE(SUM(units),0) u FROM segment_sales WHERE company_id = ? AND tick = ?', c.id, t)!.u;
     const shipped = db.get<{ n: number }>('SELECT COUNT(*) n FROM trades WHERE seller_company_id = ? AND tick = ?', c.id, t)!.n;
@@ -82,7 +83,8 @@ export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] 
     else if (s && s.units_produced > 0) state = 'production';
     const open = state !== 'closed' && state !== 'construction';
     const ad = open ? (db.get<{ k: string }>("SELECT kind k FROM ad_campaigns WHERE company_id = ? AND status = 'active' ORDER BY CASE kind WHEN 'billboard' THEN 0 WHEN 'digital' THEN 1 WHEN 'industry' THEN 2 WHEN 'contract' THEN 3 ELSE 4 END LIMIT 1", c.id)?.k as CompanyActivity['ad'] | undefined) ?? null : null;
-    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0, ad, energy: limited === 'energy' || limited === 'disruption' };
+    const luxury = c.owner_kind === 'player' && c.id === db.get<{ id: string }>("SELECT id FROM companies WHERE owner_id = ? AND owner_kind = 'player' AND bankrupt_tick IS NULL ORDER BY created_tick, id LIMIT 1", c.owner_id)?.id ? displayItems(db, c.owner_id).map((d) => d.asset) : [];
+    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0, ad, energy: limited === 'energy' || limited === 'disruption', luxury };
   });
   return { tick: t, items };
 }

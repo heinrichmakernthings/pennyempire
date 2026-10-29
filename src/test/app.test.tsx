@@ -25,7 +25,7 @@ describe('navigation and the eight sections', () => {
   it('the main navigation links to all nine sections (seven game sections plus Opportunities and News & Rankings) and switches screens', async () => {
     const user = setup('/city');
     const nav = await screen.findByRole('navigation', { name: 'Main' });
-    expect(within(nav).getAllByRole('link')).toHaveLength(10);
+    expect(within(nav).getAllByRole('link')).toHaveLength(12);
     await user.click(within(nav).getByRole('link', { name: /Stock Exchange/ }));
     expect(await screen.findByRole('heading', { name: 'Stock Exchange', level: 1 })).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: /Stock Exchange/ })).toHaveAttribute('aria-current', 'page');
@@ -42,9 +42,9 @@ describe('navigation and the eight sections', () => {
   });
   it('an advertising slot is reserved but inert', async () => {
     setup('/city');
-    const ad = await screen.findByRole('complementary', { name: /Sponsored space/ });
-    expect(within(ad).queryAllByRole('link')).toHaveLength(0);
-    expect(within(ad).queryAllByRole('button')).toHaveLength(0);
+    const ads = await screen.findAllByRole('complementary', { name: /Sponsored space/ });
+    expect(ads.length).toBeGreaterThan(0);
+    for (const ad of ads) { expect(within(ad).queryAllByRole('link')).toHaveLength(0); expect(within(ad).queryAllByRole('button')).toHaveLength(0); expect(within(ad).getByText('SIMULATED AD')).toBeInTheDocument(); }
   });
 });
 

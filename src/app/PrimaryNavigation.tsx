@@ -4,6 +4,7 @@ import { Icon } from '@/ui/Icon';
 import { ResponsiveSheet } from '@/ui/ResponsiveSheet';
 import { useBreakpoint } from './useBreakpoint';
 import { ROUTES } from './routes';
+import { AdSlot } from './AdSlot';
 
 /** Sidebar (desktop, labelled), rail (tablet, icon + tooltip) and bottom bar with a More sheet (mobile). */
 export function PrimaryNavigation() {
@@ -22,6 +23,7 @@ export function PrimaryNavigation() {
             </li>
           ))}
         </ul>
+        <AdSlot placement="sidebar" />
       </nav>
     );
   }

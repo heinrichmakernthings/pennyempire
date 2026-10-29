@@ -8,6 +8,9 @@ import { NotFound } from './screens/NotFound';
 const Companies = lazy(() => import('./screens/CompaniesScreen').then((m) => ({ default: m.CompaniesScreen })));
 const Commodities = lazy(() => import('./screens/CommodityScreen').then((m) => ({ default: m.CommodityScreen })));
 const State = lazy(() => import('./screens/StateScreen').then((m) => ({ default: m.StateScreen })));
+const Rewards = lazy(() => import('./screens/RewardsScreen').then((m) => ({ default: m.RewardsScreen })));
+const Membership = lazy(() => import('./screens/MembershipScreen').then((m) => ({ default: m.MembershipScreen })));
+const DevTreasury = lazy(() => import('./screens/DevTreasuryScreen').then((m) => ({ default: m.DevTreasuryScreen })));
 const Stocks = lazy(() => import('./screens/shares/SharesScreen').then((m) => ({ default: m.SharesRoute })));
 const Ipo = lazy(() => import('./screens/shares/IpoScreen').then((m) => ({ default: m.IpoScreen })));
 const Portfolio = lazy(() => import('./screens/PortfolioScreen').then((m) => ({ default: m.PortfolioScreen })));
@@ -36,6 +39,9 @@ export function App() {
         <Route path="/stocks/list/:companyId" element={<Ipo />} />
         <Route path="/portfolio" element={<Portfolio />} />
         <Route path="/prestige" element={<Prestige />} />
+        <Route path="/rewards" element={<Rewards />} />
+        <Route path="/membership" element={<Membership />} />
+        <Route path="/dev/treasury" element={<DevTreasury />} />
         <Route path="/wallet" element={<Wallet />} />
         <Route path="/dev/economy" element={<DevEconomy />} />
         <Route path="*" element={<NotFound />} />

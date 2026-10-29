@@ -14,6 +14,7 @@ export function AppShell() {
       <PrimaryNavigation />
       <main id="main" className="pe-main" tabIndex={-1}>
         <Suspense fallback={<Skeleton lines={5} label="Loading screen" />}><Outlet /></Suspense>
+        <div className="pe-main-ad"><AdSlot placement="mobile" /></div>
       </main>
       <AdSlot />
       <NotificationRegion />

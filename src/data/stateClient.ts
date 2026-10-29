@@ -17,13 +17,14 @@ export const fetchLoanQuote = (companyId: string, amountMinor: number, termDays:
 
 export function useStateCommand() {
   const { refreshAll } = useDataActions(); const notify = useUi((s) => s.notify); const [pending, setPending] = useState(false);
-  const send = useCallback(async (body: Record<string, unknown>, labels: { success: string; failure: string }, onDone?: () => void) => {
+  const send = useCallback(async (body: Record<string, unknown>, labels: { success: string; failure: string }, onDone?: () => void): Promise<{ ok: boolean; data?: Record<string, any> }> => {
     setPending(true);
     try {
       const res = await fetch('/api/command', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...body, idempotencyKey: newIdempotencyKey(), expectedRevision: 0 }) });
-      const out = (await res.json()) as { ok: boolean; error?: { message: string } };
-      if (out.ok) { notify({ tone: 'success', title: labels.success }); refreshAll(); onDone?.(); } else notify({ tone: 'error', title: labels.failure, message: out.error?.message });
-    } catch (e) { notify({ tone: 'error', title: labels.failure, message: e instanceof Error ? e.message : 'Unexpected error' }); } finally { setPending(false); }
+      const out = (await res.json()) as { ok: boolean; data?: Record<string, any>; error?: { message: string } };
+      if (out.ok) { if (labels.success) notify({ tone: 'success', title: labels.success }); refreshAll(); onDone?.(); } else notify({ tone: 'error', title: labels.failure, message: out.error?.message });
+      return { ok: out.ok, data: out.data };
+    } catch (e) { notify({ tone: 'error', title: labels.failure, message: e instanceof Error ? e.message : 'Unexpected error' }); return { ok: false }; } finally { setPending(false); }
   }, [refreshAll, notify]);
   return { send, pending };
 }
