@@ -34,7 +34,7 @@ export function companyInvestor(db: Sql, companyId: string): Investor {
 
 /** Investor for an `owners` row (player, NPC shareholders, state). NPC owners all draw on the households' account; the player on the wallet. */
 export function ownerInvestor(db: Sql, ownerId: string, kind: 'player' | 'npc' | 'state', name?: string, account?: string): Investor {
-  const acct = account ?? (kind === 'player' ? actingWallet() : kind === 'state' ? TREASURY : HOUSEHOLDS);
+  const acct = account ?? (kind === 'player' ? (db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', ownerId)?.w ?? actingWallet()) : kind === 'state' ? TREASURY : HOUSEHOLDS);
   const nm = name ?? db.get<{ name: string }>('SELECT name FROM owners WHERE id = ?', ownerId)?.name ?? ownerId;
   return ensureInvestor(db, { id: ownerId, kind: kind === 'npc' ? 'household' : kind, name: nm, account: acct });
 }

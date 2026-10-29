@@ -7,5 +7,5 @@
   "durable_objects": { "bindings": [{ "name": "ECONOMY", "class_name": "EconomyDO" }] },
   "migrations": [{ "tag": "v1", "new_sqlite_classes": ["EconomyDO"] }],
   // Developer endpoints (/api/dev/*) are OFF in deployment. Never enable them on a public environment.
-  "vars": { "DEV_ENDPOINTS": "false" }
+  "vars": { "DEV_ENDPOINTS": "false", "REQUIRE_AUTH": "true" }
 }

@@ -31,12 +31,15 @@ import { leaderboard } from '../engine/prestige';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
 export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown; headers?: Record<string, string> }
-export interface ApiResponse { status: number; body: unknown }
-export interface ApiOptions { devEndpoints: boolean; now?: () => number; adminToken?: string }
+export interface ApiResponse { status: number; body: unknown; headers?: Record<string, string> }
+/** `adminActor` is set by the session layer when the signed-in user has the admin role; the shared token remains for operators and scripts. */
+export interface ApiOptions { devEndpoints: boolean; now?: () => number; adminToken?: string; adminActor?: string }
 
 const json = (status: number, body: unknown): ApiResponse => ({ status, body });
 const apiErr = (status: number, code: ApiError['code'], message: string): ApiResponse => json(status, { ok: false, error: { code, message } });
 const UNAVAILABLE_TYPES = new Set<string>();
+/** Another player's private books (management, ledgers, bank services) are not readable; NPC, state and own companies are. */
+const othersPrivate = (db: Sql, companyId: string) => !!db.get("SELECT 1 FROM companies WHERE id = ? AND owner_kind = 'player' AND owner_id <> ?", companyId, actingPlayer());
 
 /** Envelope with real tick revision and clock; `authority: 'server'` tells the UI to drop the "illustrative" badges. */
 function envelope<T>(db: Sql, data: T) {
@@ -92,6 +95,8 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       const qq = startupQuote(db, { industry: q.industry ?? '', plotId: q.plotId ?? '', tier: Number(q.tier ?? 1), name: q.name, workingCapitalMinor: q.workingCapitalMinor === undefined ? undefined : Number(q.workingCapitalMinor) });
       return json(200, { authority: 'server', quote: qq });
     }
+    if (method === 'GET' && seg[0] === 'companies' && seg[1] && (seg[2] === 'management' || seg[2] === 'financials') && othersPrivate(db, seg[1])) return apiErr(403, 'FORBIDDEN', 'That company belongs to another player.');
+    if (method === 'GET' && seg[0] === 'state' && ((seg[1] === 'company' && seg[2] && othersPrivate(db, seg[2])) || (seg[1] === 'loan-quote' && othersPrivate(db, q.companyId ?? '')))) return apiErr(403, 'FORBIDDEN', 'That company belongs to another player.');
     if (method === 'GET' && seg[0] === 'companies' && seg[1] && seg[2] === 'management') {
       const m = management(db, seg[1]);
       return m ? json(200, { authority: 'server', management: m }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[1]}`);
@@ -133,12 +138,12 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     }
     if (seg[0] === 'admin') {
       const token = req.headers?.['x-admin-token'];
-      if (!authorised(token, opts.adminToken)) { logDenied(db, `${method} ${path}`, { reason: opts.adminToken ? 'bad token' : 'administration disabled' }); return apiErr(403, 'FORBIDDEN', 'Administrator permission required.'); }
-      const actor = 'admin'; const b = (req.body ?? {}) as Record<string, unknown>; const reason = String(b.reason ?? '');
+      if (!opts.adminActor && !authorised(token, opts.adminToken)) { logDenied(db, `${method} ${path}`, { reason: opts.adminToken ? 'bad token' : 'administration disabled' }); return apiErr(403, 'FORBIDDEN', 'Administrator permission required.'); }
+      const actor = opts.adminActor ?? 'admin'; const b = (req.body ?? {}) as Record<string, unknown>; const reason = String(b.reason ?? '');
       const wrap = (r: { ok: boolean; message: string; detail?: unknown }) => json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } });
       if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db), params: ADMIN_PARAMS, log: adminLog(db) });
       if (method === 'GET' && seg[1] === 'treasury') return json(200, { authority: 'server', treasury: treasuryView(db) });
-      if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, 'admin', seg[2], b); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }
+      if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, actor, seg[2], b); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }
       if (method === 'POST' && seg[1] === 'param') return wrap(setParam(db, actor, String(b.key ?? ''), Number(b.value), reason));
       if (method === 'POST' && seg[1] === 'base-rate') return wrap(setBaseRate(db, actor, Number(b.rateBps), reason));
       if (method === 'POST' && seg[1] === 'event') return wrap(triggerEvent(db, actor, String(b.type ?? ''), Number(b.severity ?? 1), b.days === undefined ? undefined : Number(b.days), reason));
