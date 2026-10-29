@@ -22,6 +22,8 @@ const Bristol = lazy(() => import('./screens/BristolScreen').then((m) => ({ defa
 const Competitor = lazy(() => import('./screens/CompetitorScreen').then((m) => ({ default: m.CompetitorScreen })));
 const Wallet = lazy(() => import('./screens/WalletScreen').then((m) => ({ default: m.WalletScreen })));
 
+const ArtReview = lazy(() => import('./screens/ArtReviewScreen').then(m => ({ default: m.ArtReviewScreen })));
+
 export function App() {
   return (
     <Routes>
@@ -43,6 +45,7 @@ export function App() {
         <Route path="/membership" element={<Membership />} />
         <Route path="/dev/treasury" element={<DevTreasury />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/dev/art" element={<ArtReview />} />
         <Route path="/dev/economy" element={<DevEconomy />} />
         <Route path="*" element={<NotFound />} />
       </Route>

@@ -1,0 +1,510 @@
+{
+  "version": 1,
+  "fictional": true,
+  "portraitSize": [
+    96,
+    96
+  ],
+  "avatarSize": [
+    48,
+    48
+  ],
+  "worldSize": [
+    24,
+    40
+  ],
+  "people": [
+    {
+      "id": "maya-reed",
+      "name": "Maya Reed",
+      "role": "Startup founder",
+      "appearance": "Brown-skinned young woman, short dark curls, round glasses, teal work jacket over amber T-shirt, navy trousers, white trainers.",
+      "personality": "Tries small experiments before committing capital.",
+      "colour": "#62DBAF",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/maya-reed-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/maya-reed-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/maya-reed-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/maya-reed-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/maya-reed-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/maya-reed-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/maya-reed-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "leo-marsh",
+      "name": "Leo Marsh",
+      "role": "Restaurant owner",
+      "appearance": "Stocky middle-aged white man, salt-and-pepper beard, cream chef shirt, terracotta apron, navy trousers, brown shoes.",
+      "personality": "Protects regular customers and checks every ingredient cost.",
+      "colour": "#F08076",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/leo-marsh-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/leo-marsh-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/leo-marsh-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/leo-marsh-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/leo-marsh-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/leo-marsh-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/leo-marsh-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "imogen-shaw",
+      "name": "Imogen Shaw",
+      "role": "Corporate executive",
+      "appearance": "Black woman in her forties, close-cropped hair, sharply tailored navy trouser suit, high white collar, small brass lapel pin.",
+      "personality": "Relentless negotiator who reads the conditions twice.",
+      "colour": "#A9B5B9",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/imogen-shaw-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/imogen-shaw-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/imogen-shaw-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/imogen-shaw-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/imogen-shaw-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/imogen-shaw-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/imogen-shaw-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "nora-bell",
+      "name": "Nora Bell",
+      "role": "Independent café owner",
+      "appearance": "Older white woman, silver bob, mint cardigan, dark green barista apron, navy trousers, practical brown shoes.",
+      "personality": "Remembers regulars and dislikes waste.",
+      "colour": "#62DBAF",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/nora-bell-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/nora-bell-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/nora-bell-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/nora-bell-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/nora-bell-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/nora-bell-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/nora-bell-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "farah-ali",
+      "name": "Farah Ali",
+      "role": "Industrial manufacturer",
+      "appearance": "Middle-aged olive-skinned woman, dark hair in compact bun, navy industrial coveralls with rolled sleeves, ochre work gloves, sturdy boots.",
+      "personality": "Prefers dependable machinery to grand promises.",
+      "colour": "#FFC45E",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/farah-ali-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/farah-ali-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/farah-ali-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/farah-ali-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/farah-ali-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/farah-ali-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/farah-ali-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "arthur-vale",
+      "name": "Arthur Vale",
+      "role": "Agricultural entrepreneur",
+      "appearance": "Older Black man, greying close beard, forest-green field jacket over cream shirt, brown tweed flat cap, earth-brown trousers and boots.",
+      "personality": "Plans through bad seasons and sells with patience.",
+      "colour": "#A9B5B9",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/arthur-vale-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/arthur-vale-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/arthur-vale-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/arthur-vale-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/arthur-vale-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/arthur-vale-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/arthur-vale-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "evelyn-park",
+      "name": "Evelyn Park",
+      "role": "Investor",
+      "appearance": "Older East Asian woman, silver asymmetrical bob, burgundy tailored coat, small gold brooch, charcoal trousers and neat shoes.",
+      "personality": "Asks about cash flow before admiring the pitch.",
+      "colour": "#FFC45E",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/evelyn-park-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/evelyn-park-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/evelyn-park-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/evelyn-park-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/evelyn-park-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/evelyn-park-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/evelyn-park-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "kit-morgan",
+      "name": "Kit Morgan",
+      "role": "Commodity trader",
+      "appearance": "Young pale freckled nonbinary person, short auburn quiff, amber waistcoat over navy shirt, charcoal trousers, brown shoes.",
+      "personality": "Spots small price gaps and acts quickly.",
+      "colour": "#FFC45E",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/kit-morgan-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/kit-morgan-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/kit-morgan-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/kit-morgan-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/kit-morgan-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/kit-morgan-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/kit-morgan-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "dev-patel",
+      "name": "Dev Patel",
+      "role": "Small-business owner",
+      "appearance": "South Asian man in his forties, short curly dark hair, teal jumper under worn brown apron, navy trousers, practical boots.",
+      "personality": "Keeps the doors open with careful purchasing.",
+      "colour": "#62DBAF",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/dev-patel-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/dev-patel-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/dev-patel-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/dev-patel-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/dev-patel-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/dev-patel-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/dev-patel-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "rafael-costa",
+      "name": "Rafael Costa",
+      "role": "Property developer",
+      "appearance": "Light-brown-skinned man in his forties, neat dark curls, sand-coloured tailored suit, navy open-neck shirt, dark shoes.",
+      "personality": "Looks for overlooked sites and long-term tenants.",
+      "colour": "#FFC45E",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/rafael-costa-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/rafael-costa-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/rafael-costa-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/rafael-costa-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/rafael-costa-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/rafael-costa-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/rafael-costa-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "aisha-cole",
+      "name": "Aisha Cole",
+      "role": "Logistics operator",
+      "appearance": "Black woman in her thirties, tied-back braids, ochre work jacket over navy utility vest, dark trousers and boots.",
+      "personality": "Values reliable routes and precise delivery records.",
+      "colour": "#F08076",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/aisha-cole-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/aisha-cole-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/aisha-cole-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/aisha-cole-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/aisha-cole-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/aisha-cole-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/aisha-cole-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    },
+    {
+      "id": "owen-price",
+      "name": "Owen Price",
+      "role": "State enterprise director",
+      "appearance": "White man in his fifties, receding brown hair, round spectacles, slate suit jacket, charcoal shirt and teal tie, dark trousers.",
+      "personality": "Keeps essential services steady under pressure.",
+      "colour": "#A9B5B9",
+      "assets": {
+        "portrait": {
+          "neutral": "assets/art/phase7/runtime/owen-price-portrait-neutral.png",
+          "positive": "assets/art/phase7/runtime/owen-price-portrait-positive.png",
+          "negative": "assets/art/phase7/runtime/owen-price-portrait-negative.png"
+        },
+        "avatar": {
+          "neutral": "assets/art/phase7/runtime/owen-price-avatar-neutral.png",
+          "positive": "assets/art/phase7/runtime/owen-price-avatar-positive.png",
+          "negative": "assets/art/phase7/runtime/owen-price-avatar-negative.png"
+        },
+        "world": "assets/art/phase7/runtime/owen-price-world.png",
+        "worldFrames": {
+          "neutral": [
+            0,
+            0,
+            24,
+            40
+          ],
+          "positive": [
+            24,
+            0,
+            24,
+            40
+          ],
+          "negative": [
+            48,
+            0,
+            24,
+            40
+          ]
+        }
+      }
+    }
+  ]
+}

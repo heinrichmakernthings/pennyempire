@@ -1,3 +1,5 @@
+import baseAtlas from '@art/runtime/manifest.json';
+import tierAtlas from '@art/phase2/manifest.json';
 import { existsSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { assertWireIntegrity } from '@/domain/integrity';
@@ -101,9 +103,22 @@ describe('asset boundary (runtime manifest vs files on disk)', () => {
       const [x, y, w, h] = a.frame;
       expect(x).toBeGreaterThanOrEqual(0); expect(y).toBeGreaterThanOrEqual(0);
       expect(x + w).toBeLessThanOrEqual(a.sourceSize[0]); expect(y + h).toBeLessThanOrEqual(a.sourceSize[1]);
-      if (a.usage === 'actor') expect(a.logicalSize[1]).toBe(40);
+      if (a.usage === 'actor') {
+        if (a.status === 'cutout-rig') {
+          // 40px character plus head/limb clearance; the feet retain their scene anchor.
+          expect(a.logicalSize).toEqual([32, 48]);
+          expect(a.pivot).toEqual([16, 46]);
+          expect([w, h]).toEqual([32, 48]);
+        } else expect(a.logicalSize[1]).toBe(40);
+      }
       if (a.usage === 'inventory') expect(Math.max(...a.logicalSize)).toBeLessThanOrEqual(48);
     }
-    expect(manifest.assets).toHaveLength(41 + 18);   // base atlas + 18 Phase 2 tier-2/3 building frames
+    // Additional packs must preserve the original city/tier frames, not replace them.
+    for (const a of [...baseAtlas.assets, ...tierAtlas.assets]) {
+      expect(frameById.get(a.id)).toMatchObject({ source: a.source, frame: a.frame });
+    }
+    for (const id of ['london-office', 'farm-worker-work-a', 'cargo-ship-sw', 'courier-walk-sw-0']) {
+      expect(ids.has(id), id).toBe(true);
+    }
   });
 });

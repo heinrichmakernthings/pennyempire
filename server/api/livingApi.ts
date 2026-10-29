@@ -84,7 +84,7 @@ export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] 
     const open = state !== 'closed' && state !== 'construction';
     const ad = open ? (db.get<{ k: string }>("SELECT kind k FROM ad_campaigns WHERE company_id = ? AND status = 'active' ORDER BY CASE kind WHEN 'billboard' THEN 0 WHEN 'digital' THEN 1 WHEN 'industry' THEN 2 WHEN 'contract' THEN 3 ELSE 4 END LIMIT 1", c.id)?.k as CompanyActivity['ad'] | undefined) ?? null : null;
     const luxury = c.owner_kind === 'player' && c.id === db.get<{ id: string }>("SELECT id FROM companies WHERE owner_id = ? AND owner_kind = 'player' AND bankrupt_tick IS NULL ORDER BY created_tick, id LIMIT 1", c.owner_id)?.id ? displayItems(db, c.owner_id).map((d) => d.asset) : [];
-    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0, ad, energy: limited === 'energy' || limited === 'disruption', luxury };
+    return { companyId: c.id, state, productionActive: open && (s?.units_produced ?? 0) > 0, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0, ad, energy: limited === 'energy' || limited === 'disruption', luxury };
   });
   return { tick: t, items };
 }

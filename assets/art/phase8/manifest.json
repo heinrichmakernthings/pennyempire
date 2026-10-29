@@ -1,0 +1,2740 @@
+{
+  "version": 8,
+  "tile": [
+    128,
+    64
+  ],
+  "projection": "2:1 orthographic isometric",
+  "assets": [
+    {
+      "id": "cargo-ship-sw",
+      "source": "assets/art/phase8/runtime/cargo-ship-sw.png",
+      "sourceSize": [
+        384,
+        224
+      ],
+      "frame": [
+        0,
+        0,
+        384,
+        224
+      ],
+      "logicalSize": [
+        384,
+        224
+      ],
+      "pivot": [
+        192,
+        224
+      ],
+      "footprint": [
+        4,
+        2
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/cargo-ship.png"
+    },
+    {
+      "id": "cargo-aircraft-sw",
+      "source": "assets/art/phase8/runtime/cargo-aircraft-sw.png",
+      "sourceSize": [
+        256,
+        192
+      ],
+      "frame": [
+        0,
+        0,
+        256,
+        192
+      ],
+      "logicalSize": [
+        256,
+        192
+      ],
+      "pivot": [
+        128,
+        192
+      ],
+      "footprint": [
+        3,
+        3
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/cargo-aircraft.png"
+    },
+    {
+      "id": "executive-office",
+      "source": "assets/art/phase8/runtime/executive-office.png",
+      "sourceSize": [
+        384,
+        320
+      ],
+      "frame": [
+        0,
+        0,
+        384,
+        320
+      ],
+      "logicalSize": [
+        384,
+        320
+      ],
+      "pivot": [
+        192,
+        320
+      ],
+      "footprint": [
+        3,
+        3
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/executive-office.png"
+    },
+    {
+      "id": "courier-idle-sw",
+      "source": "assets/art/phase8/runtime/courier-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/courier-directions.png"
+    },
+    {
+      "id": "courier-idle-se",
+      "source": "assets/art/phase8/runtime/courier-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/courier-directions.png"
+    },
+    {
+      "id": "courier-idle-ne",
+      "source": "assets/art/phase8/runtime/courier-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/courier-directions.png"
+    },
+    {
+      "id": "courier-idle-nw",
+      "source": "assets/art/phase8/runtime/courier-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/courier-directions.png"
+    },
+    {
+      "id": "farm-pickup-sw",
+      "source": "assets/art/phase8/runtime/farm-pickup-sw.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        2,
+        1
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pickup-directions.png"
+    },
+    {
+      "id": "farm-pickup-se",
+      "source": "assets/art/phase8/runtime/farm-pickup-se.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        2,
+        1
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pickup-directions.png"
+    },
+    {
+      "id": "farm-pickup-ne",
+      "source": "assets/art/phase8/runtime/farm-pickup-ne.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        2,
+        1
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pickup-directions.png"
+    },
+    {
+      "id": "farm-pickup-nw",
+      "source": "assets/art/phase8/runtime/farm-pickup-nw.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        2,
+        1
+      ],
+      "usage": "prop",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pickup-directions.png"
+    },
+    {
+      "id": "maya-reed-idle-ne",
+      "source": "assets/art/phase8/runtime/maya-reed-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "maya-reed-idle-nw",
+      "source": "assets/art/phase8/runtime/maya-reed-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "maya-reed-idle-se",
+      "source": "assets/art/phase8/runtime/maya-reed-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "maya-reed-idle-sw",
+      "source": "assets/art/phase8/runtime/maya-reed-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/maya-reed-world.png"
+    },
+    {
+      "id": "leo-marsh-idle-ne",
+      "source": "assets/art/phase8/runtime/leo-marsh-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "leo-marsh-idle-nw",
+      "source": "assets/art/phase8/runtime/leo-marsh-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "leo-marsh-idle-se",
+      "source": "assets/art/phase8/runtime/leo-marsh-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "leo-marsh-idle-sw",
+      "source": "assets/art/phase8/runtime/leo-marsh-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/leo-marsh-world.png"
+    },
+    {
+      "id": "imogen-shaw-idle-ne",
+      "source": "assets/art/phase8/runtime/imogen-shaw-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "imogen-shaw-idle-nw",
+      "source": "assets/art/phase8/runtime/imogen-shaw-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "imogen-shaw-idle-se",
+      "source": "assets/art/phase8/runtime/imogen-shaw-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "imogen-shaw-idle-sw",
+      "source": "assets/art/phase8/runtime/imogen-shaw-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/imogen-shaw-world.png"
+    },
+    {
+      "id": "nora-bell-idle-ne",
+      "source": "assets/art/phase8/runtime/nora-bell-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "nora-bell-idle-nw",
+      "source": "assets/art/phase8/runtime/nora-bell-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "nora-bell-idle-se",
+      "source": "assets/art/phase8/runtime/nora-bell-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "nora-bell-idle-sw",
+      "source": "assets/art/phase8/runtime/nora-bell-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/nora-bell-world.png"
+    },
+    {
+      "id": "farah-ali-idle-ne",
+      "source": "assets/art/phase8/runtime/farah-ali-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "farah-ali-idle-nw",
+      "source": "assets/art/phase8/runtime/farah-ali-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "farah-ali-idle-se",
+      "source": "assets/art/phase8/runtime/farah-ali-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "farah-ali-idle-sw",
+      "source": "assets/art/phase8/runtime/farah-ali-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/farah-ali-world.png"
+    },
+    {
+      "id": "arthur-vale-idle-ne",
+      "source": "assets/art/phase8/runtime/arthur-vale-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "arthur-vale-idle-nw",
+      "source": "assets/art/phase8/runtime/arthur-vale-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "arthur-vale-idle-se",
+      "source": "assets/art/phase8/runtime/arthur-vale-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "arthur-vale-idle-sw",
+      "source": "assets/art/phase8/runtime/arthur-vale-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/arthur-vale-world.png"
+    },
+    {
+      "id": "evelyn-park-idle-ne",
+      "source": "assets/art/phase8/runtime/evelyn-park-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "evelyn-park-idle-nw",
+      "source": "assets/art/phase8/runtime/evelyn-park-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "evelyn-park-idle-se",
+      "source": "assets/art/phase8/runtime/evelyn-park-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "evelyn-park-idle-sw",
+      "source": "assets/art/phase8/runtime/evelyn-park-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/evelyn-park-world.png"
+    },
+    {
+      "id": "kit-morgan-idle-ne",
+      "source": "assets/art/phase8/runtime/kit-morgan-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "kit-morgan-idle-nw",
+      "source": "assets/art/phase8/runtime/kit-morgan-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "kit-morgan-idle-se",
+      "source": "assets/art/phase8/runtime/kit-morgan-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "kit-morgan-idle-sw",
+      "source": "assets/art/phase8/runtime/kit-morgan-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/kit-morgan-world.png"
+    },
+    {
+      "id": "dev-patel-idle-ne",
+      "source": "assets/art/phase8/runtime/dev-patel-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "dev-patel-idle-nw",
+      "source": "assets/art/phase8/runtime/dev-patel-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "dev-patel-idle-se",
+      "source": "assets/art/phase8/runtime/dev-patel-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "dev-patel-idle-sw",
+      "source": "assets/art/phase8/runtime/dev-patel-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/dev-patel-world.png"
+    },
+    {
+      "id": "rafael-costa-idle-ne",
+      "source": "assets/art/phase8/runtime/rafael-costa-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "rafael-costa-idle-nw",
+      "source": "assets/art/phase8/runtime/rafael-costa-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "rafael-costa-idle-se",
+      "source": "assets/art/phase8/runtime/rafael-costa-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "rafael-costa-idle-sw",
+      "source": "assets/art/phase8/runtime/rafael-costa-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/rafael-costa-world.png"
+    },
+    {
+      "id": "aisha-cole-idle-ne",
+      "source": "assets/art/phase8/runtime/aisha-cole-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "aisha-cole-idle-nw",
+      "source": "assets/art/phase8/runtime/aisha-cole-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "aisha-cole-idle-se",
+      "source": "assets/art/phase8/runtime/aisha-cole-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "aisha-cole-idle-sw",
+      "source": "assets/art/phase8/runtime/aisha-cole-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/aisha-cole-world.png"
+    },
+    {
+      "id": "owen-price-idle-ne",
+      "source": "assets/art/phase8/runtime/owen-price-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "owen-price-idle-nw",
+      "source": "assets/art/phase8/runtime/owen-price-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-back-directions.png"
+    },
+    {
+      "id": "owen-price-idle-se",
+      "source": "assets/art/phase8/runtime/owen-price-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/owner-se-directions.png"
+    },
+    {
+      "id": "owen-price-idle-sw",
+      "source": "assets/art/phase8/runtime/owen-price-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase7/runtime/owen-price-world.png"
+    },
+    {
+      "id": "farm-worker-idle-sw",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/farm-worker-directions.png"
+    },
+    {
+      "id": "farm-worker-idle-se",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/farm-worker-directions.png"
+    },
+    {
+      "id": "farm-worker-idle-ne",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/farm-worker-directions.png"
+    },
+    {
+      "id": "farm-worker-idle-nw",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/farm-worker-directions.png"
+    },
+    {
+      "id": "mill-worker-idle-sw",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/mill-worker-directions.png"
+    },
+    {
+      "id": "mill-worker-idle-se",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/mill-worker-directions.png"
+    },
+    {
+      "id": "mill-worker-idle-ne",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/mill-worker-directions.png"
+    },
+    {
+      "id": "mill-worker-idle-nw",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/mill-worker-directions.png"
+    },
+    {
+      "id": "dairy-worker-idle-sw",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/dairy-worker-directions.png"
+    },
+    {
+      "id": "dairy-worker-idle-se",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/dairy-worker-directions.png"
+    },
+    {
+      "id": "dairy-worker-idle-ne",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/dairy-worker-directions.png"
+    },
+    {
+      "id": "dairy-worker-idle-nw",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/dairy-worker-directions.png"
+    },
+    {
+      "id": "pizza-chef-idle-sw",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pizza-chef-directions.png"
+    },
+    {
+      "id": "pizza-chef-idle-se",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pizza-chef-directions.png"
+    },
+    {
+      "id": "pizza-chef-idle-ne",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pizza-chef-directions.png"
+    },
+    {
+      "id": "pizza-chef-idle-nw",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/pizza-chef-directions.png"
+    },
+    {
+      "id": "barista-idle-sw",
+      "source": "assets/art/phase8/runtime/barista-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/barista-directions.png"
+    },
+    {
+      "id": "barista-idle-se",
+      "source": "assets/art/phase8/runtime/barista-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/barista-directions.png"
+    },
+    {
+      "id": "barista-idle-ne",
+      "source": "assets/art/phase8/runtime/barista-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/barista-directions.png"
+    },
+    {
+      "id": "barista-idle-nw",
+      "source": "assets/art/phase8/runtime/barista-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/barista-directions.png"
+    },
+    {
+      "id": "timber-worker-idle-sw",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/timber-worker-directions.png"
+    },
+    {
+      "id": "timber-worker-idle-se",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/timber-worker-directions.png"
+    },
+    {
+      "id": "timber-worker-idle-ne",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/timber-worker-directions.png"
+    },
+    {
+      "id": "timber-worker-idle-nw",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/timber-worker-directions.png"
+    },
+    {
+      "id": "delivery-driver-idle-sw",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/delivery-driver-directions.png"
+    },
+    {
+      "id": "delivery-driver-idle-se",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/delivery-driver-directions.png"
+    },
+    {
+      "id": "delivery-driver-idle-ne",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/delivery-driver-directions.png"
+    },
+    {
+      "id": "delivery-driver-idle-nw",
+      "source": "assets/art/phase8/runtime/delivery-driver-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/delivery-driver-directions.png"
+    },
+    {
+      "id": "warehouse-worker-idle-sw",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/warehouse-worker-directions.png"
+    },
+    {
+      "id": "warehouse-worker-idle-se",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-se.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/warehouse-worker-directions.png"
+    },
+    {
+      "id": "warehouse-worker-idle-ne",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-ne.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/warehouse-worker-directions.png"
+    },
+    {
+      "id": "warehouse-worker-idle-nw",
+      "source": "assets/art/phase8/runtime/warehouse-worker-idle-nw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "runtime",
+      "productionCertified": false,
+      "sourceArtwork": "assets/art/phase8/source/warehouse-worker-directions.png"
+    }
+  ]
+}

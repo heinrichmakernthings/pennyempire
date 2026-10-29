@@ -1,5 +1,9 @@
 import manifestJson from '@art/runtime/manifest.json';
 import phase2Json from '@art/phase2/manifest.json';
+import phase6Json from '@art/phase6/manifest.json';
+import phase7Json from '@art/phase7/manifest.json';
+import phase8Json from '@art/phase8/manifest.json';
+import motionJson from '@art/phase8/animations.json';
 
 /** Typed view of assets/art/runtime/manifest.json — the single source of truth for atlas frames. No hard-coded offsets elsewhere. */
 export interface AtlasFrame {
@@ -17,20 +21,28 @@ export interface AtlasFrame {
 interface Manifest { version: number; tile: [number, number]; assets: AtlasFrame[]; missing: string[]; excluded: string[] }
 const base = manifestJson as unknown as Manifest;
 /** Phase 2 adds the tier-2/3 building frames (pizza-t2 …) used by premises upgrades. Base frames always win on an id clash. */
-const phase2 = (phase2Json as unknown as Manifest).assets.filter((a) => a.usage === 'building' && !base.assets.some((b) => b.id === a.id));
-export const manifest: Manifest = { ...base, assets: [...base.assets, ...phase2] };
+const frames = new Map(base.assets.map(a => [a.id, a]));
+for (const pack of [phase2Json, phase6Json, phase7Json, phase8Json]) {
+  for (const a of (pack as unknown as Manifest).assets) if (!frames.has(a.id)) frames.set(a.id, a);
+}
+for (const clip of motionJson.clips) for (let i=0;i<clip.frames.length;i++) {
+  const id = `${clip.id}-${i}`;
+  frames.set(id, { id, source: clip.source, sourceSize: [128,1536], frame: clip.frames[i] as [number,number,number,number], logicalSize: [32,48], pivot: [16,46], footprint:[1,1], usage:'actor', status:'cutout-rig', productionCertified:false });
+}
+export const manifest: Manifest = { ...base, assets: [...frames.values()] };
 export const frameById = new Map(manifest.assets.map((a) => [a.id, a]));
 export const hasFrame = (id: string) => frameById.has(id);
 
 /** Only atlas sources the manifest references are bundled; the excluded study/terrain sheets are never emitted. */
 const sourceUrls = import.meta.glob(
-  ['/assets/art/source/*.png', '!/assets/art/source/connections-study.png', '!/assets/art/source/terrain-sheet.png', '/assets/art/phase2/runtime/building-atlas.png'],
+  ['/assets/art/source/*.png', '!/assets/art/source/connections-study.png', '!/assets/art/source/terrain-sheet.png', '/assets/art/phase2/runtime/*.png', '/assets/art/phase6/runtime/*.png', '/assets/art/phase7/runtime/*.png', '/assets/art/phase8/runtime/*.png'],
   { query: '?url', import: 'default', eager: true },
 ) as Record<string, string>;
 
-const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg', '/assets/art/phase4/ui/*.svg', '/assets/art/phase6/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
+const iconUrls = import.meta.glob(['/assets/art/ui/*.svg', '/assets/art/phase3/ui/*.svg', '/assets/art/phase2/ui/*.svg', '/assets/art/phase4/ui/*.svg', '/assets/art/phase6/ui/*.svg', '/assets/art/phase7/ui/*.svg'], { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 /** UI icons: the base terminal set first, then the Phase 3 economy icons, then the Phase 2 state icons. */
-export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase3/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase2/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase4/ui/${name}.svg`] ?? iconUrls[`/assets/art/phase6/ui/${name}.svg`];
+export const uiIconUrl = (name: string): string | undefined => iconUrls[`/assets/art/ui/${name}.svg`] ?? [3,2,4,6,7].map(p => iconUrls[`/assets/art/phase${p}/ui/${name}.svg`]).find(Boolean);
+export const artUrl = (path: string): string | undefined => sourceUrls[`/${path}`];
 
 export interface ArtAtlas {
   images: Map<string, HTMLImageElement>;
@@ -49,7 +61,9 @@ function loadImage(url: string): Promise<HTMLImageElement> {
 }
 
 export async function loadArtAtlas(frameIds?: string[]): Promise<ArtAtlas> {
-  const wanted = frameIds ? manifest.assets.filter((a) => frameIds.includes(a.id)) : manifest.assets;
+  // City loading excludes portrait convenience exports and international scenery until requested.
+  const cityIds = new Set([...base.assets, ...(phase2Json as unknown as Manifest).assets].map(a => a.id));
+  const wanted = manifest.assets.filter(a => frameIds ? frameIds.includes(a.id) : cityIds.has(a.id) || /^(farm-worker|mill-worker|dairy-worker|pizza-chef|barista|timber-worker|delivery-driver|warehouse-worker)-(idle|work-)/.test(a.id) || a.id.startsWith('courier-') || a.id.startsWith('farm-pickup-') || a.id.startsWith('delivery-driver-load-'));
   const sources = [...new Set(wanted.map((a) => a.source))];
   const images = new Map<string, HTMLImageElement>();
   const failedSources: string[] = [];

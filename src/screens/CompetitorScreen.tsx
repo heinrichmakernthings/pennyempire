@@ -6,6 +6,7 @@ import { Icon } from '@/ui/Icon';
 import { EmptyState, ErrorState, Skeleton } from '@/ui/States';
 import { StatusLabel } from '@/ui/StatusLabel';
 import { INDUSTRY_ICON } from './OpportunitiesScreen';
+import { npcPortrait } from '@/assets/npcPortraits';
 
 /** What anyone in Bristol can see of a company: price, reputation, standing and history. Never its cash, margins or plans. */
 export function CompetitorScreen() {
@@ -25,9 +26,10 @@ export function CompetitorScreen() {
 }
 
 function Profile({ p }: { p: import('@/shared/living').CompetitorProfile }) {
+  const representative=npcPortrait(p.companyId,p.ownerKind);
   return (
     <article className="pe-card pe-stack" data-testid="competitor-profile" aria-labelledby="comp-name">
-      <header className="pe-row"><Icon name={INDUSTRY_ICON[p.industry] ?? 'companies'} size={32} /><div><h2 id="comp-name">{p.name}</h2><p className="pe-hint">{p.industryLabel} · {p.district} · {p.ownerKind === 'player' ? 'Player-owned' : 'NPC-owned'}</p></div>
+      <header className="pe-row">{representative?.url ? <img className="pe-pixel-art" src={representative.url} width={72} height={72} alt={`${representative.name}, NPC representative`} /> : <Icon name={INDUSTRY_ICON[p.industry] ?? 'companies'} size={32} />}<div><h2 id="comp-name">{p.name}</h2><p className="pe-hint">{p.industryLabel} · {p.district} · {p.ownerKind === 'player' ? 'Player-owned' : 'NPC-owned'}</p>{representative && <p className="pe-hint">{representative.name} · company representative</p>}</div>
         <StatusLabel tone={p.status === 'operating' ? 'positive' : p.status === 'paused' ? 'warning' : 'negative'}>{p.status === 'closed' ? 'Closed' : p.status[0]!.toUpperCase() + p.status.slice(1)}</StatusLabel></header>
       <dl className="pe-kv">
         <div><dt>Selling price</dt><dd>{formatMoney({ currency: 'EC', minor: p.priceMinor })}</dd></div>

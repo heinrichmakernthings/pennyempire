@@ -1,0 +1,62 @@
+[
+  {
+    "id": "maya-reed",
+    "file": "assets/art/phase7/source/maya-reed.png",
+    "portraitWorldSplitY": 581
+  },
+  {
+    "id": "leo-marsh",
+    "file": "assets/art/phase7/source/leo-marsh.png",
+    "portraitWorldSplitY": 587
+  },
+  {
+    "id": "imogen-shaw",
+    "file": "assets/art/phase7/source/imogen-shaw.png",
+    "portraitWorldSplitY": 586
+  },
+  {
+    "id": "nora-bell",
+    "file": "assets/art/phase7/source/nora-bell.png",
+    "portraitWorldSplitY": 590
+  },
+  {
+    "id": "farah-ali",
+    "file": "assets/art/phase7/source/farah-ali.png",
+    "portraitWorldSplitY": 579
+  },
+  {
+    "id": "arthur-vale",
+    "file": "assets/art/phase7/source/arthur-vale.png",
+    "portraitWorldSplitY": 592
+  },
+  {
+    "id": "evelyn-park",
+    "file": "assets/art/phase7/source/evelyn-park.png",
+    "portraitWorldSplitY": 576
+  },
+  {
+    "id": "kit-morgan",
+    "file": "assets/art/phase7/source/kit-morgan.png",
+    "portraitWorldSplitY": 587
+  },
+  {
+    "id": "dev-patel",
+    "file": "assets/art/phase7/source/dev-patel.png",
+    "portraitWorldSplitY": 592
+  },
+  {
+    "id": "rafael-costa",
+    "file": "assets/art/phase7/source/rafael-costa.png",
+    "portraitWorldSplitY": 576
+  },
+  {
+    "id": "aisha-cole",
+    "file": "assets/art/phase7/source/aisha-cole.png",
+    "portraitWorldSplitY": 580
+  },
+  {
+    "id": "owen-price",
+    "file": "assets/art/phase7/source/owen-price.png",
+    "portraitWorldSplitY": 580
+  }
+]
