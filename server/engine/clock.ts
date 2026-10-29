@@ -1,3 +1,4 @@
+import { runScheduledServices } from './services';
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { logEvent } from './stats';
@@ -45,6 +46,7 @@ export function advanceToNow(db: Sql, nowMs: number): AdvanceResult {
     if (r.status === 'failed') return { ran, skipped, failed: true, lastTick: last };
     if (r.status === 'complete') { ran++; last = r.tick; }
   }
+  if (ran > 0) runScheduledServices(db, nowMs);
   return { ran, skipped, failed: false, lastTick: last };
 }
 

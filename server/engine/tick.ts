@@ -18,6 +18,7 @@ import { currentMods } from './economyState';
 import { runEvents } from './events';
 import { marketingFactorBps, productionExtra } from './boosts';
 import { recordPrestige } from './prestige';
+import { runMembershipRenewals } from './membership';
 import { runLogistics } from './logistics';
 import { payDepositInterest, runLoans, runNpcCredit } from './bank';
 import { liquidityOps, reviewPolicy } from './centralBank';
@@ -384,6 +385,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
     takeSnapshot(db, n);
     if (n % 7 === 0) recordPrestige(db, n);
+    runMembershipRenewals(db, ctx, { tick: n, ms: Date.parse(ctx.gameDate) || 0, actor: 'engine' });
     recordCpi(db, n);
     recordMonetaryStats(db, ctx, cfg, { consumerSpend, tradeValue, creditIssued: db.get<{ a: number }>("SELECT COALESCE(SUM(amount_minor),0) a FROM monetary_ops WHERE tick = ? AND kind = 'liquidity_issue'", n)!.a });
     phase('share_closing');
