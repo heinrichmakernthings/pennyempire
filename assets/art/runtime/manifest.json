@@ -1,0 +1,1558 @@
+{
+  "version": 1,
+  "tile": [
+    128,
+    64
+  ],
+  "coordinateSystem": "x=(column-row)*64; y=(column+row)*32; pivot is southern visible edge; footprints are reserved plots, not exact collision masks",
+  "rendering": "Use drawSprite() from tools/art-review/renderer.js. Atlas files remain unmodified. No mipmaps or smoothing. Logical sizes authoritative.",
+  "assets": [
+    {
+      "id": "pizza",
+      "source": "assets/art/source/pizza-shop.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        177,
+        88,
+        914,
+        1081
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "mill",
+      "source": "assets/art/source/flour-mill.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        216,
+        232,
+        859,
+        849
+      ],
+      "logicalSize": [
+        288,
+        285
+      ],
+      "pivot": [
+        144,
+        285
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "cafe",
+      "source": "assets/art/source/cafe.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        181,
+        51,
+        904,
+        1151
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "farm",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        13,
+        56,
+        491,
+        425
+      ],
+      "logicalSize": [
+        256,
+        222
+      ],
+      "pivot": [
+        128,
+        222
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        537,
+        80,
+        465,
+        409
+      ],
+      "logicalSize": [
+        256,
+        225
+      ],
+      "pivot": [
+        128,
+        225
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "timber",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1033,
+        88,
+        491,
+        401
+      ],
+      "logicalSize": [
+        256,
+        209
+      ],
+      "pivot": [
+        128,
+        209
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "warehouse",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        38,
+        522,
+        463,
+        455
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "utility",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        544,
+        578,
+        457,
+        396
+      ],
+      "logicalSize": [
+        224,
+        194
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "terraces",
+      "source": "assets/art/source/industry-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1038,
+        516,
+        465,
+        486
+      ],
+      "logicalSize": [
+        224,
+        234
+      ],
+      "pivot": [
+        112,
+        234
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "building",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Static source atlas frame; contour and footprint fit require scene review. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "tree",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        38,
+        19,
+        312,
+        348
+      ],
+      "logicalSize": [
+        80,
+        89
+      ],
+      "pivot": [
+        40,
+        89
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "lamp",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        540,
+        30,
+        86,
+        325
+      ],
+      "logicalSize": [
+        22,
+        83
+      ],
+      "pivot": [
+        11,
+        83
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "bench",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        830,
+        162,
+        228,
+        204
+      ],
+      "logicalSize": [
+        48,
+        43
+      ],
+      "pivot": [
+        24,
+        43
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "planter",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1227,
+        118,
+        247,
+        226
+      ],
+      "logicalSize": [
+        36,
+        33
+      ],
+      "pivot": [
+        18,
+        33
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "van-sw",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        33,
+        399,
+        281,
+        255
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "van-se",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        445,
+        399,
+        284,
+        249
+      ],
+      "logicalSize": [
+        68,
+        60
+      ],
+      "pivot": [
+        34,
+        60
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "boat",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        794,
+        416,
+        364,
+        259
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "railing",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1212,
+        426,
+        286,
+        218
+      ],
+      "logicalSize": [
+        64,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "blocked-neighbour-fragment",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "crates",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        59,
+        702,
+        235,
+        290
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "parasol",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        457,
+        680,
+        238,
+        303
+      ],
+      "logicalSize": [
+        64,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "bollard",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        867,
+        770,
+        184,
+        201
+      ],
+      "logicalSize": [
+        18,
+        20
+      ],
+      "pivot": [
+        9,
+        20
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "crane",
+      "source": "assets/art/source/props-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1268,
+        640,
+        239,
+        364
+      ],
+      "logicalSize": [
+        96,
+        146
+      ],
+      "pivot": [
+        48,
+        146
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "prop",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "wheat",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        39,
+        87,
+        349,
+        441
+      ],
+      "logicalSize": [
+        38,
+        48
+      ],
+      "pivot": [
+        19,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "flour",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        414,
+        121,
+        353,
+        398
+      ],
+      "logicalSize": [
+        43,
+        48
+      ],
+      "pivot": [
+        21,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "cheese",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        814,
+        168,
+        332,
+        350
+      ],
+      "logicalSize": [
+        46,
+        48
+      ],
+      "pivot": [
+        23,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "milk",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1266,
+        87,
+        175,
+        437
+      ],
+      "logicalSize": [
+        19,
+        48
+      ],
+      "pivot": [
+        9,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "pizza-item",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        30,
+        590,
+        387,
+        327
+      ],
+      "logicalSize": [
+        48,
+        41
+      ],
+      "pivot": [
+        24,
+        41
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-item",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        431,
+        591,
+        397,
+        354
+      ],
+      "logicalSize": [
+        48,
+        43
+      ],
+      "pivot": [
+        24,
+        43
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "energy",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        878,
+        578,
+        232,
+        345
+      ],
+      "logicalSize": [
+        32,
+        48
+      ],
+      "pivot": [
+        16,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery",
+      "source": "assets/art/source/commodities-sheet.png",
+      "sourceSize": [
+        1536,
+        1024
+      ],
+      "frame": [
+        1176,
+        583,
+        326,
+        357
+      ],
+      "logicalSize": [
+        44,
+        48
+      ],
+      "pivot": [
+        22,
+        48
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "inventory",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "resident-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        94,
+        98,
+        137,
+        295
+      ],
+      "logicalSize": [
+        19,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "resident-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        403,
+        99,
+        130,
+        297
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "resident-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        718,
+        98,
+        124,
+        295
+      ],
+      "logicalSize": [
+        17,
+        40
+      ],
+      "pivot": [
+        8,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "resident-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        1036,
+        98,
+        134,
+        300
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "worker-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        94,
+        483,
+        142,
+        307
+      ],
+      "logicalSize": [
+        19,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "worker-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        393,
+        483,
+        140,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "worker-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        717,
+        483,
+        140,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "worker-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        1034,
+        483,
+        141,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "courier-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        76,
+        867,
+        155,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "courier-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        395,
+        867,
+        155,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "courier-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        705,
+        867,
+        149,
+        294
+      ],
+      "logicalSize": [
+        20,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    },
+    {
+      "id": "courier-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "sourceSize": [
+        1254,
+        1254
+      ],
+      "frame": [
+        1024,
+        867,
+        154,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "actor",
+      "status": "static-render-verified",
+      "scaleMode": "nearest",
+      "notes": "Measured main connected source region, 2px alpha edge margin. Runtime sampled at declared size. Static rendering checked; exact world footprint/collision and uniform source pixel density remain uncertified.",
+      "productionCertified": false
+    }
+  ],
+  "missing": [
+    "48 walk frames",
+    "building level 2/3 variants",
+    "remaining vehicle facings",
+    "production FX",
+    "prestige artwork"
+  ],
+  "excluded": [
+    "connections-study.png: incorrect road geometry",
+    "terrain-sheet.png: not certified seamless"
+  ],
+  "files": [
+    {
+      "filename": "assets/art/reference/approved-bristol.png",
+      "dimensions": [
+        1487,
+        1058
+      ],
+      "mode": "RGB",
+      "bytes": 2999382,
+      "usage": "approved reference"
+    },
+    {
+      "filename": "assets/art/source/actors-idle-sheet.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 663604,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/cafe.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1477713,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/commodities-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 1803221,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/connections-study.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2153795,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/flour-mill.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1186529,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/industry-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2763091,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/pizza-shop.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "mode": "RGBA",
+      "bytes": 1395595,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/props-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2153753,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/source/terrain-sheet.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "bytes": 2142441,
+      "usage": "source atlas"
+    },
+    {
+      "filename": "assets/art/ui/city.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 247
+    },
+    {
+      "filename": "assets/art/ui/close.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 199
+    },
+    {
+      "filename": "assets/art/ui/companies.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 223
+    },
+    {
+      "filename": "assets/art/ui/footprint-hover.svg",
+      "dimensions": [
+        128,
+        64
+      ],
+      "usage": "UI vector",
+      "bytes": 173
+    },
+    {
+      "filename": "assets/art/ui/footprint-selected.svg",
+      "dimensions": [
+        128,
+        64
+      ],
+      "usage": "UI vector",
+      "bytes": 150
+    },
+    {
+      "filename": "assets/art/ui/marketplace.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 229
+    },
+    {
+      "filename": "assets/art/ui/minus.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 187
+    },
+    {
+      "filename": "assets/art/ui/notification.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 220
+    },
+    {
+      "filename": "assets/art/ui/ownership.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 204
+    },
+    {
+      "filename": "assets/art/ui/plus.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 195
+    },
+    {
+      "filename": "assets/art/ui/portfolio.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 214
+    },
+    {
+      "filename": "assets/art/ui/prestige.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 207
+    },
+    {
+      "filename": "assets/art/ui/rewards.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 271
+    },
+    {
+      "filename": "assets/art/ui/settings.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 223
+    },
+    {
+      "filename": "assets/art/ui/staff.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 237
+    },
+    {
+      "filename": "assets/art/ui/stocks.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 213
+    },
+    {
+      "filename": "assets/art/ui/wallet.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 223
+    },
+    {
+      "filename": "assets/art/ui/warning.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "usage": "UI vector",
+      "bytes": 208
+    }
+  ],
+  "validation": "Rendered at declared logical sizes with nearest-neighbour and checkerboard; 1x/2x district inspected. Native Canvas, not browser. See PRODUCTION-READINESS.md."
+}
