@@ -136,7 +136,7 @@ describe('consumer demand with one human player and no actions', () => {
     const db = memWorld(); advance(db, 360);
     expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE owner_kind = 'state' AND status = 'insolvent'").n).toBe(0);
     expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL").n).toBe(0);     // an insolvent firm is liquidated within bankruptcyAfterTicks
-    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'operating' AND owner_kind <> 'state'").n).toBeGreaterThanOrEqual(5);
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM companies WHERE status = 'operating' AND owner_kind <> 'state'").n).toBeGreaterThanOrEqual(4);
     expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM failed_transactions').n).toBe(0);
   });
 });

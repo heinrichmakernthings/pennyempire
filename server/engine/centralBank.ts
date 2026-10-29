@@ -54,8 +54,8 @@ export function liquidityOps(db: Sql, ctx: TickCtx, cfg: EngineConfig): { issued
     logPolicy(db, ctx.tick, 'rule', 'liquidity_issue', null, amt, 'National Bank reserves below requirement', { cash, required });
     return { issued: amt, drained: 0 };
   }
-  if (infl > cb.inflation_target_bps + cfg.cbBandBps && cash > Math.max(required, floor) + 2 * cb.drain_step_minor) {
-    const amt = cb.drain_step_minor;
+  if (infl > cb.inflation_target_bps + cfg.cbBandBps && cash > cfg.bankSeedMinor + required) {   // only SURPLUS above the bank's founding capital is ever drained: lending capital is not destroyed
+    const amt = Math.min(cb.drain_step_minor, cash - cfg.bankSeedMinor - required);
     destroy(db, ctx, `t${ctx.tick}:cb:drain`, bank.treasury, amt, 'Penny Central Bank liquidity drain (explicit burn)');
     db.run('INSERT INTO monetary_ops (tick, kind, amount_minor, counterparty, ledger_tx_id, reason) VALUES (?,?,?,?,NULL,?)', ctx.tick, 'liquidity_drain', amt, STATE_PROVIDERS.banking.id, `Inflation ${infl}bps above target; surplus reserves drained`);
     logPolicy(db, ctx.tick, 'rule', 'liquidity_drain', null, amt, 'Inflation above target with surplus reserves', { cash, required });

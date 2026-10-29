@@ -213,7 +213,7 @@ export function runNpcCredit(db: Sql, ctx: TickCtx, cfg: EngineConfig, safe: (ki
     const fixed = Math.max(1, c.employees * c.wage_minor + c.property_minor + c.marketing_minor), cash = available(db, c.treasury_account_id);
     const loans = db.all<LoanRow>("SELECT * FROM loans WHERE borrower_id = ? AND status = 'active'", c.id);
     if (cash > 40 * fixed && loans.length) { for (const l of loans) safe('npc_prepay', c.id, () => { repayLoan(db, ctx, { loanId: l.id, companyId: c.id, amountMinor: Math.min(l.outstanding_minor, cash - 30 * fixed), key: `npc:${ctx.tick}` }); }); continue; }
-    if (cash < 6 * fixed && loans.length === 0) safe('npc_borrow', c.id, () => {
+    if (cash < 15 * fixed && loans.length === 0) safe('npc_borrow', c.id, () => {
       const prof = creditProfile(db, cfg, c.id, ctx.tick); if (prof.grade === 'D') return;
       const want = Math.min(prof.availableMinor, 12 * fixed); if (want < fixed) return;
       const q = quoteLoan(db, cfg, c.id, want, 30, ctx.tick); if (q.refusal) return;
