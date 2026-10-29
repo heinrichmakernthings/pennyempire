@@ -5,6 +5,7 @@ import { App } from './App';
 import { DataProvider } from './data/store';
 import { chooseDataSource } from './data/serverSource';
 import { useUi } from './state/ui';
+import { AuthGate } from './app/AuthGate';
 import './design/tokens.css';
 import './design/global.css';
 import './design/management.css';
@@ -16,9 +17,11 @@ void chooseDataSource(window.location.search).then(({ source, fallbackReason }) 
   if (fallbackReason) useUi.getState().notify({ tone: 'warning', title: 'Illustrative data only', message: fallbackReason });
   root.render(
     <StrictMode>
-      <DataProvider source={source}>
-        <BrowserRouter><App /></BrowserRouter>
-      </DataProvider>
+      <BrowserRouter>
+        <AuthGate server={source.authority === 'server'}>
+          {(playerKey) => <DataProvider key={playerKey} source={source}><App /></DataProvider>}
+        </AuthGate>
+      </BrowserRouter>
     </StrictMode>,
   );
 });

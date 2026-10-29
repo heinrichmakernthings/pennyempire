@@ -1,3 +1,4 @@
+import { notifications } from './notifications';
 import { actingPlayer } from '../engine/actor';
 import type { City, Commodity, Company, History, Holding, Listing, Money, Order, Owner, Player, Plot, Recipe, ScreenState, Trade } from '../../src/contracts/game-state';
 import type { CompanySummary, PortfolioState } from '../../src/data/types';
@@ -34,7 +35,7 @@ export function playerDto(db: Sql): Player {
   const mine = db.all<{ treasury_account_id: string; id: string }>("SELECT id, treasury_account_id FROM companies WHERE owner_kind = 'player' AND owner_id = ?", actingPlayer());
   const book = mine.reduce((a, c) => a + balance(db, c.treasury_account_id) + (db.get<{ v: number }>('SELECT COALESCE(SUM(value_minor),0) v FROM inventory WHERE company_id = ?', c.id)!.v), 0);
   const profit = db.get<{ s: number }>("SELECT COALESCE(SUM(s.net_profit_minor),0) s FROM company_tick_stats s JOIN companies c ON c.id = s.company_id WHERE s.tick = ? AND c.owner_kind = 'player' AND c.owner_id = ?", t, actingPlayer())!.s;
-  const unread = db.get<{ n: number }>("SELECT COUNT(*) n FROM economic_events WHERE tick > ? AND severity IN ('warning','error') AND subject IN (SELECT id FROM companies WHERE owner_kind='player')", Math.max(0, t - 3))!.n;
+  const unread = notifications(db, actingPlayer(), 30).unread;
   // No tradable shares exist yet, so portfolioValue is 0; net worth = wallet + the book value (cash + stock at cost) of companies you own.
   return { id: p.id, displayName: p.display_name, cityId: p.city_id, coins: ec(w.b - w.r), reservedCoins: ec(w.r), portfolioValue: ec(0), netWorth: ec(w.b + book), dailyProfit: ec(profit), unreadNotifications: unread };
 }

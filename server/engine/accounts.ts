@@ -13,7 +13,7 @@ import { CITY_ID } from '../seed/bristol';
 
 export type Role = 'player' | 'admin';
 export interface SessionUser { userId: string; username: string; displayName: string; role: Role; playerId: string; wallet: string; settings: UserSettings }
-export interface UserSettings { reducedMotion?: boolean; notifications?: boolean; compactNumbers?: boolean }
+export interface UserSettings { reducedMotion?: boolean; notifications?: boolean; compactNumbers?: boolean; hideOnboarding?: boolean }
 export class AuthError extends Error { constructor(public code: 'VALIDATION' | 'FORBIDDEN' | 'RATE_LIMITED' | 'CONFLICT', message: string) { super(message); } }
 
 export const STARTING_CAPITAL_MINOR = 2_000_000;           // 20,000 EC, the same as the single-player 'new' profile
@@ -30,7 +30,7 @@ export function validateDisplayName(n: unknown): string {
   if (s.length < 2 || s.length > 32) throw new AuthError('VALIDATION', 'Display names are 2–32 characters.');
   return s;
 }
-const cleanSettings = (s: unknown): UserSettings => { const o = (s && typeof s === 'object' ? s : {}) as Record<string, unknown>; const out: UserSettings = {}; for (const k of ['reducedMotion', 'notifications', 'compactNumbers'] as const) if (typeof o[k] === 'boolean') out[k] = o[k] as boolean; return out; };
+const cleanSettings = (s: unknown): UserSettings => { const o = (s && typeof s === 'object' ? s : {}) as Record<string, unknown>; const out: UserSettings = {}; for (const k of ['reducedMotion', 'notifications', 'compactNumbers', 'hideOnboarding'] as const) if (typeof o[k] === 'boolean') out[k] = o[k] as boolean; return out; };
 
 // ───────── rate limiting (persistent, so it survives restarts and Durable Object evictions) ─────────
 const failures = (db: Sql, bucket: string, now: number) => db.get<{ n: number }>('SELECT COUNT(*) n FROM auth_attempts WHERE bucket = ? AND ok = 0 AND ms > ? AND ms > COALESCE((SELECT MAX(ms) FROM auth_attempts WHERE bucket = ? AND ok = 1), 0)', bucket, now - WINDOW_MS, bucket)!.n;

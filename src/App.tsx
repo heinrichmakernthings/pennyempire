@@ -22,6 +22,9 @@ const Bristol = lazy(() => import('./screens/BristolScreen').then((m) => ({ defa
 const Competitor = lazy(() => import('./screens/CompetitorScreen').then((m) => ({ default: m.CompetitorScreen })));
 const Wallet = lazy(() => import('./screens/WalletScreen').then((m) => ({ default: m.WalletScreen })));
 
+const Account = lazy(() => import('./screens/AccountScreen').then((m) => ({ default: m.AccountScreen })));
+const Notifications = lazy(() => import('./screens/NotificationsScreen').then((m) => ({ default: m.NotificationsScreen })));
+const Admin = lazy(() => import('./screens/AdminScreen').then((m) => ({ default: m.AdminScreen })));
 const ArtReview = lazy(() => import('./screens/ArtReviewScreen').then(m => ({ default: m.ArtReviewScreen })));
 
 export function App() {
@@ -45,6 +48,9 @@ export function App() {
         <Route path="/membership" element={<Membership />} />
         <Route path="/dev/treasury" element={<DevTreasury />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/account" element={<Account />} />
+        <Route path="/notifications" element={<Notifications />} />
+        <Route path="/admin" element={<Admin />} />
         <Route path="/dev/art" element={<ArtReview />} />
         <Route path="/dev/economy" element={<DevEconomy />} />
         <Route path="*" element={<NotFound />} />
