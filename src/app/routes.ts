@@ -9,6 +9,7 @@ export const ROUTES: RouteDef[] = [
   { path: '/commodities', label: 'Commodity Exchange', short: 'Market', icon: 'marketplace', mobile: 'primary' },
   { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
   { path: '/portfolio', label: 'Portfolio', short: 'Portfolio', icon: 'portfolio', mobile: 'primary' },
+  { path: '/world', label: 'Beyond Bristol', short: 'World', icon: 'globe', mobile: 'more' },
   { path: '/prestige', label: 'Prestige', short: 'Prestige', icon: 'prestige', mobile: 'more' },
   { path: '/wallet', label: 'Wallet (simulated)', short: 'Wallet', icon: 'wallet', mobile: 'more' },
 ];

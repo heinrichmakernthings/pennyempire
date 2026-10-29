@@ -20,11 +20,14 @@ const Wallet = lazy(() => import('./screens/WalletScreen').then((m) => ({ defaul
 
 const ArtReview = lazy(() => import('./screens/ArtReviewScreen').then(m => ({ default: m.ArtReviewScreen })));
 
+const World = lazy(() => import('./screens/WorldScreen').then(m => ({ default: m.WorldScreen })));
+
 export function App() {
   return (
     <Routes>
       <Route element={<AppShell />}>
         <Route index element={<Navigate to="/city" replace />} />
+        <Route path="/world" element={<World />} />
         <Route path="/city" element={<CityScreen />} />
         <Route path="/opportunities" element={<Opportunities />} />
         <Route path="/bristol" element={<Bristol />} />
