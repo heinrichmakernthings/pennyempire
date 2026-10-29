@@ -78,7 +78,7 @@ CREATE TABLE loans (
   disbursement_tx_id INTEGER, purpose TEXT, idempotency_key TEXT UNIQUE, closed_tick INTEGER
 );
 CREATE INDEX idx_loans_borrower ON loans(borrower_id, status);
-CREATE TABLE loan_payments (id INTEGER PRIMARY KEY AUTOINCREMENT, loan_id TEXT NOT NULL REFERENCES loans(id), tick INTEGER NOT NULL, due_minor INTEGER NOT NULL, principal_minor INTEGER NOT NULL, interest_minor INTEGER NOT NULL, fee_minor INTEGER NOT NULL DEFAULT 0, status TEXT NOT NULL CHECK (status IN ('paid','partial','missed','prepaid')), ledger_tx_id INTEGER, UNIQUE (loan_id, tick, status));
+CREATE TABLE loan_payments (id INTEGER PRIMARY KEY AUTOINCREMENT, loan_id TEXT NOT NULL REFERENCES loans(id), tick INTEGER NOT NULL, due_minor INTEGER NOT NULL, principal_minor INTEGER NOT NULL, interest_minor INTEGER NOT NULL, fee_minor INTEGER NOT NULL DEFAULT 0, status TEXT NOT NULL CHECK (status IN ('paid','partial','missed','prepaid')), ledger_tx_id INTEGER);
 CREATE TABLE bank_deposits (company_id TEXT PRIMARY KEY REFERENCES companies(id), balance_minor INTEGER NOT NULL DEFAULT 0 CHECK (balance_minor >= 0), interest_paid_minor INTEGER NOT NULL DEFAULT 0, opened_tick INTEGER NOT NULL);
 CREATE TABLE credit_defaults (id INTEGER PRIMARY KEY AUTOINCREMENT, tick INTEGER NOT NULL, loan_id TEXT NOT NULL, borrower_id TEXT NOT NULL, written_off_minor INTEGER NOT NULL, reason TEXT NOT NULL);
 

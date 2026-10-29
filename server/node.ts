@@ -25,7 +25,7 @@ const server = createServer((req, res) => {
   req.on('end', () => {
     let body: unknown; const raw = Buffer.concat(chunks).toString();
     if (raw) { try { body = JSON.parse(raw); } catch { res.writeHead(400, { 'content-type': 'application/json' }).end('{"ok":false,"error":{"code":"VALIDATION","message":"Invalid JSON"}}'); return; } }
-    const out = handleApi(db, { method: req.method ?? 'GET', path: url.pathname, query: Object.fromEntries(url.searchParams), body }, { devEndpoints });
+    const out = handleApi(db, { method: req.method ?? 'GET', path: url.pathname, query: Object.fromEntries(url.searchParams), body, headers: { 'x-admin-token': String(req.headers['x-admin-token'] ?? '') } }, { devEndpoints, adminToken: process.env.PENNY_ADMIN_TOKEN });
     res.writeHead(out.status, { 'content-type': 'application/json', 'cache-control': 'no-store' }).end(JSON.stringify(out.body));
   });
 });
