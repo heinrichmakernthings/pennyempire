@@ -1,0 +1,66 @@
+[
+  {
+    "output": "assets/art/phase8/source/farm-worker-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/farm-worker.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, farm-worker. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": null
+  },
+  {
+    "output": "assets/art/phase8/source/mill-worker-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/mill-worker.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, mill-worker. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": null
+  },
+  {
+    "output": "assets/art/phase8/source/dairy-worker-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/dairy-worker.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, dairy-worker. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": "Edit this sprite strip only: replace the SECOND character with a FRONT-RIGHT view. Nose and toes point RIGHT. Chest visible. Keep the other three characters unchanged, preserve transparent background, all outfits, identical scale and spacing. Second character must be turned to face right, not left. No backdrop, preserve actual alpha transparency."
+  },
+  {
+    "output": "assets/art/phase8/source/pizza-chef-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/pizza-chef.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, pizza-chef. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": "Edit this sprite strip only: replace the SECOND character with a FRONT-RIGHT view. Nose and toes point RIGHT. Chest visible. Keep the other three characters unchanged, preserve transparent background, all outfits, identical scale and spacing. Second character must be turned to face right, not left. No backdrop, preserve actual alpha transparency."
+  },
+  {
+    "output": "assets/art/phase8/source/barista-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/barista.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, barista. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": "Edit this sprite strip only: replace the SECOND character with a FRONT-RIGHT view. Nose and toes point RIGHT. Chest visible. Keep the other three characters unchanged, preserve transparent background, all outfits, identical scale and spacing. Second character must be turned to face right, not left. No backdrop, preserve actual alpha transparency."
+  },
+  {
+    "output": "assets/art/phase8/source/timber-worker-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/timber-worker.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, timber-worker. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": null
+  },
+  {
+    "output": "assets/art/phase8/source/delivery-driver-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/delivery-driver.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, delivery-driver. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": null
+  },
+  {
+    "output": "assets/art/phase8/source/warehouse-worker-directions.png",
+    "tool": "built-in image_gen",
+    "transparent_background": true,
+    "reference": "assets/art/phase7/source/warehouse-worker.png",
+    "prompt": "Use case: identity-preserve. Project game sprite sheet, warehouse-worker. Reference image supplies exact character outfit, skin, hair and pixel style. Create ONE horizontal 4-column turnaround strip, all four full-body idle neutral standing poses, empty hands hanging at sides. Columns left to right: front-left (SW), front-right (SE), back-right (NE), back-left (NW). Four different genuine camera views, never duplicate fronts for backs. Keep identical character and outfit, small crisp pixel-art at 24x40 logical scale, same baseline and height, ample identical margins per quarter. Actual transparent alpha backdrop, no solid backdrop, no checkerboard, no text, no shadows outside feet. Remove held implements only; preserve clothes and identity. Entire canvas only four isolated figures.",
+    "correction": null
+  }
+]
