@@ -27,8 +27,20 @@ export interface PlaceOrder {
   cityId?: string;
 }
 
-/** Companies a company may not trade with. Only itself: a player's different companies may trade (vertical integration is gameplay), paying the same fees. */
-const blockedSet = (_db: Sql, company: string): string[] => [company];
+/**
+ * Companies a company may not trade with: itself, and — under the loan covenant — any company with the same owner while either of the two owes
+ * the National Bank. Otherwise vertical integration is gameplay and sister companies trade freely (paying the same fees); but with debt involved,
+ * an owner-chosen related-party price could move borrowed coins (or the assets securing them) out of the indebted company before it fails.
+ */
+const blockedSet = (db: Sql, company: string): string[] => {
+  const me = db.get<{ owner_kind: string; owner_id: string }>('SELECT owner_kind, owner_id FROM companies WHERE id = ?', company);
+  if (!me || me.owner_kind === 'state') return [company];
+  const owes = (id: string) => !!db.get("SELECT 1 FROM loans WHERE borrower_id = ? AND status IN ('active','defaulted') AND outstanding_minor > 0", id);
+  const sisters = db.all<{ id: string }>('SELECT id FROM companies WHERE owner_kind = ? AND owner_id = ? AND id <> ?', me.owner_kind, me.owner_id, company).map((r) => r.id);
+  if (!sisters.length) return [company];
+  const meOwes = owes(company);
+  return [company, ...sisters.filter((id) => meOwes || owes(id))];
+};
 const notIn = (ids: string[]) => ids.map(() => '?').join(',');
 
 /** Best price on the other side of the book that `company` is allowed to trade against right now. */

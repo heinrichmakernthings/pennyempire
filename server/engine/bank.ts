@@ -92,6 +92,9 @@ export function takeLoan(db: Sql, ctx: TickCtx, cfg: EngineConfig, a: { companyI
   return { loanId: id, duplicate: false };
 }
 
+/** What a company still owes the National Bank. Owners cannot take this money out (see the loan covenant in withdrawals and dividends). */
+export const outstandingDebt = (db: Sql, companyId: string) => db.get<{ d: number }>("SELECT COALESCE(SUM(outstanding_minor),0) d FROM loans WHERE borrower_id = ? AND status IN ('active','defaulted')", companyId)!.d;
+
 /** Voluntary early repayment of principal (interest is paid daily, so there is nothing else to settle). */
 export function repayLoan(db: Sql, ctx: TickCtx, a: { loanId: string; companyId: string; amountMinor: number; key: string }): { paidMinor: number; outstandingMinor: number; duplicate: boolean } {
   const loan = db.get<LoanRow>('SELECT * FROM loans WHERE id = ? AND borrower_id = ?', a.loanId, a.companyId); if (!loan) throw new LedgerError('FORBIDDEN', 'No such loan.');

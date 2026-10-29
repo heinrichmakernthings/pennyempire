@@ -21,7 +21,7 @@ import { recordPrestige } from './prestige';
 import { runMembershipRenewals } from './membership';
 import { ensureLotteries } from './lottery';
 import { runLogistics } from './logistics';
-import { payDepositInterest, runLoans, runNpcCredit } from './bank';
+import { outstandingDebt, payDepositInterest, runLoans, runNpcCredit } from './bank';
 import { liquidityOps, reviewPolicy } from './centralBank';
 import { recordCpi, recordMonetaryStats } from './inflation';
 import { awarenessTarget, runCampaigns } from './ads';
@@ -330,7 +330,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     // NPC shareholders are citizens: cash above a reserve of N ticks of fixed costs is paid out to households (a transfer, never minted).
     for (const c of order) {
       if (c.owner_kind !== 'npc' || c.status !== 'operating' || cfg.npcPayoutBps === 0 || listedIds.has(c.id)) continue;
-      const reserve = (profiles.get(c.id)?.reserve_days ?? cfg.npcReserveTicks) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000;
+      const reserve = (profiles.get(c.id)?.reserve_days ?? cfg.npcReserveTicks) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + 200_000 + outstandingDebt(db, c.id);   // loan covenant
       const excess = available(db, c.treasury_account_id) - reserve;
       const dividend = Math.floor((Math.max(0, excess) * cfg.npcPayoutBps) / 10_000);
       if (dividend > 0) safe('dividend', c.id, () => pay('transfer', c.treasury_account_id, city.households_account_id, dividend, `${c.name} dividend to NPC shareholders`));
