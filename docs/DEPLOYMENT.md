@@ -6,6 +6,9 @@
 
 The Node-only pieces (`server/node.ts`, `server/cli.ts`, `node:sqlite`) are **not** bundled into the Worker; they are for local dev, simulations and tests.
 
+## Private alpha (accounts)
+The Worker requires accounts by default (`REQUIRE_AUTH="true"` in `wrangler.jsonc`). Set the operator secret with `npx wrangler secret put ADMIN_TOKEN`, then follow `docs/ALPHA.md` to create the first admin invite. Never put the token in `wrangler.jsonc` or the repository. Existing Durable Object data is kept: migrations 0006–0008 are additive and run on first request.
+
 ## Cloudflare setup (one-off)
 The existing `pennyempire` Worker was created from the dashboard "Hello world" template. Replace it with this repo:
 
