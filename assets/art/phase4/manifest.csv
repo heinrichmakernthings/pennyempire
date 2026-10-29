@@ -1,0 +1,42 @@
+id,file,width,height,usage,status
+arrow,assets/art/phase4/ui/arrow.svg,24,24,terminal icon / CSS mask,new native SVG; awaiting visual approval
+check,assets/art/phase3/ui/order-filled.svg,24,24,terminal icon / CSS mask,reused approved icon
+alert,assets/art/ui/warning.svg,24,24,terminal icon / CSS mask,reused approved icon
+info,assets/art/phase4/ui/info.svg,24,24,terminal icon / CSS mask,new native SVG; awaiting visual approval
+premises,assets/art/phase4/ui/premises.svg,24,24,terminal icon / CSS mask,new native SVG; awaiting visual approval
+contract,assets/art/phase4/ui/contract.svg,24,24,terminal icon / CSS mask,new native SVG; awaiting visual approval
+transit,assets/art/phase3/ui/shipment.svg,24,24,terminal icon / CSS mask,reused approved icon
+close,assets/art/ui/close.svg,24,24,terminal icon / CSS mask,reused approved icon
+city,assets/art/ui/city.svg,24,24,terminal icon / CSS mask,reused approved icon
+company,assets/art/ui/companies.svg,24,24,terminal icon / CSS mask,reused approved icon
+market,assets/art/ui/marketplace.svg,24,24,terminal icon / CSS mask,reused approved icon
+chain,assets/art/phase3/ui/supply-chain.svg,24,24,terminal icon / CSS mask,reused approved icon
+growth,assets/art/phase3/ui/profit.svg,24,24,terminal icon / CSS mask,reused approved icon
+people,assets/art/ui/staff.svg,24,24,terminal icon / CSS mask,reused approved icon
+stock,assets/art/phase3/ui/inventory.svg,24,24,terminal icon / CSS mask,reused approved icon
+settings,assets/art/ui/settings.svg,24,24,terminal icon / CSS mask,reused approved icon
+desktop-company-growth,docs/art/phase4/qa/desktop-company-growth.png,1440,1112,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-company-inventory,docs/art/phase4/qa/desktop-company-inventory.png,1440,1252,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-company-operations,docs/art/phase4/qa/desktop-company-operations.png,1440,1050,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-company-overview,docs/art/phase4/qa/desktop-company-overview.png,1440,1238,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-company-ownership,docs/art/phase4/qa/desktop-company-ownership.png,1440,1000,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-component-states,docs/art/phase4/qa/desktop-component-states.png,1440,1638,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-create-budget,docs/art/phase4/qa/desktop-create-budget.png,1440,1057,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-create-opportunity,docs/art/phase4/qa/desktop-create-opportunity.png,1440,1050,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-create-premises,docs/art/phase4/qa/desktop-create-premises.png,1440,1080,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-create-review,docs/art/phase4/qa/desktop-create-review.png,1440,1028,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-first-production,docs/art/phase4/qa/desktop-first-production.png,1440,1000,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-marketplace,docs/art/phase4/qa/desktop-marketplace.png,1440,1376,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-supplier-contract,docs/art/phase4/qa/desktop-supplier-contract.png,1440,1000,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-supply-chain,docs/art/phase4/qa/desktop-supply-chain.png,1440,1056,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-trade-review,docs/art/phase4/qa/desktop-trade-review.png,1440,1000,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+desktop-upgrade-review,docs/art/phase4/qa/desktop-upgrade-review.png,1440,1000,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-company-operations,docs/art/phase4/qa/mobile-company-operations.png,390,1716,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-company-overview,docs/art/phase4/qa/mobile-company-overview.png,390,1517,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-create-opportunity,docs/art/phase4/qa/mobile-create-opportunity.png,390,1897,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-create-premises,docs/art/phase4/qa/mobile-create-premises.png,390,1703,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-create-review,docs/art/phase4/qa/mobile-create-review.png,390,1567,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-marketplace,docs/art/phase4/qa/mobile-marketplace.png,390,1806,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-supplier-contract,docs/art/phase4/qa/mobile-supplier-contract.png,390,844,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-supply-chain,docs/art/phase4/qa/mobile-supply-chain.png,390,2248,browser screenshot for implementation review; never runtime artwork,browser-verified reference
+mobile-trade-review,docs/art/phase4/qa/mobile-trade-review.png,390,844,browser screenshot for implementation review; never runtime artwork,browser-verified reference
