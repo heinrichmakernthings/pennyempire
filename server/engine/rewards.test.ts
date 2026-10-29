@@ -5,7 +5,7 @@ import { found, now, sane, world } from '../test/shareHelpers';
 import { PLAYER_ID, PLAYER_WALLET } from '../seed/bristol';
 import { AD_REWARDS, MAX_SESSIONS_PER_DAY, SESSION_TTL_MS, awardReward, completeAdView, createDraw, createProgram, enterDraw, executeDraw, fundProgram, providerAttest, rewardAvailability, startAdView, recordImpression } from './rewards';
 import { activeBoosts } from './boosts';
-import { LOTTERY, buyTickets, drawDueLotteries, ensureOpenLottery, lotteryView, publishedOdds } from './lottery';
+import { LOTTERY, buyTickets, drawDueLotteries, ensureLotteries, lotteryView, publishedOdds } from './lottery';
 import { PLAN, cancelMembership, hasPremium, membershipView, runMembershipRenewals, setMockDecline, subscribe } from './membership';
 import { CASH, GbpError, ensureGbpBooks, ensureWallet, reconcileGbp, availablePence, type GbpCtx } from './gbpLedger';
 import { fundTreasury, requestWithdrawal, walletView } from './gbpWallet';
@@ -43,6 +43,10 @@ describe('rewarded video advertisements (simulated provider)', () => {
     const s4 = startAdView(db, now(db), 900_000, { playerId: PLAYER_ID, rewardId: 'ad-coins' }); denied(() => completeAdView(db, now(db), 930_000, { playerId: PLAYER_ID, sessionId: s4.sessionId, token: good }), /proof/);   // token of another session
     const other = addPlayer(db, 'thief'); denied(() => completeAdView(db, now(db), 340_000, { playerId: other, sessionId: s3.sessionId, token: good }), /No such/);                                        // someone else's session
     expect(balance(db, PLAYER_WALLET)).toBe(w0); expect(one<{ n: number }>(db, 'SELECT COUNT(*) n FROM ad_rewards_granted').n).toBe(0);
+  });
+  it('repeated invalid completions pause rewarded ads for the day', () => {
+    const db = world(); for (let i = 0; i < 3; i++) { const s = startAdView(db, now(db), 1_000 + i * 100_000, { playerId: PLAYER_ID, rewardId: 'ad-coins' }); denied(() => completeAdView(db, now(db), 40_000 + i * 100_000, { playerId: PLAYER_ID, sessionId: s.sessionId, token: 'fake' })); }
+    denied(() => startAdView(db, now(db), 900_000, { playerId: PLAYER_ID, rewardId: 'ad-coins' }), /paused for today/);
   });
   it('expired sessions pay nothing; starting twice resumes the same session (no double reward)', () => {
     const db = world(); const s = startAdView(db, now(db), 1_000, { playerId: PLAYER_ID, rewardId: 'ad-coins' }); expect(startAdView(db, now(db), 5_000, { playerId: PLAYER_ID, rewardId: 'ad-coins' }).sessionId).toBe(s.sessionId);
@@ -121,8 +125,8 @@ describe('cash reward programmes (simulated treasury)', () => {
 });
 
 describe('fictional coin lotteries', () => {
-  const lot = (db: Sql) => one<{ id: string }>(db, "SELECT id FROM lotteries WHERE status = 'open'").id;
-  const open = () => { const db = world({}, 1_000); ensureOpenLottery(db, now(db)); return db; };
+  const lot = (db: Sql) => one<{ id: string }>(db, "SELECT id FROM lotteries WHERE status = 'open' AND draw_tick > ? ORDER BY draw_tick LIMIT 1", now(db).tick).id;
+  const open = () => { const db = world({}, 1_000); ensureLotteries(db, now(db)); return db; };
   it('sells tickets with published odds, enforces per-player limits and idempotency, and keeps ticket numbers unique', () => {
     const db = open(); const id = lot(db); const t = buyTickets(db, now(db), { playerId: PLAYER_ID, lotteryId: id, count: 3, key: 'k1' }); expect(t.numbers).toEqual([1, 2, 3]);
     expect(buyTickets(db, now(db), { playerId: PLAYER_ID, lotteryId: id, count: 3, key: 'k1' })).toEqual({ numbers: [1, 2, 3], duplicate: true });

@@ -1,6 +1,6 @@
 import type { Sql } from '../db/sql';
 import { loadConfig, gameDate } from './config';
-import { drawDueLotteries, ensureOpenLottery } from './lottery';
+import { drawDueLotteries } from './lottery';
 import { executeDraw } from './rewards';
 import { leaderboard } from './prestige';
 import { awardReward } from './rewards';
@@ -15,8 +15,7 @@ export function runScheduledServices(db: Sql, nowMs: number): { lotteriesDrawn: 
   const tick = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
   const ctx: TickCtx = { tick, gameDate: gameDate(loadConfig(db), tick), actor: 'scheduler' };
   const g = { tick, ms: nowMs, actor: 'scheduler' };
-  ensureOpenLottery(db, ctx);
-  const res = drawDueLotteries(db, ctx); ensureOpenLottery(db, ctx);
+  const res = drawDueLotteries(db, ctx);
   const draws: string[] = [];
   for (const d of db.all<{ id: string }>("SELECT id FROM prize_draws WHERE status = 'open' AND closes_tick <= ?", tick)) { executeDraw(db, g, d.id); draws.push(d.id); }
   // weekly leaderboard awards: top human players by prestige, once per programme per week, only from the funded reserve

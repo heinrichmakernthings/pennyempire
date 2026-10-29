@@ -19,6 +19,13 @@ import { companyServices, loanQuote, stateOverview } from './stateApi';
 import { adminLog, authorised, cancelEventAdmin, logDenied, setBaseRate, setCentralBankRule, setParam, triggerEvent, ADMIN_PARAMS } from '../engine/admin';
 import { bankDeposit, bankWithdraw, buyPremisesCmd, cancelAd, repayBankLoan, startAd, takeBankLoan } from '../engine/stateCommands';
 import { stateDashboard } from './stateDashboard';
+import { marketScreen, prestigeScreen, rewardsScreen, walletScreen } from './prestigeApi';
+import { walletCommand } from '../engine/walletCommands';
+import { membershipView } from '../engine/membership';
+import { providerAttest, recordImpression } from '../engine/rewards';
+import { treasuryView } from '../engine/commercial';
+import { treasuryAction } from '../engine/treasuryAdmin';
+import { leaderboard } from '../engine/prestige';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
 export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown; headers?: Record<string, string> }
@@ -27,7 +34,7 @@ export interface ApiOptions { devEndpoints: boolean; now?: () => number; adminTo
 
 const json = (status: number, body: unknown): ApiResponse => ({ status, body });
 const apiErr = (status: number, code: ApiError['code'], message: string): ApiResponse => json(status, { ok: false, error: { code, message } });
-const UNAVAILABLE_TYPES = new Set(['prestige.buy', 'wallet.testDeposit', 'wallet.testWithdraw']);
+const UNAVAILABLE_TYPES = new Set<string>();
 
 /** Envelope with real tick revision and clock; `authority: 'server'` tells the UI to drop the "illustrative" badges. */
 function envelope<T>(db: Sql, data: T) {
@@ -102,6 +109,20 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       const c = out.quote; const cur = (m: number) => ({ currency: 'EC' as const, minor: m });
       return json(200, { ok: true, quote: { id: c.id, expiresAt: new Date(nextTickAtMs(db)).toISOString(), revision: c.revision, kind: c.kind, limitPriceMinor: c.limitPriceMinor, reserveMinor: c.reserveMinor, slippageBps: c.slippageBps, quantity: c.quantity, subtotal: cur(c.subtotalMinor), fee: cur(c.feeMinor), total: cur(c.totalMinor), availableUnits: c.availableUnits } });
     }
+    if (method === 'GET' && seg[0] === 'prestige') {
+      if (seg[1] === 'market') return json(200, { authority: 'server', ...marketScreen(db) });
+      if (seg[1] === 'leaderboard') return json(200, { authority: 'server', ...leaderboard(db, PLAYER_ID, q.scope === 'global' ? 'global' : 'city') });
+      return json(200, { authority: 'server', ...prestigeScreen(db) });
+    }
+    if (method === 'GET' && seg[0] === 'rewards') return json(200, { authority: 'server', ...rewardsScreen(db, now) });
+    if (method === 'GET' && seg[0] === 'wallet') return json(200, { authority: 'server', ...walletScreen(db) });
+    if (method === 'GET' && seg[0] === 'membership') return json(200, { authority: 'server', membership: membershipView(db, PLAYER_ID, db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t) });
+    if (method === 'POST' && seg[0] === 'ads' && seg[1] === 'attest') {   // the (simulated) provider's server-side proof of completion: refused until the minimum viewing time has passed
+      try { return json(200, { ok: true, ...providerAttest(db, now, String((req.body as { sessionId?: string })?.sessionId ?? '')) }); } catch (e) { return apiErr(422, 'FORBIDDEN', e instanceof Error ? e.message : 'Refused'); }
+    }
+    if (method === 'POST' && seg[0] === 'ads' && seg[1] === 'impression') {
+      try { recordImpression(db, { tick: db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t, gameDate: '', actor: 'ui' }, String((req.body as { slot?: string })?.slot ?? '')); return json(200, { ok: true }); } catch (e) { return apiErr(422, 'FORBIDDEN', e instanceof Error ? e.message : 'Refused'); }
+    }
     if (method === 'GET' && seg[0] === 'state') {
       if (seg[1] === 'overview') return json(200, { authority: 'server', ...stateOverview(db) });
       if (seg[1] === 'company' && seg[2]) { const r = companyServices(db, seg[2]); return r ? json(200, { authority: 'server', services: r }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[2]}`); }
@@ -114,6 +135,8 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       const actor = 'admin'; const b = (req.body ?? {}) as Record<string, unknown>; const reason = String(b.reason ?? '');
       const wrap = (r: { ok: boolean; message: string; detail?: unknown }) => json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } });
       if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db), params: ADMIN_PARAMS, log: adminLog(db) });
+      if (method === 'GET' && seg[1] === 'treasury') return json(200, { authority: 'server', treasury: treasuryView(db) });
+      if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, 'admin', seg[2], b); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }
       if (method === 'POST' && seg[1] === 'param') return wrap(setParam(db, actor, String(b.key ?? ''), Number(b.value), reason));
       if (method === 'POST' && seg[1] === 'base-rate') return wrap(setBaseRate(db, actor, Number(b.rateBps), reason));
       if (method === 'POST' && seg[1] === 'event') return wrap(triggerEvent(db, actor, String(b.type ?? ''), Number(b.severity ?? 1), b.days === undefined ? undefined : Number(b.days), reason));
@@ -121,11 +144,13 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       if (method === 'POST' && seg[1] === 'cb-rule') return wrap(setCentralBankRule(db, actor, b.enabled === true, reason));
       return apiErr(404, 'UNAVAILABLE', `No admin route ${method} ${path}`);
     }
-    if (method === 'POST' && seg[0] === 'command') return runApiCommand(db, req.body as Command & Record<string, unknown>);
+    if (method === 'POST' && seg[0] === 'command') return runApiCommand(db, req.body as Command & Record<string, unknown>, now);
     if (seg[0] === 'dev') {
       if (!opts.devEndpoints) return apiErr(404, 'FORBIDDEN', 'Developer endpoints are disabled');
       if (method === 'GET' && seg[1] === 'economy') return json(200, economyDashboard(db));
       if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db) });
+      if (method === 'GET' && seg[1] === 'treasury') return json(200, { authority: 'server', treasury: treasuryView(db), withdrawals: db.all("SELECT id, player_id playerId, amount_pence amountPence, status, reason, created_ms createdMs FROM gbp_withdrawals ORDER BY created_ms DESC, id DESC LIMIT 30"), deposits: db.all('SELECT id, player_id playerId, amount_pence amountPence, status, fee_pence feePence, failure_reason failureReason FROM gbp_deposits ORDER BY created_ms DESC, id DESC LIMIT 30'), audit: db.all('SELECT id, ms, actor, action, subject, detail_json detail, ok FROM gbp_audit ORDER BY id DESC LIMIT 40').map((a: any) => ({ ...a, detail: JSON.parse(a.detail) })) });
+      if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, 'developer', seg[2], (req.body ?? {}) as Record<string, unknown>); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }
       if (method === 'POST' && seg[1] === 'tick') {
         const count = Math.max(1, Math.min(400, Number((req.body as { count?: number } | undefined)?.count ?? 1)));
         const results = [];
@@ -139,9 +164,10 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
   }
 }
 
-function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>): ApiResponse {
+function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>, nowMs: number): ApiResponse {
   const key = cmd?.idempotencyKey as string;
   let res: CommandResponse;
+  const wc = walletCommand(db, nowMs, key, cmd as Record<string, unknown>); if (wc) return json(wc.ok ? 200 : wc.error.code === 'UNAVAILABLE' ? 501 : 422, wc);
   switch (cmd?.type as string) {
     case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined, askPriceMinor: cmd.askPriceMinor as number | undefined, autoProcure: cmd.autoProcure as boolean | undefined }); break;
     case 'commodity.order': res = placePlayerOrder(db, key, { companyId: cmd.companyId as string, commodityId: cmd.commodityId as string, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number, quoteId: cmd.quoteId as string, kind: cmd.orderKind as 'limit' | 'market' | 'direct' | undefined, fromCompanyId: cmd.fromCompanyId as string | undefined, slippageBps: cmd.slippageBps as number | undefined, expiresInTicks: cmd.expiresInTicks as number | null | undefined }); break;

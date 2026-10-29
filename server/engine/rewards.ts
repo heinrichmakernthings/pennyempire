@@ -18,7 +18,7 @@ export const AD_REWARDS: AdReward[] = [
   { id: 'ad-coins', kind: 'coins', label: '50 Empire Coins', description: 'A small, capped faucet of fictional coins (these are not money and cannot be withdrawn).', amountMinor: 5_000, dailyLimit: 5, cooldownMs: 10 * 60_000, minWatchMs: 15_000 },
   { id: 'ad-boost-production', kind: 'boost', label: 'Production +2% for 3 days', description: 'A small production boost. It never stacks with other boosts of the same kind.', boost: { kind: 'production', bps: 200, days: 3 }, dailyLimit: 2, cooldownMs: 30 * 60_000, minWatchMs: 15_000 },
 ];
-export const SESSION_TTL_MS = 10 * 60_000, MAX_SESSIONS_PER_DAY = 12;
+export const SESSION_TTL_MS = 10 * 60_000, MAX_SESSIONS_PER_DAY = 12, MAX_REJECTED_PER_DAY = 3;
 const reward = (id: string) => AD_REWARDS.find((r) => r.id === id);
 const secret = (db: Sql) => { let s = db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'ad_provider_secret'")?.value; if (!s) { s = randomToken(32); db.run("INSERT INTO meta (key, value) VALUES ('ad_provider_secret', ?)", s); } return s; };
 const day = (ctx: TickCtx) => ctx.tick; void _avail;
@@ -36,6 +36,7 @@ export function startAdView(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId:
   return db.transaction(() => {
     const r = reward(a.rewardId); if (!r) throw new LedgerError('FORBIDDEN', 'Unknown reward.');
     const av = rewardAvailability(db, ctx, nowMs, a.playerId).find((x) => x.id === r.id)!;
+    if (db.get<{ n: number }>("SELECT COUNT(*) n FROM ad_view_sessions WHERE player_id = ? AND tick = ? AND status = 'rejected'", a.playerId, day(ctx))!.n >= MAX_REJECTED_PER_DAY) throw new LedgerError('FORBIDDEN', 'Rewarded ads are paused for today because of repeated invalid completions.');
     if (av.openSessionId) return { sessionId: av.openSessionId, minWatchMs: r.minWatchMs };      // resume the open session: starting twice never makes two rewards
     if (av.remainingToday <= 0) throw new LedgerError('FORBIDDEN', 'You have used all of today’s rewards of this type. Come back tomorrow (next game day).');
     if (av.cooldownRemainingMs > 0) throw new LedgerError('FORBIDDEN', `Next reward available in ${Math.ceil(av.cooldownRemainingMs / 60_000)} min.`);
@@ -54,13 +55,18 @@ export function providerAttest(db: Sql, nowMs: number, sessionId: string): { tok
 }
 class AdFraud extends LedgerError { constructor(public readonly sessionId: string, public readonly why: string) { super('FORBIDDEN', `Reward refused: ${why}`); } }
 /** Verifies and (at most once) grants. A failed verification burns the session — recorded outside the rolled-back transaction, so a fraud attempt leaves a trace. */
-export function completeAdView(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId: string; sessionId: string; token: string }): { granted: { kind: AdRewardKind; amountMinor?: number; boostId?: number }; duplicate: boolean } {
+type Completion = { granted: { kind: AdRewardKind; amountMinor?: number; boostId?: number }; duplicate: boolean };
+/** Verifies and (at most once) grants. A failed verification burns the session and RETURNS a refusal (instead of throwing) so the record of the attempt is committed with the surrounding command. */
+export function tryCompleteAdView(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId: string; sessionId: string; token: string }): Completion | { refused: string } {
   try { return completeInner(db, ctx, nowMs, a); } catch (e) {
-    if (e instanceof AdFraud) { db.run("UPDATE ad_view_sessions SET status = 'rejected', fraud_reason = ? WHERE id = ? AND status = 'started'", e.why, e.sessionId); throw new LedgerError('FORBIDDEN', e.message); }
+    if (e instanceof AdFraud) { db.run("UPDATE ad_view_sessions SET status = 'rejected', fraud_reason = ? WHERE id = ? AND status = 'started'", e.why, e.sessionId); return { refused: e.message }; }
     throw e;
   }
 }
-function completeInner(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId: string; sessionId: string; token: string }): { granted: { kind: AdRewardKind; amountMinor?: number; boostId?: number }; duplicate: boolean } {
+export function completeAdView(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId: string; sessionId: string; token: string }): Completion {
+  const r = tryCompleteAdView(db, ctx, nowMs, a); if ('refused' in r) throw new LedgerError('FORBIDDEN', r.refused); return r;
+}
+function completeInner(db: Sql, ctx: TickCtx, nowMs: number, a: { playerId: string; sessionId: string; token: string }): Completion {
   return db.transaction(() => {
     const s = db.get<{ id: string; player_id: string; reward_id: string; status: string; nonce: string; started_ms: number; min_ms: number; tick: number }>('SELECT * FROM ad_view_sessions WHERE id = ?', a.sessionId);
     if (!s || s.player_id !== a.playerId) throw new LedgerError('FORBIDDEN', 'No such advertisement session.');

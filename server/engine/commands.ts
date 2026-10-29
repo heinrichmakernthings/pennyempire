@@ -1,3 +1,4 @@
+import { GbpError } from './gbpLedger';
 import type { ApiError } from '../../src/contracts/game-state';
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
@@ -31,6 +32,7 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
     let res: CommandResponse;
     try { res = db.transaction(() => fn(ctx)); } catch (e) {
       if (e instanceof LedgerError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : 'VALIDATION', e.message);
+      else if (e instanceof GbpError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : e.code === 'FORBIDDEN' || e.code === 'LIMIT' || e.code === 'INVALID_STATE' ? 'FORBIDDEN' : 'VALIDATION', e.message);
       else if (e instanceof MarketError) res = err(e.code === 'INSUFFICIENT_STOCK' ? 'INSUFFICIENT_STOCK' : e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : e.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'VALIDATION', e.message);
       else if (e instanceof ShareError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : e.code === 'INSUFFICIENT_SHARES' ? 'INSUFFICIENT_STOCK' : e.code === 'FORBIDDEN' ? 'FORBIDDEN' : 'VALIDATION', e.message);
       else throw e;

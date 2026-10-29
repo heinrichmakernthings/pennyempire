@@ -11,9 +11,8 @@ import { secureRandomInt, sha256 } from './sha256';
 export const LOTTERY = { ticketPriceMinor: 10_000, maxPerPlayer: 10, rakeBps: 1_000, prizeSharesBps: [6_000, 2_500, 1_500], minTickets: 4, periodTicks: 7 } as const;
 export interface LotteryRow { id: string; name: string; ticket_price_minor: number; draw_tick: number; status: 'open' | 'drawn' | 'cancelled'; pool_account: string; max_per_player: number; rake_bps: number; prizes_json: string; tickets_sold: number; drawn_tick: number | null; draw_commit: string | null }
 
-/** Opens the next weekly draw if none is open (idempotent). */
-export function ensureOpenLottery(db: Sql, ctx: TickCtx) {
-  if (db.get("SELECT 1 FROM lotteries WHERE status = 'open'")) return;
+/** The weekly draws exist as a pure function of the tick (the next one is always scheduled), so replaying or catching up creates exactly the same rows. Idempotent. */
+export function ensureLotteries(db: Sql, ctx: TickCtx) {
   const draw = (Math.floor(ctx.tick / LOTTERY.periodTicks) + 1) * LOTTERY.periodTicks, id = `lot-${draw}`;
   if (db.get('SELECT 1 FROM lotteries WHERE id = ?', id)) return;
   const pool = `acct:lottery:${id}`; createAccount(db, pool, 'state_treasury', `Lottery pool ${id}`);
@@ -48,9 +47,10 @@ export function buyTickets(db: Sql, ctx: TickCtx, a: { playerId: string; lottery
 }
 
 /** Draws every due lottery. `rng` is injectable for tests; production uses the secure generator. */
-export function drawDueLotteries(db: Sql, ctx: TickCtx, rng: (n: number) => number = secureRandomInt): { drawn: string[]; cancelled: string[] } {
+export function drawDueLotteries(db: Sql, now: TickCtx, rng: (n: number) => number = secureRandomInt): { drawn: string[]; cancelled: string[] } {
   const out = { drawn: [] as string[], cancelled: [] as string[] };
-  for (const l of db.all<LotteryRow>("SELECT * FROM lotteries WHERE status = 'open' AND draw_tick <= ? ORDER BY id", ctx.tick)) {
+  for (const l of db.all<LotteryRow>("SELECT * FROM lotteries WHERE status = 'open' AND draw_tick <= ? ORDER BY draw_tick", now.tick)) {
+    const ctx: TickCtx = { ...now, tick: l.draw_tick };   // recorded at the scheduled draw tick, so the books are the same however late the scheduler runs
     db.transaction(() => {
       const tickets = db.all<{ number: number; owner_id: string; ledger_tx_id: number }>('SELECT number, owner_id, ledger_tx_id FROM lottery_tickets WHERE lottery_id = ? ORDER BY number', l.id);
       if (tickets.length < LOTTERY.minTickets) {
@@ -78,7 +78,7 @@ export function drawDueLotteries(db: Sql, ctx: TickCtx, rng: (n: number) => numb
 }
 
 export function lotteryView(db: Sql, playerId: string, tick: number) {
-  const lots = db.all<LotteryRow>('SELECT * FROM lotteries ORDER BY draw_tick DESC LIMIT 6');
+  const lots = db.all<LotteryRow>('SELECT * FROM lotteries WHERE draw_tick <= ? + 14 ORDER BY draw_tick DESC LIMIT 6', tick);
   return lots.map((l) => {
     const mine = db.all<{ number: number }>('SELECT number FROM lottery_tickets WHERE lottery_id = ? AND owner_id = ? ORDER BY number', l.id, playerId).map((t) => t.number);
     const prizes = JSON.parse(l.prizes_json) as number[]; const pool = l.tickets_sold * l.ticket_price_minor;

@@ -1,4 +1,5 @@
 import { ensurePrestigeCatalogue } from '../engine/prestige';
+import { ensureLotteries } from '../engine/lottery';
 import { ensureGbpBooks } from '../engine/gbpLedger';
 import type { Sql } from '../db/sql';
 import { loadConfig, saveConfig } from '../engine/config';
@@ -118,7 +119,7 @@ const securitiesV1: Patch = {
 const stateEconomyV1: Patch = { id: 'state-economy-v1', run(db, ctx) { return ensureStateCompanies(db, ctx, loadConfig(db)); } };
 
 /** Prestige catalogue and the (simulated) GBP books (Prompt 9). */
-const prestigeWalletV1: Patch = { id: 'prestige-wallet-v1', run(db) { ensurePrestigeCatalogue(db); ensureGbpBooks(db); return 0; } };
+const prestigeWalletV1: Patch = { id: 'prestige-wallet-v1', run(db, ctx) { ensurePrestigeCatalogue(db); ensureGbpBooks(db); ensureLotteries(db, ctx); return 0; } };
 
 export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1];
 
