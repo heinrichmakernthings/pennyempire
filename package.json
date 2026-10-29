@@ -19,6 +19,7 @@
     "db:reset": "tsx server/cli.ts reset",
     "sim": "tsx server/cli.ts sim",
     "sim:market": "tsx server/cli.ts sim-market",
+    "alpha-stress": "SCENARIO_OUT=docs/scenarios tsx server/cli.ts alpha-stress",
     "eco-scenarios": "tsx server/cli.ts eco-scenarios all 150"
   },
   "dependencies": {
