@@ -1,0 +1,257 @@
+[
+  {
+    "device": "desktop",
+    "name": "city",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "competition",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "people",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "post",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "motion",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "quiet",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "closed",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "bankrupt",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "stale",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "branding",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "delivery",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "profile-neutral",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "profile-positive",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "profile-negative",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "empty",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "state-report",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "article",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "errors": [],
+    "flows": "states, dynamic branding, transfer guards, reactions, ownership denominator, empty report, news/profile, reduced motion and work animation"
+  },
+  {
+    "device": "mobile",
+    "name": "city",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "competition",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "people",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "post",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "motion",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "quiet",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "closed",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "bankrupt",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "stale",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "branding",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "delivery",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "profile-neutral",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "profile-positive",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "profile-negative",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "empty",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "state-report",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "article",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "errors": [],
+    "flows": "states, dynamic branding, transfer guards, reactions, ownership denominator, empty report, news/profile, reduced motion and work animation"
+  },
+  {
+    "width": 360,
+    "route": "city",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "competition",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "people",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "motion",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "city",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "competition",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "people",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "motion",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "city",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "competition",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "people",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "motion",
+    "noPageOverflow": true
+  }
+]

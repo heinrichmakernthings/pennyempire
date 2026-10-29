@@ -1,0 +1,4895 @@
+{
+  "version": 7,
+  "worldFrame": [
+    24,
+    40
+  ],
+  "tile": [
+    128,
+    64
+  ],
+  "portraitFrame": [
+    96,
+    96
+  ],
+  "avatarFrame": [
+    48,
+    48
+  ],
+  "projection": "2:1 orthographic",
+  "scaling": "integer nearest-neighbour",
+  "assets": [
+    {
+      "id": "maya-reed-portraits-neutral",
+      "source": "assets/art/phase7/runtime/maya-reed-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        53,
+        93,
+        363,
+        457
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-portraits-positive",
+      "source": "assets/art/phase7/runtime/maya-reed-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        446,
+        93,
+        362,
+        457
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-portraits-negative",
+      "source": "assets/art/phase7/runtime/maya-reed-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        838,
+        93,
+        363,
+        457
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-world-neutral",
+      "source": "assets/art/phase7/runtime/maya-reed-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        126,
+        612,
+        221,
+        585
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-world-positive",
+      "source": "assets/art/phase7/runtime/maya-reed-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        480,
+        618,
+        259,
+        579
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-world-negative",
+      "source": "assets/art/phase7/runtime/maya-reed-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "sourceCrop": [
+        920,
+        627,
+        220,
+        571
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-avatar-neutral",
+      "source": "assets/art/phase7/runtime/maya-reed-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-avatar-positive",
+      "source": "assets/art/phase7/runtime/maya-reed-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "maya-reed-avatar-negative",
+      "source": "assets/art/phase7/runtime/maya-reed-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/maya-reed.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-portraits-neutral",
+      "source": "assets/art/phase7/runtime/leo-marsh-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        35,
+        91,
+        383,
+        465
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-portraits-positive",
+      "source": "assets/art/phase7/runtime/leo-marsh-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        418,
+        91,
+        412,
+        465
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-portraits-negative",
+      "source": "assets/art/phase7/runtime/leo-marsh-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        836,
+        91,
+        395,
+        465
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-world-neutral",
+      "source": "assets/art/phase7/runtime/leo-marsh-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        97,
+        617,
+        272,
+        586
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-world-positive",
+      "source": "assets/art/phase7/runtime/leo-marsh-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        465,
+        617,
+        309,
+        586
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-world-negative",
+      "source": "assets/art/phase7/runtime/leo-marsh-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "sourceCrop": [
+        918,
+        641,
+        253,
+        562
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-avatar-neutral",
+      "source": "assets/art/phase7/runtime/leo-marsh-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-avatar-positive",
+      "source": "assets/art/phase7/runtime/leo-marsh-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "leo-marsh-avatar-negative",
+      "source": "assets/art/phase7/runtime/leo-marsh-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/leo-marsh.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-portraits-neutral",
+      "source": "assets/art/phase7/runtime/imogen-shaw-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        41,
+        100,
+        377,
+        451
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-portraits-positive",
+      "source": "assets/art/phase7/runtime/imogen-shaw-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        418,
+        100,
+        417,
+        451
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-portraits-negative",
+      "source": "assets/art/phase7/runtime/imogen-shaw-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        854,
+        101,
+        385,
+        450
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-world-neutral",
+      "source": "assets/art/phase7/runtime/imogen-shaw-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        96,
+        621,
+        241,
+        575
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-world-positive",
+      "source": "assets/art/phase7/runtime/imogen-shaw-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        485,
+        624,
+        264,
+        573
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-world-negative",
+      "source": "assets/art/phase7/runtime/imogen-shaw-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "sourceCrop": [
+        943,
+        631,
+        212,
+        562
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-avatar-neutral",
+      "source": "assets/art/phase7/runtime/imogen-shaw-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-avatar-positive",
+      "source": "assets/art/phase7/runtime/imogen-shaw-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "imogen-shaw-avatar-negative",
+      "source": "assets/art/phase7/runtime/imogen-shaw-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/imogen-shaw.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-portraits-neutral",
+      "source": "assets/art/phase7/runtime/nora-bell-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        36,
+        109,
+        382,
+        456
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-portraits-positive",
+      "source": "assets/art/phase7/runtime/nora-bell-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        418,
+        109,
+        401,
+        456
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-portraits-negative",
+      "source": "assets/art/phase7/runtime/nora-bell-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        847,
+        109,
+        383,
+        455
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-world-neutral",
+      "source": "assets/art/phase7/runtime/nora-bell-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        123,
+        618,
+        221,
+        580
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-world-positive",
+      "source": "assets/art/phase7/runtime/nora-bell-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        477,
+        615,
+        262,
+        583
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-world-negative",
+      "source": "assets/art/phase7/runtime/nora-bell-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "sourceCrop": [
+        910,
+        627,
+        246,
+        571
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-avatar-neutral",
+      "source": "assets/art/phase7/runtime/nora-bell-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-avatar-positive",
+      "source": "assets/art/phase7/runtime/nora-bell-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "nora-bell-avatar-negative",
+      "source": "assets/art/phase7/runtime/nora-bell-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/nora-bell.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-portraits-neutral",
+      "source": "assets/art/phase7/runtime/farah-ali-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        38,
+        85,
+        380,
+        466
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-portraits-positive",
+      "source": "assets/art/phase7/runtime/farah-ali-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        418,
+        85,
+        400,
+        466
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-portraits-negative",
+      "source": "assets/art/phase7/runtime/farah-ali-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        840,
+        85,
+        384,
+        466
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-world-neutral",
+      "source": "assets/art/phase7/runtime/farah-ali-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        113,
+        606,
+        242,
+        601
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-world-positive",
+      "source": "assets/art/phase7/runtime/farah-ali-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        479,
+        607,
+        272,
+        600
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-world-negative",
+      "source": "assets/art/phase7/runtime/farah-ali-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "sourceCrop": [
+        931,
+        626,
+        233,
+        581
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-avatar-neutral",
+      "source": "assets/art/phase7/runtime/farah-ali-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-avatar-positive",
+      "source": "assets/art/phase7/runtime/farah-ali-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farah-ali-avatar-negative",
+      "source": "assets/art/phase7/runtime/farah-ali-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/farah-ali.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-portraits-neutral",
+      "source": "assets/art/phase7/runtime/arthur-vale-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        46,
+        91,
+        372,
+        475
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-portraits-positive",
+      "source": "assets/art/phase7/runtime/arthur-vale-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        418,
+        90,
+        418,
+        475
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-portraits-negative",
+      "source": "assets/art/phase7/runtime/arthur-vale-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        836,
+        91,
+        385,
+        474
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-world-neutral",
+      "source": "assets/art/phase7/runtime/arthur-vale-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        98,
+        618,
+        264,
+        590
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-world-positive",
+      "source": "assets/art/phase7/runtime/arthur-vale-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        464,
+        618,
+        305,
+        593
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-world-negative",
+      "source": "assets/art/phase7/runtime/arthur-vale-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "sourceCrop": [
+        913,
+        626,
+        266,
+        585
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-avatar-neutral",
+      "source": "assets/art/phase7/runtime/arthur-vale-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-avatar-positive",
+      "source": "assets/art/phase7/runtime/arthur-vale-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "arthur-vale-avatar-negative",
+      "source": "assets/art/phase7/runtime/arthur-vale-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/arthur-vale.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-portraits-neutral",
+      "source": "assets/art/phase7/runtime/evelyn-park-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        41,
+        95,
+        377,
+        447
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-portraits-positive",
+      "source": "assets/art/phase7/runtime/evelyn-park-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        418,
+        95,
+        418,
+        447
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-portraits-negative",
+      "source": "assets/art/phase7/runtime/evelyn-park-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        853,
+        95,
+        388,
+        446
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-world-neutral",
+      "source": "assets/art/phase7/runtime/evelyn-park-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        100,
+        609,
+        254,
+        592
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-world-positive",
+      "source": "assets/art/phase7/runtime/evelyn-park-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        485,
+        609,
+        281,
+        595
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-world-negative",
+      "source": "assets/art/phase7/runtime/evelyn-park-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "sourceCrop": [
+        933,
+        620,
+        241,
+        579
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-avatar-neutral",
+      "source": "assets/art/phase7/runtime/evelyn-park-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-avatar-positive",
+      "source": "assets/art/phase7/runtime/evelyn-park-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "evelyn-park-avatar-negative",
+      "source": "assets/art/phase7/runtime/evelyn-park-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/evelyn-park.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-portraits-neutral",
+      "source": "assets/art/phase7/runtime/kit-morgan-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        48,
+        89,
+        370,
+        467
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-portraits-positive",
+      "source": "assets/art/phase7/runtime/kit-morgan-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        418,
+        90,
+        409,
+        466
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-portraits-negative",
+      "source": "assets/art/phase7/runtime/kit-morgan-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        838,
+        89,
+        381,
+        467
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-world-neutral",
+      "source": "assets/art/phase7/runtime/kit-morgan-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        126,
+        622,
+        217,
+        577
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-world-positive",
+      "source": "assets/art/phase7/runtime/kit-morgan-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        482,
+        618,
+        257,
+        577
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-world-negative",
+      "source": "assets/art/phase7/runtime/kit-morgan-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "sourceCrop": [
+        913,
+        624,
+        235,
+        571
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-avatar-neutral",
+      "source": "assets/art/phase7/runtime/kit-morgan-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-avatar-positive",
+      "source": "assets/art/phase7/runtime/kit-morgan-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "kit-morgan-avatar-negative",
+      "source": "assets/art/phase7/runtime/kit-morgan-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/kit-morgan.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-portraits-neutral",
+      "source": "assets/art/phase7/runtime/dev-patel-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        36,
+        96,
+        382,
+        470
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-portraits-positive",
+      "source": "assets/art/phase7/runtime/dev-patel-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        418,
+        96,
+        418,
+        470
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-portraits-negative",
+      "source": "assets/art/phase7/runtime/dev-patel-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        836,
+        96,
+        404,
+        470
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-world-neutral",
+      "source": "assets/art/phase7/runtime/dev-patel-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        109,
+        617,
+        240,
+        586
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-world-positive",
+      "source": "assets/art/phase7/runtime/dev-patel-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        482,
+        620,
+        273,
+        584
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-world-negative",
+      "source": "assets/art/phase7/runtime/dev-patel-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "sourceCrop": [
+        940,
+        639,
+        231,
+        564
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-avatar-neutral",
+      "source": "assets/art/phase7/runtime/dev-patel-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-avatar-positive",
+      "source": "assets/art/phase7/runtime/dev-patel-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dev-patel-avatar-negative",
+      "source": "assets/art/phase7/runtime/dev-patel-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/dev-patel.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-portraits-neutral",
+      "source": "assets/art/phase7/runtime/rafael-costa-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        37,
+        92,
+        381,
+        462
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-portraits-positive",
+      "source": "assets/art/phase7/runtime/rafael-costa-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        418,
+        92,
+        411,
+        462
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-portraits-negative",
+      "source": "assets/art/phase7/runtime/rafael-costa-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        836,
+        92,
+        389,
+        462
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-world-neutral",
+      "source": "assets/art/phase7/runtime/rafael-costa-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        110,
+        597,
+        248,
+        626
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-world-positive",
+      "source": "assets/art/phase7/runtime/rafael-costa-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        469,
+        597,
+        297,
+        627
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-world-negative",
+      "source": "assets/art/phase7/runtime/rafael-costa-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "sourceCrop": [
+        919,
+        611,
+        256,
+        613
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-avatar-neutral",
+      "source": "assets/art/phase7/runtime/rafael-costa-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-avatar-positive",
+      "source": "assets/art/phase7/runtime/rafael-costa-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "rafael-costa-avatar-negative",
+      "source": "assets/art/phase7/runtime/rafael-costa-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/rafael-costa.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-portraits-neutral",
+      "source": "assets/art/phase7/runtime/aisha-cole-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        27,
+        85,
+        388,
+        478
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-portraits-positive",
+      "source": "assets/art/phase7/runtime/aisha-cole-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        429,
+        86,
+        387,
+        477
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-portraits-negative",
+      "source": "assets/art/phase7/runtime/aisha-cole-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        840,
+        87,
+        393,
+        476
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-world-neutral",
+      "source": "assets/art/phase7/runtime/aisha-cole-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        91,
+        597,
+        239,
+        612
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-world-positive",
+      "source": "assets/art/phase7/runtime/aisha-cole-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        470,
+        599,
+        275,
+        608
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-world-negative",
+      "source": "assets/art/phase7/runtime/aisha-cole-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "sourceCrop": [
+        944,
+        601,
+        226,
+        608
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-avatar-neutral",
+      "source": "assets/art/phase7/runtime/aisha-cole-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-avatar-positive",
+      "source": "assets/art/phase7/runtime/aisha-cole-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "aisha-cole-avatar-negative",
+      "source": "assets/art/phase7/runtime/aisha-cole-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/aisha-cole.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-portraits-neutral",
+      "source": "assets/art/phase7/runtime/owen-price-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        47,
+        114,
+        371,
+        433
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-portraits-positive",
+      "source": "assets/art/phase7/runtime/owen-price-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        96,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        418,
+        114,
+        418,
+        433
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-portraits-negative",
+      "source": "assets/art/phase7/runtime/owen-price-portraits.png",
+      "sourceSize": [
+        288,
+        96
+      ],
+      "frame": [
+        192,
+        0,
+        96,
+        96
+      ],
+      "logicalSize": [
+        96,
+        96
+      ],
+      "pivot": [
+        48,
+        96
+      ],
+      "usage": "portrait",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        836,
+        114,
+        371,
+        433
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-world-neutral",
+      "source": "assets/art/phase7/runtime/owen-price-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        121,
+        612,
+        228,
+        579
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-world-positive",
+      "source": "assets/art/phase7/runtime/owen-price-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        475,
+        612,
+        269,
+        579
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-world-negative",
+      "source": "assets/art/phase7/runtime/owen-price-world.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "sourceCrop": [
+        921,
+        627,
+        241,
+        564
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-avatar-neutral",
+      "source": "assets/art/phase7/runtime/owen-price-avatar-neutral.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-avatar-positive",
+      "source": "assets/art/phase7/runtime/owen-price-avatar-positive.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "owen-price-avatar-negative",
+      "source": "assets/art/phase7/runtime/owen-price-avatar-negative.png",
+      "sourceSize": [
+        48,
+        48
+      ],
+      "frame": [
+        0,
+        0,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "usage": "avatar",
+      "sourceArtwork": "assets/art/phase7/source/owen-price.png",
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-worker-idle",
+      "source": "assets/art/phase7/runtime/farm-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farm-worker.png",
+      "sourceCrop": [
+        315,
+        81,
+        321,
+        592
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-worker-work-a",
+      "source": "assets/art/phase7/runtime/farm-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farm-worker.png",
+      "sourceCrop": [
+        863,
+        119,
+        391,
+        554
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-worker-work-b",
+      "source": "assets/art/phase7/runtime/farm-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farm-worker.png",
+      "sourceCrop": [
+        1424,
+        92,
+        348,
+        581
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "mill-worker-idle",
+      "source": "assets/art/phase7/runtime/mill-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/mill-worker.png",
+      "sourceCrop": [
+        369,
+        97,
+        260,
+        578
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "mill-worker-work-a",
+      "source": "assets/art/phase7/runtime/mill-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/mill-worker.png",
+      "sourceCrop": [
+        907,
+        112,
+        339,
+        559
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "mill-worker-work-b",
+      "source": "assets/art/phase7/runtime/mill-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/mill-worker.png",
+      "sourceCrop": [
+        1578,
+        97,
+        267,
+        578
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy-worker-idle",
+      "source": "assets/art/phase7/runtime/dairy-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dairy-worker.png",
+      "sourceCrop": [
+        395,
+        97,
+        274,
+        576
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy-worker-work-a",
+      "source": "assets/art/phase7/runtime/dairy-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dairy-worker.png",
+      "sourceCrop": [
+        923,
+        97,
+        289,
+        576
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "dairy-worker-work-b",
+      "source": "assets/art/phase7/runtime/dairy-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/dairy-worker.png",
+      "sourceCrop": [
+        1536,
+        97,
+        230,
+        576
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "pizza-chef-idle",
+      "source": "assets/art/phase7/runtime/pizza-chef.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/pizza-chef.png",
+      "sourceCrop": [
+        342,
+        51,
+        299,
+        651
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "pizza-chef-work-a",
+      "source": "assets/art/phase7/runtime/pizza-chef.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/pizza-chef.png",
+      "sourceCrop": [
+        929,
+        51,
+        313,
+        652
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "pizza-chef-work-b",
+      "source": "assets/art/phase7/runtime/pizza-chef.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/pizza-chef.png",
+      "sourceCrop": [
+        1537,
+        51,
+        305,
+        651
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "barista-idle",
+      "source": "assets/art/phase7/runtime/barista.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/barista.png",
+      "sourceCrop": [
+        353,
+        75,
+        262,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "barista-work-a",
+      "source": "assets/art/phase7/runtime/barista.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/barista.png",
+      "sourceCrop": [
+        947,
+        75,
+        281,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "barista-work-b",
+      "source": "assets/art/phase7/runtime/barista.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/barista.png",
+      "sourceCrop": [
+        1558,
+        75,
+        264,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-worker-idle",
+      "source": "assets/art/phase7/runtime/timber-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/timber-worker.png",
+      "sourceCrop": [
+        205,
+        115,
+        311,
+        606
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-worker-work-a",
+      "source": "assets/art/phase7/runtime/timber-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/timber-worker.png",
+      "sourceCrop": [
+        793,
+        115,
+        298,
+        606
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "timber-worker-work-b",
+      "source": "assets/art/phase7/runtime/timber-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/timber-worker.png",
+      "sourceCrop": [
+        1363,
+        115,
+        302,
+        606
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-driver-idle",
+      "source": "assets/art/phase7/runtime/delivery-driver.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/delivery-driver.png",
+      "sourceCrop": [
+        292,
+        74,
+        275,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-driver-work-a",
+      "source": "assets/art/phase7/runtime/delivery-driver.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/delivery-driver.png",
+      "sourceCrop": [
+        890,
+        74,
+        348,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "delivery-driver-work-b",
+      "source": "assets/art/phase7/runtime/delivery-driver.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/delivery-driver.png",
+      "sourceCrop": [
+        1604,
+        74,
+        261,
+        598
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "warehouse-worker-idle",
+      "source": "assets/art/phase7/runtime/warehouse-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/warehouse-worker.png",
+      "sourceCrop": [
+        325,
+        109,
+        299,
+        562
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "warehouse-worker-work-a",
+      "source": "assets/art/phase7/runtime/warehouse-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        24,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/warehouse-worker.png",
+      "sourceCrop": [
+        846,
+        109,
+        390,
+        562
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "warehouse-worker-work-b",
+      "source": "assets/art/phase7/runtime/warehouse-worker.png",
+      "sourceSize": [
+        72,
+        40
+      ],
+      "frame": [
+        48,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "usage": "world",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/warehouse-worker.png",
+      "sourceCrop": [
+        1578,
+        113,
+        266,
+        558
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "closed-shutter-static",
+      "source": "assets/art/phase7/runtime/closed-shutter.png",
+      "sourceSize": [
+        64,
+        81
+      ],
+      "frame": [
+        0,
+        0,
+        64,
+        81
+      ],
+      "logicalSize": [
+        64,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "usage": "prop",
+      "orientation": null,
+      "sourceArtwork": "assets/art/phase7/source/closed-shutter.png",
+      "sourceCrop": [
+        65,
+        132,
+        991,
+        1176
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    },
+    {
+      "id": "farm-pickup-sw-static",
+      "source": "assets/art/phase7/runtime/farm-pickup-sw.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "usage": "prop",
+      "orientation": "southwest",
+      "sourceArtwork": "assets/art/phase7/source/farm-pickup-sw.png",
+      "sourceCrop": [
+        125,
+        141,
+        1219,
+        831
+      ],
+      "status": "finished-static",
+      "productionCertified": false
+    }
+  ],
+  "reused": [
+    {
+      "id": "resident-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        94,
+        98,
+        137,
+        295
+      ],
+      "logicalSize": [
+        19,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "resident-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        403,
+        99,
+        130,
+        297
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "resident-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        718,
+        98,
+        124,
+        295
+      ],
+      "logicalSize": [
+        17,
+        40
+      ],
+      "pivot": [
+        8,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "resident-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        1036,
+        98,
+        134,
+        300
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "worker-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        94,
+        483,
+        142,
+        307
+      ],
+      "logicalSize": [
+        19,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "worker-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        393,
+        483,
+        140,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "worker-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        717,
+        483,
+        140,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "worker-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        1034,
+        483,
+        141,
+        307
+      ],
+      "logicalSize": [
+        18,
+        40
+      ],
+      "pivot": [
+        9,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "courier-sw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        76,
+        867,
+        155,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "courier-se",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        395,
+        867,
+        155,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "courier-ne",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        705,
+        867,
+        149,
+        294
+      ],
+      "logicalSize": [
+        20,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "courier-nw",
+      "source": "assets/art/source/actors-idle-sheet.png",
+      "frame": [
+        1024,
+        867,
+        154,
+        294
+      ],
+      "logicalSize": [
+        21,
+        40
+      ],
+      "pivot": [
+        10,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "office-worker-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        2,
+        46,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "office-worker-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        30,
+        46,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "office-worker-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        58,
+        46,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "office-worker-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        86,
+        46,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "customer-sw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        2,
+        90,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "customer-se",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        30,
+        90,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "customer-ne",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        58,
+        90,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "customer-nw",
+      "source": "assets/art/phase2/runtime/actor-atlas.png",
+      "frame": [
+        86,
+        90,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "reused": true
+    },
+    {
+      "id": "delivery-van-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        2,
+        2,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "delivery-van-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        134,
+        2,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "delivery-van-ne",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        266,
+        2,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "delivery-van-nw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        398,
+        2,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "lorry-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        2,
+        97,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reused": true
+    },
+    {
+      "id": "lorry-se",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        134,
+        97,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reused": true
+    },
+    {
+      "id": "lorry-ne",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        266,
+        97,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reused": true
+    },
+    {
+      "id": "lorry-nw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        398,
+        97,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "reused": true
+    },
+    {
+      "id": "forklift-sw",
+      "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "frame": [
+        266,
+        287,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "executive-car-sw",
+      "source": "assets/art/phase5/runtime/executive-car-sw.png",
+      "frame": [
+        0,
+        0,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "reused": true
+    },
+    {
+      "id": "shopfront-display",
+      "source": "assets/art/phase5/runtime/shopfront-display.png",
+      "frame": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reused": true
+    },
+    {
+      "id": "trophy-display",
+      "source": "assets/art/phase5/runtime/trophy-display.png",
+      "frame": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "reused": true
+    }
+  ],
+  "atlases": {
+    "portraits": {
+      "source": "assets/art/phase7/runtime/portrait-atlas.png",
+      "size": [
+        1152,
+        288
+      ],
+      "cell": [
+        96,
+        96
+      ],
+      "columns": "characters.json order",
+      "rows": [
+        "neutral",
+        "positive",
+        "negative"
+      ]
+    },
+    "avatars": {
+      "source": "assets/art/phase7/runtime/avatar-atlas.png",
+      "size": [
+        576,
+        144
+      ],
+      "cell": [
+        48,
+        48
+      ],
+      "columns": "characters.json order",
+      "rows": [
+        "neutral",
+        "positive",
+        "negative"
+      ]
+    },
+    "owners": {
+      "source": "assets/art/phase7/runtime/owner-world-atlas.png",
+      "size": [
+        72,
+        480
+      ],
+      "cell": [
+        24,
+        40
+      ],
+      "rows": [
+        "maya-reed",
+        "leo-marsh",
+        "imogen-shaw",
+        "nora-bell",
+        "farah-ali",
+        "arthur-vale",
+        "evelyn-park",
+        "kit-morgan",
+        "dev-patel",
+        "rafael-costa",
+        "aisha-cole",
+        "owen-price"
+      ],
+      "columns": [
+        "neutral",
+        "positive",
+        "negative"
+      ]
+    },
+    "workers": {
+      "source": "assets/art/phase7/runtime/worker-atlas.png",
+      "size": [
+        72,
+        320
+      ],
+      "cell": [
+        24,
+        40
+      ],
+      "rows": [
+        "farm-worker",
+        "mill-worker",
+        "dairy-worker",
+        "pizza-chef",
+        "barista",
+        "timber-worker",
+        "delivery-driver",
+        "warehouse-worker"
+      ],
+      "columns": [
+        "idle",
+        "work-a",
+        "work-b"
+      ]
+    }
+  }
+}
