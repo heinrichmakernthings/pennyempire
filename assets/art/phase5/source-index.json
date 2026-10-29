@@ -1,0 +1,350 @@
+[
+  {
+    "id": "executive-car-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/executive-car-sw.png"
+  },
+  {
+    "id": "sports-car-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/sports-car-sw.png"
+  },
+  {
+    "id": "supercar-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/supercar-sw.png"
+  },
+  {
+    "id": "luxury-suv-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/luxury-suv-sw.png"
+  },
+  {
+    "id": "penthouse",
+    "kind": "property",
+    "logicalSize": [
+      224,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase5/source/penthouse.png"
+  },
+  {
+    "id": "luxury-townhouse",
+    "kind": "property",
+    "logicalSize": [
+      224,
+      234
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase5/source/luxury-townhouse.png"
+  },
+  {
+    "id": "mansion",
+    "kind": "property",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase5/source/mansion.png"
+  },
+  {
+    "id": "corporate-hq",
+    "kind": "property",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase5/source/corporate-hq.png"
+  },
+  {
+    "id": "luxury-boat-sw",
+    "kind": "waterfront",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      2,
+      1
+    ],
+    "source": "assets/art/phase5/source/luxury-boat-sw.png"
+  },
+  {
+    "id": "trophy-display",
+    "kind": "collectible",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/trophy-display.png"
+  },
+  {
+    "id": "exclusive-sculpture",
+    "kind": "collectible",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/exclusive-sculpture.png"
+  },
+  {
+    "id": "prestige-monument",
+    "kind": "collectible",
+    "logicalSize": [
+      80,
+      89
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/prestige-monument.png"
+  },
+  {
+    "id": "national-bank-branch",
+    "kind": "state",
+    "logicalSize": [
+      224,
+      194
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase5/source/national-bank-branch.png"
+  },
+  {
+    "id": "shopfront-display",
+    "kind": "advertising",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/shopfront-display.png"
+  },
+  {
+    "id": "wall-advert",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/wall-advert.png"
+  },
+  {
+    "id": "promotion-kiosk",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase5/source/promotion-kiosk.png"
+  },
+  {
+    "id": "penny-energy",
+    "kind": "state",
+    "logicalSize": [
+      224,
+      194
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "penny-energy"
+  },
+  {
+    "id": "penny-ads",
+    "kind": "state",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "penny-ads"
+  },
+  {
+    "id": "penny-logistics",
+    "kind": "state",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "penny-logistics"
+  },
+  {
+    "id": "central-property",
+    "kind": "state",
+    "logicalSize": [
+      224,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "central-property"
+  },
+  {
+    "id": "national-bank",
+    "kind": "state",
+    "logicalSize": [
+      224,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "national-bank"
+  },
+  {
+    "id": "penny-exchange",
+    "kind": "state",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "penny-exchange"
+  },
+  {
+    "id": "roof-billboard",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "roof-billboard"
+  },
+  {
+    "id": "street-ad",
+    "kind": "advertising",
+    "logicalSize": [
+      22,
+      83
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "street-ad"
+  },
+  {
+    "id": "digital-sign",
+    "kind": "advertising",
+    "logicalSize": [
+      22,
+      83
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "digital-sign"
+  },
+  {
+    "id": "bus-shelter",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "bus-shelter"
+  }
+]

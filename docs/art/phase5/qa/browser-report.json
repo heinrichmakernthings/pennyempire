@@ -1,0 +1,157 @@
+[
+  {
+    "device": "desktop",
+    "name": "stocks",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "state",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "prestige",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "portfolio",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "news",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "issuer-news-timber",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "share-order-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "stale-quote",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "prestige-preview",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "owned-customisation",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "errors": [],
+    "flows": "share confirmation, stale guard, reserved-share guard, placement guard, purchase, ownership controls, insufficient funds"
+  },
+  {
+    "device": "mobile",
+    "name": "stocks",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "state",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "prestige",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "portfolio",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "news",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "issuer-news-timber",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "share-order-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "stale-quote",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "prestige-preview",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "owned-customisation",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "errors": [],
+    "flows": "share confirmation, stale guard, reserved-share guard, placement guard, purchase, ownership controls, insufficient funds"
+  },
+  {
+    "width": 360,
+    "route": "stocks",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "prestige",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "portfolio",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "stocks",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "prestige",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "portfolio",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "stocks",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "prestige",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "portfolio",
+    "noPageOverflow": true
+  }
+]
