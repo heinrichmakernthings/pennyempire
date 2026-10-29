@@ -13,6 +13,7 @@ import { formatAlphaStress, runAlphaStress } from './alphaStress';
 import { runFuzz } from './audit/fuzz';
 import { POPULATIONS, SCENARIOS, runScenario as runAuditScenario } from './audit/scenarios';
 import { formatScenarios } from './audit/report';
+import { runBench } from './audit/bench';
 import { formatEcoScenario, runEcoScenario, type EcoScenarioId } from './ecoScenarios';
 import { formatStockScenario, runStockScenario, type StockScenarioId } from './stockScenarios';
 
@@ -38,6 +39,7 @@ switch (cmd) {
     for (const s of specs) { const t0 = Date.now(); const r = runAuditScenario(s); reports.push(r); writeFileSync(`${out}/${s.id === 'POP' ? `POP-${s.players}` : s.id}.json`, JSON.stringify(r, null, 1)); console.error(`[audit] ${s.id} ${s.name}: ${Math.round((Date.now() - t0) / 1000)}s, audit ${r.audit.ok ? 'clean' : r.audit.findings.join(' | ')}`); }
     writeFileSync(`${out}/SCENARIOS.md`, formatScenarios(reports)); process.exit(reports.every((r) => r.audit.ok) ? 0 : 1); break;
   }
+  case 'bench': { const r = runBench(); const out = process.env.SCENARIO_OUT ?? 'docs/audit'; mkdirSync(out, { recursive: true }); writeFileSync(`${out}/BENCHMARK.json`, JSON.stringify(r, null, 1)); console.log(JSON.stringify(r, null, 1)); break; }
   case 'fuzz': {   // tsx server/cli.ts fuzz <seed> <players> <ticks> <actionsPerTick>
     const [seed = '1', pl = '10', ticks = '120', apt = '40'] = process.argv.slice(3);
     const rep = runFuzz({ seed: Number(seed), players: Number(pl), ticks: Number(ticks), actionsPerTick: Number(apt), auditEvery: 15 });

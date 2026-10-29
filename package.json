@@ -21,6 +21,7 @@
     "sim": "tsx server/cli.ts sim",
     "sim:market": "tsx server/cli.ts sim-market",
     "audit:scenarios": "tsx server/cli.ts audit-scenarios",
+    "audit:bench": "tsx server/cli.ts bench",
     "audit:fuzz": "tsx server/cli.ts fuzz 1 20 150 60",
     "alpha-stress": "SCENARIO_OUT=docs/scenarios tsx server/cli.ts alpha-stress",
     "eco-scenarios": "tsx server/cli.ts eco-scenarios all 150"
