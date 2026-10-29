@@ -6,45 +6,45 @@
 - The seeded city plus NPC seeding up to 10 live firms, and two player companies (pizza and café).
 
 ## Headline
-- Circulating supply 139,000.00 EC → 136,929.71 EC (-1.49%)
-- Live companies 10 → 8 · NPC entries 1 · voluntary closures 2 · bankruptcies 3
-- Days with any unmet consumer units: 115/120 · company-cash Gini 34% · daily consumer spend 2,053.57 EC (day 1) → 3,533.44 EC (last day)
-- NPC strategy reviews logged: 194 · live NPC strategies: premium 2, budget 2, opportunistic 1, growth 1, conservative 1
-- Player: 2 companies, net worth 2,400.00 EC → 14,412.07 EC (+12,012.07 EC), 3.0% of all units sold in the final fortnight
-- Largest explicit coin destruction over the run: infrastructure upkeep (explicit burn) — 1,034.07 EC (every destruction is a recorded sink; transfers are never counted as sinks).
+- Circulating supply 167,000.00 EC → 163,708.69 EC (-1.97%)
+- Live companies 10 → 8 · NPC entries 1 · voluntary closures 3 · bankruptcies 3
+- Days with any unmet consumer units: 115/120 · company-cash Gini 33% · daily consumer spend 2,053.57 EC (day 1) → 3,702.45 EC (last day)
+- NPC strategy reviews logged: 212 · live NPC strategies: conservative 2, budget 2, premium 1, opportunistic 1
+- Player: 2 companies, net worth 2,400.00 EC → 16,807.57 EC (+14,407.57 EC), 7.6% of all units sold in the final fortnight
+- Largest explicit coin destruction over the run: Central Property infrastructure wear (explicit burn) — 1,522.77 EC (every destruction is a recorded sink; transfers are never counted as sinks).
 
 ## Industries (final fortnight)
 | industry | live | NPC | player | player share | HHI | avg price |
 |---|---|---|---|---|---|---|
-| cafe | 2 | 2 | 0 | 0% | 6387 | 3.08 EC |
+| cafe | 2 | 1 | 1 | 31% | 5722 | 2.85 EC |
 | dairy | 1 | 1 | 0 | 0% | 10000 | 3.20 EC |
 | farm | 1 | 1 | 0 | 0% | 10000 | 0.50 EC |
 | mill | 1 | 1 | 0 | 0% | 10000 | 2.20 EC |
-| pizza | 2 | 1 | 1 | 30% | 5763 | 9.27 EC |
+| pizza | 2 | 1 | 1 | 38% | 5300 | 9.75 EC |
 | timber | 1 | 1 | 0 | 0% | 10000 | 1.50 EC |
 
 ## Prices (VWAP of executed trades)
 | commodity | reference | first | last | min | max |
 |---|---|---|---|---|---|
-| cheese | 3.20 EC | 3.25 EC | 1.81 EC | 1.78 EC | 3.60 EC |
+| cheese | 3.20 EC | 3.25 EC | 1.89 EC | 1.82 EC | 3.60 EC |
 | coffee | 1.00 EC | 1.40 EC | 1.40 EC | 1.40 EC | 1.40 EC |
-| flour | 2.20 EC | 2.24 EC | 2.51 EC | 2.24 EC | 2.68 EC |
+| flour | 2.20 EC | 2.24 EC | 2.86 EC | 2.06 EC | 3.08 EC |
 | milk | 0.70 EC | 0.80 EC | 0.35 EC | 0.35 EC | 0.91 EC |
 | packaging | 0.40 EC | 0.56 EC | 0.56 EC | 0.56 EC | 0.56 EC |
-| wheat | 0.50 EC | 0.51 EC | 0.49 EC | 0.47 EC | 0.67 EC |
+| wheat | 0.50 EC | 0.51 EC | 0.61 EC | 0.51 EC | 0.68 EC |
 
 ## Timeline
 | day | circulating | live companies | consumer spend | units produced |
 |---|---|---|---|---|
-| 10 | 137,984.97 EC | 10 | 2,843.44 EC | 1850 |
-| 20 | 137,759.90 EC | 9 | 2,549.07 EC | 1810 |
-| 30 | 137,667.50 EC | 9 | 2,717.50 EC | 1815 |
-| 40 | 137,487.14 EC | 9 | 2,180.26 EC | 1865 |
-| 50 | 137,414.42 EC | 9 | 2,686.12 EC | 1815 |
-| 60 | 137,339.94 EC | 9 | 2,333.07 EC | 1810 |
-| 70 | 137,270.58 EC | 9 | 2,071.29 EC | 1735 |
-| 80 | 137,202.33 EC | 9 | 2,264.90 EC | 1805 |
-| 90 | 137,129.86 EC | 9 | 2,148.83 EC | 1770 |
-| 100 | 137,062.76 EC | 9 | 2,294.48 EC | 1785 |
-| 110 | 136,995.75 EC | 8 | 2,146.36 EC | 1690 |
-| 120 | 136,929.71 EC | 8 | 2,392.88 EC | 1665 |
+| 10 | 165,880.91 EC | 10 | 2,843.44 EC | 1850 |
+| 20 | 165,559.87 EC | 9 | 2,624.80 EC | 1790 |
+| 30 | 165,380.85 EC | 9 | 2,751.54 EC | 1755 |
+| 40 | 165,206.51 EC | 9 | 2,530.44 EC | 1835 |
+| 50 | 165,024.73 EC | 9 | 2,564.78 EC | 1275 |
+| 60 | 164,757.60 EC | 9 | 1,944.56 EC | 1900 |
+| 70 | 164,580.67 EC | 9 | 2,300.45 EC | 1815 |
+| 80 | 164,401.32 EC | 9 | 2,311.17 EC | 1885 |
+| 90 | 164,222.19 EC | 9 | 2,215.18 EC | 1780 |
+| 100 | 164,040.66 EC | 9 | 2,373.70 EC | 1835 |
+| 110 | 163,867.70 EC | 8 | 2,335.36 EC | 1730 |
+| 120 | 163,708.69 EC | 8 | 2,460.10 EC | 1745 |

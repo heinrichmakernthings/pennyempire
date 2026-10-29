@@ -24,6 +24,7 @@ export function stateOverview(db: Sql) {
   const supplyTotals = db.get<{ issued: number; destroyed: number }>("SELECT COALESCE((SELECT SUM(amount_minor) FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.kind = 'issuance' AND p.amount_minor > 0),0) issued, COALESCE((SELECT SUM(p.amount_minor) FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.kind IN ('sink','sink_fee') AND p.account_id = 'acct:burn'),0) destroyed")!;
   return {
     tick,
+    myCompanies: db.all<{ id: string; name: string }>("SELECT id, name FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL ORDER BY name", PLAYER_ID),
     providers: SERVICES.map((s) => providerReport(db, s, tick)).filter(Boolean),
     energy: energyReport(db, cfg, baseTariff),
     logistics: logisticsReport(db, cfg, tick),

@@ -82,6 +82,7 @@ export function DevEconomyScreen() {
       </section>
 
       <ExchangeSection x={d.exchange} />
+      <StateEconomySection />
       <ShareMarketSection m={d.market} />
 
       <section aria-labelledby="co-t"><h2 id="co-t" className="pe-h2">Companies and profitability</h2>
@@ -161,6 +162,43 @@ function ShareMarketSection({ m }: { m: EconomyDashboard['market'] }) {
       <DataTable caption="Suspicious trading and alerts" rowKey={(r) => r.kind + r.detail} rows={m.suspicious} empty={<p className="pe-dev-ok">Nothing suspicious detected.</p>} columns={[{ key: 's', header: 'Severity', render: (r) => <StatusLabel tone={r.severity === 'error' ? 'negative' : r.severity === 'warning' ? 'warning' : 'neutral'}>{r.severity}</StatusLabel> }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'd', header: 'Detail', render: (r) => r.detail }]} />
       <DataTable caption="Share audit trail: issuances, cancellations and recent transfers" rowKey={(r) => String(r.id)} rows={m.audit.journal} columns={[{ key: 'i', header: '#', render: (r) => r.id }, { key: 't', header: 'Day', render: (r) => r.tick }, { key: 'k', header: 'Kind', render: (r) => r.kind }, { key: 'c', header: 'Company', render: (r) => r.company }, { key: 'f', header: 'From → to', render: (r) => `${r.from ?? '—'} → ${r.to ?? '—'}` }, { key: 'q', header: 'Shares', align: 'end', render: (r) => r.qty }, { key: 'p', header: 'Price', align: 'end', render: (r) => (r.price ? ec(r.price) : '—') }]} />
       <DataTable caption="Dividend audit trail" rowKey={(r) => String(r.id)} rows={m.audit.dividends} empty={<p className="pe-hint">No dividends.</p>} columns={[{ key: 'i', header: '#', render: (r) => r.id }, { key: 'c', header: 'Company', render: (r) => r.company }, { key: 'p', header: 'Per share', align: 'end', render: (r) => ec(r.perShare) }, { key: 't', header: 'Total', align: 'end', render: (r) => ec(r.total) }, { key: 's', header: 'Status', render: (r) => r.status }, { key: 'b', header: 'Declared by', render: (r) => r.declaredBy }]} />
+    </section>
+  );
+}
+
+type StateDash = ReturnType<typeof import('../../server/api/stateDashboard').stateDashboard>;
+/** State economy: currency creation/transfers/destruction, inflation, the central bank, state-company books, credit, energy, logistics, events and stability — all read from the books. */
+function StateEconomySection() {
+  const [d, setD] = useState<StateDash | null>(null); const [err, setErr] = useState<string | null>(null);
+  useEffect(() => {
+    const load = async () => { try { const r = await fetch('/api/dev/state'); const j = await r.json(); if (!r.ok) throw new Error(j?.error?.message ?? `HTTP ${r.status}`); setD(j.dashboard as StateDash); setErr(null); } catch (e) { setErr(e instanceof Error ? e.message : 'Failed'); } };
+    void load(); const t = setInterval(() => { if (!document.hidden) void load(); }, 3_000); return () => clearInterval(t);
+  }, []);
+  if (err) return <ErrorState title="State economy unavailable" message={err} />;
+  if (!d) return <Skeleton lines={4} label="Loading state economy" />;
+  return (
+    <section aria-labelledby="se-t" data-testid="dev-state-economy"><h2 id="se-t" className="pe-h2">State economy &amp; monetary policy</h2>
+      <p className={d.ledger.reconciles ? 'pe-dev-ok' : 'pe-neg'}>Ledger reconciles: <strong>{String(d.ledger.reconciles)}</strong></p>
+      <dl className="pe-stats pe-stats--wide">
+        <div><dt>Coins in circulation</dt><dd>{ec(d.currency.circulatingMinor)}</dd></div>
+        <div><dt>Issued / destroyed (total)</dt><dd>{ec(d.currency.issuedTotalMinor)} / {ec(d.currency.destroyedTotalMinor)}</dd></div>
+        <div><dt>Issued / destroyed (30d)</dt><dd>{ec(d.currency.issued30Minor)} / {ec(d.currency.destroyed30Minor)}</dd></div>
+        <div><dt>Transferred (30d, never a sink)</dt><dd>{ec(d.currency.transferred30Minor)}</dd></div>
+        <div><dt>Basket inflation (30d) vs target</dt><dd>{pct(d.inflation.change30dBps)} vs {pct(d.inflation.targetBps)}</dd></div>
+        <div><dt>Base rate · stance</dt><dd>{pct(d.centralBank.baseRateBps)} · {d.centralBank.stance}{d.centralBank.ruleEnabled ? '' : ' (rule paused)'}</dd></div>
+        <div><dt>State treasury</dt><dd>{ec(d.stateCompanies.stateTreasuryMinor)}</dd></div>
+        <div><dt>Loans / deposits</dt><dd>{ec(d.banking.loansOutstandingMinor)} / {ec(d.banking.depositsMinor)}</dd></div>
+        <div><dt>Defaulted loans · write-offs (30d)</dt><dd>{d.banking.defaulted} · {ec(d.banking.writeOffs30Minor)}</dd></div>
+        <div><dt>Energy: tariff · shortage</dt><dd>{ec(d.energy.tariffMinor)} · {d.energy.shortageUnits} units</dd></div>
+        <div><dt>Advertising spend (7d / 30d)</dt><dd>{ec(d.advertising.spend7Minor)} / {ec(d.advertising.spend30Minor)}</dd></div>
+        <div><dt>Logistics: shipments (7d) · delayed</dt><dd>{d.logistics.shipments7} · {d.logistics.delayedNow}</dd></div>
+        <div><dt>Property revenue (30d) · leases / owned</dt><dd>{ec(d.property.revenue30Minor)} · {d.property.activeLeases} / {d.property.owned}</dd></div>
+        <div><dt>Bankruptcies (30d / total)</dt><dd>{d.stability.bankruptcies30} / {d.stability.bankruptciesTotal}</dd></div>
+        <div><dt>Active events</dt><dd>{d.events.active.length ? d.events.active.map((e: { type: string; severity: number }) => `${e.type} (${e.severity})`).join(', ') : 'none'}</dd></div>
+      </dl>
+      <DataTable caption="State company treasuries and 30-day service revenue" rowKey={(r) => r.id} rows={d.stateCompanies.treasuries} empty={null}
+        columns={[{ key: 'n', header: 'Company', render: (r) => r.name }, { key: 'b', header: 'Treasury', render: (r) => ec(r.balanceMinor) }]} />
+      <p className="pe-hint">Administrative changes (base rate, whitelisted parameters, events) go through <code>/api/admin/*</code> with an administrator token and are written to the admin log. Balances cannot be edited.</p>
     </section>
   );
 }

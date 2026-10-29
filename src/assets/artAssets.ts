@@ -94,4 +94,4 @@ export const commodityIconUrl = (id: string): string | undefined => commodityPng
 const phase5Pngs = import.meta.glob('/assets/art/phase5/runtime/*.png', { query: '?url', import: 'default', eager: true }) as Record<string, string>;
 export const phase5Url = (id: string): string | undefined => phase5Pngs[`/assets/art/phase5/runtime/${id}.png`];
 /** Which approved institution sprite represents a state-owned company on the exchange. */
-export const STATE_SPRITE: Record<string, string> = { 'co-bristol-energy': 'penny-energy', 'co-bristol-estates': 'central-property', 'co-bristol-media': 'penny-ads' };
+export const STATE_SPRITE: Record<string, string> = { 'co-bristol-energy': 'penny-energy', 'co-bristol-estates': 'central-property', 'co-bristol-media': 'penny-ads', 'co-national-bank': 'national-bank', 'co-penny-exchange': 'penny-exchange' };

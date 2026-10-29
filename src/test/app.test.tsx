@@ -16,7 +16,7 @@ function setup(path = '/city', mode: FixtureMode = 'normal') {
 describe('navigation and the eight sections', () => {
   const sections: [string, RegExp][] = [
     ['/city', /Bristol economy/], ['/companies', /My Companies/], ['/commodities', /Commodity Exchange/], ['/stocks', /Stock Exchange/],
-    ['/portfolio', /^Portfolio$/], ['/prestige', /^Prestige$/], ['/wallet', /Wallet \(simulated\)/],
+    ['/state', /State services/], ['/portfolio', /^Portfolio$/], ['/prestige', /^Prestige$/], ['/wallet', /Wallet \(simulated\)/],
   ];
   it.each(sections)('%s renders its screen', async (path, heading) => {
     setup(path);
@@ -25,7 +25,7 @@ describe('navigation and the eight sections', () => {
   it('the main navigation links to all nine sections (seven game sections plus Opportunities and News & Rankings) and switches screens', async () => {
     const user = setup('/city');
     const nav = await screen.findByRole('navigation', { name: 'Main' });
-    expect(within(nav).getAllByRole('link')).toHaveLength(9);
+    expect(within(nav).getAllByRole('link')).toHaveLength(10);
     await user.click(within(nav).getByRole('link', { name: /Stock Exchange/ }));
     expect(await screen.findByRole('heading', { name: 'Stock Exchange', level: 1 })).toBeInTheDocument();
     expect(within(nav).getByRole('link', { name: /Stock Exchange/ })).toHaveAttribute('aria-current', 'page');

@@ -12,6 +12,7 @@ import { activeLease } from './property';
 import { clearModsCache } from './economyState';
 import { authorised, setBaseRate, setParam, triggerEvent } from './admin';
 import { hash32 } from './events';
+import { reviewPolicy } from './centralBank';
 import { handleApi } from '../api/router';
 import { liquidateCompany } from './lifecycle';
 import { stateDashboard } from '../api/stateDashboard';
@@ -252,6 +253,27 @@ describe('Penny Central Bank and inflation', () => {
     db.run('UPDATE accounts SET balance_minor = balance_minor WHERE 0'); advance(db, 20);
     for (const op of db.all<{ kind: string; amount_minor: number }>('SELECT * FROM monetary_ops')) expect(op.amount_minor).toBeGreaterThan(0);
     expect(balance(db, bankAcct)).toBeGreaterThan(0); sane(db);
+  });
+});
+
+describe('central bank rule', () => {
+  it('raises the base rate one step when 30-day inflation is above target + band, lowers it when below, and holds inside the band; each decision is logged with its reason', () => {
+    const db = world(); advance(db, 35); const cfg = loadConfig(db);
+    const decide = (infl: number) => { const t = now(db).tick + 20; db.run('UPDATE central_bank SET last_review_tick = 0'); db.run('INSERT OR REPLACE INTO cpi_index (tick, index_bps, change_30d_bps, components_json) VALUES (?,?,?,?)', t, 10_000, infl, '{}'); reviewPolicy(db, { tick: t, gameDate: 'x', actor: 'test' }, cfg); return one<{ r: number }>(db, 'SELECT base_rate_bps r FROM central_bank').r; };
+    const r0 = one<{ r: number }>(db, 'SELECT base_rate_bps r FROM central_bank').r;
+    const up = decide(cfg.cbTargetBps + cfg.cbBandBps + 300); expect(up).toBe(r0 + cfg.cbRateStepBps);
+    const hold = decide(cfg.cbTargetBps); expect(hold).toBe(up);
+    const down = decide(cfg.cbTargetBps - cfg.cbBandBps - 100); expect(down).toBe(up - cfg.cbRateStepBps);
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM policy_log WHERE actor = 'rule' AND kind IN ('base_rate','review')").n).toBeGreaterThanOrEqual(3);
+  });
+  it('central bank liquidity is issued only when the bank is short and never because a borrower asked', () => {
+    const db = world(); const bank = one<{ a: string }>(db, "SELECT treasury_account_id a FROM companies WHERE id = 'co-national-bank'").a;
+    const iss = supply(db).issued;
+    advance(db, 3); expect(supply(db).issued).toBe(iss);                          // a healthy bank: no issuance
+    const c = balance(db, bank); transfer(db, now(db), 'test:strip-bank', bank, TREASURY, c - 1_000, 'state_payment', 'test: the bank has lent its capital elsewhere');
+    advance(db, 8);
+    expect(one<{ n: number }>(db, "SELECT COUNT(*) n FROM monetary_ops WHERE kind = 'liquidity_issue'").n).toBeGreaterThan(0);
+    expect(supply(db).issued - iss).toBe(one<{ s: number }>(db, "SELECT COALESCE(SUM(amount_minor),0) s FROM monetary_ops WHERE kind = 'liquidity_issue'").s); sane(db);
   });
 });
 

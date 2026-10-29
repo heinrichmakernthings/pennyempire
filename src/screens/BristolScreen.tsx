@@ -9,7 +9,7 @@ import { StatusLabel } from '@/ui/StatusLabel';
 import { Tabs } from '@/ui/Tabs';
 
 const TABS = [{ id: 'news', label: 'The Penny Post' }, { id: 'boards', label: 'Leaderboards' }, { id: 'titles', label: 'Titles' }];
-const KIND_ICON: Record<string, string> = { opening: 'startup', closure: 'warning', bankruptcy: 'warning', title: 'prestige', expansion: 'companies', shortage: 'marketplace' };
+const KIND_ICON: Record<string, string> = { opening: 'startup', closure: 'warning', bankruptcy: 'warning', title: 'prestige', expansion: 'companies', shortage: 'marketplace', economy: 'city', policy: 'prestige', credit: 'warning', scandal: 'warning' };
 const day = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
 
 /** Bristol at a glance: what happened (news from recorded events), who leads (persisted weekly boards) and who holds which title. NPC and player companies are listed on exactly the same footing. */
