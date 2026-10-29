@@ -1,8 +1,9 @@
+import { actingPlayer } from '../engine/actor';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { BOARDS } from '../engine/standings';
 import { rankings } from '../engine/insights';
-import { PLAYER_ID } from '../seed/bristol';
+
 import type { Article, Board, CompetitorProfile, Standings } from '../../src/shared/living';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -17,7 +18,7 @@ export function standings(db: Sql): Standings {
     for (const k of keys) {
       const rows = db.all<{ rank: number; company_id: string; value: number }>('SELECT rank, company_id, value FROM leaderboard WHERE tick = ? AND board = ? AND scope = ? ORDER BY rank', bt, k.board, k.scope).map((r) => {
         const c = db.get<CoRow>('SELECT id, name, industry_id, owner_kind, owner_id FROM companies WHERE id = ?', r.company_id)!;
-        return { rank: r.rank, companyId: c.id, name: c.name, industry: c.industry_id, ownerKind: c.owner_kind, value: r.value, mine: c.owner_kind === 'player' && c.owner_id === PLAYER_ID };
+        return { rank: r.rank, companyId: c.id, name: c.name, industry: c.industry_id, ownerKind: c.owner_kind, value: r.value, mine: c.owner_kind === 'player' && c.owner_id === actingPlayer() };
       });
       const scopeLabel = k.scope === 'city' ? '' : ` — ${db.get<{ label: string }>('SELECT label FROM industry_specs WHERE industry_id = ?', k.scope)?.label ?? k.scope}`;
       boards.push({ key: k.board, label: (BOARDS[k.board] ?? k.board) + scopeLabel, scope: k.scope, unit: k.board === 'share' || k.board === 'growth' || k.board === 'reputation' ? 'bps' : 'minor', rows });

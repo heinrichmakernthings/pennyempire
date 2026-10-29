@@ -1,10 +1,11 @@
+import { actingPlayer } from '../engine/actor';
 import type { City, Commodity, Company, History, Holding, Listing, Money, Order, Owner, Player, Plot, Recipe, ScreenState, Trade } from '../../src/contracts/game-state';
 import type { CompanySummary, PortfolioState } from '../../src/data/types';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { balance } from '../engine/ledger';
 import { effCapacity, type CompanyRow } from '../engine/operations';
-import { PLAYER_ID } from '../seed/bristol';
+
 
 const ec = (minor: number): Money => ({ currency: 'EC', minor });
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -27,12 +28,12 @@ function history(db: Sql, companyId: string, col: string, limit = 30): History {
 }
 
 export function playerDto(db: Sql): Player {
-  const p = db.get<{ id: string; display_name: string; city_id: string; wallet_account_id: string }>('SELECT * FROM players WHERE id = ?', PLAYER_ID)!;
+  const p = db.get<{ id: string; display_name: string; city_id: string; wallet_account_id: string }>('SELECT * FROM players WHERE id = ?', actingPlayer())!;
   const w = db.get<{ b: number; r: number }>('SELECT balance_minor b, reserved_minor r FROM accounts WHERE id = ?', p.wallet_account_id)!;
   const t = lastTick(db);
-  const mine = db.all<{ treasury_account_id: string; id: string }>("SELECT id, treasury_account_id FROM companies WHERE owner_kind = 'player' AND owner_id = ?", PLAYER_ID);
+  const mine = db.all<{ treasury_account_id: string; id: string }>("SELECT id, treasury_account_id FROM companies WHERE owner_kind = 'player' AND owner_id = ?", actingPlayer());
   const book = mine.reduce((a, c) => a + balance(db, c.treasury_account_id) + (db.get<{ v: number }>('SELECT COALESCE(SUM(value_minor),0) v FROM inventory WHERE company_id = ?', c.id)!.v), 0);
-  const profit = db.get<{ s: number }>("SELECT COALESCE(SUM(s.net_profit_minor),0) s FROM company_tick_stats s JOIN companies c ON c.id = s.company_id WHERE s.tick = ? AND c.owner_kind = 'player' AND c.owner_id = ?", t, PLAYER_ID)!.s;
+  const profit = db.get<{ s: number }>("SELECT COALESCE(SUM(s.net_profit_minor),0) s FROM company_tick_stats s JOIN companies c ON c.id = s.company_id WHERE s.tick = ? AND c.owner_kind = 'player' AND c.owner_id = ?", t, actingPlayer())!.s;
   const unread = db.get<{ n: number }>("SELECT COUNT(*) n FROM economic_events WHERE tick > ? AND severity IN ('warning','error') AND subject IN (SELECT id FROM companies WHERE owner_kind='player')", Math.max(0, t - 3))!.n;
   // No tradable shares exist yet, so portfolioValue is 0; net worth = wallet + the book value (cash + stock at cost) of companies you own.
   return { id: p.id, displayName: p.display_name, cityId: p.city_id, coins: ec(w.b - w.r), reservedCoins: ec(w.r), portfolioValue: ec(0), netWorth: ec(w.b + book), dailyProfit: ec(profit), unreadNotifications: unread };
@@ -86,7 +87,7 @@ export function companyDto(db: Sql, id: string): Company | null {
   const cash = balance(db, c.treasury_account_id);
   const stockValue = db.get<{ v: number }>('SELECT COALESCE(SUM(value_minor),0) v FROM inventory WHERE company_id = ?', id)!.v;
   const sector = db.get<{ s: number }>('SELECT COALESCE(SUM(units_sold),0) s FROM company_tick_stats t JOIN companies k ON k.id = t.company_id WHERE t.tick = ? AND k.industry_id = ?', t, c.industry_id)!.s;
-  const mine = c.owner_kind === 'player' && c.owner_id === PLAYER_ID;
+  const mine = c.owner_kind === 'player' && c.owner_id === actingPlayer();
   return {
     id: c.id, name: c.name, cityId: c.city_id, plotId: c.plot_id ?? '', industry: c.industry_id as Company['industry'], owner: owner(c), level: c.level, assetId: c.asset_id ?? c.industry_id,
     status: c.status, revision: c.revision, valuation: ec(cash + stockValue), cash: ec(cash),
@@ -104,7 +105,7 @@ export function companyDto(db: Sql, id: string): Company | null {
 }
 
 export function companiesScreen(db: Sql): ScreenState['companies'] {
-  const items = db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'player' AND owner_id = ? ORDER BY id", PLAYER_ID).map((r) => companyDto(db, r.id)).filter((c): c is Company => !!c);
+  const items = db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'player' AND owner_id = ? ORDER BY id", actingPlayer()).map((r) => companyDto(db, r.id)).filter((c): c is Company => !!c);
   return { player: playerDto(db), companies: { items, nextCursor: null }, recipes: recipesDto(db) };
 }
 
@@ -134,10 +135,10 @@ export function commoditiesScreen(db: Sql): ScreenState['commodities'] {
   });
   const sell = db.all<Parameters<typeof orderDto>[1]>("SELECT * FROM orders WHERE status = 'open' AND side = 'sell' ORDER BY commodity_id, price_minor, id LIMIT 200").map((o) => orderDto(db, o));
   const mineIds = "(SELECT id FROM companies WHERE owner_kind='player' AND owner_id = ?)";
-  const own = db.all<Parameters<typeof orderDto>[1]>(`SELECT * FROM orders WHERE status = 'open' AND company_id IN ${mineIds} ORDER BY id DESC LIMIT 50`, PLAYER_ID).map((o) => orderDto(db, o));
-  const trades: Trade[] = db.all<{ id: number; tick: number; order_id: number; commodity_id: string; qty: number; price_minor: number; fee_minor: number }>(`SELECT id, tick, CASE WHEN buyer_company_id IN ${mineIds} THEN buy_order_id ELSE sell_order_id END order_id, commodity_id, qty, price_minor, fee_minor FROM trades WHERE buyer_company_id IN ${mineIds} OR seller_company_id IN ${mineIds} ORDER BY id DESC LIMIT 50`, PLAYER_ID, PLAYER_ID, PLAYER_ID)
+  const own = db.all<Parameters<typeof orderDto>[1]>(`SELECT * FROM orders WHERE status = 'open' AND company_id IN ${mineIds} ORDER BY id DESC LIMIT 50`, actingPlayer()).map((o) => orderDto(db, o));
+  const trades: Trade[] = db.all<{ id: number; tick: number; order_id: number; commodity_id: string; qty: number; price_minor: number; fee_minor: number }>(`SELECT id, tick, CASE WHEN buyer_company_id IN ${mineIds} THEN buy_order_id ELSE sell_order_id END order_id, commodity_id, qty, price_minor, fee_minor FROM trades WHERE buyer_company_id IN ${mineIds} OR seller_company_id IN ${mineIds} ORDER BY id DESC LIMIT 50`, actingPlayer(), actingPlayer(), actingPlayer())
     .map((r) => ({ id: `trd-${r.id}`, orderId: String(r.order_id), commodityId: r.commodity_id, quantity: r.qty, pricePerUnit: ec(r.price_minor), fee: ec(r.fee_minor), settledAt: gameDate(cfg, r.tick) }));
-  const first = db.get<{ id: string }>("SELECT id FROM companies WHERE owner_kind='player' AND owner_id = ? ORDER BY id LIMIT 1", PLAYER_ID);
+  const first = db.get<{ id: string }>("SELECT id FROM companies WHERE owner_kind='player' AND owner_id = ? ORDER BY id LIMIT 1", actingPlayer());
   return { player: playerDto(db), cityId: 'city-bristol', commodities, orders: { items: sell, nextCursor: null }, ownOrders: { items: own, nextCursor: null }, history: { items: trades, nextCursor: null }, selectedCompany: first ? companyDto(db, first.id) : null, quote: null };
 }
 

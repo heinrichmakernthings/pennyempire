@@ -1,3 +1,4 @@
+import { actingPlayer } from './actor';
 import { GbpError } from './gbpLedger';
 import type { ApiError } from '../../src/contracts/game-state';
 import type { Sql } from '../db/sql';
@@ -8,7 +9,7 @@ import { MarketError, cancelOrder, liveBook, marketLimit, placeOrder } from './m
 import { gameDate } from './config';
 import { ShareError } from './capital';
 import { logEvent } from './stats';
-import { PLAYER_ID, TREASURY } from '../seed/bristol';
+import { TREASURY } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
 
 export type CommandOk<T = unknown> = { ok: true; revision: number; transactionId: string; refreshScreens: string[]; data?: T };
@@ -28,7 +29,7 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
   return db.transaction(() => {
     const prior = db.get<{ command: string; response_json: string }>('SELECT command, response_json FROM command_log WHERE idempotency_key = ?', key);
     if (prior) return prior.command === name ? (JSON.parse(prior.response_json) as CommandResponse) : err('VALIDATION', `Idempotency key already used for ${prior.command}`);
-    const ctx = ctxNow(db, PLAYER_ID);
+    const ctx = ctxNow(db, actingPlayer());
     let res: CommandResponse;
     try { res = db.transaction(() => fn(ctx)); } catch (e) {
       if (e instanceof LedgerError) res = err(e.code === 'INSUFFICIENT_FUNDS' ? 'INSUFFICIENT_FUNDS' : 'VALIDATION', e.message);
@@ -47,7 +48,7 @@ interface OwnedCompany { retail_commodity_id: string | null; bankrupt_tick: numb
 export const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
   const c = db.get<OwnedCompany>('SELECT * FROM companies WHERE id = ?', companyId);
   if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
-  if (c.owner_kind !== 'player' || c.owner_id !== PLAYER_ID) return err('FORBIDDEN', 'You do not own this company.');
+  if (c.owner_kind !== 'player' || c.owner_id !== actingPlayer()) return err('FORBIDDEN', 'You do not own this company.');
   return c;
 };
 export const isErr = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;
@@ -104,7 +105,7 @@ export function fundCompany(db: Sql, key: string, companyId: string, amountMinor
   return runCommand(db, key, 'company.fund', (ctx) => {
     const c = owned(db, companyId); if (isErr(c)) return c;
     if (!Number.isSafeInteger(amountMinor) || amountMinor <= 0) return err('VALIDATION', 'Amount must be a positive whole number of minor units.');
-    const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w;
+    const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', actingPlayer())!.w;
     const tx = transfer(db, ctx, `cmd:${key}`, wallet, c.treasury_account_id, amountMinor, 'capital_injection', `capital injection into ${c.name}`);
     return { ok: true, revision: c.revision, transactionId: String(tx.txId), refreshScreens: ['city', 'companies', 'wallet'] };
   });
@@ -118,7 +119,7 @@ export function withdrawFromCompany(db: Sql, key: string, companyId: string, amo
     if (c.unpaid_minor > 0) return err('FORBIDDEN', 'Settle arrears before taking money out of the company.');
     const reserve = c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
     if (available(db, c.treasury_account_id) - amountMinor < reserve) return err('INSUFFICIENT_FUNDS', `The company must keep ${reserve / 100} EC to cover a day of operating costs.`);
-    const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w;
+    const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', actingPlayer())!.w;
     const tx = transfer(db, ctx, `cmd:${key}`, c.treasury_account_id, wallet, amountMinor, 'owner_withdrawal', `owner withdrawal from ${c.name}`);
     return { ok: true, revision: c.revision, transactionId: String(tx.txId), refreshScreens: ['city', 'companies', 'wallet'] };
   });

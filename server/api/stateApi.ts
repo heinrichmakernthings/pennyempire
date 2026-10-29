@@ -1,3 +1,4 @@
+import { actingPlayer } from '../engine/actor';
 import type { Sql } from '../db/sql';
 import { loadConfig } from '../engine/config';
 import { adReport } from '../engine/ads';
@@ -11,7 +12,7 @@ import { logisticsReport } from '../engine/logistics';
 import { activeLease, purchasePrice, rentCharge } from '../engine/property';
 import { STATE_PROVIDERS, providerReport, type ServiceKind } from '../engine/stateServices';
 import { balance } from '../engine/ledger';
-import { PLAYER_ID } from '../seed/bristol';
+
 
 const tickOf = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 const SERVICES: ServiceKind[] = ['energy', 'advertising', 'logistics', 'property', 'banking', 'exchange'];
@@ -24,7 +25,7 @@ export function stateOverview(db: Sql) {
   const supplyTotals = db.get<{ issued: number; destroyed: number }>("SELECT COALESCE((SELECT SUM(amount_minor) FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.kind = 'issuance' AND p.amount_minor > 0),0) issued, COALESCE((SELECT SUM(p.amount_minor) FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.kind IN ('sink','sink_fee') AND p.account_id = 'acct:burn'),0) destroyed")!;
   return {
     tick,
-    myCompanies: db.all<{ id: string; name: string }>("SELECT id, name FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL ORDER BY name", PLAYER_ID),
+    myCompanies: db.all<{ id: string; name: string }>("SELECT id, name FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL ORDER BY name", actingPlayer()),
     providers: SERVICES.map((s) => providerReport(db, s, tick)).filter(Boolean),
     energy: energyReport(db, cfg, baseTariff),
     logistics: logisticsReport(db, cfg, tick),
@@ -54,7 +55,7 @@ export function companyServices(db: Sql, companyId: string) {
     premises: { lease, rent, purchasePriceMinor: lease && lease.kind === 'lease' ? purchasePrice(cfg, lease) : null, history: db.all('SELECT id, kind, tier, base_rent_minor baseRentMinor, service_charge_bps serviceChargeBps, start_tick startTick, end_tick endTick, status, purchase_price_minor purchasePriceMinor, note FROM leases WHERE company_id = ? ORDER BY id DESC LIMIT 10', companyId) },
     advertising: adReport(db, cfg, companyId, tick),
     credit: { profile, loans, deposit: db.get('SELECT balance_minor balanceMinor, interest_paid_minor interestPaidMinor FROM bank_deposits WHERE company_id = ?', companyId) ?? { balanceMinor: 0, interestPaidMinor: 0 }, depositRateBps: depositRate(db, cfg), payments: db.all('SELECT p.tick, p.loan_id loanId, p.due_minor dueMinor, p.principal_minor principalMinor, p.interest_minor interestMinor, p.fee_minor feeMinor, p.status FROM loan_payments p JOIN loans l ON l.id = p.loan_id WHERE l.borrower_id = ? ORDER BY p.id DESC LIMIT 20', companyId) },
-    cashMinor: balance(db, c.treasury_account_id), isPlayerOwned: c.owner_kind === 'player' && c.owner_id === PLAYER_ID,
+    cashMinor: balance(db, c.treasury_account_id), isPlayerOwned: c.owner_kind === 'player' && c.owner_id === actingPlayer(),
   };
 }
 export const loanQuote = (db: Sql, companyId: string, amount: number, termDays: number) => quoteLoan(db, loadConfig(db), companyId, amount, termDays, tickOf(db));

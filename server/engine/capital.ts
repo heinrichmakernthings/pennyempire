@@ -1,7 +1,8 @@
+import { actingPlayer, actingWallet } from './actor';
 import type { Sql } from '../db/sql';
 import type { TickCtx } from './ledger';
 import { logEvent } from './stats';
-import { HOUSEHOLDS, PLAYER_ID, PLAYER_WALLET, TREASURY, companyAccount } from '../seed/bristol';
+import { HOUSEHOLDS, TREASURY, companyAccount } from '../seed/bristol';
 
 /** Fixed capitalisation of every company at founding. Whole shares only. */
 export const FOUNDER_SHARES = 10_000;
@@ -33,7 +34,7 @@ export function companyInvestor(db: Sql, companyId: string): Investor {
 
 /** Investor for an `owners` row (player, NPC shareholders, state). NPC owners all draw on the households' account; the player on the wallet. */
 export function ownerInvestor(db: Sql, ownerId: string, kind: 'player' | 'npc' | 'state', name?: string, account?: string): Investor {
-  const acct = account ?? (kind === 'player' ? PLAYER_WALLET : kind === 'state' ? TREASURY : HOUSEHOLDS);
+  const acct = account ?? (kind === 'player' ? actingWallet() : kind === 'state' ? TREASURY : HOUSEHOLDS);
   const nm = name ?? db.get<{ name: string }>('SELECT name FROM owners WHERE id = ?', ownerId)?.name ?? ownerId;
   return ensureInvestor(db, { id: ownerId, kind: kind === 'npc' ? 'household' : kind, name: nm, account: acct });
 }
@@ -106,7 +107,7 @@ export const outstanding = (db: Sql, company: string) => (security(db, company)?
 export const stakeBps = (db: Sql, company: string, investor: string) => { const o = outstanding(db, company); return o > 0 ? Math.floor((holding(db, company, investor).shares * 10_000) / o) : 0; };
 
 export interface HolderRow { investorId: string; name: string; kind: InvestorKind; shares: number; reserved: number; stakeBps: number; stakeClass: StakeClass; mine: boolean }
-export function capTable(db: Sql, company: string, viewer = PLAYER_ID): HolderRow[] {
+export function capTable(db: Sql, company: string, viewer = actingPlayer()): HolderRow[] {
   const o = outstanding(db, company);
   return db.all<{ investor_id: string; name: string; kind: InvestorKind; shares: number; reserved: number }>('SELECT h.investor_id, i.name, i.kind, h.shares, h.reserved FROM share_holdings h JOIN investors i ON i.id = h.investor_id WHERE h.company_id = ? AND h.shares > 0 ORDER BY h.shares DESC, h.investor_id', company)
     .filter((h) => h.investor_id !== companyInvestorId(company))

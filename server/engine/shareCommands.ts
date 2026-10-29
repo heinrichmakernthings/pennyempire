@@ -1,6 +1,7 @@
+import { actingPlayer } from './actor';
 import type { Sql } from '../db/sql';
 import { feeFromBps } from '../../src/domain/money';
-import { PLAYER_ID } from '../seed/bristol';
+
 import { loadConfig } from './config';
 import { runCommand, type CommandResponse } from './commands';
 import { ShareError, companyInvestor, companyInvestorId, getInvestor, holding, outstanding, ownerInvestor, security, THRESHOLDS, wouldCreateCycle } from './capital';
@@ -9,17 +10,17 @@ import { listCompany, listingQuote, retireTreasuryShares, shareCfg, withdrawOffe
 import { bestOpposite, cancelShareOrder, marketLimit, orderBook, placeShareOrder, priceBand, type ShareOrderRow } from './shareMarket';
 import { available } from './ledger';
 
-const player = { kind: 'player', id: PLAYER_ID } as const;
+const player = () => ({ kind: 'player', id: actingPlayer() } as const);
 const err = (code: 'VALIDATION' | 'FORBIDDEN' | 'INSUFFICIENT_FUNDS' | 'INSUFFICIENT_STOCK', message: string): CommandResponse => ({ ok: false, error: { code, message } });
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 
 /** The investors the human player may act for: themself, and the companies they control (a company can hold shares of another company). */
 export function playerInvestorIds(db: Sql): string[] {
-  ownerInvestor(db, PLAYER_ID, 'player');
-  return [PLAYER_ID, ...db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL AND status <> 'insolvent' ORDER BY id", PLAYER_ID).map((r) => companyInvestorId(r.id))];
+  ownerInvestor(db, actingPlayer(), 'player');
+  return [actingPlayer(), ...db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'player' AND owner_id = ? AND bankrupt_tick IS NULL AND status <> 'insolvent' ORDER BY id", actingPlayer()).map((r) => companyInvestorId(r.id))];
 }
 function resolveInvestor(db: Sql, id: string | undefined): string | CommandResponse {
-  const want = id ?? PLAYER_ID; ownerInvestor(db, PLAYER_ID, 'player');
+  const want = id ?? actingPlayer(); ownerInvestor(db, actingPlayer(), 'player');
   if (want.startsWith('co:')) { const co = want.slice(3); if (!db.get('SELECT 1 FROM companies WHERE id = ?', co)) return err('VALIDATION', `Unknown company ${co}`); }
   if (!playerInvestorIds(db).includes(want)) return err('FORBIDDEN', 'You do not control that shareholder.');
   if (want.startsWith('co:')) companyInvestor(db, want.slice(3));
@@ -47,16 +48,16 @@ export function cancelPlayerShareOrder(db: Sql, key: string, orderId: number): C
   }));
 }
 export function listPlayerCompany(db: Sql, key: string, i: { companyId: string; newShares: number; offerPriceMinor: number; fromTreasury?: boolean }): CommandResponse {
-  return runCommand(db, key, 'share.list', (ctx) => guard(() => { const r = listCompany(db, ctx, loadConfig(db), `${key}:l`, i.companyId, i.newShares, i.offerPriceMinor, player, { fromTreasury: i.fromTreasury }); return ok(db, key, ['stocks', 'companies', 'portfolio'], { offeringId: r.offeringId, orderId: r.orderId }); }));
+  return runCommand(db, key, 'share.list', (ctx) => guard(() => { const r = listCompany(db, ctx, loadConfig(db), `${key}:l`, i.companyId, i.newShares, i.offerPriceMinor, player(), { fromTreasury: i.fromTreasury }); return ok(db, key, ['stocks', 'companies', 'portfolio'], { offeringId: r.offeringId, orderId: r.orderId }); }));
 }
-export function withdrawPlayerOffering(db: Sql, key: string, offeringId: number): CommandResponse { return runCommand(db, key, 'share.withdraw', () => guard(() => { withdrawOffering(db, offeringId, player); return ok(db, key, ['stocks']); })); }
-export function retirePlayerShares(db: Sql, key: string, companyId: string, qty: number): CommandResponse { return runCommand(db, key, 'share.retire', (ctx) => guard(() => { retireTreasuryShares(db, ctx, companyId, qty, player); return ok(db, key, ['stocks', 'companies']); })); }
+export function withdrawPlayerOffering(db: Sql, key: string, offeringId: number): CommandResponse { return runCommand(db, key, 'share.withdraw', () => guard(() => { withdrawOffering(db, offeringId, player()); return ok(db, key, ['stocks']); })); }
+export function retirePlayerShares(db: Sql, key: string, companyId: string, qty: number): CommandResponse { return runCommand(db, key, 'share.retire', (ctx) => guard(() => { retireTreasuryShares(db, ctx, companyId, qty, player()); return ok(db, key, ['stocks', 'companies']); })); }
 export function declarePlayerDividend(db: Sql, key: string, companyId: string, perShareMinor: number): CommandResponse {
   return runCommand(db, key, 'dividend.declare', (ctx) => guard(() => {
     const c = db.get<{ owner_kind: string; owner_id: string }>('SELECT owner_kind, owner_id FROM companies WHERE id = ?', companyId);
     if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
-    if (c.owner_kind !== 'player' || c.owner_id !== PLAYER_ID) return err('FORBIDDEN', 'Only the controlling owner can declare a dividend.');
-    const d = declareDividend(db, ctx, loadConfig(db), `${key}:d`, companyId, perShareMinor, PLAYER_ID);
+    if (c.owner_kind !== 'player' || c.owner_id !== actingPlayer()) return err('FORBIDDEN', 'Only the controlling owner can declare a dividend.');
+    const d = declareDividend(db, ctx, loadConfig(db), `${key}:d`, companyId, perShareMinor, actingPlayer());
     return ok(db, key, ['companies', 'portfolio', 'stocks'], { dividendId: d.id, totalMinor: d.total_minor });
   }));
 }
@@ -65,7 +66,7 @@ export function declarePlayerDividend(db: Sql, key: string, companyId: string, p
 export interface ShareOrderQuote { ok: boolean; issues: string[]; warnings: string[]; band: { lowMinor: number; highMinor: number; refMinor: number; basis: string } | null; limitPriceMinor: number | null; reserveMinor: number; estimatedFeeMinor: number; bestOppositeMinor: number | null; availableMinor: number; freeShares: number }
 export function quoteShareOrder(db: Sql, o: ShareOrderInput): ShareOrderQuote {
   const cfg = loadConfig(db), t = lastTick(db); const issues: string[] = [], warnings: string[] = [];
-  const sec = security(db, o.companyId); const inv = getInvestor(db, o.investorId ?? PLAYER_ID) ?? ownerInvestor(db, PLAYER_ID, 'player');
+  const sec = security(db, o.companyId); const inv = getInvestor(db, o.investorId ?? actingPlayer()) ?? ownerInvestor(db, actingPlayer(), 'player');
   if (!sec) issues.push('Unknown company.'); else if (sec.status !== 'open') issues.push(sec.status === 'suspended' ? `Trading is suspended${sec.suspended_reason ? `: ${sec.suspended_reason}` : ''}.` : 'This company is not listed.');
   const band = sec ? priceBand(db, cfg, o.companyId, t) : null;
   const best = sec ? bestOpposite(db, o.companyId, o.side, inv.id, t) : null;

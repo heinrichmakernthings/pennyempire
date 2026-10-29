@@ -1,3 +1,4 @@
+import { actingPlayer } from './actor';
 import type { Sql } from '../db/sql';
 import { loadConfig, gameDate } from './config';
 import { CASH, EQUITY, EXP, GbpError, PRIZE_RESERVE, REV, audit, ensureWallet, postGbp, type GbpCtx } from './gbpLedger';
@@ -5,7 +6,7 @@ import { approveWithdrawal, createDeposit, fundTreasury, handleDepositEvent, rej
 import { awardReward, createDraw, createProgram, executeDraw, fundProgram, type EligibilityRule, type RewardSource } from './rewards';
 import { setAssumptions, type Assumptions } from './commercial';
 import { setMockDecline } from './membership';
-import { PLAYER_ID } from '../seed/bristol';
+
 
 /**
  * Treasury and sandbox-provider actions. Reached ONLY through (a) /api/admin/* with the administrator token, or (b) /api/dev/* on developer builds (disabled in deployment).
@@ -28,12 +29,12 @@ export function treasuryAction(db: Sql, nowMs: number, actor: string, action: st
         case 'allocate_reserve': { const n = asInt(b.amountPence, 'amountPence'); postGbp(db, g, `alloc:${String(b.key ?? nowMs)}`, 'prize_allocation', 'Prize reserve allocation', [{ account: EQUITY, amount: n }, { account: PRIZE_RESERVE, amount: -n }]); return { ok: true, message: 'Prize reserve allocated from owner equity.' }; }
         case 'create_program': { createProgram(db, g, { id: String(b.id), name: String(b.name), source: String(b.source) as RewardSource, rules: (b.rules ?? [{ kind: 'open' }]) as EligibilityRule[], awardPence: asInt(b.awardPence, 'awardPence'), budgetPence: asInt(b.budgetPence, 'budgetPence'), perPlayerMax: b.perPlayerMax === undefined ? 1 : asInt(b.perPlayerMax, 'perPlayerMax') }); return { ok: true, message: `Programme ${String(b.id)} created (unfunded).` }; }
         case 'fund_program': { fundProgram(db, g, String(b.id), asInt(b.amountPence, 'amountPence')); return { ok: true, message: `Programme ${String(b.id)} funded from the prize reserve.` }; }
-        case 'award': { const r = awardReward(db, g, { programId: String(b.programId), playerId: String(b.playerId ?? PLAYER_ID), key: String(b.key ?? `admin:${b.programId}:${b.playerId ?? PLAYER_ID}`) }); return { ok: true, message: r.duplicate ? 'Already awarded (duplicate ignored).' : `Awarded £${(r.amountPence / 100).toFixed(2)}.`, detail: r }; }
+        case 'award': { const r = awardReward(db, g, { programId: String(b.programId), playerId: String(b.playerId ?? actingPlayer()), key: String(b.key ?? `admin:${b.programId}:${b.playerId ?? actingPlayer()}`) }); return { ok: true, message: r.duplicate ? 'Already awarded (duplicate ignored).' : `Awarded £${(r.amountPence / 100).toFixed(2)}.`, detail: r }; }
         case 'create_draw': { createDraw(db, g, { id: String(b.id), programId: String(b.programId), name: String(b.name), closesTick: asInt(b.closesTick, 'closesTick') }); return { ok: true, message: 'Prize draw created.' }; }
         case 'run_draw': { const r = executeDraw(db, g, String(b.id)); return { ok: true, message: r.winnerId ? `Winner ${r.winnerId}${r.awarded ? ' (paid)' : ' (not paid: see audit)'}` : 'No entries.', detail: r }; }
         case 'deposit': {      // developer-simulated deposit with a chosen provider outcome
-          const amt = asInt(b.amountPence, 'amountPence'); const outcome = String(b.outcome ?? 'succeeded'); ensureWallet(db, String(b.playerId ?? PLAYER_ID));
-          const d = createDeposit(db, g, { playerId: String(b.playerId ?? PLAYER_ID), amountPence: amt, key: String(b.key ?? `dev-dep-${nowMs}-${amt}`) });
+          const amt = asInt(b.amountPence, 'amountPence'); const outcome = String(b.outcome ?? 'succeeded'); ensureWallet(db, String(b.playerId ?? actingPlayer()));
+          const d = createDeposit(db, g, { playerId: String(b.playerId ?? actingPlayer()), amountPence: amt, key: String(b.key ?? `dev-dep-${nowMs}-${amt}`) });
           const o = outcome === 'duplicate' ? 'succeeded' : (outcome as 'succeeded' | 'failed' | 'cancelled'); const e = sandboxEvent(d.depositId, o, outcome === 'failed' ? 'card declined (sandbox)' : undefined);
           const first = handleDepositEvent(db, g, e); const second = outcome === 'duplicate' ? handleDepositEvent(db, g, e) : null;
           return { ok: true, message: `Deposit ${d.depositId} ${o}${second ? `; duplicate webhook ${second.outcome}` : ''}.`, detail: { first, second } };

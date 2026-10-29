@@ -1,3 +1,4 @@
+import { actingPlayer } from './actor';
 import type { Sql } from '../db/sql';
 import type { EngineConfig } from './config';
 import { loadConfig } from './config';
@@ -5,7 +6,7 @@ import { type CommandErr, type CommandResponse, runCommand } from './commands';
 import { addStock, freeStock, removeStock, stock } from './inventory';
 import { available, transfer, type TickCtx } from './ledger';
 import { logEvent } from './stats';
-import { PLAYER_ID, EXCHANGE_ACCOUNT } from '../seed/bristol';
+import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
 
 export interface ContractRow {
@@ -71,7 +72,7 @@ const validate = (db: Sql, cfg: EngineConfig, i: ProposeInput): { error: Command
   if (Object.keys(fe).length) return { error: err('VALIDATION', 'Some contract terms are invalid.', fe) };
   const actor = co(db, i.actorCompanyId), other = co(db, i.counterpartyId);
   if (!actor || !other) return { error: err('VALIDATION', 'Unknown company.') };
-  if (actor.owner_kind !== 'player' || actor.owner_id !== PLAYER_ID) return { error: err('FORBIDDEN', 'You do not own that company.') };
+  if (actor.owner_kind !== 'player' || actor.owner_id !== actingPlayer()) return { error: err('FORBIDDEN', 'You do not own that company.') };
   if (other.id === actor.id) return { error: err('VALIDATION', 'A company cannot contract with itself.') };
   for (const c of [actor, other]) if (c.status !== 'operating' || c.bankrupt_tick !== null) return { error: err('VALIDATION', `${c.name} is not trading.`) };
   const buyer = i.role === 'buyer' ? actor : other, supplier = i.role === 'buyer' ? other : actor;
@@ -108,7 +109,7 @@ export function respondContract(db: Sql, key: string, contractId: number, accept
     if (!k) return err('VALIDATION', `No contract ${contractId}`);
     if (k.status !== 'pending') return err('VALIDATION', `Contract is ${k.status}.`);
     const responderId = k.proposed_by === 'buyer' ? k.supplier_company_id : k.buyer_company_id; const r = co(db, responderId);
-    if (!r || r.owner_kind !== 'player' || r.owner_id !== PLAYER_ID) return err('FORBIDDEN', 'Only the other party can answer this offer.');
+    if (!r || r.owner_kind !== 'player' || r.owner_id !== actingPlayer()) return err('FORBIDDEN', 'Only the other party can answer this offer.');
     db.run('UPDATE supply_contracts SET status = ?, decision_reason = ?, ended_tick = ? WHERE id = ?', accept ? 'active' : 'declined', accept ? 'Accepted.' : 'Declined.', accept ? null : ctx.tick, contractId);
     return { ok: true, revision: ctx.tick, transactionId: String(contractId), refreshScreens: ['commodities'] };
   });
@@ -119,7 +120,7 @@ export function cancelContract(db: Sql, key: string, contractId: number): Comman
   return runCommand(db, key, 'contract.cancel', (ctx) => {
     const k = db.get<ContractRow>('SELECT * FROM supply_contracts WHERE id = ?', contractId);
     if (!k) return err('VALIDATION', `No contract ${contractId}`);
-    const mine = [k.buyer_company_id, k.supplier_company_id].map((id) => co(db, id)).find((c) => c && c.owner_kind === 'player' && c.owner_id === PLAYER_ID);
+    const mine = [k.buyer_company_id, k.supplier_company_id].map((id) => co(db, id)).find((c) => c && c.owner_kind === 'player' && c.owner_id === actingPlayer());
     if (!mine) return err('FORBIDDEN', 'You are not a party to this contract.');
     if (k.status === 'pending') { db.run("UPDATE supply_contracts SET status = 'cancelled', ended_tick = ?, cancelled_by = ? WHERE id = ?", ctx.tick, mine.id, contractId); return { ok: true, revision: ctx.tick, transactionId: String(contractId), refreshScreens: ['commodities'] }; }
     if (k.status !== 'active') return err('VALIDATION', `Contract is already ${k.status}.`);

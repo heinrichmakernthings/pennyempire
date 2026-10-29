@@ -1,3 +1,4 @@
+import { actingPlayer } from '../engine/actor';
 import type { ApiError, Command, QuoteRequest } from '../../src/contracts/game-state';
 import { assertWireIntegrity } from '../../src/domain/integrity';
 import type { Sql } from '../db/sql';
@@ -13,7 +14,7 @@ import { cityActivity, competitorProfile, news, standings } from './livingApi';
 import { exchangeHome, securityDetail, sharePortfolio } from './shareApi';
 import { cancelPlayerShareOrder, declarePlayerDividend, listPlayerCompany, placePlayerShareOrder, quoteShareOrder, retirePlayerShares, withdrawPlayerOffering } from '../engine/shareCommands';
 import { listingQuote } from '../engine/listing';
-import { PLAYER_ID } from '../seed/bristol';
+
 import { economyDashboard } from './dashboard';
 import { companyServices, loanQuote, stateOverview } from './stateApi';
 import { adminLog, authorised, cancelEventAdmin, logDenied, setBaseRate, setCentralBankRule, setParam, triggerEvent, ADMIN_PARAMS } from '../engine/admin';
@@ -77,7 +78,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     if (method === 'GET' && seg[0] === 'securities') {
       if (!seg[1]) return json(200, { authority: 'server', exchange: exchangeHome(db) });
       if (seg[1] === 'listing-quote') {
-        try { const cfg = loadConfig(db); const t = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t; return json(200, { authority: 'server', quote: listingQuote(db, cfg, q.companyId ?? '', Number(q.newShares ?? 0), Number(q.offerPriceMinor ?? 0), t, { kind: 'player', id: PLAYER_ID }, { fromTreasury: q.fromTreasury === 'true' }) }); } catch (e) { return apiErr(404, 'VALIDATION', (e as Error).message); }
+        try { const cfg = loadConfig(db); const t = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t; return json(200, { authority: 'server', quote: listingQuote(db, cfg, q.companyId ?? '', Number(q.newShares ?? 0), Number(q.offerPriceMinor ?? 0), t, { kind: 'player', id: actingPlayer() }, { fromTreasury: q.fromTreasury === 'true' }) }); } catch (e) { return apiErr(404, 'VALIDATION', (e as Error).message); }
       }
       if (seg[1] === 'order-quote') return json(200, { authority: 'server', quote: quoteShareOrder(db, { companyId: q.companyId ?? '', investorId: q.investorId, side: q.side === 'sell' ? 'sell' : 'buy', quantity: Number(q.quantity ?? 0), limitPriceMinor: q.limitPriceMinor === undefined ? undefined : Number(q.limitPriceMinor), kind: q.kind === 'market' ? 'market' : 'limit', slippageBps: q.slippageBps === undefined ? undefined : Number(q.slippageBps) }) });
       const d = securityDetail(db, seg[1]); return d ? json(200, { authority: 'server', detail: d }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[1]}`);
@@ -112,12 +113,12 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     }
     if (method === 'GET' && seg[0] === 'prestige') {
       if (seg[1] === 'market') return json(200, { authority: 'server', ...marketScreen(db) });
-      if (seg[1] === 'leaderboard') return json(200, { authority: 'server', ...leaderboard(db, PLAYER_ID, q.scope === 'global' ? 'global' : 'city') });
+      if (seg[1] === 'leaderboard') return json(200, { authority: 'server', ...leaderboard(db, actingPlayer(), q.scope === 'global' ? 'global' : 'city') });
       return json(200, { authority: 'server', ...prestigeScreen(db) });
     }
     if (method === 'GET' && seg[0] === 'rewards') return json(200, { authority: 'server', ...rewardsScreen(db, now) });
     if (method === 'GET' && seg[0] === 'wallet') return json(200, { authority: 'server', ...walletScreen(db) });
-    if (method === 'GET' && seg[0] === 'membership') return json(200, { authority: 'server', membership: membershipView(db, PLAYER_ID, db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t) });
+    if (method === 'GET' && seg[0] === 'membership') return json(200, { authority: 'server', membership: membershipView(db, actingPlayer(), db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t) });
     if (method === 'POST' && seg[0] === 'ads' && seg[1] === 'attest') {   // the (simulated) provider's server-side proof of completion: refused until the minimum viewing time has passed
       try { return json(200, { ok: true, ...providerAttest(db, now, String((req.body as { sessionId?: string })?.sessionId ?? '')) }); } catch (e) { return apiErr(422, 'FORBIDDEN', e instanceof Error ? e.message : 'Refused'); }
     }

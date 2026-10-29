@@ -1,3 +1,4 @@
+import { actingPlayer, actingWallet } from '../engine/actor';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { THRESHOLDS, capTable, classifyStake, companyInvestorId, getInvestor, holding, outstanding, security, treasuryShares } from '../engine/capital';
@@ -7,7 +8,7 @@ import { available } from '../engine/ledger';
 import { playerInvestorIds } from '../engine/shareCommands';
 import { orderBook, priceBand } from '../engine/shareMarket';
 import { computeValuation } from '../engine/valuation';
-import { PLAYER_ID, PLAYER_WALLET } from '../seed/bristol';
+
 import type { ExchangeHome, ListingStatus, PortfolioPosition, PortfolioTx, SecurityDetail, SecurityListing, SharePortfolio, StakeClass } from '../../src/shared/securities';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -51,9 +52,9 @@ export function exchangeHome(db: Sql): ExchangeHome {
   const listings = db.all<SecRow>("SELECT * FROM securities WHERE status IN ('open','suspended') ORDER BY ticker").map((s) => listingOf(db, s, t, mine));
   const idx = db.all<{ tick: number; value_bps: number; market_cap_minor: number; turnover_minor: number }>('SELECT * FROM market_index ORDER BY tick DESC LIMIT 60').reverse();
   const last = idx.at(-1), prev = idx.at(-2);
-  const unlisted = db.all<{ id: string; name: string; ticker: string }>("SELECT c.id, c.name, s.ticker FROM companies c JOIN securities s ON s.company_id = c.id WHERE c.owner_kind = 'player' AND c.owner_id = ? AND c.bankrupt_tick IS NULL AND s.status = 'unlisted' ORDER BY c.id", PLAYER_ID).map((c) => {
+  const unlisted = db.all<{ id: string; name: string; ticker: string }>("SELECT c.id, c.name, s.ticker FROM companies c JOIN securities s ON s.company_id = c.id WHERE c.owner_kind = 'player' AND c.owner_id = ? AND c.bankrupt_tick IS NULL AND s.status = 'unlisted' ORDER BY c.id", actingPlayer()).map((c) => {
     const fair = computeValuation(db, cfg, c.id, t)?.fairValuePerShareMinor ?? 1;
-    let eligible = false; try { eligible = listingQuote(db, cfg, c.id, 1_000, fair, t, { kind: 'player', id: PLAYER_ID }).eligible; } catch { /* not eligible */ }
+    let eligible = false; try { eligible = listingQuote(db, cfg, c.id, 1_000, fair, t, { kind: 'player', id: actingPlayer() }).eligible; } catch { /* not eligible */ }
     return { companyId: c.id, name: c.name, ticker: c.ticker, eligible };
   });
   return { tick: t, gameDate: gameDate(cfg, t), index: { valueBps: last?.value_bps ?? 10_000, changeBps: last && prev ? Math.round(((last.value_bps - prev.value_bps) * 10_000) / prev.value_bps) : 0, marketCapMinor: last?.market_cap_minor ?? 0, turnoverMinor: last?.turnover_minor ?? 0, series: idx.map((r) => ({ tick: r.tick, valueBps: r.value_bps })) }, listings, unlisted, feeBps: cfg.shareFeeBps, bandBps: cfg.shareBandBps, notice: 'Fictional companies and shares. Empire Coins only: shares cannot be redeemed for real money.' };
@@ -70,9 +71,9 @@ export function securityDetail(db: Sql, companyId: string): SecurityDetail | nul
   const fairBy = new Map(db.all<{ tick: number; v: number }>('SELECT tick, fair_value_minor v FROM security_valuations WHERE company_id = ? AND tick > ?', companyId, t - 61).map((r) => [r.tick, r.v]));
   const holders = capTable(db, companyId); const top = holders[0];
   const controllerHolder = top && classifyStake(top.stakeBps) === 'majority' ? { name: top.name, stakeBps: top.stakeBps } : null;
-  const inv = getInvestor(db, PLAYER_ID);
+  const inv = getInvestor(db, actingPlayer());
   const myOrders = db.all<{ id: number; side: 'buy' | 'sell'; price_minor: number; qty_remaining: number; qty_original: number; investor_id: string; expires_tick: number | null }>("SELECT id, side, price_minor, qty_remaining, qty_original, investor_id, expires_tick FROM share_orders WHERE company_id = ? AND status = 'open' AND primary_offering_id IS NULL ORDER BY id DESC", companyId).filter((o) => mine.has(o.investor_id));
-  const h = holding(db, companyId, PLAYER_ID); const c = db.get<{ owner_kind: string; owner_id: string }>('SELECT owner_kind, owner_id FROM companies WHERE id = ?', companyId)!;
+  const h = holding(db, companyId, actingPlayer()); const c = db.get<{ owner_kind: string; owner_id: string }>('SELECT owner_kind, owner_id FROM companies WHERE id = ?', companyId)!;
   return {
     listing,
     valuation: v ? { fairValuePerShareMinor: v.fairValuePerShareMinor, equityMinor: v.equityMinor, earningsValueMinor: v.earningsValueMinor, dailyEarningsMinor: v.dailyEarningsMinor, growthBps: v.growthBps, riskBps: v.riskBps, liquidationFloorMinor: v.liquidationFloorMinor, components: v.components as unknown as Record<string, unknown>, basis: 'Book equity plus recent earnings over a fixed horizon. An estimate from the company’s own books: it never sets the trading price.' } : null,
@@ -86,18 +87,18 @@ export function securityDetail(db: Sql, companyId: string): SecurityDetail | nul
     offerings: db.all<{ id: number; kind: string; tick: number; shares_offered: number; shares_sold: number; price_minor: number; proceeds_minor: number; status: string }>('SELECT * FROM share_offerings WHERE company_id = ? ORDER BY id DESC LIMIT 6', companyId).map((o) => ({ id: o.id, kind: o.kind, gameDate: gameDate(cfg, o.tick), sharesOffered: o.shares_offered, sharesSold: o.shares_sold, priceMinor: o.price_minor, proceedsMinor: o.proceeds_minor, status: o.status })),
     trades: db.all<{ id: number; tick: number; qty: number; price_minor: number; buyer_id: string; seller_id: string }>('SELECT id, tick, qty, price_minor, buyer_id, seller_id FROM share_trades WHERE company_id = ? ORDER BY id DESC LIMIT 30', companyId).map((r) => ({ id: r.id, gameDate: gameDate(cfg, r.tick), qty: r.qty, priceMinor: r.price_minor, mine: mine.has(r.buyer_id) || mine.has(r.seller_id) })),
     news: db.all<{ id: number; tick: number; headline: string; body: string }>('SELECT id, tick, headline, body FROM news_articles WHERE subject_company_id = ? ORDER BY tick DESC, id DESC LIMIT 8', companyId).map((n) => ({ id: n.id, gameDate: gameDate(cfg, n.tick), headline: n.headline, body: n.body })),
-    mine: { shares: h.shares, reservedShares: h.reserved, avgCostMinor: h.shares > 0 && h.cost_basis_minor > 0 ? Math.round(h.cost_basis_minor / h.shares) : null, cashAvailableMinor: inv ? available(db, inv.account_id) : available(db, PLAYER_WALLET), openOrders: myOrders.map((o) => ({ id: o.id, side: o.side, priceMinor: o.price_minor, remaining: o.qty_remaining, original: o.qty_original, investorId: o.investor_id, expiresTick: o.expires_tick })), controlsCompany: c.owner_kind === 'player' && c.owner_id === PLAYER_ID },
+    mine: { shares: h.shares, reservedShares: h.reserved, avgCostMinor: h.shares > 0 && h.cost_basis_minor > 0 ? Math.round(h.cost_basis_minor / h.shares) : null, cashAvailableMinor: inv ? available(db, inv.account_id) : available(db, actingWallet()), openOrders: myOrders.map((o) => ({ id: o.id, side: o.side, priceMinor: o.price_minor, remaining: o.qty_remaining, original: o.qty_original, investorId: o.investor_id, expiresTick: o.expires_tick })), controlsCompany: c.owner_kind === 'player' && c.owner_id === actingPlayer() },
     rules: { feeBps: cfg.shareFeeBps, bandBps: cfg.shareBandBps, maxOrderDays: cfg.shareMaxOrderTicks },
   };
 }
 
 export function sharePortfolio(db: Sql): SharePortfolio {
   const t = lastTick(db), cfg = loadConfig(db); const ids = playerInvestorIds(db);
-  const wallet = db.get<{ b: number; r: number }>('SELECT balance_minor b, reserved_minor r FROM accounts WHERE id = ?', PLAYER_WALLET)!;
+  const wallet = db.get<{ b: number; r: number }>('SELECT balance_minor b, reserved_minor r FROM accounts WHERE id = ?', actingWallet())!;
   const positions: PortfolioPosition[] = [];
   for (const id of ids) for (const h of db.all<{ company_id: string; shares: number; reserved: number; cost_basis_minor: number }>('SELECT company_id, shares, reserved, cost_basis_minor FROM share_holdings WHERE investor_id = ? AND shares > 0 ORDER BY company_id', id)) {
     const s = security(db, h.company_id)!; const c = db.get<CoRow>('SELECT id, name, industry_id, owner_kind, owner_id, asset_id FROM companies WHERE id = ?', h.company_id)!;
-    if (id === PLAYER_ID && c.owner_kind === 'player' && s.status === 'unlisted' && h.cost_basis_minor === 0) { /* an unlisted company's founder shares are shown, but not marked */ }
+    if (id === actingPlayer() && c.owner_kind === 'player' && s.status === 'unlisted' && h.cost_basis_minor === 0) { /* an unlisted company's founder shares are shown, but not marked */ }
     const mk = s.status === 'unlisted' || s.status === 'delisted' ? { priceMinor: null, basis: 'none' as const, stale: true } : markOf(db, h.company_id, t);
     const inv = getInvestor(db, id)!; const out = outstanding(db, h.company_id);
     const real = db.get<{ p: number }>('SELECT COALESCE(SUM(pnl_minor),0) p FROM share_pnl WHERE investor_id = ? AND company_id = ?', id, h.company_id)!.p;

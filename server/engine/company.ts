@@ -1,3 +1,4 @@
+import { actingPlayer } from './actor';
 import type { Sql } from '../db/sql';
 import { loadConfig } from './config';
 import { runCommand, type CommandErr, type CommandResponse } from './commands';
@@ -6,7 +7,7 @@ import { logEvent } from './stats';
 import { ownerInvestor, registerCapital } from './capital';
 import { procureInputs, refPriceOf, type CompanyRow } from './operations';
 import type { StartupLine, StartupQuote } from '../../src/shared/management';
-import { PLAYER_ID, companyAccount } from '../seed/bristol';
+import { companyAccount } from '../seed/bristol';
 
 const err = (code: CommandErr['error']['code'], message: string, fieldErrors?: Record<string, string>): CommandErr => ({ ok: false, error: { code, message, ...(fieldErrors ? { fieldErrors } : {}) } });
 const stateAccount = (db: Sql, industry: string) => db.get<{ a: string }>("SELECT treasury_account_id a FROM companies WHERE owner_kind = 'state' AND industry_id = ? LIMIT 1", industry)?.a;
@@ -30,7 +31,7 @@ export const NAME_RE = /^[A-Za-z0-9][A-Za-z0-9 '&.,-]{2,31}$/;
 
 /** Itemised startup cost and every reason it could be refused. Pure read; `createCompany` re-runs it inside the transaction, so the client never sets a price. */
 export interface Founder { kind: 'player' | 'npc'; ownerId: string; fundingAccount: string; idPrefix: string; limited: boolean }
-export const playerFounder = (db: Sql): Founder => ({ kind: 'player', ownerId: PLAYER_ID, fundingAccount: db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', PLAYER_ID)!.w, idPrefix: 'co-pl', limited: true });
+export const playerFounder = (db: Sql): Founder => ({ kind: 'player', ownerId: actingPlayer(), fundingAccount: db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', actingPlayer())!.w, idPrefix: 'co-pl', limited: true });
 export function startupQuote(db: Sql, input: StartupInput, founder: Founder = playerFounder(db)): StartupQuote {
   const cfg = loadConfig(db);
   const issues: { field: string; message: string }[] = [];
@@ -120,7 +121,7 @@ export function createCompany(db: Sql, key: string, input: CreateInput): Command
 const own = (db: Sql, companyId: string): CompanyRow | CommandErr => {
   const c = db.get<CompanyRow>('SELECT * FROM companies WHERE id = ?', companyId);
   if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
-  if (c.owner_kind !== 'player' || c.owner_id !== PLAYER_ID) return err('FORBIDDEN', 'You do not own this company.');
+  if (c.owner_kind !== 'player' || c.owner_id !== actingPlayer()) return err('FORBIDDEN', 'You do not own this company.');
   return c;
 };
 const bad = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;

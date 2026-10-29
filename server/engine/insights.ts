@@ -1,10 +1,11 @@
+import { actingPlayer } from './actor';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from './config';
 import { energyPerBatch, inputUnitsPerBatch, linesOf, recipeInputs, type CompanyRow } from './operations';
 import { LOT_SQL, defaultStaff, rentFor, tierOf, upgradeBlocker, type Spec, type Tier, type UpgradeRow } from './company';
 import type { MarketShortage } from '../../src/shared/exchange';
 import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../src/shared/management';
-import { PLAYER_ID } from '../seed/bristol';
+
 import { directory as directoryRows } from './exchange';
 import { washSql } from './standings';
 import { feeFromBps } from '../../src/domain/money';
@@ -36,7 +37,7 @@ function businessDemand(db: Sql, commodity: string) {
 /** Opportunity finder. Pure read of the live simulation; ranks the six industries by expected daily profit after costs, with the reasoning spelled out. */
 export function opportunities(db: Sql): Opportunity[] {
   const cfg = loadConfig(db), t = lastTick(db);
-  const wallet = db.get<{ b: number; r: number }>('SELECT a.balance_minor b, a.reserved_minor r FROM accounts a JOIN players p ON p.wallet_account_id = a.id WHERE p.id = ?', PLAYER_ID)!;
+  const wallet = db.get<{ b: number; r: number }>('SELECT a.balance_minor b, a.reserved_minor r FROM accounts a JOIN players p ON p.wallet_account_id = a.id WHERE p.id = ?', actingPlayer())!;
   const out: Opportunity[] = [];
   const lotRows = db.all<{ d: string | null; w: number; dep: number }>(`SELECT p.district_id d, p.width w, p.depth dep FROM plots p WHERE ${LOT_SQL} AND p.company_id IS NULL AND p.asset_id IS NULL`);
   for (const spec of startable(db)) {
@@ -139,7 +140,7 @@ export function rankings(db: Sql): Ranking[] {
   return startable(db).map((spec) => {
     const rows = db.all<{ id: string; name: string; reputation_bps: number; price_minor: number; owner_kind: string; owner_id: string; u: number; ask: number | null }>(`SELECT c.id, c.name, c.reputation_bps, c.price_minor, c.owner_kind, c.owner_id, MAX(0, COALESCE((SELECT SUM(s.units_sold) FROM company_tick_stats s WHERE s.company_id = c.id AND s.tick > ? AND s.tick > 0),0) - ${washSql('qty', 'c.id')}) u, (SELECT ask_price_minor FROM production_lines WHERE company_id = c.id LIMIT 1) ask FROM companies c WHERE c.industry_id = ? AND c.owner_kind <> 'state' AND c.bankrupt_tick IS NULL ORDER BY u DESC, c.reputation_bps DESC, c.id`, t - WINDOW, t - WINDOW, t, spec.industry_id);
     const total = rows.reduce((a, r) => a + r.u, 0);
-    return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avgOver(total, days), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avgOver(r.u, days), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === PLAYER_ID })) };
+    return { industry: spec.industry_id, label: spec.label, total: rows.length, unitsPerDay: avgOver(total, days), rows: rows.map((r, i) => ({ rank: i + 1, companyId: r.id, name: r.name, unitsPerDay: avgOver(r.u, days), shareBps: total > 0 ? Math.floor((r.u * 10_000) / total) : 0, reputationBps: r.reputation_bps, priceMinor: spec.sells === 'consumers' ? r.price_minor : (r.ask ?? r.price_minor), mine: r.owner_kind === 'player' && r.owner_id === actingPlayer() })) };
   });
 }
 

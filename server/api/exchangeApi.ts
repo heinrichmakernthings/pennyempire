@@ -1,7 +1,8 @@
+import { actingPlayer } from '../engine/actor';
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig } from '../engine/config';
 import { upcomingDeliveries, type ContractRow } from '../engine/contracts';
-import { PLAYER_ID } from '../seed/bristol';
+
 import type { ContractDto, Holding, OwnOrder, OwnTrade } from '../../src/shared/exchange';
 
 const tickOf = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
@@ -10,7 +11,7 @@ const mineSql = "(SELECT id FROM companies WHERE owner_kind = 'player' AND owner
 export function ownOrders(db: Sql, commodity?: string, limit = 60): OwnOrder[] {
   const cfg = loadConfig(db);
   const rows = db.all<{ id: number; company_id: string; name: string; commodity_id: string; side: 'buy' | 'sell'; kind: 'limit' | 'market' | 'direct'; price_minor: number; qty_original: number; qty_remaining: number; reserved_funds_minor: number; status: 'open' | 'filled' | 'cancelled'; end_reason: string | null; created_tick: number; expires_tick: number | null }>(
-    `SELECT o.*, c.name FROM orders o JOIN companies c ON c.id = o.company_id WHERE o.company_id IN ${mineSql} ${commodity ? 'AND o.commodity_id = ?' : ''} ORDER BY (o.status = 'open') DESC, o.id DESC LIMIT ?`, PLAYER_ID, ...(commodity ? [commodity] : []), limit);
+    `SELECT o.*, c.name FROM orders o JOIN companies c ON c.id = o.company_id WHERE o.company_id IN ${mineSql} ${commodity ? 'AND o.commodity_id = ?' : ''} ORDER BY (o.status = 'open') DESC, o.id DESC LIMIT ?`, actingPlayer(), ...(commodity ? [commodity] : []), limit);
   return rows.map((o) => {
     const f = db.get<{ q: number; v: number }>('SELECT COALESCE(SUM(qty),0) q, COALESCE(SUM(qty * price_minor),0) v FROM trades WHERE buy_order_id = ? OR sell_order_id = ?', o.id, o.id)!;
     const filled = o.qty_original - o.qty_remaining;
@@ -27,20 +28,20 @@ export function ownTrades(db: Sql, commodity?: string, limit = 60): OwnTrade[] {
   const cfg = loadConfig(db);
   return db.all<{ id: number; tick: number; commodity_id: string; qty: number; price_minor: number; fee_minor: number; ledger_tx_id: number | null; buyer_company_id: string; seller_company_id: string; bn: string; sn: string; mine_buy: number }>(
     `SELECT t.*, b.name bn, s.name sn, (t.buyer_company_id IN ${mineSql}) mine_buy FROM trades t JOIN companies b ON b.id = t.buyer_company_id JOIN companies s ON s.id = t.seller_company_id
-     WHERE (t.buyer_company_id IN ${mineSql} OR t.seller_company_id IN ${mineSql}) ${commodity ? 'AND t.commodity_id = ?' : ''} ORDER BY t.id DESC LIMIT ?`, PLAYER_ID, PLAYER_ID, PLAYER_ID, ...(commodity ? [commodity] : []), limit)
+     WHERE (t.buyer_company_id IN ${mineSql} OR t.seller_company_id IN ${mineSql}) ${commodity ? 'AND t.commodity_id = ?' : ''} ORDER BY t.id DESC LIMIT ?`, actingPlayer(), actingPlayer(), actingPlayer(), ...(commodity ? [commodity] : []), limit)
     .map((t) => { const gross = t.qty * t.price_minor, bought = t.mine_buy === 1; return { id: t.id, tick: t.tick, gameDate: gameDate(cfg, t.tick), commodityId: t.commodity_id, role: bought ? 'bought' : 'sold', counterparty: bought ? t.sn : t.bn, companyId: bought ? t.buyer_company_id : t.seller_company_id, qty: t.qty, priceMinor: t.price_minor, grossMinor: gross, feeMinor: bought ? 0 : t.fee_minor, netMinor: bought ? -gross : gross - t.fee_minor, ledgerTxId: t.ledger_tx_id }; });
 }
 
 export function holdings(db: Sql, commodity: string): Holding[] {
   return db.all<{ id: string; name: string; qty: number | null; reserved: number | null; b: number; r: number; sys: number }>(
-    `SELECT c.id, c.name, i.qty, i.reserved, a.balance_minor b, a.reserved_minor r, (SELECT COALESCE(SUM(o.qty_remaining),0) FROM orders o WHERE o.company_id = c.id AND o.commodity_id = ? AND o.side = 'sell' AND o.status = 'open' AND o.idempotency_key LIKE 'sys:%') sys FROM companies c JOIN accounts a ON a.id = c.treasury_account_id LEFT JOIN inventory i ON i.company_id = c.id AND i.commodity_id = ? WHERE c.id IN ${mineSql} AND c.bankrupt_tick IS NULL ORDER BY c.id`, commodity, commodity, PLAYER_ID)
+    `SELECT c.id, c.name, i.qty, i.reserved, a.balance_minor b, a.reserved_minor r, (SELECT COALESCE(SUM(o.qty_remaining),0) FROM orders o WHERE o.company_id = c.id AND o.commodity_id = ? AND o.side = 'sell' AND o.status = 'open' AND o.idempotency_key LIKE 'sys:%') sys FROM companies c JOIN accounts a ON a.id = c.treasury_account_id LEFT JOIN inventory i ON i.company_id = c.id AND i.commodity_id = ? WHERE c.id IN ${mineSql} AND c.bankrupt_tick IS NULL ORDER BY c.id`, commodity, commodity, actingPlayer())
     .map((h) => ({ companyId: h.id, companyName: h.name, commodityId: commodity, units: h.qty ?? 0, reservedUnits: (h.reserved ?? 0) - h.sys, autoListedUnits: h.sys, freeUnits: (h.qty ?? 0) - (h.reserved ?? 0) + h.sys, cashMinor: h.b, availableCashMinor: h.b - h.r }));
 }
 
 export function contracts(db: Sql): ContractDto[] {
   const cfg = loadConfig(db), tick = tickOf(db);
   const rows = db.all<ContractRow & { bn: string; sn: string; mine_buyer: number }>(`SELECT k.*, b.name bn, s.name sn, (k.buyer_company_id IN ${mineSql}) mine_buyer FROM supply_contracts k JOIN companies b ON b.id = k.buyer_company_id JOIN companies s ON s.id = k.supplier_company_id
-    WHERE k.buyer_company_id IN ${mineSql} OR k.supplier_company_id IN ${mineSql} ORDER BY (k.status IN ('active','pending')) DESC, k.id DESC LIMIT 50`, PLAYER_ID, PLAYER_ID, PLAYER_ID);
+    WHERE k.buyer_company_id IN ${mineSql} OR k.supplier_company_id IN ${mineSql} ORDER BY (k.status IN ('active','pending')) DESC, k.id DESC LIMIT 50`, actingPlayer(), actingPlayer(), actingPlayer());
   return rows.map((k) => {
     const hist = db.all<{ due_tick: number; status: string; qty: number; gross_minor: number; fee_minor: number }>('SELECT due_tick, status, qty, gross_minor, fee_minor FROM contract_deliveries WHERE contract_id = ? ORDER BY due_tick DESC LIMIT 10', k.id);
     const agg = db.get<{ d: number; m: number; u: number; p: number }>("SELECT COALESCE(SUM(status = 'delivered'),0) d, COALESCE(SUM(status <> 'delivered'),0) m, COALESCE(SUM(CASE WHEN status = 'delivered' THEN qty ELSE 0 END),0) u, COALESCE(SUM(gross_minor),0) p FROM contract_deliveries WHERE contract_id = ?", k.id)!;
