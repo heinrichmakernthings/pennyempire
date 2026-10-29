@@ -1,0 +1,86 @@
+[
+  {
+    "id": "london-commercial",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact three-storey London yellow-stock-brick Victorian commercial corner building, tall sash windows, dark teal ground-floor shopfront, slate roof, restrained stone lintels; blank sign. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 224×265 pixels, footprint 2×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "london-office",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact four-storey London modern office infill, pale limestone fins and dark teal glass, flat roof, street-level entrance at same scale as reference; no skyscraper. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 224×285 pixels, footprint 2×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "lisbon-tiled-shop",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact three-storey Lisbon shop-house, cream plaster with muted blue-and-white azulejo facade panels, iron balconies, warm terracotta roof and teal shop door; blank sign. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 224×265 pixels, footprint 2×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "lisbon-waterfront-store",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a broad two-storey Lisbon waterfront merchant warehouse, pale ochre plaster, white stone surrounds, terracotta pitched roof, arched loading doors and small timber crates inside footprint. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 288×283 pixels, footprint 3×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "lisbon-retaining-wall",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one short low limestone retaining-wall prop with a blue-and-white tiled inset and stone cap following the isometric grid; decorative street edge, no terrain tile or stairs. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 64×49 pixels, footprint 1×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "mexico-city-shop",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact three-storey Mexico City mixed-use corner building, muted coral and ochre plaster, concrete roof parapet, iron window grilles, teal ground-floor storefront and restrained roof water tank; blank signage. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 224×265 pixels, footprint 2×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "mexico-city-market-stall",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one small Mexico City neighbourhood market stall, warm brick-red fabric canopy, teal metal frame, wooden produce counter with tiny green and amber produce crates; no text or people. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 64×81 pixels, footprint 1×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "mexico-city-workshop",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a broad two-storey Mexico City urban light-industrial workshop, weathered warm cream concrete, muted coral lower walls, teal steel rolling loading doors, sawtooth metal roof and small crates within footprint. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 288×283 pixels, footprint 3×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "freight-container",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one standard short intermodal freight container, muted dark teal corrugated steel, closed twin cargo doors, warm upper-left highlights, completely blank panels and no company marks. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 128×91 pixels, footprint 2×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "customs-office",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact two-storey customs clearance office with warm limestone facade, teal entrance, small adjacent inspection bay within footprint, slate roof, blank identification plaque. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 224×194 pixels, footprint 2×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "air-freight-terminal",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: a compact low-rise air-freight terminal module, brick-and-cream administrative front and metal-roof cargo hall, teal loading bays and restrained amber safety bollards; no plane runway or control tower. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 288×283 pixels, footprint 3×2; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "boarded-window-panel",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one detachable boarded window cover: weathered timber planks nailed across a dark rectangular window recess in an isometric facade plane; no entire building or wall, no text. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 64×49 pixels, footprint 1×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "empty-stock-rack",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one empty freestanding industrial stock rack, dark teal metal frame, three bare wooden shelves, visibly empty, compact forecourt prop. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 64×81 pixels, footprint 1×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  },
+  {
+    "id": "maintenance-crate",
+    "prompt": "Use case: stylized-concept. Asset type: ONE Penny Empire production sprite. Input image: approved Bristol style reference ONLY, not an edit target. Subject: one compact maintenance crate with a small toolbox and a bent pipe beside it, restrained rust and amber safety detail, no text, small neglected-premises forecourt prop. Match the reference's detailed pixel-art architecture, 2:1 orthographic isometric grid, parallel edges, warm upper-left light, darker right face, restrained brick/limestone/slate/teal/amber palette. Keep doorway and floor proportions consistent with Bristol. Intended runtime logical frame 32×39 pixels, footprint 1×1; legible silhouette at that size. Transparent alpha background. Entire silhouette, tightly framed, southern ground contact at bottom. No ground tile, no cast shadow outside silhouette, no glow, no text, no logos, no people, no multiple views, no scene, no smooth photorealistic 3D. City differences use materials and restrained accents, not a different pixel scale or perspective.",
+    "reference": "assets/art/phase2/source/environment.png",
+    "tool": "built-in imagegen"
+  }
+]

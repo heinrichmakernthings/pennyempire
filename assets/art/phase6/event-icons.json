@@ -1,0 +1,30 @@
+{
+  "frameSize": [
+    24,
+    24
+  ],
+  "strokeWidth": 1.6,
+  "colour": "currentColor; semantic tone supplied by UI",
+  "events": {
+    "boom": "assets/art/phase3/ui/profit.svg",
+    "recession": "assets/art/phase3/ui/loss.svg",
+    "shortage": "assets/art/phase3/ui/missing-inputs.svg",
+    "acquisition": "assets/art/phase3/ui/new-ownership.svg",
+    "crash": "assets/art/phase6/ui/market-crash.svg",
+    "energy": "assets/art/phase6/ui/energy-crisis.svg",
+    "inflation": "assets/art/phase6/ui/inflation.svg",
+    "spending": "assets/art/phase6/ui/spending.svg",
+    "construction": "assets/art/phase6/ui/construction.svg",
+    "disruption": "assets/art/phase6/ui/route-broken.svg",
+    "bankruptcy": "assets/art/phase6/ui/bankruptcy.svg",
+    "stimulus": "assets/art/phase6/ui/stimulus.svg"
+  },
+  "shipments": {
+    "pending": "assets/art/phase6/ui/clock.svg",
+    "in-transit": "assets/art/phase3/ui/shipment.svg",
+    "delivered": "assets/art/phase3/ui/order-filled.svg",
+    "delayed": "assets/art/phase6/ui/clock.svg",
+    "customs-hold": "assets/art/phase6/ui/customs.svg",
+    "disrupted": "assets/art/phase6/ui/route-broken.svg"
+  }
+}

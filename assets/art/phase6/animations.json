@@ -1,0 +1,609 @@
+{
+  "newRasterAnimationCount": 0,
+  "note": "All Phase6 raster sprites are static. Existing badges are reused without re-timing; reference freezes reduced-motion frame. No walk, ship or cargo handling animation is claimed.",
+  "animations": [
+    {
+      "id": "construction",
+      "file": "assets/art/phase2/ui/state-construction.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "low-stock",
+      "file": "assets/art/phase2/ui/state-low-stock.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "closed",
+      "file": "assets/art/phase2/ui/state-closed.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "bankrupt",
+      "file": "assets/art/phase2/ui/state-bankrupt.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "high-demand",
+      "file": "assets/art/phase2/ui/state-high-demand.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": true,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse, not world character animation",
+      "reused": true
+    },
+    {
+      "id": "new-ownership",
+      "file": "assets/art/phase3/ui/state-new-ownership.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/new-ownership.png"
+    },
+    {
+      "id": "major-success",
+      "file": "assets/art/phase3/ui/state-major-success.svg",
+      "sheetSize": [
+        96,
+        24
+      ],
+      "frameSize": [
+        24,
+        24
+      ],
+      "frames": [
+        [
+          0,
+          0,
+          24,
+          24
+        ],
+        [
+          24,
+          0,
+          24,
+          24
+        ],
+        [
+          48,
+          0,
+          24,
+          24
+        ],
+        [
+          72,
+          0,
+          24,
+          24
+        ]
+      ],
+      "frameDurationMs": 200,
+      "loop": false,
+      "reducedMotionFrame": 2,
+      "anchor": [
+        12,
+        24
+      ],
+      "kind": "UI state pulse",
+      "reused": false,
+      "pngFile": "assets/art/phase3/runtime/animations/major-success.png"
+    }
+  ],
+  "staticSprites": [
+    {
+      "id": "london-commercial",
+      "frames": 1,
+      "frameSize": [
+        224,
+        265
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "london-office",
+      "frames": 1,
+      "frameSize": [
+        224,
+        285
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lisbon-tiled-shop",
+      "frames": 1,
+      "frameSize": [
+        224,
+        265
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lisbon-waterfront-store",
+      "frames": 1,
+      "frameSize": [
+        288,
+        283
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lisbon-retaining-wall",
+      "frames": 1,
+      "frameSize": [
+        64,
+        49
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "mexico-city-shop",
+      "frames": 1,
+      "frameSize": [
+        224,
+        265
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "mexico-city-market-stall",
+      "frames": 1,
+      "frameSize": [
+        64,
+        81
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "mexico-city-workshop",
+      "frames": 1,
+      "frameSize": [
+        288,
+        283
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "freight-container",
+      "frames": 1,
+      "frameSize": [
+        128,
+        91
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "customs-office",
+      "frames": 1,
+      "frameSize": [
+        224,
+        194
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "air-freight-terminal",
+      "frames": 1,
+      "frameSize": [
+        288,
+        283
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "boarded-window-panel",
+      "frames": 1,
+      "frameSize": [
+        64,
+        49
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "empty-stock-rack",
+      "frames": 1,
+      "frameSize": [
+        64,
+        81
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "maintenance-crate",
+      "frames": 1,
+      "frameSize": [
+        32,
+        39
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "warehouse-module",
+      "frames": 1,
+      "frameSize": [
+        288,
+        283
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "terrace-module",
+      "frames": 1,
+      "frameSize": [
+        224,
+        234
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "shop-module",
+      "frames": 1,
+      "frameSize": [
+        224,
+        265
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lorry-sw",
+      "frames": 1,
+      "frameSize": [
+        128,
+        91
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lorry-se",
+      "frames": 1,
+      "frameSize": [
+        128,
+        91
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lorry-ne",
+      "frames": 1,
+      "frameSize": [
+        128,
+        91
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "lorry-nw",
+      "frames": 1,
+      "frameSize": [
+        128,
+        91
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "forklift-sw",
+      "frames": 1,
+      "frameSize": [
+        68,
+        62
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "penny-logistics",
+      "frames": 1,
+      "frameSize": [
+        288,
+        283
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "customer-sw",
+      "frames": 1,
+      "frameSize": [
+        24,
+        40
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "construction-worker-sw",
+      "frames": 1,
+      "frameSize": [
+        24,
+        40
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "crane",
+      "frames": 1,
+      "frameSize": [
+        96,
+        146
+      ],
+      "durationMs": null,
+      "loop": false
+    },
+    {
+      "id": "crates",
+      "frames": 1,
+      "frameSize": [
+        32,
+        39
+      ],
+      "durationMs": null,
+      "loop": false
+    }
+  ]
+}

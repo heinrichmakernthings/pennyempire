@@ -1,0 +1,1227 @@
+{
+  "version": 6,
+  "tile": [
+    128,
+    64
+  ],
+  "projection": "2:1 orthographic isometric",
+  "lighting": "upper-left",
+  "scaling": "integer nearest-neighbour",
+  "assets": [
+    {
+      "id": "london-commercial",
+      "source": "assets/art/phase6/runtime/london-commercial.png",
+      "sourceSize": [
+        224,
+        265
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        265
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "city-london",
+      "contentRect": [
+        23,
+        0,
+        178,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase6/source/london-commercial.png",
+      "sourceCrop": [
+        158,
+        47,
+        871,
+        1300
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "london-office",
+      "source": "assets/art/phase6/runtime/london-office.png",
+      "sourceSize": [
+        224,
+        285
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        285
+      ],
+      "logicalSize": [
+        224,
+        285
+      ],
+      "pivot": [
+        112,
+        285
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "city-london",
+      "contentRect": [
+        7,
+        0,
+        209,
+        285
+      ],
+      "sourceArtwork": "assets/art/phase6/source/london-office.png",
+      "sourceCrop": [
+        101,
+        79,
+        943,
+        1283
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "lisbon-tiled-shop",
+      "source": "assets/art/phase6/runtime/lisbon-tiled-shop.png",
+      "sourceSize": [
+        224,
+        265
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        265
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "city-lisbon",
+      "contentRect": [
+        23,
+        0,
+        178,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase6/source/lisbon-tiled-shop.png",
+      "sourceCrop": [
+        178,
+        32,
+        875,
+        1306
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "lisbon-waterfront-store",
+      "source": "assets/art/phase6/runtime/lisbon-waterfront-store.png",
+      "sourceSize": [
+        288,
+        283
+      ],
+      "frame": [
+        0,
+        0,
+        288,
+        283
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "city-lisbon",
+      "contentRect": [
+        5,
+        0,
+        277,
+        283
+      ],
+      "sourceArtwork": "assets/art/phase6/source/lisbon-waterfront-store.png",
+      "sourceCrop": [
+        36,
+        6,
+        1211,
+        1237
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "lisbon-retaining-wall",
+      "source": "assets/art/phase6/runtime/lisbon-retaining-wall.png",
+      "sourceSize": [
+        64,
+        49
+      ],
+      "frame": [
+        0,
+        0,
+        64,
+        49
+      ],
+      "logicalSize": [
+        64,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "city-lisbon",
+      "contentRect": [
+        2,
+        0,
+        59,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase6/source/lisbon-retaining-wall.png",
+      "sourceCrop": [
+        131,
+        133,
+        1126,
+        942
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "mexico-city-shop",
+      "source": "assets/art/phase6/runtime/mexico-city-shop.png",
+      "sourceSize": [
+        224,
+        265
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        265
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "city-mexico-city",
+      "contentRect": [
+        15,
+        0,
+        194,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase6/source/mexico-city-shop.png",
+      "sourceCrop": [
+        129,
+        51,
+        941,
+        1287
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "mexico-city-market-stall",
+      "source": "assets/art/phase6/runtime/mexico-city-market-stall.png",
+      "sourceSize": [
+        64,
+        81
+      ],
+      "frame": [
+        0,
+        0,
+        64,
+        81
+      ],
+      "logicalSize": [
+        64,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "city-mexico-city",
+      "contentRect": [
+        0,
+        2,
+        64,
+        79
+      ],
+      "sourceArtwork": "assets/art/phase6/source/mexico-city-market-stall.png",
+      "sourceCrop": [
+        84,
+        134,
+        961,
+        1185
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "mexico-city-workshop",
+      "source": "assets/art/phase6/runtime/mexico-city-workshop.png",
+      "sourceSize": [
+        288,
+        283
+      ],
+      "frame": [
+        0,
+        0,
+        288,
+        283
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "city-mexico-city",
+      "contentRect": [
+        0,
+        2,
+        288,
+        281
+      ],
+      "sourceArtwork": "assets/art/phase6/source/mexico-city-workshop.png",
+      "sourceCrop": [
+        70,
+        70,
+        1134,
+        1108
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "freight-container",
+      "source": "assets/art/phase6/runtime/freight-container.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        2,
+        1
+      ],
+      "usage": "logistics",
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase6/source/freight-container.png",
+      "sourceCrop": [
+        207,
+        41,
+        1087,
+        971
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "customs-office",
+      "source": "assets/art/phase6/runtime/customs-office.png",
+      "sourceSize": [
+        224,
+        194
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        194
+      ],
+      "logicalSize": [
+        224,
+        194
+      ],
+      "pivot": [
+        112,
+        194
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "logistics",
+      "contentRect": [
+        5,
+        0,
+        214,
+        194
+      ],
+      "sourceArtwork": "assets/art/phase6/source/customs-office.png",
+      "sourceCrop": [
+        75,
+        60,
+        1197,
+        1083
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "air-freight-terminal",
+      "source": "assets/art/phase6/runtime/air-freight-terminal.png",
+      "sourceSize": [
+        288,
+        283
+      ],
+      "frame": [
+        0,
+        0,
+        288,
+        283
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "logistics",
+      "contentRect": [
+        0,
+        47,
+        288,
+        236
+      ],
+      "sourceArtwork": "assets/art/phase6/source/air-freight-terminal.png",
+      "sourceCrop": [
+        22,
+        166,
+        1219,
+        997
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "boarded-window-panel",
+      "source": "assets/art/phase6/runtime/boarded-window-panel.png",
+      "sourceSize": [
+        64,
+        49
+      ],
+      "frame": [
+        0,
+        0,
+        64,
+        49
+      ],
+      "logicalSize": [
+        64,
+        49
+      ],
+      "pivot": [
+        32,
+        49
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "business-state",
+      "contentRect": [
+        18,
+        0,
+        28,
+        49
+      ],
+      "sourceArtwork": "assets/art/phase6/source/boarded-window-panel.png",
+      "sourceCrop": [
+        404,
+        20,
+        616,
+        1078
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "empty-stock-rack",
+      "source": "assets/art/phase6/runtime/empty-stock-rack.png",
+      "sourceSize": [
+        64,
+        81
+      ],
+      "frame": [
+        0,
+        0,
+        64,
+        81
+      ],
+      "logicalSize": [
+        64,
+        81
+      ],
+      "pivot": [
+        32,
+        81
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "business-state",
+      "contentRect": [
+        1,
+        0,
+        62,
+        81
+      ],
+      "sourceArtwork": "assets/art/phase6/source/empty-stock-rack.png",
+      "sourceCrop": [
+        67,
+        93,
+        985,
+        1278
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "maintenance-crate",
+      "source": "assets/art/phase6/runtime/maintenance-crate.png",
+      "sourceSize": [
+        32,
+        39
+      ],
+      "frame": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "business-state",
+      "contentRect": [
+        0,
+        7,
+        32,
+        32
+      ],
+      "sourceArtwork": "assets/art/phase6/source/maintenance-crate.png",
+      "sourceCrop": [
+        118,
+        269,
+        994,
+        1000
+      ],
+      "reusedFrom": null,
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "warehouse-module",
+      "source": "assets/art/phase6/runtime/warehouse-module.png",
+      "sourceSize": [
+        288,
+        283
+      ],
+      "frame": [
+        0,
+        0,
+        288,
+        283
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        13,
+        0,
+        262,
+        283
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceCrop": [
+        294,
+        2,
+        288,
+        283
+      ],
+      "reusedFrom": "warehouse-module",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "terrace-module",
+      "source": "assets/art/phase6/runtime/terrace-module.png",
+      "sourceSize": [
+        224,
+        234
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        234
+      ],
+      "logicalSize": [
+        224,
+        234
+      ],
+      "pivot": [
+        112,
+        234
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "reused-environment",
+      "contentRect": [
+        14,
+        0,
+        196,
+        234
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceCrop": [
+        586,
+        2,
+        224,
+        234
+      ],
+      "reusedFrom": "terrace-module",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "shop-module",
+      "source": "assets/art/phase6/runtime/shop-module.png",
+      "sourceSize": [
+        224,
+        265
+      ],
+      "frame": [
+        0,
+        0,
+        224,
+        265
+      ],
+      "logicalSize": [
+        224,
+        265
+      ],
+      "pivot": [
+        112,
+        265
+      ],
+      "footprint": [
+        2,
+        2
+      ],
+      "usage": "reused-environment",
+      "contentRect": [
+        12,
+        0,
+        199,
+        265
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/environment-atlas.png",
+      "sourceCrop": [
+        2,
+        2,
+        224,
+        265
+      ],
+      "reusedFrom": "shop-module",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "lorry-sw",
+      "source": "assets/art/phase6/runtime/lorry-sw.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceCrop": [
+        2,
+        97,
+        128,
+        91
+      ],
+      "reusedFrom": "lorry-sw",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "southwest",
+      "animation": null
+    },
+    {
+      "id": "lorry-se",
+      "source": "assets/art/phase6/runtime/lorry-se.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        16,
+        0,
+        95,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceCrop": [
+        134,
+        97,
+        128,
+        91
+      ],
+      "reusedFrom": "lorry-se",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "southeast",
+      "animation": null
+    },
+    {
+      "id": "lorry-ne",
+      "source": "assets/art/phase6/runtime/lorry-ne.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        10,
+        0,
+        107,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceCrop": [
+        266,
+        97,
+        128,
+        91
+      ],
+      "reusedFrom": "lorry-ne",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "northeast",
+      "animation": null
+    },
+    {
+      "id": "lorry-nw",
+      "source": "assets/art/phase6/runtime/lorry-nw.png",
+      "sourceSize": [
+        128,
+        91
+      ],
+      "frame": [
+        0,
+        0,
+        128,
+        91
+      ],
+      "logicalSize": [
+        128,
+        91
+      ],
+      "pivot": [
+        64,
+        91
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        13,
+        0,
+        102,
+        91
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceCrop": [
+        398,
+        97,
+        128,
+        91
+      ],
+      "reusedFrom": "lorry-nw",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "northwest",
+      "animation": null
+    },
+    {
+      "id": "forklift-sw",
+      "source": "assets/art/phase6/runtime/forklift-sw.png",
+      "sourceSize": [
+        68,
+        62
+      ],
+      "frame": [
+        0,
+        0,
+        68,
+        62
+      ],
+      "logicalSize": [
+        68,
+        62
+      ],
+      "pivot": [
+        34,
+        62
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        0,
+        0,
+        67,
+        62
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/vehicle-atlas.png",
+      "sourceCrop": [
+        266,
+        287,
+        68,
+        62
+      ],
+      "reusedFrom": "forklift-sw",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "southwest",
+      "animation": null
+    },
+    {
+      "id": "penny-logistics",
+      "source": "assets/art/phase6/runtime/penny-logistics.png",
+      "sourceSize": [
+        288,
+        283
+      ],
+      "frame": [
+        0,
+        0,
+        288,
+        283
+      ],
+      "logicalSize": [
+        288,
+        283
+      ],
+      "pivot": [
+        144,
+        283
+      ],
+      "footprint": [
+        3,
+        2
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        0,
+        28,
+        288,
+        255
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/state-atlas.png",
+      "sourceCrop": [
+        586,
+        2,
+        288,
+        283
+      ],
+      "reusedFrom": "penny-logistics",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "customer-sw",
+      "source": "assets/art/phase6/runtime/customer-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-environment",
+      "contentRect": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceCrop": [
+        2,
+        90,
+        24,
+        40
+      ],
+      "reusedFrom": "customer-sw",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "southwest",
+      "animation": null
+    },
+    {
+      "id": "construction-worker-sw",
+      "source": "assets/art/phase6/runtime/construction-worker-sw.png",
+      "sourceSize": [
+        24,
+        40
+      ],
+      "frame": [
+        0,
+        0,
+        24,
+        40
+      ],
+      "logicalSize": [
+        24,
+        40
+      ],
+      "pivot": [
+        12,
+        40
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-environment",
+      "contentRect": [
+        1,
+        0,
+        21,
+        40
+      ],
+      "sourceArtwork": "assets/art/phase2/runtime/actor-atlas.png",
+      "sourceCrop": [
+        2,
+        134,
+        24,
+        40
+      ],
+      "reusedFrom": "construction-worker-sw",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "southwest",
+      "animation": null
+    },
+    {
+      "id": "crane",
+      "source": "assets/art/phase6/runtime/crane.png",
+      "sourceSize": [
+        96,
+        146
+      ],
+      "frame": [
+        0,
+        0,
+        96,
+        146
+      ],
+      "logicalSize": [
+        96,
+        146
+      ],
+      "pivot": [
+        48,
+        146
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        0,
+        0,
+        96,
+        146
+      ],
+      "sourceArtwork": "assets/art/source/props-sheet.png",
+      "sourceCrop": [
+        1268,
+        640,
+        239,
+        364
+      ],
+      "reusedFrom": "crane",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    },
+    {
+      "id": "crates",
+      "source": "assets/art/phase6/runtime/crates.png",
+      "sourceSize": [
+        32,
+        39
+      ],
+      "frame": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "logicalSize": [
+        32,
+        39
+      ],
+      "pivot": [
+        16,
+        39
+      ],
+      "footprint": [
+        1,
+        1
+      ],
+      "usage": "reused-logistics",
+      "contentRect": [
+        0,
+        0,
+        32,
+        39
+      ],
+      "sourceArtwork": "assets/art/source/props-sheet.png",
+      "sourceCrop": [
+        59,
+        702,
+        235,
+        290
+      ],
+      "reusedFrom": "crates",
+      "status": "finished-static-integration",
+      "productionCertified": false,
+      "orientation": "fixed",
+      "animation": null
+    }
+  ]
+}

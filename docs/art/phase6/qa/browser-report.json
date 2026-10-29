@@ -1,0 +1,262 @@
+[
+  {
+    "device": "desktop",
+    "name": "world",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "empire",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "freight",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "post",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "groups",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "states",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "bankrupt-state",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "event-consequences",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "country",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "city",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "neighbourhood",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "expansion-destination",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "expansion-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "customs-hold",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "post-feature",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "name": "shareholder-vote",
+    "noPageOverflow": true
+  },
+  {
+    "device": "desktop",
+    "errors": [],
+    "flows": "map hierarchy, expansion review/consent/confirm, locked destination, customs policy, article filter, vote guard/acknowledgement, dynamic branding"
+  },
+  {
+    "device": "mobile",
+    "name": "world",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "empire",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "freight",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "post",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "groups",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "states",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "bankrupt-state",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "event-consequences",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "country",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "city",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "neighbourhood",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "expansion-destination",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "expansion-review",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "customs-hold",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "post-feature",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "name": "shareholder-vote",
+    "noPageOverflow": true
+  },
+  {
+    "device": "mobile",
+    "errors": [],
+    "flows": "map hierarchy, expansion review/consent/confirm, locked destination, customs policy, article filter, vote guard/acknowledgement, dynamic branding"
+  },
+  {
+    "width": 360,
+    "route": "world",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "empire",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "freight",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "groups",
+    "noPageOverflow": true
+  },
+  {
+    "width": 360,
+    "route": "states",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "world",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "empire",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "freight",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "groups",
+    "noPageOverflow": true
+  },
+  {
+    "width": 768,
+    "route": "states",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "world",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "empire",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "freight",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "post",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "groups",
+    "noPageOverflow": true
+  },
+  {
+    "width": 1199,
+    "route": "states",
+    "noPageOverflow": true
+  }
+]
