@@ -27,7 +27,7 @@ const check = (name, ok, detail = '') => { results.push({ name, ok }); console.l
 const api = (p) => fetch(`${BASE}${p}`).then((r) => r.json());
 const wallet = async () => (await api('/api/screens/city')).envelope.data.player.coins.minor;
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   const ctx = await browser.newContext({ viewport: { width: 1440, height: 900 } });
   const page = await ctx.newPage();
@@ -36,6 +36,12 @@ try {
   page.on('pageerror', (e) => problems.push(`pageerror: ${e.message}`));
 
   // 1. new player: no company, a clear next step
+  const journeyStarted = Date.now();
+  await page.goto(`${BASE}/city`, { waitUntil: 'networkidle' });
+  check('Bristol shows real starting capital and a first-business action', await page.getByRole('link', { name: 'Find my first opportunity' }).isVisible() && (await page.locator('.pe-first-business').innerText()).includes('20,000 EC'));
+  await page.screenshot({ path: `${OUT}/journey-0-first-business.png` });
+  await page.getByRole('link', { name: 'Find my first opportunity' }).click();
+  check('new player can reach opportunities within 60 seconds', Date.now() - journeyStarted < 60000);
   await page.goto(`${BASE}/companies`, { waitUntil: 'networkidle' });
   check('new player sees an empty state with a next step', await page.getByTestId('find-opportunity').isVisible());
   const walletStart = await wallet();
@@ -63,10 +69,9 @@ try {
   const label = await confirm.textContent();
   check('bill is itemised and the confirm button states the exact price', /Pay .*EC/.test(label ?? '') && (await page.locator('table[aria-label="Startup costs"] tbody tr').count()) === 4, label ?? '');
   await page.screenshot({ path: `${OUT}/journey-2-review.png`, fullPage: true });
-  const t0 = Date.now();
   await confirm.click();
   await page.waitForURL(/\/companies\?company=co-pl-cafe/);
-  const secs = (Date.now() - t0) / 1000;
+  const secs = (Date.now() - journeyStarted) / 1000;
   await page.getByTestId('company-detail').waitFor({ timeout: 8000 });
   check('company is created and the player lands on its dashboard', await page.getByTestId('company-detail').isVisible());
   const walletAfter = await wallet();
@@ -80,6 +85,10 @@ try {
   check('dashboard shows diagnosis, tabs and activity', (await page.getByRole('tab').count()) >= 4);
   await page.screenshot({ path: `${OUT}/journey-3-dashboard.png`, fullPage: true });
 
+  check('company briefing links real results and renders approved worker art', await page.getByRole('button', { name: 'Review daily results' }).isVisible() && await page.locator('.pe-business-brief img').evaluate(img => img.complete && img.naturalWidth > 0));
+  await page.getByRole('button', { name: 'Review daily results' }).click();
+  check('daily-results shortcut opens Financials', await page.getByRole('tab', { name: 'Financials' }).getAttribute('aria-selected') === 'true');
+
   // 5. operations: supplies, equipment
   await page.getByRole('tab', { name: 'Operations' }).click();
   await page.getByTestId('buy-supplies').click();
@@ -89,6 +98,11 @@ try {
 
   // 6. controls: change price + staff
   await page.getByRole('tab', { name: 'Controls' }).click();
+  const help = page.getByRole('button', { name: 'How does marketing work?' });
+  await help.click();
+  check('marketing help opens on click', await help.getAttribute('aria-expanded') === 'true');
+  await page.keyboard.press('Escape');
+  check('Escape closes marketing help', await help.getAttribute('aria-expanded') === 'false');
   const price = page.getByLabel(/Price per unit/);
   await price.fill('3.40');
   await page.getByRole('button', { name: 'Save changes' }).click();

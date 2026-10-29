@@ -1,0 +1,170 @@
+{
+  "version": 10,
+  "note": "Reuse existing artwork. Four-frame UI strips display the first 24\u00d724 frame statically; no new art or financial state.",
+  "uiStrips": {
+    "state-missing-inputs": {
+      "source": "assets/art/phase3/ui/state-missing-inputs.svg",
+      "frames": 4
+    },
+    "production-dairy": {
+      "source": "assets/art/phase3/ui/production-dairy.svg",
+      "frames": 4
+    },
+    "production-farm": {
+      "source": "assets/art/phase3/ui/production-farm.svg",
+      "frames": 4
+    },
+    "state-profit": {
+      "source": "assets/art/phase3/ui/state-profit.svg",
+      "frames": 4
+    },
+    "state-warehouse-arrival": {
+      "source": "assets/art/phase3/ui/state-warehouse-arrival.svg",
+      "frames": 4
+    },
+    "state-collection": {
+      "source": "assets/art/phase3/ui/state-collection.svg",
+      "frames": 4
+    },
+    "production-cafe": {
+      "source": "assets/art/phase3/ui/production-cafe.svg",
+      "frames": 4
+    },
+    "production-mill": {
+      "source": "assets/art/phase3/ui/production-mill.svg",
+      "frames": 4
+    },
+    "state-overproduction": {
+      "source": "assets/art/phase3/ui/state-overproduction.svg",
+      "frames": 4
+    },
+    "production-timber": {
+      "source": "assets/art/phase3/ui/production-timber.svg",
+      "frames": 4
+    },
+    "state-shipment": {
+      "source": "assets/art/phase3/ui/state-shipment.svg",
+      "frames": 4
+    },
+    "state-campaign": {
+      "source": "assets/art/phase3/ui/state-campaign.svg",
+      "frames": 4
+    },
+    "state-major-success": {
+      "source": "assets/art/phase3/ui/state-major-success.svg",
+      "frames": 4
+    },
+    "production-pizza": {
+      "source": "assets/art/phase3/ui/production-pizza.svg",
+      "frames": 4
+    },
+    "state-new-ownership": {
+      "source": "assets/art/phase3/ui/state-new-ownership.svg",
+      "frames": 4
+    },
+    "state-loss": {
+      "source": "assets/art/phase3/ui/state-loss.svg",
+      "frames": 4
+    },
+    "state-startup": {
+      "source": "assets/art/phase3/ui/state-startup.svg",
+      "frames": 4
+    },
+    "state-low-stock": {
+      "source": "assets/art/phase2/ui/state-low-stock.svg",
+      "frames": 4
+    },
+    "state-production": {
+      "source": "assets/art/phase2/ui/state-production.svg",
+      "frames": 4
+    },
+    "state-high-demand": {
+      "source": "assets/art/phase2/ui/state-high-demand.svg",
+      "frames": 4
+    },
+    "state-construction": {
+      "source": "assets/art/phase2/ui/state-construction.svg",
+      "frames": 4
+    },
+    "state-expansion": {
+      "source": "assets/art/phase2/ui/state-expansion.svg",
+      "frames": 4
+    },
+    "state-customer-entry": {
+      "source": "assets/art/phase2/ui/state-customer-entry.svg",
+      "frames": 4
+    },
+    "state-success": {
+      "source": "assets/art/phase2/ui/state-success.svg",
+      "frames": 4
+    },
+    "state-bankrupt": {
+      "source": "assets/art/phase2/ui/state-bankrupt.svg",
+      "frames": 4
+    },
+    "state-closed": {
+      "source": "assets/art/phase2/ui/state-closed.svg",
+      "frames": 4
+    },
+    "state-delivery": {
+      "source": "assets/art/phase2/ui/state-delivery.svg",
+      "frames": 4
+    }
+  },
+  "workers": [
+    {
+      "industry": "farm",
+      "source": "assets/art/phase8/runtime/farm-worker-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    },
+    {
+      "industry": "mill",
+      "source": "assets/art/phase8/runtime/mill-worker-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    },
+    {
+      "industry": "dairy",
+      "source": "assets/art/phase8/runtime/dairy-worker-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    },
+    {
+      "industry": "pizza",
+      "source": "assets/art/phase8/runtime/pizza-chef-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    },
+    {
+      "industry": "cafe",
+      "source": "assets/art/phase8/runtime/barista-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    },
+    {
+      "industry": "timber",
+      "source": "assets/art/phase8/runtime/timber-worker-idle-sw.png",
+      "displaySize": [
+        48,
+        80
+      ],
+      "usage": "company briefing and staff panel"
+    }
+  ]
+}

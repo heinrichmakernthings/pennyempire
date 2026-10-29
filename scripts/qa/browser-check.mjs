@@ -25,12 +25,12 @@ const stop = () => { server.kill(); engine.kill(); try { rmSync(tmp, { recursive
 process.on('exit', stop);
 for (let i = 0; i < 100; i++) { try { if ((await fetch(BASE)).ok && (await fetch(`${BASE}/api/health`)).ok) break; } catch { /* waiting */ } await new Promise((r) => setTimeout(r, 200)); }
 
-const routes = ['/city', '/opportunities', '/companies', '/commodities', '/stocks', '/portfolio', '/prestige', '/wallet'];
+const routes = ['/city', '/opportunities', '/companies', '/commodities', '/stocks', '/portfolio', '/prestige', '/wallet', '/bristol', '/world'];
 const viewports = [{ name: 'mobile-390', width: 390, height: 844, mobile: true }, { name: 'tablet-768', width: 768, height: 1024, mobile: false }, { name: 'desktop-1440', width: 1440, height: 900, mobile: false }];
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}${detail ? ' — ' + detail : ''}`); };
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.QA_CHROMIUM_PATH ? { executablePath: process.env.QA_CHROMIUM_PATH, args: ['--no-sandbox', '--disable-dev-shm-usage', '--disable-gpu', '--no-zygote'] } : {});
 try {
   for (const vp of viewports) {
     const ctx = await browser.newContext({ viewport: { width: vp.width, height: vp.height }, hasTouch: vp.mobile, isMobile: vp.mobile, deviceScaleFactor: vp.mobile ? 2 : 1 });
@@ -46,7 +46,15 @@ try {
       await page.waitForTimeout(500);
       const m = await page.evaluate(() => ({ docOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth, mainOverflow: (() => { const e = document.querySelector('main'); return e.scrollWidth - e.clientWidth; })() }));
       check(`${vp.name} ${route}: no horizontal overflow`, m.docOverflow <= 0 && m.mainOverflow <= 0, JSON.stringify(m));
-      if (route === '/city' || route === '/commodities' || route === '/wallet') await page.screenshot({ path: `${OUT}/${vp.name}${route.replace('/', '-')}.png` });
+      await page.screenshot({ path: `${OUT}/${vp.name}${route.replace('/', '-')}.png` });
+      if (route === '/stocks') {
+        const search = page.getByRole('searchbox', { name: 'Find a listed company' });
+        await search.fill('no-company-with-this-name');
+        check(`${vp.name} shares: search has an honest empty state`, await page.getByText('No matching companies. Try another name or clear your search.').isVisible());
+        await search.fill('');
+        await page.getByTestId('listings').locator('tbody tr').nth(1).waitFor();
+        check(`${vp.name} shares: clearing search restores listings`, await page.getByTestId('listings').locator('tbody tr').count() > 1);
+      }
       // touch targets: every visible interactive element in the shell and screen is ≥44px in both axes (inline text links excepted)
       const small = await page.evaluate(() => [...document.querySelectorAll('button, [role=tab], select, input, .pe-btn, nav a, .pe-more-link')].filter((e) => { const r = e.getBoundingClientRect(); const cs = getComputedStyle(e); return r.width > 0 && r.height > 0 && cs.visibility !== 'hidden' && (r.height < 43.5 || r.width < 43.5) && e.type !== 'hidden'; }).map((e) => `${e.tagName}.${e.className}|${e.textContent?.trim().slice(0, 20) || e.getAttribute('aria-label')}|${Math.round(e.getBoundingClientRect().width)}x${Math.round(e.getBoundingClientRect().height)}`));
       check(`${vp.name} ${route}: touch targets ≥44px`, small.length === 0, small.slice(0, 4).join('; '));
@@ -103,6 +111,8 @@ try {
     await wrap.focus(); await page.keyboard.press('ArrowRight'); await page.keyboard.press('ArrowDown'); await page.waitForTimeout(250);
     const afterKey = await sig();
     check(`${vp.name} city: keyboard arrows pan the map`, afterKey.hash !== afterDrag.hash);
+    await page.getByRole('button', { name: 'Recentre city' }).click();
+    check(`${vp.name} city: recentre resets zoom`, (await zoomOut.textContent()).trim() === '1×');
     // accessible list alternative
     if (vp.width >= 1200) check(`${vp.name} city: accessible business list is present`, await page.getByRole('list', { name: 'Businesses in Bristol' }).isVisible());
     else {
@@ -123,7 +133,7 @@ try {
       check(`${vp.name} nav: More sheet reaches Wallet`, await page.getByText('SIMULATED').first().waitFor({ timeout: 4000 }).then(() => true, () => false));
     } else {
       await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: /Stock Exchange/ }).click();
-      await page.waitForURL(/\/stocks/); check(`${vp.name} nav: sidebar/rail navigates`, await page.getByRole('heading', { name: 'Stock Exchange', level: 1 }).waitFor({ timeout: 4000 }).then(() => true, () => false));
+      await page.waitForURL(/\/stocks/); check(`${vp.name} nav: sidebar/rail navigates`, await page.getByRole('heading', { name: 'Penny Exchange', level: 1 }).waitFor({ timeout: 4000 }).then(() => true, () => false));
     }
     // ad slot placement
     const ad = await page.getByRole('complementary', { name: /Sponsored space/ }).isVisible();

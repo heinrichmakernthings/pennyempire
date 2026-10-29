@@ -27,11 +27,12 @@ export const fetchStartupQuote = (q: { industry: string; plotId: string; tier: n
 export type Query<T> = { status: 'loading' } | { status: 'error'; error: string } | { status: 'ready'; data: T; refreshing: boolean };
 
 /** Loads once, reloads whenever `deps` change, and polls while the tab is visible. Keeps the last good data while reloading. */
-export function useQuery<T>(load: (signal: AbortSignal) => Promise<T>, deps: unknown[], poll = true): Query<T> & { reload: () => void } {
+export function useQuery<T>(load: (signal: AbortSignal) => Promise<T>, deps: unknown[], poll = true, enabled = true): Query<T> & { reload: () => void } {
   const [state, setState] = useState<Query<T>>({ status: 'loading' });
   const loadRef = useRef(load); loadRef.current = load;
   const [tick, setTick] = useState(0);
   useEffect(() => {
+    if (!enabled) return;
     // Superseded requests are ignored rather than aborted, so navigating away never produces cancelled-request noise in the network log.
     const ctl = { signal: { aborted: false } as AbortSignal, abort() { (this.signal as { aborted: boolean }).aborted = true; } };
     setState((s) => (s.status === 'ready' ? { ...s, refreshing: true } : { status: 'loading' }));
@@ -41,12 +42,12 @@ export function useQuery<T>(load: (signal: AbortSignal) => Promise<T>, deps: unk
     );
     return () => ctl.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, tick]);
+  }, [...deps, tick, enabled]);
   useEffect(() => {
-    if (!poll) return;
+    if (!poll || !enabled) return;
     const t = setInterval(() => { if (!document.hidden) setTick((n) => n + 1); }, POLL_MS);
     return () => clearInterval(t);
-  }, [poll]);
+  }, [poll, enabled]);
   const reload = useCallback(() => setTick((n) => n + 1), []);
   return { ...state, reload };
 }

@@ -1,3 +1,4 @@
+import { FirstBusiness } from './FirstBusiness';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useBreakpoint } from '@/app/useBreakpoint';
 import { fetchActivity, useQuery } from '@/data/managementApi';
@@ -35,7 +36,7 @@ function CityView({ data, illustrative }: { data: CityScreenState; illustrative:
   const handle = useRef<CityViewportHandle | null>(null);
   const registerHandle = useCallback((h: CityViewportHandle | null) => { handle.current = h; }, []);
 
-  const act = useQuery(async (sig) => ({...await fetchActivity(sig), receivedAt: performance.now()}), [source.authority], source.authority === 'server');
+  const act = useQuery(async (sig) => ({...await fetchActivity(sig), receivedAt: performance.now()}), [source.authority], true, source.authority === 'server');
   const activityData = act.status === 'ready' ? act.data : undefined;
   const activity = useMemo(() => activityData ? new Map(activityData.items.map((i) => [i.companyId, i])) : undefined, [activityData]);
   const meta = useMemo(() => source.mapMeta(data.city.id), [source, data.city.id]);
@@ -73,6 +74,7 @@ function CityView({ data, illustrative }: { data: CityScreenState; illustrative:
     <div className="pe-city" data-testid="city-screen">
       <h1 className="pe-sr">City — Bristol</h1>
       <div className="pe-city-stage">
+        <FirstBusiness data={data} illustrative={illustrative} />
         <div className="pe-city-toolbar">
           {bp !== 'desktop' && <Button onClick={() => setListOpen(true)} aria-haspopup="dialog"><Icon name="companies" size={18} /> Businesses ({data.directory.length})</Button>}
           {bp !== 'desktop' && <Button onClick={() => setOverviewOpen(true)} aria-haspopup="dialog"><Icon name="stocks" size={18} /> City summary</Button>}

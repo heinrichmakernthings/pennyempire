@@ -1,0 +1,45 @@
+/* Phase 10: preserve the charcoal terminal, amber actions and pixel artwork. */
+.pe-connection { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--pe-space-3); padding: var(--pe-space-3) var(--pe-space-4); margin-bottom: var(--pe-space-4); border: 1px solid var(--pe-accent); border-radius: var(--pe-radius-panel); background: var(--pe-surface); }
+.pe-connection > div { flex: 1 1 25rem; }
+.pe-connection p { margin: 4px 0 0; color: var(--pe-muted); max-width: 72ch; font-size: var(--pe-small-size); }
+.pe-city-stage > .pe-connection { margin: var(--pe-space-3); flex-shrink: 0; }
+.pe-first-business { padding: var(--pe-space-4); background: var(--pe-surface); border-bottom: 1px solid var(--pe-divider); display: flex; align-items: center; flex-wrap: wrap; gap: var(--pe-space-3); }
+.pe-first-business > div { flex: 1 1 25rem; }
+.pe-first-business h2 { font-size: 20px; line-height: 28px; margin: 0; }
+.pe-first-business p { margin: 4px 0 0; max-width: 72ch; font-size: var(--pe-small-size); color: var(--pe-muted); }
+.pe-first-business ol { display: flex; flex-wrap: wrap; gap: 8px 28px; width: 100%; margin: 0; padding-left: 20px; font-size: var(--pe-small-size); color: var(--pe-muted); }
+.pe-city-next { display: flex; flex-wrap: wrap; gap: 8px; padding: 8px 12px; background: var(--pe-surface); border-bottom: 1px solid var(--pe-divider); }
+.pe-business-brief { margin: 0 0 var(--pe-space-6); padding: var(--pe-space-4); background: var(--pe-surface); border: 1px solid var(--pe-divider); border-radius: var(--pe-radius-panel); }
+.pe-business-brief-head, .pe-staff-team { display: flex; align-items: center; gap: var(--pe-space-4); }
+.pe-business-brief-head p, .pe-staff-team p { margin: 4px 0 0; max-width: 65ch; font-size: var(--pe-small-size); color: var(--pe-muted); }
+.pe-worker-portrait { flex: 0 0 48px; object-fit: contain; }
+.pe-business-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--pe-space-4); margin: var(--pe-space-4) 0; }
+.pe-business-facts p { margin: 0; display: flex; flex-direction: column; gap: 4px; }
+.pe-business-facts span { font-size: 22px; line-height: 28px; font-variant-numeric: tabular-nums; }
+.pe-business-facts small { color: var(--pe-muted); }
+.pe-help { display: inline; }
+.pe-help .pe-tip { margin: 0; vertical-align: middle; }
+.pe-help .pe-tip-text { display: block; font-weight: 400; line-height: var(--pe-small-line); max-width: 65ch; }
+.pe-market-guide { margin: 0 0 var(--pe-space-4); border-bottom: 1px solid var(--pe-divider); padding-bottom: var(--pe-space-3); }
+.pe-market-guide summary { min-height: var(--pe-touch-target); display: flex; align-items: center; cursor: pointer; color: var(--pe-accent); font-weight: 600; }
+.pe-market-guide p { max-width: 72ch; color: var(--pe-muted); }
+.pe-listings-search { margin-bottom: var(--pe-space-3); }
+.pe-table-scroll { scrollbar-color: var(--pe-muted) var(--pe-bg); }
+.pe-tablist { scroll-padding-inline: 8px; }
+::selection { background: var(--pe-accent); color: var(--pe-bg); }
+input, textarea { caret-color: var(--pe-accent); }
+@media (max-width: 767px) {
+  .pe-business-facts { grid-template-columns: minmax(0, 1fr); }
+  .pe-first-business ol { display: none; }
+  .pe-first-business { padding: 12px; }
+  .pe-first-business h2 { font-size: 18px; }
+  .pe-city-stage > .pe-connection { margin: 8px; padding: 8px; }
+  .pe-connection .pe-btn { width: 100%; }
+  .pe-business-brief .pe-row > .pe-btn { flex: 1 1 100%; }
+  .pe-meter-label { flex-wrap: wrap; }
+  .pe-city-canvas-area { min-height: 180px; }
+}
+
+/* The original shares layout referenced an undefined spacing token. */
+.pe-screen .pe-shares, .pe-screen .pe-shares-cols { gap: var(--pe-space-6); }
+.pe-shares-list > div { min-width: 0; }

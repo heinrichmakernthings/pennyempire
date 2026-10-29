@@ -8,7 +8,7 @@ export function Tabs({ tabs, value, onChange, label, children }: { tabs: TabDef[
   const onKey = (e: KeyboardEvent, i: number) => {
     const n = tabs.length; let next = i;
     if (e.key === 'ArrowRight') next = (i + 1) % n; else if (e.key === 'ArrowLeft') next = (i - 1 + n) % n; else if (e.key === 'Home') next = 0; else if (e.key === 'End') next = n - 1; else return;
-    e.preventDefault(); onChange(tabs[next]!.id); refs.current[next]?.focus();
+    e.preventDefault(); onChange(tabs[next]!.id); refs.current[next]?.focus(); refs.current[next]?.scrollIntoView?.({ block: 'nearest', inline: 'nearest' });
   };
   return (
     <div className="pe-tabs">

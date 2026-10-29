@@ -1,0 +1,13 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> pennyempire@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/1b1c5633b6ae/pennyempire
+
+
+ Test Files  37 passed (37)
+      Tests  393 passed (393)
+   Start at  09:50:38
+   Duration  74.27s (tests 78%, import 18%, environment 2%, setup 1%, transform 1%)

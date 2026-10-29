@@ -1,3 +1,4 @@
+import { ConnectionNotice } from '@/ui/ConnectionNotice';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { MarketShortage } from '@/shared/exchange';
@@ -7,7 +8,7 @@ import { formatBps, formatMoney, formatUnits } from '@/domain/money';
 import { commodityLabel } from '@/domain/labels';
 import { Button } from '@/ui/Button';
 import { Icon } from '@/ui/Icon';
-import { EmptyState, ErrorState, IllustrativeBadge, Skeleton } from '@/ui/States';
+import { ErrorState, IllustrativeBadge, Skeleton } from '@/ui/States';
 import { StatusLabel } from '@/ui/StatusLabel';
 
 export const ec = (minor: number) => ({ currency: 'EC' as const, minor });
@@ -18,11 +19,11 @@ export const INDUSTRY_ICON: Record<string, string> = { farm: 'production-farm', 
 /** Where would a new business make money? Every figure is derived from the live simulation and labelled FORECAST. */
 export function OpportunitiesScreen() {
   const source = useDataSource();
-  const q = useQuery((s) => fetchOpportunities(s), [source.authority], source.authority === 'server');
+  const q = useQuery((s) => fetchOpportunities(s), [source.authority], true, source.authority === 'server');
   return (
     <div className="pe-screen">
       <div className="pe-screen-head"><h1 className="pe-h1">Opportunities</h1>{source.authority !== 'server' && <IllustrativeBadge />}</div>
-      {source.authority !== 'server' ? <EmptyState title="Opportunities need the game server">The finder reads live Bristol market data. Start the game server (npm run dev:all) to see real forecasts.</EmptyState>
+      {source.authority !== 'server' ? <ConnectionNotice />
         : q.status === 'loading' ? <Skeleton lines={8} label="Loading opportunities" />
         : q.status === 'error' ? <ErrorState title="Couldn’t load opportunities" message={q.error} onRetry={q.reload} />
         : <Finder note={q.data.forecastNote} items={q.data.opportunities} shortages={q.data.shortages} />}
@@ -34,8 +35,8 @@ function Finder({ note, items, shortages }: { note: string; items: Opportunity[]
   return (
     <div className="pe-stack">
       <p className="pe-callout" role="note"><Icon name="warning" size={18} /><span><strong>FORECAST.</strong> {note} Ranked by expected daily profit. Not a promise: prices, rivals and your own choices change the result.</span></p>
-      <MarketGaps shortages={shortages} />
       <div className="pe-cards">{items.map((o, i) => <OpportunityCard key={o.industry} o={o} rank={i + 1} />)}</div>
+      <MarketGaps shortages={shortages} />
     </div>
   );
 }
@@ -67,7 +68,7 @@ function OpportunityCard({ o, rank }: { o: Opportunity; rank: number }) {
         <div className="pe-stack">
           <ul className="pe-reasons">{o.reasons.map((r) => <li key={r}>{r}</li>)}</ul>
           {o.warnings.length > 0 && <ul className="pe-reasons pe-warnings" aria-label="Warnings">{o.warnings.map((r) => <li key={r}>{r}</li>)}</ul>}
-          <table className="pe-table pe-small" aria-label={`${o.label} forecast breakdown`}>
+          <div className="pe-table-scroll"><table className="pe-table pe-small" aria-label={`${o.label} forecast breakdown`}>
             <tbody>
               <tr><th scope="row">Sales ({formatUnits(f.unitsPerDay)} × {money(f.pricePerUnitMinor)})</th><td className="pe-financial-number">{money(f.revenueMinor)}</td></tr>
               <tr><th scope="row">Ingredients{o.inputs.length ? ` (${o.inputs.map((i) => `${formatUnits(i.unitsPerDay)} ${commodityLabel(i.commodityId)}`).join(', ')})` : ''}</th><td className="pe-financial-number">−{money(f.inputsMinor)}</td></tr>
@@ -77,7 +78,7 @@ function OpportunityCard({ o, rank }: { o: Opportunity; rank: number }) {
               {f.feesMinor > 0 && <tr><th scope="row">Exchange fee</th><td className="pe-financial-number">−{money(f.feesMinor)}</td></tr>}
               <tr><th scope="row">Forecast profit</th><td className="pe-financial-number"><strong>{money(f.profitMinor, true)}</strong></td></tr>
             </tbody>
-          </table>
+          </table></div>
           <p className="pe-hint">Market: Bristol wants {formatUnits(o.market.demandUnitsPerDay)}/day, rivals sell {formatUnits(o.market.supplyUnitsPerDay)}/day ({formatBps(Math.min(20_000, o.market.saturationBps))} served). Startup: licence {money(o.startup.licenceMinor)} · premises {money(o.startup.premisesMinor)} · equipment {money(o.startup.equipmentMinor)} · working capital {money(o.startup.workingCapitalMinor)}.</p>
         </div>
       )}
