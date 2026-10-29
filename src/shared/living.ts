@@ -20,4 +20,4 @@ export interface CompetitorProfile {
 
 /** One building's observable state today, derived only from recorded sales, production and company records. */
 export type ActivityState = 'closed' | 'construction' | 'missing-inputs' | 'high-demand' | 'delivery' | 'customers' | 'production' | 'quiet';
-export interface CompanyActivity { companyId: string; state: ActivityState; customers: number; vans: number; workers: number; /** the company's strongest active Penny Ads campaign type, drawn as a real sign */ ad?: 'billboard' | 'digital' | 'local' | 'industry' | 'contract' | null; /** production was cut by an energy shortage or disruption today */ energy?: boolean }
+export interface CompanyActivity { companyId: string; state: ActivityState; customers: number; vans: number; workers: number; /** the company's strongest active Penny Ads campaign type, drawn as a real sign */ ad?: 'billboard' | 'digital' | 'local' | 'industry' | 'contract' | null; /** production was cut by an energy shortage or disruption today */ energy?: boolean; /** approved sprite ids of the owner's luxury items shown beside this company (server-owned records) */ luxury?: string[] }

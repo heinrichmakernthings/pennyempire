@@ -23,11 +23,11 @@ a { color: var(--pe-accent); }
 .pe-icon--missing { background: transparent; border: 1px dashed currentColor; }
 
 /* shell */
-.pe-shell { display: grid; height: 100dvh; grid-template-columns: var(--pe-nav-width) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr) auto; grid-template-areas: "hud hud" "nav main" "nav ad"; }
+.pe-shell { display: grid; height: 100dvh; grid-template-columns: var(--pe-nav-width) minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "hud hud" "nav ad" "nav main"; }
 .pe-skip { position: absolute; left: -999px; top: 0; background: var(--pe-accent); color: #141c20; padding: 8px 16px; z-index: 100; }
 .pe-skip:focus { left: 8px; top: 8px; }
 .pe-main { grid-area: main; min-width: 0; min-height: 0; overflow: auto; outline: none; }
-.pe-ad { grid-area: ad; display: none; height: 90px; align-items: center; gap: var(--pe-space-4); padding: 0 var(--pe-space-6); border-top: 1px solid var(--pe-divider); background: var(--pe-surface); color: var(--pe-muted); font-size: var(--pe-small-size); }
+.pe-ad { grid-area: ad; display: none; height: 60px; align-items: center; gap: var(--pe-space-4); padding: 0 var(--pe-space-6); border-top: 1px solid var(--pe-divider); background: var(--pe-surface); color: var(--pe-muted); font-size: var(--pe-small-size); }
 .pe-ad strong { color: var(--pe-text); }
 @media (min-width: 1200px) { .pe-ad { display: flex; } }
 
@@ -61,7 +61,7 @@ a { color: var(--pe-accent); }
 .pe-more-link { display: flex; align-items: center; gap: var(--pe-space-3); min-height: var(--pe-touch-target); padding: 0 var(--pe-space-3); border-radius: var(--pe-radius-control); background: var(--pe-raised); color: var(--pe-text); text-decoration: none; }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-  .pe-shell { grid-template-areas: "hud hud" "nav main" "nav main"; }
+  .pe-shell { grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "hud hud" "nav main"; }
   .pe-nav-link { justify-content: center; padding: 0; border-left: 0; border-bottom: 3px solid transparent; }
   .pe-nav-link.active { border-bottom-color: var(--pe-accent); }
   .pe-hud-stats { gap: var(--pe-space-4); } .pe-hud-city { display: none; }

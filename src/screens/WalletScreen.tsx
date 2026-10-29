@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { TestWallet, WalletTransaction } from '@/contracts/game-state';
-import { useScreen } from '@/data/store';
+import { useDataSource, useScreen } from '@/data/store';
+import { ServerWallet } from './ServerWallet';
 import { newIdempotencyKey, useCommand } from '@/data/useCommand';
 import { formatMoney } from '@/domain/money';
 import { MIN_TEST_WITHDRAWAL_MINOR, checkTestDeposit, checkTestWithdrawal } from '@/domain/wallet';
@@ -15,6 +16,8 @@ import { Tabs } from '@/ui/Tabs';
 
 /** Separate, permanently labelled SIMULATED GBP_TEST wallet. No card/bank fields, no providers, no EC conversion. */
 export function WalletScreen() {
+  const server = useDataSource().authority === 'server';
+  if (server) return <div className="pe-screen"><div className="pe-screen-head"><h1 className="pe-h1">Wallet (simulated)</h1></div><ServerWallet /></div>;
   return (
     <ScreenData screen="wallet" title="Wallet (simulated)">
       {(d) => <WalletView wallet={d.wallet} portfolioValue={d.player.portfolioValue} coins={d.player.coins} transactions={d.transactions.items} />}

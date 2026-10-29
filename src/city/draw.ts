@@ -71,12 +71,15 @@ function badgeImg(state: string, redraw?: () => void): HTMLImageElement | null {
 /** Approved Phase 5 advertising sprites (static, native size), loaded once. An active Penny Ads campaign shows as the matching sign on the company's building. */
 const AD_SPRITE: Record<string, string> = { billboard: 'roof-billboard', digital: 'digital-sign', local: 'street-ad', industry: 'wall-advert', contract: 'roof-billboard' };
 const signImgs = new Map<string, HTMLImageElement | null>();
-function signImg(kind: string, redraw?: () => void): HTMLImageElement | null {
-  const name = AD_SPRITE[kind]; if (!name) return null;
+function spriteImg(name: string | undefined, redraw?: () => void): HTMLImageElement | null {
+  if (!name) return null;
   if (signImgs.has(name)) return signImgs.get(name)!;
   const url = phase5Url(name); if (!url || typeof Image === 'undefined') { signImgs.set(name, null); return null; }
   const img = new Image(); signImgs.set(name, null); img.onload = () => { signImgs.set(name, img); redraw?.(); }; img.src = url; return null;
 }
+const signImg = (kind: string, redraw?: () => void) => spriteImg(AD_SPRITE[kind], redraw);
+/** Luxury items shown beside a company: vehicles on the forecourt, boats on the quay, signs on the roof, monuments at the corner. (Landmark buildings and collectibles appear on the profile.) */
+const LUXURY_SLOT: Record<string, [number, number]> = { 'executive-car-sw': [-70, 34], 'luxury-suv-sw': [-70, 34], 'sports-car-sw': [-44, 40], 'supercar-sw': [-44, 40], 'luxury-boat-sw': [86, 44], 'prestige-monument': [-96, 20] };
 const FACING = ['se', 'sw', 'ne', 'nw'] as const;
 /** Residents, vans and workers around a building; positions are a fixed function of the company and the count, so nothing jitters between frames. */
 function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: SceneBuilding, a: CompanyActivity, ox: number, oy: number, k: number, dpr: number, redraw?: () => void) {
@@ -87,6 +90,10 @@ function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: 
   for (let i = 0; i < a.customers; i++) { const [x, y] = foot(i, 70); drawFrame(ctx, atlas, `resident-${FACING[(seed + i) % 4]}`, ox + x * k, oy + y * k, k); }
   for (let i = 0; i < a.workers; i++) { const [x, y] = foot(10 + i, 40); drawFrame(ctx, atlas, `worker-${FACING[(seed + i + 1) % 4]}`, ox + (x - 20) * k, oy + (y - 8) * k, k); }
   for (let i = 0; i < a.vans; i++) drawFrame(ctx, atlas, i % 2 ? 'van-sw' : 'van-se', ox + (b.anchor[0] + 52 + i * 26) * k, oy + (b.anchor[1] + 24 + i * 6) * k, k);
+  for (const asset of a.luxury ?? []) {
+    const slot = LUXURY_SLOT[asset]; const img = slot ? spriteImg(asset, redraw) : null; if (!slot || !img) continue;
+    ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(img, Math.round(ox + (b.anchor[0] + slot[0]) * k - (img.width * k) / 2), Math.round(oy + (b.anchor[1] + slot[1]) * k - img.height * k), Math.round(img.width * k), Math.round(img.height * k)); ctx.restore();
+  }
   if (a.ad) {
     const sign = signImg(a.ad, redraw);
     if (sign) {   // roof-mounted for billboard campaigns, kerbside for the rest; native sprite size, never rescaled except by camera zoom

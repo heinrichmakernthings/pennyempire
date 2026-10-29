@@ -11,5 +11,7 @@ export const ROUTES: RouteDef[] = [
   { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
   { path: '/portfolio', label: 'Portfolio', short: 'Portfolio', icon: 'portfolio', mobile: 'primary' },
   { path: '/prestige', label: 'Prestige', short: 'Prestige', icon: 'prestige', mobile: 'more' },
+  { path: '/rewards', label: 'Rewards & Lottery', short: 'Rewards', icon: 'prestige', mobile: 'more' },
+  { path: '/membership', label: 'Premium', short: 'Premium', icon: 'prestige', mobile: 'more' },
   { path: '/wallet', label: 'Wallet (simulated)', short: 'Wallet', icon: 'wallet', mobile: 'more' },
 ];

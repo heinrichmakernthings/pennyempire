@@ -1,0 +1,24 @@
+/* Prestige, rewards, wallet, membership, treasury and advertising placements (Prompt 9). Dark Market Terminal tokens only. */
+.pe-shopgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 250px), 1fr)); gap: var(--pe-space-4); }
+.pe-shopitem { display: flex; flex-direction: column; gap: var(--pe-space-2); padding: var(--pe-space-4); background: var(--pe-surface); border: 1px solid var(--pe-divider); border-radius: var(--pe-radius-panel); }
+.pe-shopitem header { display: flex; justify-content: space-between; gap: var(--pe-space-2); align-items: flex-start; }
+.pe-shopitem h3 { margin: 0; font-size: 17px; line-height: 24px; }
+.pe-shopitem .pe-art { display: flex; align-items: center; justify-content: center; min-height: 112px; background: #162026; border-radius: var(--pe-radius-control); }
+.pe-rarity { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; padding: 1px 6px; border: 1px solid currentColor; border-radius: 3px; white-space: nowrap; }
+.pe-rarity--common { color: #a9b6bc; } .pe-rarity--uncommon { color: #62dbaf; } .pe-rarity--rare { color: #6fb7ff; } .pe-rarity--epic { color: #c89bff; } .pe-rarity--legendary { color: #ffc45e; }
+.pe-art-missing { display: flex; align-items: center; justify-content: center; text-align: center; font-size: 13px; color: var(--pe-muted); border: 1px dashed #536169; border-radius: var(--pe-radius-control); padding: var(--pe-space-2); }
+.pe-sim-chip { display: inline-block; padding: 1px 8px; border: 1px solid var(--pe-warning, #ffc45e); color: var(--pe-warning, #ffc45e); border-radius: 3px; font-size: 12px; letter-spacing: .08em; font-weight: 700; }
+.pe-bar { height: 10px; background: #2a363c; border-radius: 5px; overflow: hidden; } .pe-bar > i { display: block; height: 100%; background: var(--pe-accent); transition: width .3s linear; }
+.pe-tbl-wrap { overflow-x: auto; } .pe-actions { display: flex; flex-wrap: wrap; gap: var(--pe-space-2); }
+.pe-compare th, .pe-compare td { text-align: left; padding: var(--pe-space-2) var(--pe-space-3); vertical-align: top; } .pe-compare .pe-prem { color: var(--pe-accent); }
+.pe-plan { display: flex; align-items: baseline; gap: var(--pe-space-3); flex-wrap: wrap; } .pe-plan strong { font-size: 28px; }
+/* Advertising placements: fixed reserved heights (no layout shift), never overlay controls, no links or buttons, always labelled as simulated */
+.pe-adslot { display: flex; align-items: center; justify-content: center; gap: var(--pe-space-3); box-sizing: border-box; border: 1px dashed #4a5961; background: repeating-linear-gradient(135deg, #1c262c 0 10px, #19232a 10px 20px); color: var(--pe-muted); font-size: 13px; line-height: 18px; text-align: center; overflow: hidden; }
+.pe-adslot b { color: var(--pe-text); font-weight: 600; } .pe-adslot .pe-sim-chip { flex: none; }
+.pe-adslot--top { grid-area: ad; display: none; height: 60px; border-width: 0 0 1px; }
+.pe-adslot--side { display: none; height: 250px; width: calc(var(--pe-nav-width) - 24px); margin: 12px; flex-direction: column; }
+.pe-adslot--inflow { height: 100px; margin: var(--pe-space-4) 0; width: 100%; }
+.pe-adslot--mobile { height: 56px; width: 100%; margin: var(--pe-space-4) 0 0; }
+@media (min-width: 1200px) { .pe-adslot--top { display: flex; } .pe-adslot--side { display: flex; } .pe-adslot--mobile { display: none; } }
+@media (max-width: 1199px) { .pe-adslot--top, .pe-adslot--side { display: none; } .pe-adslot--inflow { height: 80px; } }
+@media (prefers-reduced-motion: reduce) { .pe-bar > i { transition: none; } }
