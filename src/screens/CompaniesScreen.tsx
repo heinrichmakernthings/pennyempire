@@ -1,3 +1,4 @@
+import { BusinessBrief } from './company/BusinessBrief';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import type { Company, Recipe } from '@/contracts/game-state';
@@ -58,12 +59,12 @@ function CompanyDetail({ id, tab, onTab, recipes, illustrative }: { id: string; 
   const { entry, retry } = useCompany(id);
   const source = useDataSource();
   const c = entry?.status === 'ready' ? entry.loaded.envelope.data : null;
-  const mq = useQuery((sig) => fetchManagement(id, sig), [id, c?.revision, c?.cash.minor, c?.dailyProfit.minor], false);
+  const mq = useQuery((sig) => fetchManagement(id, sig), [id, c?.revision, c?.cash.minor, c?.dailyProfit.minor], false, source.authority === 'server');
   if (!entry || entry.status === 'loading') return <Skeleton lines={8} label="Loading company" />;
   if (entry.status === 'error' || !c) return <ErrorState title="Couldn't load company" message={entry.status === 'error' ? entry.error : undefined} onRetry={retry} />;
   const m: Management | null = source.authority === 'server' && mq.status === 'ready' ? mq.data.management : null;
   const recipe = recipes.find((r) => r.id === c.recipeId);
-  const canAct = c.permissions.manage && !m?.closed;
+  const canAct = !illustrative && c.permissions.manage && !!m && !m.closed;
   const tabs = [{ id: 'overview', label: 'Overview' }, ...(m ? [{ id: 'operations', label: 'Operations' }] : []), { id: 'controls', label: m ? 'Controls' : 'Operations' }, ...(m ? [{ id: 'upgrades', label: 'Upgrades' }] : []), { id: 'financials', label: 'Financials' }];
   const active = tabs.some((t) => t.id === tab) ? tab : 'overview';
   return (
@@ -72,13 +73,14 @@ function CompanyDetail({ id, tab, onTab, recipes, illustrative }: { id: string; 
         <div><h2 id="co-title">{c.name}</h2><p className="pe-hint">{industryLabel(c.industry)} · {m?.tierName ?? `Level ${c.level}`} · Owner: {c.owner.name}</p></div>
         <div className="pe-insp-tags"><StatusLabel tone={m?.closed ? 'negative' : c.status === 'operating' ? 'positive' : 'warning'}>{m?.closed ? 'Bankrupt' : companyStatusTone(c.status)}</StatusLabel>{illustrative && <StatusLabel>Illustrative data</StatusLabel>}</div>
       </header>
+      {source.authority === 'server' && mq.status === 'error' && <ErrorState title="Company controls are unavailable" message={mq.error} onRetry={mq.reload} />}
       {m && <ActivityBadges c={c} m={m} />}
-      {c.status === 'insolvent' && !m?.closed && <ReopenPanel company={c} />}
+      {canAct && c.status === 'insolvent' && !m?.closed && <ReopenPanel company={c} />}
       {m?.closed && <p className="pe-callout" role="status">This company was liquidated by the state administrator: stock sold at a discount, arrears paid first, {formatMoney({ currency: 'EC', minor: m.closed.writtenOffMinor })} written off, any cash left returned to you. History is kept; the plot is free again.</p>}
       <Tabs label="Company views" value={active} onChange={onTab} tabs={tabs}>
-        {active === 'overview' && <CompanyOverview company={c} recipe={recipe} management={m} />}
+        {active === 'overview' && <>{m && <BusinessBrief c={c} m={m} recipe={recipe} onTab={onTab} />}<CompanyOverview company={c} recipe={recipe} management={m} /></>}
         {active === 'operations' && m && <OperationsTab company={c} m={m} canAct={canAct} onChanged={mq.reload} />}
-        {active === 'controls' && <><OperationsForm company={c} recipe={recipe} management={m} />{m && canAct && <CashPanel company={c} />}</>}
+        {active === 'controls' && <><OperationsForm company={c} recipe={recipe} management={m} readOnly={!c.permissions.manage || !!m?.closed} />{m && canAct && <CashPanel company={c} />}</>}
         {active === 'upgrades' && m && <UpgradesPanel c={c} m={m} canAct={canAct} />}
         {active === 'financials' && <CompanyFinancials company={c} asOf={entry.loaded.envelope.asOf} />}
       </Tabs>
@@ -91,7 +93,7 @@ function OperationsTab({ company: c, m, canAct, onChanged }: { company: Company;
     <div className="pe-stack">
       <h3 className="pe-h3">Production</h3><ProductionPanel c={c} m={m} />
       <h3 className="pe-h3">Ingredients and suppliers</h3><SupplyChainPanel c={c} m={m} canAct={canAct} onChanged={onChanged} />
-      <h3 className="pe-h3">Staff</h3><StaffPanel m={m} />
+      <h3 className="pe-h3">Staff</h3><StaffPanel m={m} industry={c.industry} />
       <h3 className="pe-h3">Equipment</h3><EquipmentPanel c={c} m={m} canAct={canAct} />
       <h3 className="pe-h3">Advertising <Tip>Spending on advertising builds awareness, which lifts your share of customers. Returns diminish: the first coins help most, and awareness fades 5% a day.</Tip></h3>
       <Meter label="Customer awareness" valueText={`${(m.advertising.awarenessBps / 100).toFixed(1)}% of ${(m.advertising.maxAwarenessBps / 100).toFixed(0)}% max`} pct={m.advertising.maxAwarenessBps ? (m.advertising.awarenessBps / m.advertising.maxAwarenessBps) * 100 : 0} />
@@ -165,7 +167,7 @@ function CompanyOverview({ company: c, recipe, management: m }: { company: Compa
   );
 }
 
-function OperationsForm({ company: c, recipe, management: m }: { company: Company; recipe?: Recipe; management: Management | null }) {
+function OperationsForm({ company: c, recipe, management: m, readOnly }: { company: Company; recipe?: Recipe; management: Management | null; readOnly: boolean }) {
   const initial: OperationsDraft = useMemo(() => ({ price: (c.price.minor / 100).toFixed(2), employees: String(c.employees), quality: c.quality, planned: String(c.plannedUnitsPerTick), marketing: (c.marketingPerTick.minor / 100).toFixed(2) }), [c]);
   const [draft, setDraft] = useState(initial);
   const [key, setKey] = useState(newIdempotencyKey);
@@ -173,25 +175,24 @@ function OperationsForm({ company: c, recipe, management: m }: { company: Compan
   const { refresh } = useScreen('companies');
   const result = validateOperations(draft, c);
   const dirty = JSON.stringify(draft) !== JSON.stringify(initial);
-  const readOnly = !c.permissions.manage;
   useEffect(() => { setKey(newIdempotencyKey()); }, [draft]); // a changed intent gets a new idempotency key
   const set = <K extends keyof OperationsDraft>(k: K, v: OperationsDraft[K]) => setDraft((d) => ({ ...d, [k]: v }));
   const save = async () => {
-    if (!result.ok) return;
+    if (readOnly || !result.ok) return;
     const res = await send({ type: 'company.configure', companyId: c.id, ...result.value }, { idempotencyKey: key, expectedRevision: c.revision }, { success: 'Settings saved', failure: 'Settings not saved' });
     if (res?.ok) refresh();
   };
   return (
     <form className="pe-stack" onSubmit={(e) => { e.preventDefault(); void save(); }} aria-label="Operations">
-      {readOnly && <p className="pe-callout" role="note">Read-only: you don't have permission to manage this company.</p>}
+      {readOnly && <p className="pe-callout" role="note">Changes are unavailable in this view. Connect to the game and select a company you can manage.</p>}
       <p className="pe-hint">Draft changes stay on this device until saved. {dirty ? <strong>You have unsaved changes.</strong> : 'No unsaved changes.'}</p>
       <fieldset className="pe-fields" disabled={readOnly || pending}>
         <legend className="pe-sr">Operating settings</legend>
-        <Field label={`Price per unit (EC) — allowed ${formatMoney(c.minPrice)} to ${formatMoney(c.maxPrice)}`} error={result.errors.price}><input inputMode="decimal" value={draft.price} onChange={(e) => set('price', e.target.value)} /></Field>
+        <Field label={`Price per unit (EC) — allowed ${formatMoney(c.minPrice)} to ${formatMoney(c.maxPrice)}`} error={result.errors.price} hint="A higher price earns more per sale but can reduce demand. Compare daily sales and profit after the next game day; a price change is not a guaranteed gain."><input inputMode="decimal" value={draft.price} onChange={(e) => set('price', e.target.value)} /></Field>
         <Field label={`Staff (0–${c.maxEmployees})`} error={result.errors.employees} hint={m ? `Hiring or dismissing costs one day’s wage each (${formatMoney({ currency: 'EC', minor: m.staff.changeFeeMinor })}); today you can hire ${m.staff.changesLeftToday.hire} and dismiss ${m.staff.changesLeftToday.dismiss} more. About ${m.staff.needed} staff run your current target.` : undefined}><input type="number" inputMode="numeric" min={0} max={c.maxEmployees} step={1} value={draft.employees} onChange={(e) => set('employees', e.target.value)} /></Field>
-        <Field label="Input quality" error={result.errors.quality}><select value={draft.quality} onChange={(e) => set('quality', e.target.value as Company['quality'])}><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></Field>
-        <Field label={`Planned units per tick (max ${c.capacityPerTick})`} error={result.errors.planned} hint={recipe ? `Each unit uses ${recipe.inputs.map((i) => `${i.units} ${commodityLabel(i.commodityId)}`).join(' + ') || 'no inputs'} per batch.` : undefined}><input type="number" inputMode="numeric" min={0} max={c.capacityPerTick} step={1} value={draft.planned} onChange={(e) => set('planned', e.target.value)} /></Field>
-        <Field label="Marketing per tick (EC)" error={result.errors.marketing}><input inputMode="decimal" value={draft.marketing} onChange={(e) => set('marketing', e.target.value)} /></Field>
+        <Field label="Input quality" error={result.errors.quality} hint="Better quality uses more ingredients and affects reputation. Review input costs before increasing quality."><select value={draft.quality} onChange={(e) => set('quality', e.target.value as Company['quality'])}><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option></select></Field>
+        <Field label={`Planned units per tick (max ${c.capacityPerTick})`} error={result.errors.planned} hint={recipe ? `Each unit uses ${recipe.inputs.map((i) => `${i.units} ${commodityLabel(i.commodityId)}`).join(' + ') || 'no inputs'} per batch. Production runs automatically each game day.` : undefined}><input type="number" inputMode="numeric" min={0} max={c.capacityPerTick} step={1} value={draft.planned} onChange={(e) => set('planned', e.target.value)} /></Field>
+        <Field label="Marketing per game day (EC)" error={result.errors.marketing} hint={<span>Advertising builds customer awareness with diminishing returns; more spending does not guarantee more profit. {m && <>Currently {formatMoney({ currency: 'EC', minor: m.advertising.spendPerDayMinor })}/day; awareness {(m.advertising.awarenessBps / 100).toFixed(1)}% of {(m.advertising.maxAwarenessBps / 100).toFixed(0)}% maximum.</>} <Tip label="How does marketing work?">The first coins help most. Awareness fades by 5% each game day. Secure ingredients and wages first, then compare sales and profit before increasing your budget.</Tip></span>}><input inputMode="decimal" value={draft.marketing} onChange={(e) => set('marketing', e.target.value)} /></Field>
       </fieldset>
       {m && (
         <label className="pe-row"><input type="checkbox" checked={m.autoProcure} disabled={readOnly || pending} data-testid="auto-procure" onChange={async (e) => { await send({ type: 'company.configure', companyId: c.id, autoProcure: e.target.checked }, { idempotencyKey: newIdempotencyKey(), expectedRevision: c.revision }, { success: e.target.checked ? 'Auto-purchasing on' : 'Auto-purchasing off', failure: 'Setting not saved' }); }} /> Buy ingredients automatically each day <Tip>When on, the company buys what tomorrow's production target needs. When off, it only uses stock you buy yourself.</Tip></label>

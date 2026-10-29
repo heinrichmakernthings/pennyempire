@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useId, useState, type ReactNode } from 'react';
+import { useState } from 'react';
+import { HelpTip as Tip } from '@/ui/HelpTip';
+import { WorkerPortrait } from './BusinessBrief';
+export { HelpTip as Tip } from '@/ui/HelpTip';
 import type { Company } from '@/contracts/game-state';
 import { fetchRankings, useQuery, type Management } from '@/data/managementApi';
 import { newIdempotencyKey, useCommand } from '@/data/useCommand';
@@ -14,17 +17,11 @@ import { ResponsiveSheet } from '@/ui/ResponsiveSheet';
 
 const money = (minor: number) => formatMoney(ec(minor));
 
-/** Explains a term in plain words. A real button, so it works on touch and keyboard, not just hover. */
-export function Tip({ children }: { children: ReactNode }) {
-  const [open, setOpen] = useState(false); const id = useId();
-  return <><button type="button" className="pe-tip" aria-expanded={open} aria-controls={id} aria-label="What does this mean?" title={typeof children === 'string' ? children : undefined} onClick={() => setOpen((v) => !v)}>?</button>{open && <p id={id} className="pe-tip-text" role="note">{children}</p>}</>;
-}
-
 export function Meter({ label, valueText, pct, tone = 'good', tip }: { label: string; valueText: string; pct: number; tone?: 'good' | 'warn' | 'bad'; tip?: string }) {
   return (
     <div className="pe-meter">
       <div className="pe-meter-label"><span>{label}{tip && <Tip>{tip}</Tip>}</span><strong>{valueText}</strong></div>
-      <div className="pe-bar" data-tone={tone === 'good' ? undefined : tone} role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.round(pct)} aria-valuetext={valueText}><span style={{ width: `${Math.max(0, Math.min(100, pct))}%` }} /></div>
+      <div className="pe-bar" data-tone={tone === 'good' ? undefined : tone} role="meter" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={Math.max(0, Math.min(100, Math.round(pct)))} aria-valuetext={valueText}><span style={{ width: `${Math.max(0, Math.min(100, pct))}%` }} /></div>
     </div>
   );
 }
@@ -70,16 +67,16 @@ export function Rankings({ industry, companyId, deps }: { industry: string; comp
   );
 }
 
-export function ProductionPanel({ c, m }: { c: Company; m: Management }) {
+export function ProductionPanel({ m }: { c: Company; m: Management }) {
   const p = m.production;
-  const pct = c.capacityPerTick > 0 ? (Math.min(p.outputUnits, c.capacityPerTick) / c.capacityPerTick) * 100 : 0;
+  const pct = p.effectiveBatches > 0 ? (p.plannedBatches / p.effectiveBatches) * 100 : 0;
   return (
     <div className="pe-stack">
       <dl className="pe-kv">
         <div><dt>Production target <Tip>Batches the company tries to make every day. It makes fewer if staff, storage, ingredients or cash run short.</Tip></dt><dd>{p.plannedBatches} batches ({formatUnits(p.outputUnits)} units)</dd></div>
-        <div><dt>Capacity today <Tip>What your staff and equipment can actually produce: workplace capacity × staffing × equipment condition.</Tip></dt><dd>{p.effectiveBatches} batches ({formatUnits(c.capacityPerTick)} units)</dd></div>
+        <div><dt>Capacity today <Tip>What your staff and equipment can actually produce: workplace capacity × staffing × equipment condition.</Tip></dt><dd>{p.effectiveBatches} batches ({formatUnits(p.effectiveBatches * p.outputPerBatch)} units)</dd></div>
       </dl>
-      <Meter label="Target vs capacity" valueText={`${Math.round(pct)}%`} pct={pct} tone={p.outputUnits > c.capacityPerTick ? 'warn' : 'good'} tip="Above 100% means the target cannot be met with current staff or equipment." />
+      <Meter label="Target vs capacity" valueText={p.effectiveBatches === 0 ? 'No capacity' : `${Math.round(pct)}%`} pct={pct} tone={p.plannedBatches > p.effectiveBatches ? 'warn' : 'good'} tip="Above 100% means the target cannot be met with current staff or equipment." />
       <div className="pe-table-scroll">
         <table className="pe-table pe-small" aria-label="Recent production">
           <thead><tr><th scope="col">Day</th><th scope="col" className="pe-num">Planned</th><th scope="col" className="pe-num">Made</th><th scope="col" className="pe-num">Units</th><th scope="col">Held back by</th></tr></thead>
@@ -100,13 +97,13 @@ export function SupplyChainPanel({ c, m, canAct, onChanged }: { c: Company; m: M
   const n = Number(batches);
   const buy = async () => {
     const res = await send({ type: 'company.procure', companyId: c.id, batches: n }, { idempotencyKey: key, expectedRevision: c.revision }, { success: `Bought ingredients for ${n} batches`, failure: 'Supplies not bought' });
-    if (res) setKey(newIdempotencyKey());
+    if (res?.ok) { setKey(newIdempotencyKey()); onChanged?.(); }
   };
   return (
     <div className="pe-stack">
       <div className="pe-table-scroll"><table className="pe-table pe-small" aria-label="Ingredients and suppliers">
         <thead><tr><th scope="col">Ingredient</th><th scope="col" className="pe-num">Per batch</th><th scope="col" className="pe-num">In stock</th><th scope="col" className="pe-num">For sale in Bristol</th><th scope="col" className="pe-num">Best price</th><th scope="col"><span className="pe-sr">Compare</span></th></tr></thead>
-        <tbody>{m.supplyChain.map((s) => <tr key={s.commodityId}><th scope="row">{commodityLabel(s.commodityId)}</th><td className="pe-financial-number">{s.perBatch}</td><td className="pe-financial-number">{formatUnits(s.inStock)}</td><td className={`pe-financial-number ${s.forSale < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'pe-neg' : ''}`}>{formatUnits(s.forSale)}</td><td className="pe-financial-number">{s.bestAskMinor === null ? `${money(s.stateFallbackMinor ?? 0)} (state supplier)` : money(s.bestAskMinor)}</td>
+        <tbody>{m.supplyChain.map((s) => <tr key={s.commodityId}><th scope="row">{commodityLabel(s.commodityId)}</th><td className="pe-financial-number">{s.perBatch}</td><td className="pe-financial-number">{formatUnits(s.inStock)}</td><td className={`pe-financial-number ${s.forSale < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'pe-neg' : ''}`}>{formatUnits(s.forSale)}</td><td className="pe-financial-number">{s.bestAskMinor === null ? (s.stateFallbackMinor === null ? 'No supplier quote' : `${money(s.stateFallbackMinor)} (state supplier)`) : money(s.bestAskMinor)}</td>
           <td>{canAct && <Button onClick={() => setCompare(s.commodityId)} data-testid={`compare-${s.commodityId}`} aria-label={`Compare ${commodityLabel(s.commodityId)} suppliers`}>{s.inStock < s.perBatch * Math.max(1, m.production.plannedBatches) ? 'Find supplier' : 'Compare'}</Button>}</td></tr>)}</tbody>
       </table></div>
       <p className="pe-hint">If nobody is selling, the state supplier (Bristol Provisions) sells a limited amount at a premium. Auto-purchasing buys what the day's target needs.</p>
@@ -137,12 +134,13 @@ export function EquipmentPanel({ c, m, canAct }: { c: Company; m: Management; ca
   );
 }
 
-export function StaffPanel({ m }: { m: Management }) {
+export function StaffPanel({ m, industry }: { m: Management; industry: Company['industry'] }) {
   const s = m.staff;
   const pct = s.max > 0 ? (s.employees / s.max) * 100 : 0;
   const note = s.employees < s.needed ? `Understaffed: you need about ${s.needed} to hit your target.` : s.employees > s.needed ? `You need about ${s.needed} to hit your target; the rest cost wages but add no output.` : 'Staffing matches your production target.';
   return (
     <div className="pe-stack">
+      <div className="pe-staff-team"><WorkerPortrait industry={industry} /><p><strong>{s.employees} people on your team</strong><br />Team artwork represents the role. Individual experience and promotions are not tracked yet.</p></div>
       <Meter label="Staff" valueText={`${s.employees} of ${s.max}`} pct={pct} tone={s.employees < s.needed ? 'bad' : s.employees > s.needed ? 'warn' : 'good'} tip="Workplace capacity is the most people the building can hold. More staff than the target needs adds wages, not output." />
       <p className="pe-hint">{note} Wage {money(s.wagePerDayMinor)} per person per day. Each hire or dismissal costs one day’s wage ({money(s.changeFeeMinor)}); you can hire {s.changesLeftToday.hire} and dismiss {s.changesLeftToday.dismiss} more today.</p>
     </div>

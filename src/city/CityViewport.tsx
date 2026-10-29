@@ -163,18 +163,20 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
     else if (e.key === '+' || e.key === '=') zoomBy(1);
     else if (e.key === '-' || e.key === '_') zoomBy(-1);
     else if (e.key === 'Escape') onSelect(null);
+    else if (e.key === 'Home') { e.preventDefault(); setCamera(initialCamera(scene)); }
   };
 
   const tipInfo = tip ? hoverCaption(tip.id) : null;
   return (
     <div className="pe-city-vp">
       <div ref={wrap} className="pe-city-canvas-wrap" tabIndex={0} role="application" aria-roledescription="isometric city map"
-        aria-label="Bristol city map. Arrow keys pan, plus and minus zoom, Escape clears selection. The business list offers the same information as text."
+        aria-label="Bristol city map. Arrow keys pan, plus and minus zoom, Home recentres, Escape clears selection. The business list offers the same information as text."
         onKeyDown={onKeyDown} onPointerDown={onPointerDown} onPointerMove={onPointerMove} onPointerUp={onPointerUp} onPointerCancel={onPointerUp} onPointerLeave={onPointerLeave}>
         <canvas ref={canvas} className="pe-pixel-art pe-city-canvas" data-testid="city-canvas" aria-hidden="true" />
-        {tip && tipInfo && <div className="pe-tooltip" style={{ left: Math.min(tip.x + 14, size.current.w - 200), top: tip.y + 14 }} role="presentation"><strong>{tipInfo.title}</strong><span>{tipInfo.subtitle}</span></div>}
+        {tip && tipInfo && <div className="pe-tooltip" style={{ left: Math.max(8, Math.min(tip.x + 14, size.current.w - 208)), top: Math.max(8, Math.min(tip.y + 14, size.current.h - 72)) }} role="presentation"><strong>{tipInfo.title}</strong><span>{tipInfo.subtitle}</span></div>}
       </div>
       <div className="pe-zoom" role="group" aria-label="Map zoom">
+        <button type="button" className="pe-icon-btn" onClick={() => setCamera(initialCamera(scene))} aria-label="Recentre city" title="Recentre city (Home)"><Icon name="city" /></button>
         <button type="button" className="pe-icon-btn" onClick={() => zoomBy(1)} disabled={zoom === 3} aria-label="Zoom in"><Icon name="plus" /></button>
         <output className="pe-zoom-level" aria-live="polite">{zoom}×</output>
         <button type="button" className="pe-icon-btn" onClick={() => zoomBy(-1)} disabled={zoom === 1} aria-label="Zoom out"><Icon name="minus" /></button>

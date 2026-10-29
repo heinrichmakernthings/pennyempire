@@ -59,13 +59,14 @@ export function createServerDataSource(base = ''): GameDataSource {
 export async function chooseDataSource(search: string, probeMs = 2_500): Promise<{ source: GameDataSource; fallbackReason: string | null }> {
   const params = new URLSearchParams(search);
   if (params.get('source') === 'fixture') return { source: createFixtureDataSource(params.get('fixture') === 'slow' ? 'slow' : params.get('fixture') === 'error' ? 'error' : params.get('fixture') === 'empty' ? 'empty' : 'normal'), fallbackReason: null };
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), probeMs);
   try {
-    const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), probeMs);
-    const res = await fetch('/api/health', { signal: ctl.signal }); clearTimeout(t);
+    const res = await fetch('/api/health', { signal: ctl.signal });
+    if (!res.ok) throw new Error(`Service unavailable (${res.status})`);
     const j = (await res.json()) as { ok?: boolean; authority?: string };
     if (res.ok && j.ok && j.authority === 'server') return { source: createServerDataSource(), fallbackReason: null };
     throw new Error('unexpected health response');
-  } catch (e) {
-    return { source: createFixtureDataSource('normal'), fallbackReason: `Game server not reachable (${e instanceof Error ? e.message : 'error'}). Showing illustrative fixture data only.` };
-  }
+  } catch {
+    return { source: createFixtureDataSource('normal'), fallbackReason: 'The game connection is unavailable. Showing illustrative fixture data only; purchases and management changes cannot be saved. Use Reconnect to game to try again.' };
+  } finally { clearTimeout(t); }
 }
