@@ -71,6 +71,8 @@ Severity follows the prompt (P0 = currency/inventory duplication, unauthorised t
 | 11 | P1 | **NPC pricing ignored a dead line's fixed costs.** Fixed costs were split evenly per production line, so when a line stopped selling (its buyer failed), the surviving line was priced below the company's real cost: milk at 35 against a true cost of about 43. (Trace.) | Fixed costs are recovered over the company's total expected sales. | scenarios |
 | 12 | P2 | **No consumption function.** Household spending was a fixed per-capita budget, so income above it piled up (it never fed back into demand). | Configurable consumption function: spending rises (bounded) when savings exceed `householdBufferDays` of baseline spending and falls below it. | E7 |
 | 13 | P2 | **Industry imbalance.** At reference prices a new flour mill lost money (−12 EC/day), a dairy needed 193 days to pay back, and pizza paid back in 29: retail captured the chain's value. | Seed patch `balance-v1`: flour 220 → 260 and cheese 320 → 360 reference. | calibration tests |
+| 14 | P1 | **State enterprises liquidated while still receiving income.** Penny Energy, Ads and Logistics were liquidated when the city treasury could no longer support them, yet their service income kept arriving in the closed treasuries. (Scenario F deep audit: `bankrupt.assets`.) | State enterprises stay under administration and reopen once their own income covers their arrears. | E11 |
+| 15 | P2 | **Per-company history lookups scanned all history**, so ticks slowed as a world aged. (Benchmark.) | Company-first indexes (migration 0009). | benchmark |
 
 Also added: **release gates.** Live payments, payouts, real-money wagering and cash-convertible prizes are compile-time `false`. Every GBP_TEST money path asserts a simulated provider. A test proves that no wallet, reward, membership or lottery module makes a network call, and that the database refuses non-simulated GBP transactions.
 
@@ -104,7 +106,30 @@ Also added: **release gates.** Live payments, payouts, real-money wagering and c
 
 ## 4. Scenario and population results
 
-See `docs/audit/SCENARIOS.md` (generated) and the JSON per run. Summary: SCENARIO_SUMMARY
+Full tables are in `docs/audit/SCENARIOS.md`, with JSON per run. All 13 runs are deterministic (seeded) and use player agents acting through the API. **The deep audit is clean in every run**: no unexplained issuance, no duplicated goods or shares, every settlement backed by its ledger entry, and the simulated GBP book reconciles.
+
+| Run | What happened | Money (circulating) | CPI per year | Consumer spend/day (start → end) | Operating at end |
+|---|---|---|---|---|---|
+| A Stable growth, 3 years, 10 players | Spending grows; no runaway inflation | +10.0% over 3 years | +2.8% | 2,390 → 2,904 | 9 (16 failures over 3 years, 7 of them mills) |
+| B Severe recession, 180 days | Firms fail, spending recovers after the shock | +2.4% | −4.9% | 2,262 → 2,653 | 9 |
+| C Supply-chain collapse, 120 days | **Chain does not rebuild within the year**; unmet demand 426 units/day | +2.7% | −6.4% | 2,401 → 895 | 4 |
+| D Energy crisis, 120 days | Output capped; economy recovers | +2.0% | +0.6% | 2,750 → 2,337 | 10 |
+| E Share bubble and reversal | Bubble deflates; no coins created or lost (valuations ≠ cash) | −0.8% | — | 2,821 → 2,686 | 14 |
+| F Four largest NPC employers stripped | **Cascade**; state enterprises survive (fix #14); slow recovery | +2.3% | −7.3% | 2,278 → 973 | 2 |
+| G Income grant ×6, controller off | Money +31.8%, but prices do not follow: excess money pools in households (prices are cost-based) | +31.8% | −2.4% | 2,541 → 3,263 | 12 |
+| H Dominant player with a vertical chain | Cornered cheese (99%) and flour (78%) for a time; storage limits stop hoarding; NPC rivals keep pizza competitive | +3.2% | −4.8% | 2,556 → 2,501 | 8 |
+| I 1,000 players: deposits, triple reward claims, simultaneous withdrawals | 3,000 claims: 500 rewards paid (the budget), 500 same-key replays ignored, 2,000 refused (budget spent or per-player limit); 1,000 duplicate webhooks ignored; 1,000 £5 withdrawals paid with duplicate payout events ignored; GBP book reconciles | — | — | — | — |
+| 1 player, 1 year | | +5.7% | — | 2,495 → 2,019 | 7 |
+| 10 players, 1 year | | +1.6% | −1.2% | 2,605 → 2,301 | 9 |
+| 100 players, 1 year | | −1.8% | +4.7% | 2,994 → 2,293 | 14 |
+| 1,000 players, 1 year | 5,050 EC of prestige sinks; 10 player companies (all the land allows) | −2.5% | +5.3% | 3,219 → 2,552 | 14 |
+
+**Inflation is measurable and explainable.**
+
+- **Issuance:** genesis and player starting capital (moved into the controller's target), the citizens' income grant (falls automatically as supply exceeds the target), NPC investor seed capital, central bank liquidity operations (rule-based), and capped rewarded ads.
+- **Sinks:** licences, state-service wear, city upkeep, the exchange fee burn, prestige, boosts and lottery rake.
+- **Transfers** (wages, purchases, dividends, loans, fees to state companies) are never counted as sinks.
+- **Money and prices are only loosely linked.** Prices are cost-based, so printing money (scenario G) inflates household balances far more than prices, and the consumption function only partly converts it into demand. This is recorded in the issue register.
 
 ## 5. Profitability by industry (tier-1 forecast at reference prices, day 30)
 
@@ -121,13 +146,31 @@ All six are now viable at starting scale; none is guaranteed (these are forecast
 
 ## 6. Performance
 
-See `docs/audit/BENCHMARK.json`. Summary: BENCH_SUMMARY
+`docs/audit/BENCHMARK.json` (Node 22, node:sqlite, a single container CPU; the Durable Object runs the same SQL):
+
+| Measure | Before indexes | After (migration 0009 indexes) |
+|---|---|---|
+| Tick, average / p95 / max (365 days, living city) | 111 / 206 / 295 ms | **92 / 184 / 219 ms** |
+| Biggest phase: NPC share decisions | 35.5 ms | 25.6 ms |
+| SQL statements per tick | 3,465 | 3,465 |
+| Ledger transfers per second | 10,700 | 10,200 |
+| Order placement / matching per second | 1,861 / 931 | 1,474 / 737 (noise between runs) |
+| Catch-up after 48 missed days | 3.7 s | 4.0 s |
+| Tick with 1 / 10 / 100 active players (fuzzed commands) | 68 / 81 / 100 ms | 73 / 88 / 111 ms |
+| API command cost | ~0.6 ms | ~0.6 ms |
+| Heap / RSS | 23 / 381 MB | 26 / 378 MB |
+
+Fix: the history tables were keyed `(tick, company_id)` while the hot queries filter by company and order by tick, so every lookup scanned all history and ticks slowed as a world aged. Migration 0009 adds company-first indexes.
+
+Remaining bottleneck: NPC investors act one after another on an order book their own orders change, so their per-security market data cannot be cached without changing behaviour. At about 25 ms it is acceptable for the alpha. The 1,000-player run averaged 170 ms per tick (max 594 ms) with about 200 agent commands a day: well within a Durable Object alarm cycle.
 
 ## 7. Remaining issue register
 
 | Sev | Issue | Why it remains / next step |
 |---|---|---|
-| P2 | Flour mills remain the weakest link in long runs. After severe supply shocks, a mill can lose its wheat supply and fail; NPC entrants into milling often fail too. Bristol then falls back on the state provisioner for flour. | Further NPC coordination (contracts between NPC farms and mills) would help. Players can still run mills profitably. |
+| **P1** | **Weak recovery after severe supply shocks.** After a supply-chain collapse (C) or the failure of major employers (F), the farm–mill–dairy chain does not rebuild within the year: 4 and 2 companies remain, and unmet demand is 364–426 units/day. | NPC re-entry is limited by land (5 of 10 lots are reserved for players), at most one entrant per 10 days, and entry tests that require profitable incumbents. Next step: entry that targets broken chain links, and NPC farm–mill supply contracts. |
+| P2 | Flour mills remain the weakest link: 7 of 8 mills failed over 3 years in A. After shocks, a mill loses its wheat supply. | Same as above; players can still run mills profitably (a tier-1 forecast is +27 EC/day). |
+| P2 | Money growth only weakly raises prices (G: +31.8% money, CPI flat); excess money pools in households. | Prices are cost-plus by design. If inflation should respond to money, add a demand-pull term to NPC pricing. |
 | P2 | Bristol has only 10 vacant lots, so at most about 10 companies can be founded by players (shown again at 100 and 1,000 players). | Needs map expansion or multiple cities (art and layout work). |
 | P2 | NPC momentum investors can be pumped up to 1.7× fair value. | Bounded by fundamentals and their finite budgets. Accepted as market risk. |
 | P2 | Reference prices are static; they anchor NPC price bands and the state fallback, but are not indexed to measured inflation. | Index them to CPI if long-run inflation becomes significant. |
