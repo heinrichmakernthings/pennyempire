@@ -4,11 +4,13 @@ import { clampCamera, screenToWorld, stepZoom, zoomAt, type Camera, type Zoom } 
 import { createTerrainLayer, hitLot, hitTest, renderScene } from './draw';
 import type { Scene } from './scene';
 import { Icon } from '@/ui/Icon';
+import { DeliveryReplay } from './activityMotion';
 
 export interface CityViewportHandle { focusCompany(id: string): void }
 interface Props {
   scene: Scene; atlas: ArtAtlas | null; selectedId: string | null; hoverCaption(id: string): { title: string; subtitle: string } | null;
   selectedLotId?: string | null; onSelectLot?(plotId: string): void; activity?: Map<string, import('@/shared/living').CompanyActivity>;
+  activityTick?: number; activityReceivedAt?: number;
   onSelect(id: string | null): void; registerHandle?(h: CityViewportHandle | null): void;
 }
 const DRAG_PX = 5;
@@ -23,7 +25,7 @@ function initialCamera(scene: Scene): Camera {
  * Canvas city. Camera, hover and pointer state live in refs so panning/hovering never re-renders React;
  * only zoom level (for the controls) and the hover tooltip are React state.
  */
-export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, selectedLotId = null, onSelectLot, activity, hoverCaption, onSelect, registerHandle }: Props) {
+export const CityViewport = memo(function CityViewport({ scene, atlas, selectedId, selectedLotId = null, onSelectLot, activity, activityTick, activityReceivedAt, hoverCaption, onSelect, registerHandle }: Props) {
   const wrap = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const cam = useRef<Camera>(initialCamera(scene));
@@ -39,16 +41,37 @@ export const CityViewport = memo(function CityViewport({ scene, atlas, selectedI
   const [tip, setTip] = useState<{ id: string; x: number; y: number } | null>(null);
   const terrain = useMemo(() => createTerrainLayer(scene), [scene]);
   const activityRef = useRef(activity); const invRef = useRef<(() => void) | undefined>(undefined);
+  const receivedRef = useRef(activityReceivedAt);
+  const reduced = useRef(false);
+  const replay = useRef(new DeliveryReplay());
 
   const draw = useCallback(() => {
     raf.current = 0;
     const c = canvas.current; const ctx = c?.getContext('2d');
     if (!c || !ctx || size.current.w === 0) return;
-    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current, selectedLotId: selectedLot.current, activity: activityRef.current, redraw: () => invRef.current?.() });
+    renderScene(ctx, scene, atlas, terrain, { cam: cam.current, width: size.current.w, height: size.current.h, dpr: size.current.dpr }, { hoverId: hover.current, selectedId: selected.current, selectedLotId: selectedLot.current, activity: activityRef.current, activityReceivedAt: receivedRef.current, now: performance.now(), reducedMotion: reduced.current, deliveries: replay.current, redraw: () => invRef.current?.() });
   }, [scene, atlas, terrain]);
   const invalidate = useCallback(() => { if (!raf.current) raf.current = requestAnimationFrame(draw); }, [draw]);
   invRef.current = invalidate;
-  useEffect(() => { activityRef.current = activity; invalidate(); }, [activity, invalidate]);
+  useEffect(() => {
+    activityRef.current = activity; receivedRef.current = activityReceivedAt;
+    if (activity && activityTick !== undefined) replay.current.accept(activityTick, activity, performance.now());
+    invalidate();
+  }, [activity, activityTick, activityReceivedAt, invalidate]);
+  useEffect(() => {
+    const el=wrap.current; if (!el) return;
+    const media=matchMedia('(prefers-reduced-motion: reduce)');
+    let visible=true, timer: ReturnType<typeof setInterval> | undefined;
+    const schedule=() => {
+      if(timer) clearInterval(timer);
+      reduced.current=media.matches;
+      if(visible && !document.hidden && activityRef.current?.size) timer=setInterval(invalidate,media.matches?1000:80);
+      invalidate();
+    };
+    const observer=new IntersectionObserver(entries=>{visible=entries[0]?.isIntersecting??false;schedule();});
+    observer.observe(el);media.addEventListener('change',schedule);document.addEventListener('visibilitychange',schedule);schedule();
+    return()=>{if(timer)clearInterval(timer);observer.disconnect();media.removeEventListener('change',schedule);document.removeEventListener('visibilitychange',schedule);};
+  }, [invalidate, !!activity?.size]);
   useEffect(() => () => { cancelAnimationFrame(raf.current); raf.current = 0; }, []);
 
   useEffect(() => { selected.current = selectedId; selectedLot.current = selectedLotId; invalidate(); }, [selectedId, selectedLotId, invalidate]);

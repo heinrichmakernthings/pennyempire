@@ -20,4 +20,4 @@ export interface CompetitorProfile {
 
 /** One building's observable state today, derived only from recorded sales, production and company records. */
 export type ActivityState = 'closed' | 'construction' | 'missing-inputs' | 'high-demand' | 'delivery' | 'customers' | 'production' | 'quiet';
-export interface CompanyActivity { companyId: string; state: ActivityState; customers: number; vans: number; workers: number }
+export interface CompanyActivity { companyId: string; state: ActivityState; customers: number; vans: number; workers: number; productionActive?: boolean }

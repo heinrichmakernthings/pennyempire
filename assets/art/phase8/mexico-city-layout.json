@@ -1,0 +1,1252 @@
+{
+  "id": "mexico-city",
+  "name": "Mexico City market district",
+  "kind": "visual-layout",
+  "economicSimulation": false,
+  "tile": [
+    128,
+    64
+  ],
+  "canvas": [
+    1920,
+    1180
+  ],
+  "origin": [
+    960,
+    210
+  ],
+  "tiles": [
+    {
+      "x": 0,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 1,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 1,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 2,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 0,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 0,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 2,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 1,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 0,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 0,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 3,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 4,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 2,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 1,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 4,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 5,
+      "y": 3,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 2,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 5,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 3,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 6,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 8,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 7,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 6,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 8,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 9,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 0,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 8,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 7,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 9,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 10,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 0,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 1,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 9,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 8,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 10,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 11,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 1,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 2,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 10,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 9,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 11,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 12,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 2,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 3,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 11,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 10,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 12,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 13,
+      "y": 3,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 4,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 5,
+      "y": 12,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 11,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 13,
+      "y": 4,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 5,
+      "y": 13,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 12,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 5,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 6,
+      "y": 13,
+      "elevation": 0,
+      "surface": "road"
+    },
+    {
+      "x": 7,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 6,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 7,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 7,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 8,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 8,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 9,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 9,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 10,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 10,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 11,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 11,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 12,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 12,
+      "elevation": 0,
+      "surface": "paving"
+    },
+    {
+      "x": 13,
+      "y": 13,
+      "elevation": 0,
+      "surface": "paving"
+    }
+  ],
+  "objects": [
+    {
+      "assetId": "mexico-city-shop",
+      "x": 3,
+      "y": 2,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-workshop",
+      "x": 7,
+      "y": 2,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-shop",
+      "x": 3,
+      "y": 7,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-market-stall",
+      "x": 5,
+      "y": 6,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-market-stall",
+      "x": 6,
+      "y": 7,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-market-stall",
+      "x": 5,
+      "y": 8,
+      "elevation": 0
+    },
+    {
+      "assetId": "customer-sw",
+      "x": 6,
+      "y": 8,
+      "elevation": 0
+    },
+    {
+      "assetId": "mexico-city-workshop",
+      "x": 9,
+      "y": 7,
+      "elevation": 0
+    },
+    {
+      "assetId": "farm-pickup-sw",
+      "x": 9,
+      "y": 10,
+      "elevation": 0
+    }
+  ]
+}

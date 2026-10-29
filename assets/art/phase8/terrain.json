@@ -1,0 +1,79 @@
+{
+  "tile": [
+    128,
+    64
+  ],
+  "heightStep": 32,
+  "tiles": [
+    {
+      "id": "terrain-flat",
+      "source": "assets/art/phase8/runtime/terrain-flat.svg",
+      "size": [
+        128,
+        96
+      ],
+      "cornerHeights": [
+        32,
+        32,
+        32,
+        32
+      ]
+    },
+    {
+      "id": "terrain-north",
+      "source": "assets/art/phase8/runtime/terrain-north.svg",
+      "size": [
+        128,
+        96
+      ],
+      "cornerHeights": [
+        32,
+        32,
+        0,
+        0
+      ]
+    },
+    {
+      "id": "terrain-east",
+      "source": "assets/art/phase8/runtime/terrain-east.svg",
+      "size": [
+        128,
+        96
+      ],
+      "cornerHeights": [
+        0,
+        32,
+        32,
+        0
+      ]
+    },
+    {
+      "id": "terrain-south",
+      "source": "assets/art/phase8/runtime/terrain-south.svg",
+      "size": [
+        128,
+        96
+      ],
+      "cornerHeights": [
+        0,
+        0,
+        32,
+        32
+      ]
+    },
+    {
+      "id": "terrain-west",
+      "source": "assets/art/phase8/runtime/terrain-west.svg",
+      "size": [
+        128,
+        96
+      ],
+      "cornerHeights": [
+        32,
+        0,
+        0,
+        32
+      ]
+    }
+  ]
+}

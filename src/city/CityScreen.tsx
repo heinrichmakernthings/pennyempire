@@ -35,8 +35,9 @@ function CityView({ data, illustrative }: { data: CityScreenState; illustrative:
   const handle = useRef<CityViewportHandle | null>(null);
   const registerHandle = useCallback((h: CityViewportHandle | null) => { handle.current = h; }, []);
 
-  const act = useQuery((sig) => fetchActivity(sig), [source.authority], source.authority === 'server');
-  const activity = useMemo(() => (act.status === 'ready' ? new Map(act.data.items.map((i) => [i.companyId, i])) : undefined), [act.status === 'ready' ? act.data.tick : -1]);
+  const act = useQuery(async (sig) => ({...await fetchActivity(sig), receivedAt: performance.now()}), [source.authority], source.authority === 'server');
+  const activityData = act.status === 'ready' ? act.data : undefined;
+  const activity = useMemo(() => activityData ? new Map(activityData.items.map((i) => [i.companyId, i])) : undefined, [activityData]);
   const meta = useMemo(() => source.mapMeta(data.city.id), [source, data.city.id]);
   // Server data is re-fetched every few seconds; only rebuild the scene (and its cached ground layer) when its content actually changes.
   const sceneKey = JSON.stringify([data.city.plots, data.directory.map((d) => [d.id, d.plotId, d.name, d.owner.id, d.status]), data.player.id]);
@@ -80,10 +81,10 @@ function CityView({ data, illustrative }: { data: CityScreenState; illustrative:
         <div className="pe-city-canvas-area">
           {atlas.status === 'loading' && <div className="pe-city-overlay"><Skeleton lines={4} label="Loading Bristol artwork" /></div>}
           {atlas.status === 'error' && <div className="pe-city-overlay"><ErrorState title="City artwork unavailable" message={atlas.message} onRetry={atlas.retry} /></div>}
-          {atlas.status === 'ready' && <CityViewport scene={scene} atlas={atlas.atlas} activity={illustrative ? undefined : activity} selectedId={selectedId} selectedLotId={illustrative ? null : lotId} onSelectLot={illustrative ? undefined : onSelectLot} hoverCaption={hoverCaption} onSelect={onSelect} registerHandle={registerHandle} />}
+          {atlas.status === 'ready' && <CityViewport scene={scene} atlas={atlas.atlas} activity={illustrative ? undefined : activity} activityTick={activityData?.tick} activityReceivedAt={activityData?.receivedAt} selectedId={selectedId} selectedLotId={illustrative ? null : lotId} onSelectLot={illustrative ? undefined : onSelectLot} hoverCaption={hoverCaption} onSelect={onSelect} registerHandle={registerHandle} />}
           {failed.length > 0 && <p className="pe-city-warn" role="status"><Icon name="warning" size={16} /> {failed.length} art file(s) failed to load; placeholders are shown. {[...new Set(failed.map((f) => f.split('/').pop()))].join(', ')}</p>}
         </div>
-        {illustrative && <p className="pe-hint pe-city-caption">City layout and company values are illustrative fixtures. Static art only: walk cycles and production animation are still being produced.</p>}
+        <p className="pe-hint pe-city-caption">{illustrative ? 'Illustrative city. Activity appears when the live simulation is connected.' : 'Street activity reflects the latest trading day. Figures represent sales and staffing levels, not individual tracked customers.'}</p>
       </div>
 
       {bp === 'desktop' && <aside className="pe-side" aria-label="Company and city details">{panel ?? overview}</aside>}

@@ -81,7 +81,7 @@ export function cityActivity(db: Sql): { tick: number; items: CompanyActivity[] 
     else if (consumer > 0) state = 'customers';
     else if (s && s.units_produced > 0) state = 'production';
     const open = state !== 'closed' && state !== 'construction';
-    return { companyId: c.id, state, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0 };
+    return { companyId: c.id, state, productionActive: open && (s?.units_produced ?? 0) > 0, customers: open ? Math.min(4, Math.ceil(consumer / 25)) : 0, vans: open ? Math.min(2, Math.ceil(shipped / 3)) : 0, workers: open ? Math.min(3, Math.ceil(c.employees / 3)) : 0 };
   });
   return { tick: t, items };
 }
