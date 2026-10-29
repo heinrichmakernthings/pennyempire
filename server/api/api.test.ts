@@ -63,7 +63,7 @@ describe('write API', () => {
     expect((get(db, '/api/companies/co-mad-slices').body as Env<{ price: { minor: number }; revision: number }>).envelope.data).toMatchObject({ price: { minor: 1_200 }, revision: 2 });
   });
   it('unsupported actions are refused honestly rather than faked', () => {
-    const r = post(world(), '/api/command', { type: 'wallet.testDeposit', amountMinor: 50, idempotencyKey: 'w', expectedRevision: 1 });
+    const r = post(world(), '/api/command', { type: 'wallet.convertCoins', amountMinor: 50, idempotencyKey: 'w', expectedRevision: 1 });   // there is deliberately no coin ↔ GBP conversion
     expect(r.status).toBe(501); expect(r.body).toMatchObject({ ok: false, error: { code: 'UNAVAILABLE' } });
     expect(post(world(), '/api/command', { type: 'shares.order', idempotencyKey: 'x' }).status).toBe(501);
     expect(post(world(), '/api/command', { type: 'nonsense', idempotencyKey: 'x' }).status).toBe(501);
