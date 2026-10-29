@@ -1,0 +1,16 @@
+import{terrain,drawSprite}from'../art-review/renderer.js';import{activityPlan}from'./activity.js';
+let cache;export async function loadArt(){if(cache)return cache;cache=(async()=>{const ms=await Promise.all(['runtime','phase2','phase5','phase6','phase7'].map(p=>fetch(`../../assets/art/${p}/manifest.json`).then(r=>r.json()))),by=new Map();ms.forEach(m=>m.assets.forEach(a=>by.set(a.id,a)));const images={};await Promise.all([...new Set([...by.values()].map(a=>a.source))].map(async p=>{const im=new Image();im.src='../../'+p;await im.decode();images[p]=im;}));return{manifest:{assets:[...by.values()]},images};})();return cache;}
+export function drawActor(ctx,data,id,frame,x,y,scale=1){const p=`assets/art/phase7/runtime/${id}.png`,im=data.images[p];if(!im)return;ctx.drawImage(im,frame*24,0,24,40,x-12*scale,y-40*scale,24*scale,40*scale);}
+export function shutterShop(ctx,data,x,y){const im=data.images['assets/art/phase7/runtime/closed-shutter.png'];if(!im)return;const left=x-112,top=y-265;ctx.save();ctx.beginPath();ctx.moveTo(left+35,top+159);ctx.lineTo(left+153,top+211);ctx.lineTo(left+153,top+262);ctx.lineTo(left+35,top+211);ctx.closePath();ctx.clip();ctx.drawImage(im,left+32,top+145);ctx.drawImage(im,left+96,top+177);ctx.restore();}
+export function renderCity(ctx,data,{snapshot,state='busy',name='Mad Slices',brand='#FFC45E',tick=20,time=0,reduce=false,transfer=null,vip=false}={}){const plan=activityPlan(snapshot,tick);ctx.imageSmoothingEnabled=false;ctx.fillStyle='#1D282D';ctx.fillRect(0,0,820,500);for(let r=0;r<4;r++)for(let c=0;c<8;c++)terrain(ctx,290+(c-r)*64,140+(c+r)*32,r===3?'road':'paving',15);
+ drawSprite(ctx,data,'shop-module',240,350);drawSprite(ctx,data,'shop-module',580,365);
+ if(snapshot.status!=='operating')shutterShop(ctx,data,240,350);
+ for(let i=0;i<plan.customerSprites;i++)drawActor(ctx,data,['maya-reed','dev-patel','nora-bell','kit-morgan'][i%4]+'-world',0,185+i*22,365+i*11);
+ const workerFrame=plan.workerActive&&!reduce?1+Math.floor(time/240)%2:0;if(snapshot.status==='operating')drawActor(ctx,data,'pizza-chef',workerFrame,345,365);
+ if(snapshot.status==='operating'&&state!=='stale')drawActor(ctx,data,'leo-marsh-world',0,535,385);
+ if(state==='lowStock')drawSprite(ctx,data,'empty-stock-rack',320,410);
+ if(state==='quiet')drawSprite(ctx,data,'maintenance-crate',155,350);
+ if(snapshot.status==='bankrupt')drawSprite(ctx,data,'shopfront-display',155,355);
+ if(vip)drawSprite(ctx,data,'trophy-display',100,340);
+ if(transfer){let x=675,y=415;if(!reduce&&transfer.stage==='arriving'){const p=Math.min(1,transfer.progress*4800/1400);x=775-p*100;y=465-p*50;}if(!reduce&&transfer.stage==='departing'){const p=(transfer.progress*4800-3400)/1400;x=675-p*100;y=415-p*50;}drawSprite(ctx,data,'delivery-van-sw',x,y);if(transfer.stage==='unloading')drawActor(ctx,data,'delivery-driver',reduce?0:1+Math.floor(time/240)%2,620,425);}
+ ctx.textAlign='center';ctx.font='600 14px system-ui';for(const[x,label,type,color]of[[240,name,'Player',brand],[580,'Clifton Slice','NPC','#A9B5B9']]){ctx.fillStyle='#141C20';ctx.fillRect(x-110,25,220,50);ctx.fillStyle=color;ctx.fillText(label.slice(0,26),x,46);ctx.fillStyle='#F0E8D7';ctx.font='14px system-ui';ctx.fillText(type+' · '+(x===240?snapshot.status:'operating'),x,65);}return plan;}

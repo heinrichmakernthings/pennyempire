@@ -1,0 +1,71 @@
+{
+  "ownerKinds": {
+    "player": {
+      "icon": "assets/art/phase7/ui/owner-player.svg",
+      "label": "player"
+    },
+    "npc": {
+      "icon": "assets/art/phase7/ui/owner-npc.svg",
+      "label": "npc"
+    },
+    "state": {
+      "icon": "assets/art/phase7/ui/owner-state.svg",
+      "label": "state"
+    }
+  },
+  "companyName": {
+    "dynamic": true,
+    "maxReferenceCharacters": 26,
+    "textureBaked": false
+  },
+  "accentPalette": [
+    "#FFC45E",
+    "#62DBAF",
+    "#F08076"
+  ],
+  "prestige": {
+    "requiresOwnedCosmeticId": true,
+    "economicModifier": null,
+    "reuse": [
+      "executive-car-sw",
+      "trophy-display"
+    ]
+  },
+  "shopShutter": {
+    "profile": "shop-module-only",
+    "source": "assets/art/phase7/runtime/closed-shutter.png",
+    "sourceSize": [
+      64,
+      81
+    ],
+    "placementsTopLeft": [
+      [
+        32,
+        145
+      ],
+      [
+        96,
+        177
+      ]
+    ],
+    "clipPolygon": [
+      [
+        35,
+        159
+      ],
+      [
+        153,
+        211
+      ],
+      [
+        153,
+        262
+      ],
+      [
+        35,
+        211
+      ]
+    ],
+    "note": "Coordinates relative to native shop-module top-left. Review facade fit; do not reuse blindly on other buildings."
+  }
+}
