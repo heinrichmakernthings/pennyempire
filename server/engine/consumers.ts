@@ -1,3 +1,4 @@
+import { currentMods } from './economyState';
 import type { Sql } from '../db/sql';
 import { gameDate, type EngineConfig } from './config';
 import { allocateByWeights, powBps, type WeightedSeller } from './demand';
@@ -31,8 +32,9 @@ export function confidenceFor(cfg: EngineConfig, balance: number, avg: number): 
 export function consumerClimate(db: Sql, cfg: EngineConfig, tick: number, householdsBalance: number): { confidenceBps: number; shockBps: number } {
   const avg = db.get<{ a: number | null }>('SELECT AVG(households_minor) a FROM (SELECT households_minor FROM consumer_state WHERE tick < ? ORDER BY tick DESC LIMIT 14)', tick)?.a ?? null;
   const confidence = confidenceFor(cfg, householdsBalance, Math.round(avg ?? householdsBalance));
-  db.run('INSERT OR REPLACE INTO consumer_state (tick, households_minor, households_avg_minor, confidence_bps, shock_bps) VALUES (?,?,?,?,?)', tick, householdsBalance, Math.round(avg ?? householdsBalance), confidence, cfg.consumerShockBps);
-  return { confidenceBps: confidence, shockBps: cfg.consumerShockBps };
+  const shock = cfg.consumerShockBps + currentMods(db).demandShockBps;   // configured shock plus any active economic event (recession +, boom −)
+  db.run('INSERT OR REPLACE INTO consumer_state (tick, households_minor, households_avg_minor, confidence_bps, shock_bps) VALUES (?,?,?,?,?)', tick, householdsBalance, Math.round(avg ?? householdsBalance), confidence, shock);
+  return { confidenceBps: confidence, shockBps: shock };
 }
 
 /** The budget consumers WOULD like to spend on a rule today, before the funder's balance caps it. */
@@ -103,7 +105,8 @@ export function runConsumers(db: Sql, ctx: TickCtx, cfg: EngineConfig, deps: Pha
   for (const r of rules) {
     const base = startBal.get(r.funder_account_id)!;
     const { potential, seasonBps: season } = potentialBudget(cfg, r, deps.population, climate, date);
-    const want = r.per_thousand_minor > 0 ? potential : r.mode === 'pool_share' ? Math.floor((base * r.amount) / 10_000) : potential;
+    const wantRaw = r.per_thousand_minor > 0 ? potential : r.mode === 'pool_share' ? Math.floor((base * r.amount) / 10_000) : potential;
+    const want = r.per_thousand_minor > 0 ? Math.floor((wantRaw * (currentMods(db).demandByCommodity[r.commodity_id] ?? 10_000)) / 10_000) : wantRaw;   // event: commodity-specific demand (tourism, construction)
     const isHouseholdFunded = r.funder_account_id === deps.householdsAccount;
     const capLeft = isHouseholdFunded ? Math.max(0, householdCap - householdCommitted) : Number.MAX_SAFE_INTEGER;
     const budget = Math.max(0, Math.min(want, capLeft, base - (committed.get(r.funder_account_id) ?? 0), available(db, r.funder_account_id)));

@@ -1,3 +1,4 @@
+import { baseRate } from './bank';
 import type { Sql } from '../db/sql';
 import type { EngineConfig } from './config';
 import { balance } from './ledger';
@@ -36,7 +37,9 @@ export function computeValuation(db: Sql, cfg: EngineConfig, companyId: string, 
   const runwayBps = dailyFixed > 0 && cash / dailyFixed < 5 ? 500 : 0;
   const risk = c.status === 'insolvent' ? cfg.valuationRiskMaxBps : Math.min(cfg.valuationRiskMaxBps, volBps + (arrears > 0 ? 1_000 : 0) + runwayBps);
   const earnings = Math.round(mean * cfg.valuationHorizonDays);
-  const adj = earnings > 0 ? Math.round((earnings * (10_000 + Math.floor(growth / 2)) * (10_000 - risk)) / 100_000_000) : earnings;
+  // Interest rates act on value: future earnings are worth less when money costs more. Each 1% the central bank's base rate sits above its neutral setting trims 2% off earnings value (and adds the same when below), capped at ±30%.
+  const rateAdjBps = Math.max(-3_000, Math.min(3_000, -(baseRate(db) - cfg.cbBaseRateBps) * 2));
+  const adj = earnings > 0 ? Math.round((earnings * (10_000 + Math.floor(growth / 2)) * (10_000 - risk) * (10_000 + rateAdjBps)) / 1_000_000_000_000) : earnings;
   const liquidation = Math.max(0, cash + Math.floor(inventory / 2) - arrears - declared);
   const total = c.status === 'insolvent' || c.bankrupt_tick !== null ? liquidation : Math.max(liquidation, equity + adj);
   const issued = Math.max(1, sec.issued_shares);

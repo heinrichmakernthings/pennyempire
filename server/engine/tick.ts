@@ -15,6 +15,7 @@ import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLines
 import { logEvent, logFailure, takeSnapshot } from './stats';
 import { closeEnergyDay, drawEnergy, startEnergyDay } from './energy';
 import { currentMods } from './economyState';
+import { runEvents } from './events';
 import { runLogistics } from './logistics';
 import { payDepositInterest, runLoans, runNpcCredit } from './bank';
 import { liquidityOps, reviewPolicy } from './centralBank';
@@ -59,6 +60,9 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       }
     };
     const pay = (kind: Exclude<LedgerKind, 'issuance' | 'sink' | 'sink_fee'>, from: string, to: string, amount: number, memo: string) => { if (amount > 0) transfer(db, ctx, key(kind), from, to, amount, kind, memo); };
+
+    /* 0. Economic events: expire, (deterministically) start, one-shots, and today's derived modifiers. */
+    runEvents(db, ctx, cfg);
 
     const all = db.all<Co>('SELECT * FROM companies ORDER BY id');
     const profiles = new Map(db.all<Profile>('SELECT * FROM npc_profiles').map((p) => [p.company_id, p]));

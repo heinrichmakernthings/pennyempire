@@ -116,7 +116,8 @@ describe('inventory', () => {
   it('every unit traded is conserved: units out of sellers == units into buyers', () => {
     const db = memWorld(); advance(db, 40);
     const o = one<{ s: number }>(db, "SELECT SUM(delta) s FROM inventory_movements WHERE reason = 'trade_out'").s, i = one<{ s: number }>(db, "SELECT SUM(delta) s FROM inventory_movements WHERE reason = 'trade_in'").s;
-    expect(o + i).toBe(0);
+    const transit = one<{ s: number }>(db, "SELECT COALESCE(SUM(qty),0) s FROM shipments WHERE status = 'delayed'").s;   // goods held by Penny Logistics (taken from the buyer, not yet arrived)
+    expect(o + i + transit).toBe(0);
   });
 });
 
