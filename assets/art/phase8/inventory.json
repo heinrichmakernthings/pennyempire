@@ -1,0 +1,900 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "path": "assets/art/phase8/airport-layout.json",
+      "bytes": 18309,
+      "sha256": "1aeeff2cbae1ee982673c8d43543d917bf324eccfb87ebbf8d4fbedd0540e511"
+    },
+    {
+      "path": "assets/art/phase8/animations.json",
+      "bytes": 494016,
+      "sha256": "775473dfd4794f26d5418f9cf31caa426a366f94422a5a4dbdd60fe46005a9c4"
+    },
+    {
+      "path": "assets/art/phase8/lisbon-layout.json",
+      "bytes": 18646,
+      "sha256": "78f5a8e2dae69066c209d442df0d2f2af4ddd5167fde27ed6f917ac1f4d05740"
+    },
+    {
+      "path": "assets/art/phase8/london-layout.json",
+      "bytes": 18441,
+      "sha256": "73d15e402959506c1445c049bf8651a4e8b8d981ccb63e1a8f8e4f27e02ebf4b"
+    },
+    {
+      "path": "assets/art/phase8/manifest.json",
+      "bytes": 50908,
+      "sha256": "eac9538210f345676b7a49c61ffa3d12c2b9737a7535cc635c83c2cb3738f2b0"
+    },
+    {
+      "path": "assets/art/phase8/mexico-city-layout.json",
+      "bytes": 18637,
+      "sha256": "9a26e9520c958d6deceacfef1144a6481f597312fb6dbe2ab935ddaaaf799f14"
+    },
+    {
+      "path": "assets/art/phase8/port-layout.json",
+      "bytes": 18523,
+      "sha256": "63f25e48d97b2843d59cc4783db755b40a00d27b51c25f1e54abe57080e62c2d"
+    },
+    {
+      "path": "assets/art/phase8/qa/airport-layout.png",
+      "bytes": 355831,
+      "sha256": "21e3c12471192a7de05fc4f4e63c6d78e637b1859135872813f154cc8485c8b8"
+    },
+    {
+      "path": "assets/art/phase8/qa/lisbon-layout.png",
+      "bytes": 632609,
+      "sha256": "dace83c646a1f8b10644a091656459fa92fd3496502a46eacedbe968d2916cef"
+    },
+    {
+      "path": "assets/art/phase8/qa/london-layout.png",
+      "bytes": 746060,
+      "sha256": "4c71108956c054e6d2a5adc8d708da4feecd993f3251b6fb96883f4f825b8a24"
+    },
+    {
+      "path": "assets/art/phase8/qa/mexico-city-layout.png",
+      "bytes": 657865,
+      "sha256": "b423fcddc199f47e66a347e8c29cea0755ce6a4b7b7722598d734dc7f44a40a0"
+    },
+    {
+      "path": "assets/art/phase8/qa/port-layout.png",
+      "bytes": 483949,
+      "sha256": "c22cc7e50f5158cbb282b2cd2cb08a7dbe877acc59795d6acd8ab3e23dae2275"
+    },
+    {
+      "path": "assets/art/phase8/qa/rig-contact.png",
+      "bytes": 29066,
+      "sha256": "75dbbead2eccedc5fac979dd5bedc84e9f1c65f952a5cb053713520a94138a8f"
+    },
+    {
+      "path": "assets/art/phase8/runtime/aisha-cole-idle-ne.png",
+      "bytes": 2055,
+      "sha256": "d9cb675ad9d4363b376e8d7d1d533e90e6ba517fe40a19cccacbc92f1a671a78"
+    },
+    {
+      "path": "assets/art/phase8/runtime/aisha-cole-idle-nw.png",
+      "bytes": 2017,
+      "sha256": "1d4c9209633fedf3a02efeeb085c89cae76659eea4b8d85b5f484460915f4d6c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/aisha-cole-idle-se.png",
+      "bytes": 1940,
+      "sha256": "dc39d0157416351c9c61ecec76472568b9d43c8195fdbbab732756ab95795532"
+    },
+    {
+      "path": "assets/art/phase8/runtime/aisha-cole-idle-sw.png",
+      "bytes": 1395,
+      "sha256": "8c5bb15b819d9767bff0ab9dad40f3cae965fa6fbe82d2344c6c8bf6b3e9d8b8"
+    },
+    {
+      "path": "assets/art/phase8/runtime/aisha-cole-motion.png",
+      "bytes": 51868,
+      "sha256": "35447441eef4af4b5c5ab89721047d530226e4ddb8ea81b9bfea34ceb84007e0"
+    },
+    {
+      "path": "assets/art/phase8/runtime/arthur-vale-idle-ne.png",
+      "bytes": 1664,
+      "sha256": "bfd111f50ea59412d700b41620080c1d14e559574ffa82dbe95e8d64bd4d4661"
+    },
+    {
+      "path": "assets/art/phase8/runtime/arthur-vale-idle-nw.png",
+      "bytes": 1646,
+      "sha256": "559d8f5fd208be88a5e03e6fbe0b9105c161a7358f3df6ab0bfb0746f8925e9b"
+    },
+    {
+      "path": "assets/art/phase8/runtime/arthur-vale-idle-se.png",
+      "bytes": 1910,
+      "sha256": "f7447bded352fa496fc522162009e2397a55656697308333db28502e7a872b5b"
+    },
+    {
+      "path": "assets/art/phase8/runtime/arthur-vale-idle-sw.png",
+      "bytes": 1527,
+      "sha256": "1c61fc48f921e7406298612303b9e8e70b8f81da1fec48098c1ef4a3140f6fc7"
+    },
+    {
+      "path": "assets/art/phase8/runtime/arthur-vale-motion.png",
+      "bytes": 48603,
+      "sha256": "703903701fb18efb2fc3decafe910f70a6f38812db527f75f5a9094c37be7920"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-idle-ne.png",
+      "bytes": 932,
+      "sha256": "af9ce5deeb1eb5275c7e0e555db988ca3d25ef42b4cff95d08bf67aa6cc373ae"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-idle-nw.png",
+      "bytes": 1275,
+      "sha256": "e3b157fc1ed16b749931e711f0cc9160a494412f5bf160e6b62dc9662c0113c2"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-idle-se.png",
+      "bytes": 847,
+      "sha256": "8971d2f56a9cd42782f17b0c8a1aa5df07f53616190c0dbf37d59fef6b7bcbc9"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-idle-sw.png",
+      "bytes": 1391,
+      "sha256": "1a99ce4c793e4cec83f1b271b27155202bba3a08562a529163bd5a8fcd106ad8"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-motion.png",
+      "bytes": 33791,
+      "sha256": "a0be0d5d6c550461005874cf5db948f75fc78c171b402382ebe94e2cdf7dba60"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-uniform-ne.png",
+      "bytes": 112,
+      "sha256": "ae770daabb6eaa51c83f1b7d3fcc0b087caf165ae88bb5f1be183d957e2c8362"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-uniform-nw.png",
+      "bytes": 113,
+      "sha256": "97fe3946edb4baa0617964c7d3986c4474797505b5ecec7dc44dc11e892d4feb"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-uniform-se.png",
+      "bytes": 113,
+      "sha256": "3174a69488cac5bf4276685ce5180b4247ff80c1d56c1b25b819e502ad08700d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/barista-uniform-sw.png",
+      "bytes": 113,
+      "sha256": "99f7dc21916c4f1d7409e06db5a8130a52bda39532596f42d9b94006d67c3edc"
+    },
+    {
+      "path": "assets/art/phase8/runtime/cargo-aircraft-sw.png",
+      "bytes": 50024,
+      "sha256": "72543c8d296e5f033a0460cd7bdb65c1d259b233c5e1f750588dcdae27f21bfe"
+    },
+    {
+      "path": "assets/art/phase8/runtime/cargo-ship-sw.png",
+      "bytes": 111700,
+      "sha256": "72b9f03d1eb2fd4e4eba6931e453d4d8cfe2e6c5b376323f1515c8418a906e79"
+    },
+    {
+      "path": "assets/art/phase8/runtime/courier-idle-ne.png",
+      "bytes": 1358,
+      "sha256": "ce3da05269e5301d5b70e2357fb26b2aa52f13ac4191a56c3191ea24a337b9c6"
+    },
+    {
+      "path": "assets/art/phase8/runtime/courier-idle-nw.png",
+      "bytes": 1418,
+      "sha256": "8f32cb0b1d02cf457ac92b1afaa50b15bed6069e237756aeb0e1b0c9ced17682"
+    },
+    {
+      "path": "assets/art/phase8/runtime/courier-idle-se.png",
+      "bytes": 1506,
+      "sha256": "f4b1989035cff0812b716b1df06e0487a6abeddfc8410fc1faab188e775ba119"
+    },
+    {
+      "path": "assets/art/phase8/runtime/courier-idle-sw.png",
+      "bytes": 1552,
+      "sha256": "889c70dcad39811ed5de939ba15b5fad7ba3f0c00b20346c7760827dc0518865"
+    },
+    {
+      "path": "assets/art/phase8/runtime/courier-motion.png",
+      "bytes": 43264,
+      "sha256": "3edd59f76c2e26413bcd0649f962b75700912f0dd9ab2195cbab39d2bbd561a0"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-idle-ne.png",
+      "bytes": 1549,
+      "sha256": "60375b0687e1fea5d81a116591d2a0297542330470030d2330d24c14bf5700e2"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-idle-nw.png",
+      "bytes": 1559,
+      "sha256": "3c6146dc57e217177a1296ff9bd6e3a34609788ca375f6786dfd0dca482fe44c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-idle-se.png",
+      "bytes": 1537,
+      "sha256": "4b42886204968b93d2afcfb8192d9c086c4a1742b6e7e40ac653ab488e99d242"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-idle-sw.png",
+      "bytes": 1580,
+      "sha256": "30d139bb84116b18413bc367c77d884ff13ec3ac9c27f3741f52091f2822d6f7"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-motion.png",
+      "bytes": 42292,
+      "sha256": "448e18a46e86c9eec0a87e5078e9df8e2d85d8c42c00029d48f63610c7e5cf18"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-uniform-ne.png",
+      "bytes": 155,
+      "sha256": "9b73ea1081db63efe00789d9c5deebbe4595dfde6e5950d67aa7263aeab5608b"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-uniform-nw.png",
+      "bytes": 143,
+      "sha256": "df07f5473445673359df5ea562f0db0d3e94e66e7dd49520b3c44da142372700"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-uniform-se.png",
+      "bytes": 142,
+      "sha256": "9f43de5b055753778668fe7b18052163371d4920405ac4481d31a3c7ee2db179"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dairy-worker-uniform-sw.png",
+      "bytes": 144,
+      "sha256": "de9ca133fcedf359df9f0ea189ce586d7f8831320890979c1b9484d344ccc02d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-idle-ne.png",
+      "bytes": 1468,
+      "sha256": "5c9d9cfe6cf0aa71b58ef256ad49dada27c37f3505dbebdff62aaa6a157384d4"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-idle-nw.png",
+      "bytes": 1522,
+      "sha256": "6c70d5dfa63c042fbf950ddab7bf17e937ab4f05661c885aa00fb09f9c516a1b"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-idle-se.png",
+      "bytes": 1563,
+      "sha256": "88beb99a1d1e528f544fdc6e842cfed76bedfbab8f24a825c06800ab336cb552"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-idle-sw.png",
+      "bytes": 1559,
+      "sha256": "64971cb0352a6b17b3711c45b77b6d3c02ba6f89d6a306a4b637bce1fa443e2e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-motion.png",
+      "bytes": 41478,
+      "sha256": "37d7ccf8c797351d6c8c62158604bedf90d6bedb0b3f3ae652ef44540a5058ff"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-uniform-ne.png",
+      "bytes": 115,
+      "sha256": "da9b4dc5e7aa25d87b6eab028e2c668e5262682715a16495526680e8409ff7e9"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-uniform-nw.png",
+      "bytes": 121,
+      "sha256": "78a12be9532622857e543b93ea71a19546beef1678e07de72185339e8550e94b"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-uniform-se.png",
+      "bytes": 128,
+      "sha256": "db0cf84b81391f658a0523acd83922280f9ed407ebb3d102c156abade3b53c37"
+    },
+    {
+      "path": "assets/art/phase8/runtime/delivery-driver-uniform-sw.png",
+      "bytes": 124,
+      "sha256": "4e43d92751c26aa1c3128238b85c2b4fa7dcf9dacf70646ab135b82cb56c9356"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dev-patel-idle-ne.png",
+      "bytes": 1635,
+      "sha256": "9a707baa3a33ff13eacbdf5f9490d8b95a09fc4a3f9d992c64d3490497cb1302"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dev-patel-idle-nw.png",
+      "bytes": 1659,
+      "sha256": "7be7c00f8c72a686639543a9cfa98f03e9f81d0a43e3e9f75b6cfc52936d40a0"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dev-patel-idle-se.png",
+      "bytes": 1896,
+      "sha256": "d9118c5e896d50752645bdfafe349725f7dcbd38408f76af994d618983cb8a97"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dev-patel-idle-sw.png",
+      "bytes": 1406,
+      "sha256": "9dfc0c9b5eb58b8113ef2aa7fe3ef68aa7a0004275e37c9afbdc6e346a5699f6"
+    },
+    {
+      "path": "assets/art/phase8/runtime/dev-patel-motion.png",
+      "bytes": 46756,
+      "sha256": "f86949d7a04d4139e921beab34b991d5d3891c54845c981b00905f00b66c8d62"
+    },
+    {
+      "path": "assets/art/phase8/runtime/evelyn-park-idle-ne.png",
+      "bytes": 1713,
+      "sha256": "6da2a110d95c4adcdcb0445a63bd8b849ea73a326c2e8568367fe90713857513"
+    },
+    {
+      "path": "assets/art/phase8/runtime/evelyn-park-idle-nw.png",
+      "bytes": 1734,
+      "sha256": "8f40b1dd80daaf4494ec2693ef177ecc9f68c8b55b243ed19f56e83cf4ff0512"
+    },
+    {
+      "path": "assets/art/phase8/runtime/evelyn-park-idle-se.png",
+      "bytes": 1854,
+      "sha256": "645946a0ce6aeadce15b0c7390ba0ddfe056adadbf129283bb539c51e0193f88"
+    },
+    {
+      "path": "assets/art/phase8/runtime/evelyn-park-idle-sw.png",
+      "bytes": 1467,
+      "sha256": "3ef09a00b3eddc4064005b4da231303041f65b5b82871b609208368fa502f67e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/evelyn-park-motion.png",
+      "bytes": 45659,
+      "sha256": "a0728ec174998a08280afb43d74cb3758d31c75dd2a4e7a1db334172737c6dba"
+    },
+    {
+      "path": "assets/art/phase8/runtime/executive-office.png",
+      "bytes": 271044,
+      "sha256": "1f49b0e39b104237c0ff89e4bc5aa11feebc9eb3ad786e2d39dad5b6fc6bab44"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farah-ali-idle-ne.png",
+      "bytes": 1527,
+      "sha256": "40b582e20de13476e12c8cbed13c2810396b30ac4a3847cd4986b392fa6e7edd"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farah-ali-idle-nw.png",
+      "bytes": 1536,
+      "sha256": "91ca166dd13e7feca1b580ff444430fff17d6f441dfea2e1546b9077cbd44993"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farah-ali-idle-se.png",
+      "bytes": 1825,
+      "sha256": "a587f6ed0fdefb79e5c2ed1c0694a282b0a399241e37f937437e442ba3cfd7b1"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farah-ali-idle-sw.png",
+      "bytes": 1373,
+      "sha256": "78a2a8d2f911534844c287f1ca74339ca98545af66d81e587ac7453f11d99362"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farah-ali-motion.png",
+      "bytes": 44098,
+      "sha256": "321335808f4ccb98a5ea1099f1d3184431eea87b4d7e0e0a511fb08a4178b032"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-pickup-ne.png",
+      "bytes": 20645,
+      "sha256": "4c13cbb4aee13800d265fd975d62524b5287d2b0dde2fc99eb8b68da17b82e7e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-pickup-nw.png",
+      "bytes": 20725,
+      "sha256": "b6e3caf0622bd1a9a7f8256f53c525b8bcbf330e79a3dce5dd0ddf1947e6800f"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-pickup-se.png",
+      "bytes": 21772,
+      "sha256": "08d4109373eb32aed7bd8f01e868a7214494a9d7aa7ec1ffa74556ff60e00b96"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-pickup-sw.png",
+      "bytes": 21794,
+      "sha256": "c99ce2675baaf6da8898e245c8cf3407bcb4755e2782d26ef701ed153f5b9a7f"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-idle-ne.png",
+      "bytes": 1531,
+      "sha256": "2a0b9e6b4a84c7c02ecc86853abbd0664165bab6020dd8e215798a26cc45cf89"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-idle-nw.png",
+      "bytes": 1550,
+      "sha256": "11717fe5a54d694bfb9ba3e72eaa0018eb3078d150972ff15889af2daa8282e3"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-idle-se.png",
+      "bytes": 1600,
+      "sha256": "2f476f1c64a2155d4978d2650420de22a19ee640b4f695505b51168be26b242d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-idle-sw.png",
+      "bytes": 1634,
+      "sha256": "da87ea0ca539526366cd432f87022c88256a7482a0a0112066113132a3076134"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-motion.png",
+      "bytes": 42576,
+      "sha256": "042fa584db932f565ca2c3f5a2829beaa3a4a1c06072e8606dc9366de7457a59"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-uniform-ne.png",
+      "bytes": 150,
+      "sha256": "93987c0d5076bdbf3d46804adf063d1b3eaffdb1440f2e4811a30cad218f6d18"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-uniform-nw.png",
+      "bytes": 171,
+      "sha256": "776bc0260fb571a9602c62de2a7b291963d947d8e485dc7e3499eaaea6b06c96"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-uniform-se.png",
+      "bytes": 138,
+      "sha256": "fb090a04ce46ecb8e3902475e71e50b34215b16df86d4c9ed97259f846efe752"
+    },
+    {
+      "path": "assets/art/phase8/runtime/farm-worker-uniform-sw.png",
+      "bytes": 139,
+      "sha256": "e0f2f215a5b5c180777f1ab631ab310797d578e5f824439914fe220aa9b2725f"
+    },
+    {
+      "path": "assets/art/phase8/runtime/imogen-shaw-idle-ne.png",
+      "bytes": 1351,
+      "sha256": "fc75037b566599c2d0544452290b3d44527c3932dbc654cfa30a0ab79b002180"
+    },
+    {
+      "path": "assets/art/phase8/runtime/imogen-shaw-idle-nw.png",
+      "bytes": 1312,
+      "sha256": "c5e0dc97360c3158debe60ee67138406a8a4e1a5ed953b6bfe7fc50c0af0a43c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/imogen-shaw-idle-se.png",
+      "bytes": 1694,
+      "sha256": "e73f253005c94581a525a7c560a4b313921eae8d3722e162e261847ceba68568"
+    },
+    {
+      "path": "assets/art/phase8/runtime/imogen-shaw-idle-sw.png",
+      "bytes": 1316,
+      "sha256": "89534c76b16ae2451e0335887bfbe40b617476e72fc6dc6d8378fe72fc0b8b8d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/imogen-shaw-motion.png",
+      "bytes": 40579,
+      "sha256": "43bd352ee78d7793f67aa773db29a403769a4d0327c8e41fd10e297289be635a"
+    },
+    {
+      "path": "assets/art/phase8/runtime/kit-morgan-idle-ne.png",
+      "bytes": 1665,
+      "sha256": "e1eb6a7982649f4aa6e856e11b880b0a995dd195fba4b32fcac005abad091b96"
+    },
+    {
+      "path": "assets/art/phase8/runtime/kit-morgan-idle-nw.png",
+      "bytes": 1669,
+      "sha256": "ba3b037ec180e18f9f88a5a284464af7111810abf1a4a4f3007d936b47fd31fa"
+    },
+    {
+      "path": "assets/art/phase8/runtime/kit-morgan-idle-se.png",
+      "bytes": 1896,
+      "sha256": "6640b75f996225491a72751864ff4199c16ed66c23321be80ac244fe5bf414d6"
+    },
+    {
+      "path": "assets/art/phase8/runtime/kit-morgan-idle-sw.png",
+      "bytes": 1446,
+      "sha256": "3efe69d5c314ef0e0c4cffd4b1dd58934dcfc9c7aed13d03eac7f260a3775177"
+    },
+    {
+      "path": "assets/art/phase8/runtime/kit-morgan-motion.png",
+      "bytes": 46573,
+      "sha256": "5f1bd3fa1ec503c15878f9483c419c105f4e5057b2e04d3fc563b478ff4d9a3e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/leo-marsh-idle-ne.png",
+      "bytes": 1911,
+      "sha256": "7b2e3f62ee3aa18218691744532b37c69c37b47b4dfa243a3286b15712de9171"
+    },
+    {
+      "path": "assets/art/phase8/runtime/leo-marsh-idle-nw.png",
+      "bytes": 1927,
+      "sha256": "19c8bf055aa3cb23ccea3ad35f518084b43466c62e15ecf4d8f7aff5b88e5c9d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/leo-marsh-idle-se.png",
+      "bytes": 1973,
+      "sha256": "75ed86a7944b1de190fe0d3b9c3f850423f159ac59b95b280165ec934124b403"
+    },
+    {
+      "path": "assets/art/phase8/runtime/leo-marsh-idle-sw.png",
+      "bytes": 1685,
+      "sha256": "e0076e9cbff993a5380d1c963846458b7cd9719cf590d0ae8bf7c1828575d2b5"
+    },
+    {
+      "path": "assets/art/phase8/runtime/leo-marsh-motion.png",
+      "bytes": 52461,
+      "sha256": "1be244d7732f1a5d6085e5cc09c4f6ab5013c7cd500a955b9fee89f2d576af43"
+    },
+    {
+      "path": "assets/art/phase8/runtime/maya-reed-idle-ne.png",
+      "bytes": 1679,
+      "sha256": "e0c188ecaaf9d3e20e653685f23e039b56eb02d4011e6fee930c014b92b0d623"
+    },
+    {
+      "path": "assets/art/phase8/runtime/maya-reed-idle-nw.png",
+      "bytes": 1652,
+      "sha256": "f18e3c8ec244716c87398456b539401279352ecefddeafab73cbd8bce98ecd46"
+    },
+    {
+      "path": "assets/art/phase8/runtime/maya-reed-idle-se.png",
+      "bytes": 1781,
+      "sha256": "b00ac61e967375f9bf65334896b1842605def19aae8ec186555bd7857a7e8749"
+    },
+    {
+      "path": "assets/art/phase8/runtime/maya-reed-idle-sw.png",
+      "bytes": 1441,
+      "sha256": "5e7d49d4b9e879b1699b3b730898297d6fba79440412a9411fb682da45f2139d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/maya-reed-motion.png",
+      "bytes": 43891,
+      "sha256": "75bd59ff6330c1aa17dec84c8a663902949abe6e5a3aca2c329fda72fba97a14"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-idle-ne.png",
+      "bytes": 1586,
+      "sha256": "7b1808b393213f16b7097914db0aac9b66aa8c4bf21435e0cd227be336f2c56c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-idle-nw.png",
+      "bytes": 1583,
+      "sha256": "870e3e3ad910ca844a76f63521cf33c859ab5ccb4a44c8a6221eacb50d63cde1"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-idle-se.png",
+      "bytes": 1606,
+      "sha256": "bf6096cc8f1b76053b5b372b58ea6d7f7c075e2016250c5fb5f1d8eeee4ce178"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-idle-sw.png",
+      "bytes": 1610,
+      "sha256": "5a49ce34d9583686781e164ec06eece73209d4a42909ad59cee29578770b9cbb"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-motion.png",
+      "bytes": 43498,
+      "sha256": "4c7559be98dd25887782b44c602eb7c36eb9f168bf190653650fcc34f11fefee"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-uniform-ne.png",
+      "bytes": 141,
+      "sha256": "aea30e1ea40ee1b38c170916ca804df8900fa1a199a99c3fa645c4db5c6bad7c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-uniform-nw.png",
+      "bytes": 150,
+      "sha256": "a80ea5fa732d45ae21f64f40c88f3b47c56cddb149647310fa1de8299559cb88"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-uniform-se.png",
+      "bytes": 147,
+      "sha256": "65fe462e79f6a6df53ff49a73f5a1c454a5132153d5d7aad03b92718097b1812"
+    },
+    {
+      "path": "assets/art/phase8/runtime/mill-worker-uniform-sw.png",
+      "bytes": 145,
+      "sha256": "25c616e4f75d26b66aa92236492e849ac014d726175b1a101a63c9926668bf08"
+    },
+    {
+      "path": "assets/art/phase8/runtime/nora-bell-idle-ne.png",
+      "bytes": 1670,
+      "sha256": "bb23a37e20869e8a60f76b9d66753226b5e93d574fc998d45ee5c126517d8fb2"
+    },
+    {
+      "path": "assets/art/phase8/runtime/nora-bell-idle-nw.png",
+      "bytes": 1646,
+      "sha256": "7292c09bcdc53123aca580954913b9671447467e538865034186621bad58fe11"
+    },
+    {
+      "path": "assets/art/phase8/runtime/nora-bell-idle-se.png",
+      "bytes": 1848,
+      "sha256": "6c380d43d72da9510a2d2debf3936a4b1307c92346a174bff14e3d116292ff91"
+    },
+    {
+      "path": "assets/art/phase8/runtime/nora-bell-idle-sw.png",
+      "bytes": 1541,
+      "sha256": "2e477dfbedab8dc02f4f46b14e061ec2ae784a3a9fc63815c40681a06d972065"
+    },
+    {
+      "path": "assets/art/phase8/runtime/nora-bell-motion.png",
+      "bytes": 45543,
+      "sha256": "26a2c21ba2d053e81f0f10c564c7f9a921a6f902d1a9704bf89194665bf8162d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/owen-price-idle-ne.png",
+      "bytes": 1899,
+      "sha256": "4768550cc3b4eeb509933dac00fa7c650c7fa279da64a1b8532808244e9f65d3"
+    },
+    {
+      "path": "assets/art/phase8/runtime/owen-price-idle-nw.png",
+      "bytes": 1893,
+      "sha256": "550b936699717fb4946434c469f6ca2da9456175c25f3b51742f853317b47301"
+    },
+    {
+      "path": "assets/art/phase8/runtime/owen-price-idle-se.png",
+      "bytes": 1902,
+      "sha256": "d3fea1d2107e6b9f3da9d588dae04dbf284e45aa10f47b91159e40813f49e07e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/owen-price-idle-sw.png",
+      "bytes": 1374,
+      "sha256": "cac6e3d368c391dcbb8fb6cab053d4b698878e7d71fa749faee2684e8e2f2874"
+    },
+    {
+      "path": "assets/art/phase8/runtime/owen-price-motion.png",
+      "bytes": 50014,
+      "sha256": "0f06655d5324198c357179e5693a1d2d12a4c41bc26fc3ae8eb8796bb7e41114"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-idle-ne.png",
+      "bytes": 993,
+      "sha256": "3d27cb2fbc37848eadd3b2bd18d4d6bd4ba13a619d6721026461d36bcf3fdd4c"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-idle-nw.png",
+      "bytes": 1427,
+      "sha256": "eef2ba1b1b5c8f279ed5249d408597f8047a4a650088e4483087ef5c49fca523"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-idle-se.png",
+      "bytes": 1043,
+      "sha256": "c04b7b3e31aa1993baf247fe018955f7f639b16e61c07e12ba1071475cbb8d99"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-idle-sw.png",
+      "bytes": 1458,
+      "sha256": "fcfd7d52f5a5924f4c9d0d22aae42aa07a8797badf842b9a5c09e612f91e5d69"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-motion.png",
+      "bytes": 37590,
+      "sha256": "92fe69e26f4ceb9c5ff1f4e20650c9d67a32a057d0373923fd392ebb3313c7c7"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-uniform-ne.png",
+      "bytes": 119,
+      "sha256": "d600e24339ae982e40ea508d13d3f1f41943fc78abaf23b93adc97eb40ecbb25"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-uniform-nw.png",
+      "bytes": 156,
+      "sha256": "790b99437587360d1308e82a876b1f1b78ef2faea82e52b4b31335e97d8727a4"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-uniform-se.png",
+      "bytes": 118,
+      "sha256": "0ab25656d456d0a656aa4b4d912add5dc48b377694f92c4016a784acf8454116"
+    },
+    {
+      "path": "assets/art/phase8/runtime/pizza-chef-uniform-sw.png",
+      "bytes": 146,
+      "sha256": "4562c20201d61f86c8cff3af3fe3c0872366fbe12c41c313fedb9720b171ad7d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/rafael-costa-idle-ne.png",
+      "bytes": 1643,
+      "sha256": "f976c752d8881756d43e6ddd046df651c657644cb1b388fbac28b876c775b530"
+    },
+    {
+      "path": "assets/art/phase8/runtime/rafael-costa-idle-nw.png",
+      "bytes": 1676,
+      "sha256": "02e5377ad506ef18014335a4cd73217f66176190bb5153a9a9b29609fc45b8b8"
+    },
+    {
+      "path": "assets/art/phase8/runtime/rafael-costa-idle-se.png",
+      "bytes": 2056,
+      "sha256": "d254f1f55b02926e533e2d5b3cb566a8c54373be255ba434e4e71b29173d324e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/rafael-costa-idle-sw.png",
+      "bytes": 1498,
+      "sha256": "fc9d0214d4e2bf914dc0cb76523ee7ceea005f4de9522368eead7d1c02702bd7"
+    },
+    {
+      "path": "assets/art/phase8/runtime/rafael-costa-motion.png",
+      "bytes": 46002,
+      "sha256": "425b3efb231bc4577c9ea8a76498b53ff3710e6a732ce56716a2199451eb28ef"
+    },
+    {
+      "path": "assets/art/phase8/runtime/terrain-east.svg",
+      "bytes": 264,
+      "sha256": "faf8756e897fc9b320a93e14a3bf3f42478b03ae339eda1a6ea132b248fd9237"
+    },
+    {
+      "path": "assets/art/phase8/runtime/terrain-flat.svg",
+      "bytes": 263,
+      "sha256": "ceedc31e481734465b6fba1ec8d7097455dcdf3ceb03fc58ba0032d09f3bc4e8"
+    },
+    {
+      "path": "assets/art/phase8/runtime/terrain-north.svg",
+      "bytes": 263,
+      "sha256": "d22eaf841b531d02556cf0093b4d11358435adff39f5e567bcdbcc755b694dce"
+    },
+    {
+      "path": "assets/art/phase8/runtime/terrain-south.svg",
+      "bytes": 264,
+      "sha256": "335555ad4175eaf56c64b000c1d9a3e3a755a1bfcd3a1bdea1d4e833b1b718bc"
+    },
+    {
+      "path": "assets/art/phase8/runtime/terrain-west.svg",
+      "bytes": 263,
+      "sha256": "0ffea99744f8fbc4983c759315bc11a8e5a511e818fafc9d02d14284a6271f52"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-idle-ne.png",
+      "bytes": 1508,
+      "sha256": "8bae0bc063efd1169f5b546803325c89f8e0f4ee5580201c674e5258e0e0b4fb"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-idle-nw.png",
+      "bytes": 1529,
+      "sha256": "914a5363d2d3fe3c2dbf8233be2e8a5bcee0421d3658040ef0082849f0b4bac2"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-idle-se.png",
+      "bytes": 1666,
+      "sha256": "fb74dedaae4ff1b9bc50e0ab0fd444d37fcbcc59a6aad1631aebd0d246274d3d"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-idle-sw.png",
+      "bytes": 1624,
+      "sha256": "6491cb91dd9b06af820835da900f3f9190bfc3f049fa1854c0bbd6d1d38e37b9"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-motion.png",
+      "bytes": 43677,
+      "sha256": "3db8dffd2bc65d0cf06a05a51a004f5e338e285caede6bee55b1604b94992bd3"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-uniform-ne.png",
+      "bytes": 149,
+      "sha256": "af273a8ddf3e6b94727ad8037a19b0cdf0bc5bb1a95fdc5b7b771adf8a7ef761"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-uniform-nw.png",
+      "bytes": 148,
+      "sha256": "c7a2ab44df6d4c2cb7409ef578705d00e44f45d8ea3f5ae45a404ec4262fd963"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-uniform-se.png",
+      "bytes": 137,
+      "sha256": "23e3a8ed6dac89be9a1ba913aea24f5674f22a64c1e49fa7ebe636c209744cc9"
+    },
+    {
+      "path": "assets/art/phase8/runtime/timber-worker-uniform-sw.png",
+      "bytes": 144,
+      "sha256": "f00471fc20ef747ac1b3a7d6a73129a866e1c624f6f85f62422c2e63f16fc99a"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-idle-ne.png",
+      "bytes": 1524,
+      "sha256": "8885cce943e7aa3cd7ddc7a7fdbc2861b6eb06b12af602722e9e075a211ac966"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-idle-nw.png",
+      "bytes": 1538,
+      "sha256": "0248392d2fe92503bd74fc11697492aaddb8c77cd19a373b0cc953bb30f3c8b3"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-idle-se.png",
+      "bytes": 1631,
+      "sha256": "3c4ca00f8c15f670c6f627d664cb2e0d49bf85c8d417b2ff46cbb1fcfc845ca8"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-idle-sw.png",
+      "bytes": 1618,
+      "sha256": "9817afbae4853a12cdfbcc936658a9fc3c7cba640788113585c5ba9156e6d619"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-motion.png",
+      "bytes": 43379,
+      "sha256": "43cd00e14daedcc4841146f02d3460e4ff039adef9b0e996152b25e687f190e7"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-uniform-ne.png",
+      "bytes": 122,
+      "sha256": "01789f10da48c14064e072b7b6a3123c28e993a3dba9ac0570d7c08f0696bc4a"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-uniform-nw.png",
+      "bytes": 134,
+      "sha256": "b8b9ba3ce465e22983c8e76eb023d3a57b6c96771fac0e12dc29c4a49f2ca14e"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-uniform-se.png",
+      "bytes": 130,
+      "sha256": "409c03eb9a12b1617882ebd8984524876329f655d1a447bc9482cde4685fcc39"
+    },
+    {
+      "path": "assets/art/phase8/runtime/warehouse-worker-uniform-sw.png",
+      "bytes": 141,
+      "sha256": "7eb4e92ce779887576b10a1ed375bb20a4c5776ce41d852b177524fc5d148ee3"
+    },
+    {
+      "path": "assets/art/phase8/source/barista-directions.png",
+      "bytes": 641897,
+      "sha256": "b1e11aa0cb801b8cacac0773626af623d793219db13cd48a6e482f47522657bf"
+    },
+    {
+      "path": "assets/art/phase8/source/cargo-aircraft.png",
+      "bytes": 973701,
+      "sha256": "e058b5ad1f8ee0def557b8f5645021470ff253ee80a7fd2e9401e68177287d9e"
+    },
+    {
+      "path": "assets/art/phase8/source/cargo-ship.png",
+      "bytes": 1193197,
+      "sha256": "f4e50b77596d88878d6da9578da9bc3a035009c8d1be6bb045090aec6ad8bdc3"
+    },
+    {
+      "path": "assets/art/phase8/source/courier-directions.png",
+      "bytes": 1118809,
+      "sha256": "c96a159759b264f1ea64bec368252a41fd638bcb996d0e4bd90ed9f5be81310e"
+    },
+    {
+      "path": "assets/art/phase8/source/dairy-worker-directions.png",
+      "bytes": 687847,
+      "sha256": "0bcce25f17a2f57992b450a56be576185112061a9a02cbdb0b790f54522c283e"
+    },
+    {
+      "path": "assets/art/phase8/source/delivery-driver-directions.png",
+      "bytes": 700229,
+      "sha256": "c85fa946b43fc8fc01e36c629cb22bffe4b69446f1d233d9cea10558ee2fe4f0"
+    },
+    {
+      "path": "assets/art/phase8/source/executive-office.png",
+      "bytes": 2129546,
+      "sha256": "741e3829fb81e6216f36a5ffb299b3d0fbddd4fd9675ffebd2aa1d1074747bb1"
+    },
+    {
+      "path": "assets/art/phase8/source/farm-worker-directions.png",
+      "bytes": 711452,
+      "sha256": "9cbae903fdc91fc640abeeed3640d0a411a7b5f4b2b375231d1a1b1743fc975b"
+    },
+    {
+      "path": "assets/art/phase8/source/mill-worker-directions.png",
+      "bytes": 698894,
+      "sha256": "d93bef037f1738cfd4a2c0d596d5beba609023c90b531c0e41c819a30531406e"
+    },
+    {
+      "path": "assets/art/phase8/source/owner-back-directions.png",
+      "bytes": 1373370,
+      "sha256": "21eb8a590af7b20489b528a4ff2cd6b183d2fd7fa8c466f247f73f9e1067c1b9"
+    },
+    {
+      "path": "assets/art/phase8/source/owner-se-directions.png",
+      "bytes": 953954,
+      "sha256": "02c55ea6d180c533f265c30881f4d06c536de1a4e02779c32517fff338a755ae"
+    },
+    {
+      "path": "assets/art/phase8/source/pickup-directions.png",
+      "bytes": 1573069,
+      "sha256": "f7e38221fad91abb0e83a11225b84adadcdf73e14757fa1d3737acfaf3d5099c"
+    },
+    {
+      "path": "assets/art/phase8/source/pizza-chef-directions.png",
+      "bytes": 769344,
+      "sha256": "f038b8456fa22e3cbd7d65ac08d53b47aea909d0a3639cfa57b77c18279bbf92"
+    },
+    {
+      "path": "assets/art/phase8/source/timber-worker-directions.png",
+      "bytes": 734927,
+      "sha256": "2cbb4a3d6bb6a72b9ef53bd5eee3578476478a0e9821e079432cea1577365cf8"
+    },
+    {
+      "path": "assets/art/phase8/source/warehouse-worker-directions.png",
+      "bytes": 635965,
+      "sha256": "fa7d9a75262704f1b240305e6d454450f766cb0dff2f1561b28c7843ea2b4e6b"
+    },
+    {
+      "path": "assets/art/phase8/terrain.json",
+      "bytes": 1229,
+      "sha256": "8d624ca45405d7ac6c304839eac3a77a24c8cc5b04d1d01181fa9ede3377ee63"
+    },
+    {
+      "path": "assets/art/phase8/uniform-masks.json",
+      "bytes": 11384,
+      "sha256": "b9dc3af18a659dd3c9eb4d40ef83e1dc3a91196d1bb302ebcd75490566224062"
+    }
+  ]
+}
