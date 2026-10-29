@@ -28,7 +28,7 @@ import { treasuryView } from '../engine/commercial';
 import { runScheduledServices } from '../engine/services';
 import { treasuryAction } from '../engine/treasuryAdmin';
 import { leaderboard } from '../engine/prestige';
-import { adminHealth, onboarding } from './alpha';
+import { adminHealth, economyAudit, onboarding } from './alpha';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
 export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown; headers?: Record<string, string> }
@@ -144,6 +144,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       const actor = opts.adminActor ?? 'admin'; const b = (req.body ?? {}) as Record<string, unknown>; const reason = String(b.reason ?? '');
       const wrap = (r: { ok: boolean; message: string; detail?: unknown }) => json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } });
       if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db), params: ADMIN_PARAMS, log: adminLog(db) });
+      if (method === 'GET' && seg[1] === 'audit') return json(200, { authority: 'server', audit: economyAudit(db) });
       if (method === 'GET' && seg[1] === 'health') return json(200, { authority: 'server', health: adminHealth(db), log: adminLog(db) });
       if (method === 'GET' && seg[1] === 'treasury') return json(200, { authority: 'server', treasury: treasuryView(db) });
       if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, actor, seg[2], b); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }
@@ -159,6 +160,7 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       if (!opts.devEndpoints) return apiErr(404, 'FORBIDDEN', 'Developer endpoints are disabled');
       if (method === 'GET' && seg[1] === 'economy') return json(200, economyDashboard(db));
       if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db) });
+      if (method === 'GET' && seg[1] === 'audit') return json(200, { authority: 'server', audit: economyAudit(db) });
       if (method === 'GET' && seg[1] === 'health') return json(200, { authority: 'server', health: adminHealth(db), log: adminLog(db) });
       if (method === 'GET' && seg[1] === 'treasury') return json(200, { authority: 'server', treasury: treasuryView(db), withdrawals: db.all("SELECT id, player_id playerId, amount_pence amountPence, status, reason, created_ms createdMs FROM gbp_withdrawals ORDER BY created_ms DESC, id DESC LIMIT 30"), deposits: db.all('SELECT id, player_id playerId, amount_pence amountPence, status, fee_pence feePence, failure_reason failureReason FROM gbp_deposits ORDER BY created_ms DESC, id DESC LIMIT 30'), audit: db.all('SELECT id, ms, actor, action, subject, detail_json detail, ok FROM gbp_audit ORDER BY id DESC LIMIT 40').map((a: any) => ({ ...a, detail: JSON.parse(a.detail) })) });
       if (method === 'POST' && seg[1] === 'treasury' && seg[2]) { const r = treasuryAction(db, now, 'developer', seg[2], (req.body ?? {}) as Record<string, unknown>); return json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } }); }

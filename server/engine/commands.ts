@@ -11,6 +11,7 @@ import { ShareError } from './capital';
 import { logEvent } from './stats';
 import { TREASURY } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
+import { outstandingDebt } from './bank';
 
 export type CommandOk<T = unknown> = { ok: true; revision: number; transactionId: string; refreshScreens: string[]; data?: T };
 export type CommandErr = { ok: false; error: ApiError };
@@ -117,8 +118,11 @@ export function withdrawFromCompany(db: Sql, key: string, companyId: string, amo
     const c = owned(db, companyId); if (isErr(c)) return c;
     if (!Number.isSafeInteger(amountMinor) || amountMinor <= 0) return err('VALIDATION', 'Amount must be a positive whole number of minor units.');
     if (c.unpaid_minor > 0) return err('FORBIDDEN', 'Settle arrears before taking money out of the company.');
-    const reserve = c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
-    if (available(db, c.treasury_account_id) - amountMinor < reserve) return err('INSUFFICIENT_FUNDS', `The company must keep ${reserve / 100} EC to cover a day of operating costs.`);
+    // Loan covenant: while the company owes the National Bank, the borrowed coins stay in the business. Owners can take out only cash above
+    // the outstanding debt (otherwise a player could borrow, withdraw the loan to their wallet and let the company fail, leaving the bank the loss).
+    const debt = outstandingDebt(db, companyId);
+    const reserve = c.employees * c.wage_minor + c.property_minor + c.marketing_minor + debt;
+    if (available(db, c.treasury_account_id) - amountMinor < reserve) return err('INSUFFICIENT_FUNDS', debt > 0 ? `While it owes the National Bank ${(debt / 100).toFixed(2)} EC, the company must keep that much plus a day of operating costs (${(reserve / 100).toFixed(2)} EC in total).` : `The company must keep ${reserve / 100} EC to cover a day of operating costs.`);
     const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', actingPlayer())!.w;
     const tx = transfer(db, ctx, `cmd:${key}`, c.treasury_account_id, wallet, amountMinor, 'owner_withdrawal', `owner withdrawal from ${c.name}`);
     return { ok: true, revision: c.revision, transactionId: String(tx.txId), refreshScreens: ['city', 'companies', 'wallet'] };
@@ -189,6 +193,13 @@ export function placePlayerOrder(db: Sql, key: string, o: QuoteInput & { quoteId
     const slip = kind === 'market' ? Number(/-market-(\d+)$/.exec(o.quoteId)?.[1] ?? cfg.marketSlippageBps) : undefined;
     const expiresIn = kind !== 'limit' ? null : o.expiresInTicks === undefined ? 30 : o.expiresInTicks;
     if (expiresIn !== null && (!Number.isSafeInteger(expiresIn) || expiresIn < 1 || expiresIn > cfg.maxOrderTicks)) return err('VALIDATION', `An order can last 1 to ${cfg.maxOrderTicks} days.`);
+    if (o.side === 'buy') {
+      // Storage is physical: goods bought must fit in the warehouse, counting what is already held and what open buy orders may still bring in.
+      const held = db.get<{ q: number }>('SELECT COALESCE(SUM(qty),0) q FROM inventory WHERE company_id = ?', o.companyId)!.q;
+      const onOrder = db.get<{ q: number }>("SELECT COALESCE(SUM(qty_remaining),0) q FROM orders WHERE company_id = ? AND side = 'buy' AND status = 'open'", o.companyId)!.q;
+      const room = c.storage_cap_units - held - onOrder;
+      if (o.quantity > room) return err('VALIDATION', `${c.name} has room for ${Math.max(0, room)} more units (storage ${c.storage_cap_units}, holding ${held}, ${onOrder} already on order).`, { quantity: 'Not enough storage room' });
+    }
     const r = placeOrder(db, ctx, cfg.exchangeFeeBps, { company: o.companyId, commodity: o.commodityId, side: o.side, price: kind === 'market' ? quote.limit_minor : o.limitPriceMinor, qty: o.quantity, key: `player:${key}`, kind, slippageBps: slip, expiresTick: expiresIn === null ? null : ctx.tick + expiresIn, onlyFrom: kind === 'direct' ? o.fromCompanyId : undefined });
     const filled = r.order.qty_original - r.order.qty_remaining;
     return { ok: true, revision: ctx.tick, transactionId: String(r.order.id), refreshScreens: ['commodities', 'city', 'companies'], data: { orderId: r.order.id, filled, remaining: r.order.qty_remaining, status: r.order.status === 'cancelled' && filled > 0 ? 'partially_filled_remainder_cancelled' : r.order.status } };

@@ -1,0 +1,302 @@
+{
+ "spec": {
+  "id": "POP",
+  "name": "1000 players, one year",
+  "seed": 203,
+  "players": 1000,
+  "days": 365
+ },
+ "setup": [
+  "seed 203, 1000 player agents, 365 days, fresh Bristol ('new' profile)"
+ ],
+ "checkpoints": [
+  {
+   "day": 30,
+   "circulatingEC": 20054582,
+   "householdsEC": 47063,
+   "cpiBps": 9651,
+   "consumerSpendPerDayEC": 3219,
+   "velocityBps": 910,
+   "operating": 16,
+   "playerOperating": 10,
+   "bankruptcies": 0,
+   "unmetUnitsPerDay": 0,
+   "loansEC": 0,
+   "shareIndexBps": 9868
+  },
+  {
+   "day": 60,
+   "circulatingEC": 19976535,
+   "householdsEC": 50194,
+   "cpiBps": 9475,
+   "consumerSpendPerDayEC": 3112,
+   "velocityBps": 927,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 1,
+   "unmetUnitsPerDay": 0,
+   "loansEC": 0,
+   "shareIndexBps": 9992
+  },
+  {
+   "day": 90,
+   "circulatingEC": 19907799,
+   "householdsEC": 51187,
+   "cpiBps": 9360,
+   "consumerSpendPerDayEC": 3156,
+   "velocityBps": 931,
+   "operating": 14,
+   "playerOperating": 9,
+   "bankruptcies": 3,
+   "unmetUnitsPerDay": 10,
+   "loansEC": 0,
+   "shareIndexBps": 10422
+  },
+  {
+   "day": 120,
+   "circulatingEC": 19868011,
+   "householdsEC": 53782,
+   "cpiBps": 9673,
+   "consumerSpendPerDayEC": 3223,
+   "velocityBps": 932,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 4,
+   "unmetUnitsPerDay": 0,
+   "loansEC": 0,
+   "shareIndexBps": 10360
+  },
+  {
+   "day": 150,
+   "circulatingEC": 19819224,
+   "householdsEC": 55072,
+   "cpiBps": 9974,
+   "consumerSpendPerDayEC": 2796,
+   "velocityBps": 814,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 4,
+   "unmetUnitsPerDay": 0,
+   "loansEC": 0,
+   "shareIndexBps": 9923
+  },
+  {
+   "day": 180,
+   "circulatingEC": 19790003,
+   "householdsEC": 57621,
+   "cpiBps": 10154,
+   "consumerSpendPerDayEC": 3073,
+   "velocityBps": 890,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 4,
+   "unmetUnitsPerDay": 1,
+   "loansEC": 0,
+   "shareIndexBps": 11847
+  },
+  {
+   "day": 210,
+   "circulatingEC": 19758840,
+   "householdsEC": 53598,
+   "cpiBps": 10274,
+   "consumerSpendPerDayEC": 3007,
+   "velocityBps": 870,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 4,
+   "unmetUnitsPerDay": 1,
+   "loansEC": 97,
+   "shareIndexBps": 12235
+  },
+  {
+   "day": 240,
+   "circulatingEC": 19747607,
+   "householdsEC": 52275,
+   "cpiBps": 10045,
+   "consumerSpendPerDayEC": 2836,
+   "velocityBps": 838,
+   "operating": 14,
+   "playerOperating": 9,
+   "bankruptcies": 6,
+   "unmetUnitsPerDay": 1,
+   "loansEC": 678,
+   "shareIndexBps": 12588
+  },
+  {
+   "day": 270,
+   "circulatingEC": 19703957,
+   "householdsEC": 49067,
+   "cpiBps": 10144,
+   "consumerSpendPerDayEC": 2790,
+   "velocityBps": 834,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 6,
+   "unmetUnitsPerDay": 1,
+   "loansEC": 0,
+   "shareIndexBps": 12845
+  },
+  {
+   "day": 300,
+   "circulatingEC": 19685440,
+   "householdsEC": 45893,
+   "cpiBps": 10323,
+   "consumerSpendPerDayEC": 2821,
+   "velocityBps": 849,
+   "operating": 15,
+   "playerOperating": 10,
+   "bankruptcies": 6,
+   "unmetUnitsPerDay": 2,
+   "loansEC": 0,
+   "shareIndexBps": 13162
+  },
+  {
+   "day": 330,
+   "circulatingEC": 19664447,
+   "householdsEC": 45711,
+   "cpiBps": 10273,
+   "consumerSpendPerDayEC": 2637,
+   "velocityBps": 768,
+   "operating": 14,
+   "playerOperating": 10,
+   "bankruptcies": 7,
+   "unmetUnitsPerDay": 1,
+   "loansEC": 0,
+   "shareIndexBps": 13164
+  },
+  {
+   "day": 360,
+   "circulatingEC": 19645853,
+   "householdsEC": 40986,
+   "cpiBps": 10558,
+   "consumerSpendPerDayEC": 2509,
+   "velocityBps": 722,
+   "operating": 14,
+   "playerOperating": 10,
+   "bankruptcies": 8,
+   "unmetUnitsPerDay": 2,
+   "loansEC": 0,
+   "shareIndexBps": 12957
+  },
+  {
+   "day": 365,
+   "circulatingEC": 19633611,
+   "householdsEC": 39343,
+   "cpiBps": 10481,
+   "consumerSpendPerDayEC": 2552,
+   "velocityBps": 753,
+   "operating": 14,
+   "playerOperating": 10,
+   "bankruptcies": 8,
+   "unmetUnitsPerDay": 2,
+   "loansEC": 0,
+   "shareIndexBps": 13065
+  }
+ ],
+ "money": {
+  "startEC": 20133500,
+  "endEC": 19633611,
+  "changeBps": -248,
+  "issuedByReasonEC": {
+   "genesis": 20124500,
+   "NPC investor seed": 9000,
+   "citizen income grant": 25325
+  },
+  "destroyedByReasonEC": {
+   "incorporation licence": 1950,
+   "state service wear": 8881,
+   "city upkeep": 9058,
+   "prestige purchase": 505000,
+   "exchange fee burn": 326
+  }
+ },
+ "inflation": {
+  "cpiStartBps": 9962,
+  "cpiEndBps": 10481,
+  "annualisedBps": 531
+ },
+ "industries": {
+  "cafe": {
+   "companies": 5,
+   "operating": 4,
+   "meanDailyProfitEC": -9,
+   "meanDailyRevenueEC": 147,
+   "failures": 1
+  },
+  "dairy": {
+   "companies": 4,
+   "operating": 2,
+   "meanDailyProfitEC": 39,
+   "meanDailyRevenueEC": 378,
+   "failures": 2
+  },
+  "farm": {
+   "companies": 3,
+   "operating": 1,
+   "meanDailyProfitEC": 15,
+   "meanDailyRevenueEC": 212,
+   "failures": 2
+  },
+  "mill": {
+   "companies": 3,
+   "operating": 1,
+   "meanDailyProfitEC": 19,
+   "meanDailyRevenueEC": 295,
+   "failures": 2
+  },
+  "pizza": {
+   "companies": 3,
+   "operating": 3,
+   "meanDailyProfitEC": 59,
+   "meanDailyRevenueEC": 671,
+   "failures": 0
+  },
+  "timber": {
+   "companies": 4,
+   "operating": 3,
+   "meanDailyProfitEC": -18,
+   "meanDailyRevenueEC": 80,
+   "failures": 1
+  }
+ },
+ "concentration": {
+  "topSellerShareBps": {
+   "cheese": 7269,
+   "coffee": 10000,
+   "flour": 7003,
+   "milk": 10000,
+   "packaging": 10000,
+   "wheat": 5066
+  }
+ },
+ "credit": {
+  "loansMade": 2,
+  "defaults": 0,
+  "writtenOffEC": 0
+ },
+ "markets": {
+  "commodityTrades": 7823,
+  "commodityValueEC": 620482,
+  "shareTrades": 2821,
+  "shareValueEC": 142908
+ },
+ "wallet": {
+  "liabilitiesPence": 0,
+  "reconciles": true
+ },
+ "performance": {
+  "msPerTickAvg": 170,
+  "msPerTickMax": 594,
+  "msPerCommand": 1.26,
+  "commands": 18961
+ },
+ "audit": {
+  "ok": true,
+  "findings": []
+ },
+ "outcome": {
+  "playersStillOperating": 10,
+  "finalOperating": 14,
+  "finalUnmetUnitsPerDay": 2
+ }
+}

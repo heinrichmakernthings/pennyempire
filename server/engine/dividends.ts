@@ -1,3 +1,4 @@
+import { outstandingDebt } from './bank';
 import type { Sql } from '../db/sql';
 import type { EngineConfig } from './config';
 import { ShareError, companyInvestorId, getInvestor, security } from './capital';
@@ -8,12 +9,12 @@ import type { CompanyRow } from './operations';
 export interface DividendRow { id: number; company_id: string; declared_tick: number; record_tick: number; payment_tick: number; per_share_minor: number; eligible_shares: number; total_minor: number; paid_minor: number; status: 'declared' | 'paid' | 'cancelled'; declared_by: string }
 
 const dailyFixed = (c: CompanyRow) => c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
-/** Cash a dividend may use: treasury cash that is free, less arrears and a reserve of fixed costs so the company stays able to trade. */
+/** Cash a dividend may use: treasury cash that is free, less arrears, outstanding bank debt and a reserve of fixed costs so the company stays able to trade. */
 export function dividendCapacity(db: Sql, cfg: EngineConfig, companyId: string): { capacityMinor: number; eligibleShares: number; maxPerShareMinor: number; reserveMinor: number } {
   const c = db.get<CompanyRow>('SELECT * FROM companies WHERE id = ?', companyId);
   const eligible = eligibleShares(db, companyId);
   if (!c || c.bankrupt_tick !== null || c.status !== 'operating') return { capacityMinor: 0, eligibleShares: eligible, maxPerShareMinor: 0, reserveMinor: 0 };
-  const reserve = cfg.dividendReserveDays * dailyFixed(c) + c.unpaid_minor;
+  const reserve = cfg.dividendReserveDays * dailyFixed(c) + c.unpaid_minor + outstandingDebt(db, companyId);   // loan covenant: no dividends out of borrowed money
   const cap = Math.max(0, available(db, c.treasury_account_id) - reserve);
   return { capacityMinor: cap, eligibleShares: eligible, maxPerShareMinor: eligible > 0 ? Math.floor(cap / eligible) : 0, reserveMinor: reserve };
 }

@@ -139,4 +139,12 @@ describe('private-alpha accounts', () => {
     expect(codes.filter((c) => c === 429).length).toBeGreaterThan(0);
     expect((await b.cmd({ type: 'order.cancel', orderId: 999999 })).status).not.toBe(429);
   });
+
+  it('the economy audit is admin-only and reports clean invariants with money by reason', async () => {
+    const db = fresh(); const a = await player(db, 'alice'); const admin = await player(db, 'root', 'admin');
+    expect((await a.call('GET', '/api/admin/audit')).status).toBe(403);
+    const r = await admin.call('GET', '/api/admin/audit'); expect(r.status).toBe(200);
+    expect(r.body.audit.invariants.ok).toBe(true); expect(r.body.audit.money.issuedByReason.genesis).toBeGreaterThan(0);
+    expect(Object.keys(r.body.audit.money.issuedByReason)).not.toContain('UNEXPLAINED');
+  });
 });

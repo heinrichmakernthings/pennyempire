@@ -1,0 +1,66 @@
+{
+ "machine": "linux x64, node v22.22.0",
+ "tick": {
+  "days": 365,
+  "avgMs": 92,
+  "p95Ms": 184,
+  "maxMs": 219,
+  "byPhaseMs": {
+   "share_decisions": 24.4,
+   "share_closing": 14.3,
+   "procurement": 11.4,
+   "expenses": 7.2,
+   "consumers": 5.9,
+   "npc_decisions": 4.3,
+   "logistics": 3.1,
+   "history": 3,
+   "listings": 2.8,
+   "order_expiry": 2.4,
+   "production": 2.2,
+   "market_stats": 2,
+   "start": 1.8,
+   "share_opening": 1.7,
+   "standings": 1.6,
+   "npc_rules": 1.2,
+   "reputation_insolvency": 0.8,
+   "state_wear": 0.6,
+   "income": 0.4,
+   "exchange": 0.3,
+   "state_supply": 0.2,
+   "central_bank": 0.1,
+   "contracts": 0,
+   "state_sink": 0
+  },
+  "sqlPerTick": 3465
+ },
+ "throughput": {
+  "ledgerTransfersPerSec": 10202,
+  "orderMatchesPerSec": 737,
+  "ordersPlacedPerSec": 1474
+ },
+ "catchUp": {
+  "ticks": 48,
+  "ms": 3957
+ },
+ "scaling": [
+  {
+   "players": 1,
+   "tickAvgMs": 73,
+   "msPerCommand": 0.71
+  },
+  {
+   "players": 10,
+   "tickAvgMs": 88,
+   "msPerCommand": 0.57
+  },
+  {
+   "players": 100,
+   "tickAvgMs": 111,
+   "msPerCommand": 0.6
+  }
+ ],
+ "memoryMb": {
+  "heapUsed": 26,
+  "rss": 378
+ }
+}

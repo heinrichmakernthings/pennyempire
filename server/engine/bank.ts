@@ -92,6 +92,9 @@ export function takeLoan(db: Sql, ctx: TickCtx, cfg: EngineConfig, a: { companyI
   return { loanId: id, duplicate: false };
 }
 
+/** What a company still owes the National Bank. Owners cannot take this money out (see the loan covenant in withdrawals and dividends). */
+export const outstandingDebt = (db: Sql, companyId: string) => db.get<{ d: number }>("SELECT COALESCE(SUM(outstanding_minor),0) d FROM loans WHERE borrower_id = ? AND status IN ('active','defaulted')", companyId)!.d;
+
 /** Voluntary early repayment of principal (interest is paid daily, so there is nothing else to settle). */
 export function repayLoan(db: Sql, ctx: TickCtx, a: { loanId: string; companyId: string; amountMinor: number; key: string }): { paidMinor: number; outstandingMinor: number; duplicate: boolean } {
   const loan = db.get<LoanRow>('SELECT * FROM loans WHERE id = ? AND borrower_id = ?', a.loanId, a.companyId); if (!loan) throw new LedgerError('FORBIDDEN', 'No such loan.');
@@ -151,7 +154,8 @@ export function runLoans(db: Sql, ctx: TickCtx, cfg: EngineConfig, hooks: BankHo
 export function depositFunds(db: Sql, ctx: TickCtx, a: { companyId: string; amountMinor: number; key: string }) {
   const k = `deposit:${a.key}`; if (db.get('SELECT 1 FROM ledger_transactions WHERE idempotency_key = ?', k)) return { duplicate: true };
   if (!Number.isInteger(a.amountMinor) || a.amountMinor <= 0) throw new LedgerError('INVALID_AMOUNT', 'Enter an amount to deposit.');
-  const c = db.get<{ treasury_account_id: string; owner_kind: string }>('SELECT treasury_account_id, owner_kind FROM companies WHERE id = ?', a.companyId); if (!c || c.owner_kind === 'state') throw new LedgerError('FORBIDDEN', 'Only player and NPC companies can save with the National Bank.');
+  const c = db.get<{ treasury_account_id: string; owner_kind: string; bankrupt_tick: number | null }>('SELECT treasury_account_id, owner_kind, bankrupt_tick FROM companies WHERE id = ?', a.companyId); if (!c || c.owner_kind === 'state') throw new LedgerError('FORBIDDEN', 'Only player and NPC companies can save with the National Bank.');
+  if (c.bankrupt_tick !== null) throw new LedgerError('FORBIDDEN', 'A liquidated company cannot open savings.');
   transfer(db, ctx, k, c.treasury_account_id, bankAcct(db), a.amountMinor, 'transfer', 'savings deposit with the National Bank');
   db.run('INSERT INTO bank_deposits (company_id, balance_minor, opened_tick) VALUES (?,?,?) ON CONFLICT(company_id) DO UPDATE SET balance_minor = balance_minor + excluded.balance_minor', a.companyId, a.amountMinor, ctx.tick);
   return { duplicate: false };
@@ -169,7 +173,7 @@ export function withdrawFunds(db: Sql, ctx: TickCtx, a: { companyId: string; amo
 }
 export function payDepositInterest(db: Sql, ctx: TickCtx, cfg: EngineConfig, hooks: BankHooks = {}): number {
   let total = 0; const rate = depositRate(db, cfg);
-  for (const d of db.all<{ company_id: string; balance_minor: number }>('SELECT company_id, balance_minor FROM bank_deposits WHERE balance_minor > 0 ORDER BY company_id')) {
+  for (const d of db.all<{ company_id: string; balance_minor: number }>('SELECT d.company_id, d.balance_minor FROM bank_deposits d JOIN companies c ON c.id = d.company_id WHERE d.balance_minor > 0 AND c.bankrupt_tick IS NULL ORDER BY d.company_id')) {
     const interest = Math.min(interestFor(d.balance_minor, rate), Math.max(0, available(db, bankAcct(db)) - 1));
     if (interest <= 0) continue;
     const c = db.get<{ treasury_account_id: string }>('SELECT treasury_account_id FROM companies WHERE id = ?', d.company_id)!;
@@ -178,6 +182,20 @@ export function payDepositInterest(db: Sql, ctx: TickCtx, cfg: EngineConfig, hoo
     hooks.onBankCost?.(interest); total += interest;
   }
   return total;
+}
+
+/**
+ * At liquidation the administrator withdraws the company's savings into its treasury so they reach its creditors and shareholders. If the bank
+ * cannot pay all of it out (it has lent the money), the shortfall is a recorded claim the bank keeps: no coin is created to cover it.
+ */
+export function recallDepositsAtLiquidation(db: Sql, ctx: TickCtx, companyId: string, treasury: string): { recalled: number; unpaid: number } {
+  const d = db.get<{ balance_minor: number }>('SELECT balance_minor FROM bank_deposits WHERE company_id = ?', companyId);
+  if (!d || d.balance_minor <= 0) return { recalled: 0, unpaid: 0 };
+  const pay = Math.min(d.balance_minor, Math.max(0, available(db, bankAcct(db))));
+  if (pay > 0) transfer(db, ctx, `liq:${companyId}:savings`, bankAcct(db), treasury, pay, 'transfer', 'administrator withdraws savings from the National Bank');
+  db.run('UPDATE bank_deposits SET balance_minor = 0 WHERE company_id = ?', companyId);
+  if (d.balance_minor > pay) logEvent(db, ctx.tick, 'loan_loss', 'error', companyId, `The National Bank could not repay ${((d.balance_minor - pay) / 100).toFixed(2)} EC of savings to a liquidated company`, { unpaidMinor: d.balance_minor - pay });
+  return { recalled: pay, unpaid: d.balance_minor - pay };
 }
 
 /** At liquidation the bank is a senior creditor: it is repaid from the company's cash before the state's arrears and before shareholders. Any shortfall is a loss to the bank. */

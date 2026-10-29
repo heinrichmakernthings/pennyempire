@@ -1,4 +1,5 @@
 import type { Sql } from '../db/sql';
+import { assertSimulatedProvider } from './releaseGates';
 import { CASH, CLEARING, EQUITY, EXP, PAYABLE, GbpError, PRIZE_RESERVE, audit, availablePence, ensureWallet, pendingAcct, pendingPence, postGbp, reverseGbp, walletAcct, type GbpCtx } from './gbpLedger';
 
 /**
@@ -18,6 +19,7 @@ export function createDeposit(db: Sql, ctx: GbpCtx, a: { playerId: string; amoun
     const dup = db.get<{ id: string; amount_pence: number; player_id: string }>('SELECT id, amount_pence, player_id FROM gbp_deposits WHERE idempotency_key = ?', a.key);
     if (dup) { if (dup.amount_pence !== a.amountPence || dup.player_id !== a.playerId) throw new GbpError('IDEMPOTENCY_MISMATCH', 'That key was used for a different deposit'); return { depositId: dup.id, duplicate: true }; }
     if (!Number.isSafeInteger(a.amountPence) || a.amountPence < GBP_RULES.minDepositPence || a.amountPence > GBP_RULES.maxDepositPence) throw new GbpError('INVALID_AMOUNT', `A simulated deposit is between £${GBP_RULES.minDepositPence / 100} and £${GBP_RULES.maxDepositPence / 100}.`);
+    assertSimulatedProvider('mock-sandbox');
     ensureWallet(db, a.playerId);
     const n = seq(db, 'gbp_deposits'), id = `dep-${n}`;
     db.run("INSERT INTO gbp_deposits (id, player_id, amount_pence, status, provider, provider_ref, idempotency_key, created_ms) VALUES (?,?,?,'pending','mock-sandbox',?,?,?)", id, a.playerId, a.amountPence, `mock_pay_${n}`, a.key, ctx.ms);
@@ -86,6 +88,7 @@ export function approveWithdrawal(db: Sql, ctx: GbpCtx, id: string) {
   return db.transaction(() => {
     const w = wd(db, id); if (w.status === 'approved') return { duplicate: true };
     if (w.status !== 'requested') throw new GbpError('INVALID_STATE', `Cannot approve a ${w.status} withdrawal.`);
+    assertSimulatedProvider('mock-sandbox');
     postGbp(db, ctx, `wd:${id}:start`, 'payout_start', `Payout of ${id} sent to the mock provider`, [{ account: CLEARING, amount: w.amount_pence }, { account: CASH, amount: -w.amount_pence }], id);   // fails (INSUFFICIENT_FUNDS) if cash is short
     setWd(db, ctx, id, 'approved', { payout_ref: `mock_payout_${id}` }); audit(db, ctx.ms, ctx.actor, 'withdrawal.approved', id, {}); return { duplicate: false };
   });

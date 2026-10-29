@@ -2,6 +2,7 @@
 import type { Sql } from '../db/sql';
 import { feeFromBps } from '../../src/domain/money';
 import { EXCHANGE_ACCOUNT, PLAYER_ID } from '../seed/bristol';
+import { relatedPartyRevenue } from './relatedParty';
 import type { EngineConfig } from './config';
 import { ShareError, cancelShares, companyInvestor, companyInvestorId, holding, issueShares, outstanding, security, treasuryShares, type SecurityRow } from './capital';
 import { available, transfer, type TickCtx } from './ledger';
@@ -40,7 +41,7 @@ export function listingQuote(db: Sql, cfg: EngineConfig, companyId: string, newS
   const ctrlAfter = outAfterFull > 0 ? Math.floor((ctrlShares * 10_000) / outAfterFull) : 0;
   const value = offered * offerPriceMinor;
   const fee = cfg.listingBaseFeeMinor + feeFromBps(value, cfg.listingFeeBps);
-  const rev7 = db.get<{ r: number }>('SELECT COALESCE(SUM(revenue_minor),0) r FROM company_tick_stats WHERE company_id = ? AND tick > ? AND tick <= ?', companyId, tick - 7, tick)!.r;
+  const rev7 = db.get<{ r: number }>('SELECT COALESCE(SUM(revenue_minor),0) r FROM company_tick_stats WHERE company_id = ? AND tick > ? AND tick <= ?', companyId, tick - 7, tick)!.r - relatedPartyRevenue(db, companyId, tick - 7, tick);   // arm's-length revenue only
   const age = tick - (db.get<{ t: number }>('SELECT created_tick t FROM companies WHERE id = ?', companyId)?.t ?? 0);
   const lastOffer = db.get<{ t: number }>('SELECT MAX(tick) t FROM share_offerings WHERE company_id = ?', companyId)?.t;
   const checks: ListingCheck[] = [

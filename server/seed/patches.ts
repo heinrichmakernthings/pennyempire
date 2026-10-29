@@ -121,7 +121,21 @@ const stateEconomyV1: Patch = { id: 'state-economy-v1', run(db, ctx) { return en
 /** Prestige catalogue and the (simulated) GBP books (Prompt 9). */
 const prestigeWalletV1: Patch = { id: 'prestige-wallet-v1', run(db, ctx) { ensurePrestigeCatalogue(db); ensureGbpBooks(db); ensureLotteries(db, ctx); return 0; } };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1];
+/**
+ * Prompt 11 balance: at the old reference prices a new flour mill lost money at any scale it could sell (−12 EC/day forecast) and a dairy took
+ * 190+ days to pay back, while a pizza restaurant paid back in 29 — retail captured almost all the value the chain added. Raising the reference
+ * value of the two intermediate goods moves part of that value upstream. No coins are created: reference prices only steer NPC asks, the state
+ * fallback price and the administrator's valuation. See docs/ECONOMIC-AUDIT.md.
+ */
+export const BALANCE_V1_REFERENCE: Record<string, number> = { flour: 260, cheese: 360 };
+const balanceV1: Patch = { id: 'balance-v1', run(db) {
+  for (const [id, p] of Object.entries(BALANCE_V1_REFERENCE)) {
+    db.run('UPDATE commodities SET reference_price_minor = ? WHERE id = ?', p, id);
+  }
+  return 0;
+} };
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1, balanceV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

@@ -7,7 +7,7 @@
 import type { Sql } from '../db/sql';
 import { digest, randomSecret } from '../auth/crypto';
 import { createAccount, issue } from './ledger';
-import { gameDate, loadConfig } from './config';
+import { gameDate, loadConfig, saveConfig } from './config';
 import { ensureWallet } from './gbpLedger';
 import { CITY_ID } from '../seed/bristol';
 
@@ -65,6 +65,9 @@ export function registerUser(db: Sql, now: number, a: { invite: string; username
     db.run('INSERT INTO players (id, display_name, city_id, wallet_account_id) VALUES (?,?,?,?)', playerId, a.displayName, CITY_ID, wallet);
     const t = db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
     issue(db, { tick: t, gameDate: gameDate(loadConfig(db), t), actor: `register:${playerId}` }, `register:${playerId}`, wallet, STARTING_CAPITAL_MINOR, 'new player starting capital');
+    // Structural issuance moves the inflation controller's target with it (as seed patches do); otherwise every new player's starting
+    // capital would read as "excess money" and switch off the citizens' income grant, impoverishing the NPC economy as players join.
+    const cfg = loadConfig(db); if (cfg.supplyTargetMinor > 0) saveConfig(db, { ...cfg, supplyTargetMinor: cfg.supplyTargetMinor + STARTING_CAPITAL_MINOR }, `supply target +${STARTING_CAPITAL_MINOR / 100} EC: starting capital of ${playerId}`);
     ensureWallet(db, playerId);
     db.run('INSERT INTO users (id, username, player_id, role, password_hash, password_salt, password_iters, created_ms) VALUES (?,?,?,?,?,?,?,?)', userId, a.username, playerId, inv.role, a.hash, a.salt, a.iterations, now);
     db.run('UPDATE invites SET used_by = ?, used_ms = ? WHERE code_hash = ?', userId, now, digest(a.invite));

@@ -161,14 +161,18 @@ export function runContractDeliveries(db: Sql, ctx: TickCtx, cfg: EngineConfig, 
       const gross = k.qty_per_delivery * k.price_minor, fee = feeFromBps(gross, cfg.exchangeFeeBps);
       const held = db.get<{ q: number }>('SELECT COALESCE(SUM(qty),0) q FROM inventory WHERE company_id = ?', buyer.id)!.q;
       let miss: DeliveryOutcome['status'] | null = null;
-      if (supplier.status !== 'operating' || freeStock(db, supplier.id, k.commodity_id) < k.qty_per_delivery) miss = 'missed_stock';
+      // Loan covenant (as on the exchange): no related-party deliveries while either sister company owes the National Bank.
+      const owes = (id: string) => !!db.get("SELECT 1 FROM loans WHERE borrower_id = ? AND status IN ('active','defaulted') AND outstanding_minor > 0", id);
+      const covenant = buyer.owner_kind !== 'state' && buyer.owner_kind === supplier.owner_kind && buyer.owner_id === supplier.owner_id && (owes(buyer.id) || owes(supplier.id));
+      if (covenant) miss = 'missed_funds';
+      else if (supplier.status !== 'operating' || freeStock(db, supplier.id, k.commodity_id) < k.qty_per_delivery) miss = 'missed_stock';
       else if (available(db, buyer.treasury_account_id) < gross) miss = 'missed_funds';
       else if (held + k.qty_per_delivery > buyer.storage_cap_units) miss = 'missed_storage';
       if (miss) {
         db.run('INSERT INTO contract_deliveries (contract_id, due_tick, status, qty, price_minor, settled_tick) VALUES (?,?,?,?,?,?)', k.id, ctx.tick, miss, k.qty_per_delivery, k.price_minor, ctx.tick);
         const misses = k.consecutive_misses + 1;
         db.run('UPDATE supply_contracts SET consecutive_misses = ? WHERE id = ?', misses, k.id);
-        const why = { missed_stock: `${supplier.name} had too little ${k.commodity_id} in stock`, missed_funds: `${buyer.name} could not afford ${(gross / 100).toFixed(2)} EC`, missed_storage: `${buyer.name} had no room to store the delivery` }[miss];
+        const why = { missed_stock: `${supplier.name} had too little ${k.commodity_id} in stock`, missed_funds: covenant ? 'deliveries between sister companies are suspended while one of them owes the National Bank' : `${buyer.name} could not afford ${(gross / 100).toFixed(2)} EC`, missed_storage: `${buyer.name} had no room to store the delivery` }[miss];
         logEvent(db, ctx.tick, 'contract_missed', 'warning', miss === 'missed_stock' ? supplier.id : buyer.id, `Contract #${k.id}: delivery missed — ${why} (${misses} in a row)`);
         if (misses >= k.max_misses) { db.run("UPDATE supply_contracts SET status = 'failed', ended_tick = ? WHERE id = ?", ctx.tick, k.id); logEvent(db, ctx.tick, 'contract_failed', 'warning', k.buyer_company_id, `Contract #${k.id} ended after ${misses} missed deliveries`); }
         out.push({ contractId: k.id, status: miss, qty: k.qty_per_delivery, grossMinor: 0, feeMinor: 0 });

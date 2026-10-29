@@ -19,8 +19,8 @@ export function AdminScreen() {
   return (
     <section className="pe-screen pe-admin">
       <h1 className="pe-h">Administration</h1>
-      <Tabs label="Administration" value={tab} onChange={setTab} tabs={[{ id: 'health', label: 'System health' }, { id: 'players', label: 'Players & invites' }, { id: 'economy', label: 'Economy controls' }, { id: 'log', label: 'Audit log' }]}>
-        {tab === 'health' && <Health />}{tab === 'players' && <Players />}{tab === 'economy' && <Economy />}{tab === 'log' && <Log />}
+      <Tabs label="Administration" value={tab} onChange={setTab} tabs={[{ id: 'health', label: 'System health' }, { id: 'audit', label: 'Economy audit' }, { id: 'players', label: 'Players & invites' }, { id: 'economy', label: 'Economy controls' }, { id: 'log', label: 'Audit log' }]}>
+        {tab === 'health' && <Health />}{tab === 'audit' && <Audit />}{tab === 'players' && <Players />}{tab === 'economy' && <Economy />}{tab === 'log' && <Log />}
       </Tabs>
     </section>
   );
@@ -53,6 +53,37 @@ function Health() {
       <div className="pe-card"><h2>Companies</h2><table className="pe-table"><tbody>{h.companies.map((c) => <tr key={c.kind + c.status}><td>{c.kind}</td><td>{c.status}</td><td>{c.n}</td></tr>)}</tbody></table></div>
       <div className="pe-card"><h2>Active economic events</h2>{h.activeEvents.length ? <ul className="pe-list">{h.activeEvents.map((e) => <li key={e.id}>{e.headline} <span className="pe-hint">(until day {e.endTick})</span></li>)}</ul> : <p className="pe-hint">None.</p>}</div>
       <div className="pe-card"><h2>Recent rejected actions</h2>{h.recentErrors.length ? <ul className="pe-list">{h.recentErrors.map((e, i) => <li key={i}><span className="pe-hint">Day {e.tick} · {e.kind}</span> {e.reason}</li>)}</ul> : <p className="pe-hint">None.</p>}</div>
+    </div>
+  );
+}
+
+interface AuditBody { audit: { tick: number; elapsedMs: number; invariants: { ok: boolean; checks: number; findings: { id: string; severity: string; count: number; detail: string }[] }; money: { issued: number; destroyed: number; circulating: number; issuedByReason: Record<string, number>; destroyedByReason: Record<string, number> }; inflation: { cpiNowBps: number; cpi30dAgoBps: number | null; cpi90dAgoBps: number | null }; volumes30d: { commodityTrades: number; commodityValueMinor: number; shareTrades: number; shareValueMinor: number; consumerSpendMinor: number }; industries: { industry: string; companies: number; operating: number; failures: number; profit: number; revenue: number; cash: number }[]; npcFinances: { cash: number; operating: number; losing: number }; bankruptcies: { total: number; last30d: number }; credit: { active: number; outstanding: number; defaults: number; writtenOff: number }; stateTreasuries: { id: string; name: string; cash: number }[]; householdsMinor: number; walletLiabilitiesPence: number } }
+const pct = (now: number, then: number | null) => (then ? `${(((now - then) / then) * 100).toFixed(1)}%` : '—');
+/** Live economy audit: every invariant re-checked on demand, and the numbers that explain where money comes from and goes. */
+function Audit() {
+  const { data, err, load } = useAdmin<AuditBody>('/api/admin/audit');
+  if (err) return <p className="pe-field-error" role="alert">{err}</p>;
+  if (!data) return <p className="pe-hint">Running the audit…</p>;
+  const a = data.audit; const reasons = (o: Record<string, number>) => Object.entries(o).sort((x, y) => y[1] - x[1]);
+  return (
+    <div className="pe-cards">
+      <div className="pe-card pe-card--wide"><h2>Invariants <span className={a.invariants.ok ? 'pe-pos' : 'pe-neg'}>{a.invariants.ok ? `all ${a.invariants.checks} hold` : `${a.invariants.findings.length} FAILING`}</span></h2>
+        <p className="pe-hint">Day {a.tick}: every trade, share trade and dividend matched to exactly one ledger transaction; production consumed its recipe inputs; reservations, supply caps and lottery pools consistent; every coin issued has a reason. Took {a.elapsedMs} ms.</p>
+        {a.invariants.findings.map((f) => <p key={f.id} className="pe-field-error">{f.severity} {f.id}: {f.detail} ({f.count})</p>)}
+        <Button onClick={() => void load()}>Run again</Button></div>
+      <div className="pe-card"><h2>Money supply</h2><dl className="pe-kv"><dt>Circulating</dt><dd>{ec(a.money.circulating)}</dd><dt>Ever issued</dt><dd>{ec(a.money.issued)}</dd><dt>Ever destroyed</dt><dd>{ec(a.money.destroyed)}</dd><dt>Households hold</dt><dd>{ec(a.householdsMinor)}</dd></dl>
+        <h3>Issued by reason</h3><dl className="pe-kv">{reasons(a.money.issuedByReason).map(([k, v]) => <div key={k} style={{ display: 'contents' }}><dt>{k}</dt><dd>{ec(v)}</dd></div>)}</dl>
+        <h3>Destroyed by reason</h3><dl className="pe-kv">{reasons(a.money.destroyedByReason).map(([k, v]) => <div key={k} style={{ display: 'contents' }}><dt>{k}</dt><dd>{ec(v)}</dd></div>)}</dl></div>
+      <div className="pe-card"><h2>Prices and activity</h2><dl className="pe-kv"><dt>CPI</dt><dd>{(a.inflation.cpiNowBps / 100).toFixed(1)}</dd><dt>Change 30 days</dt><dd>{pct(a.inflation.cpiNowBps, a.inflation.cpi30dAgoBps)}</dd><dt>Change 90 days</dt><dd>{pct(a.inflation.cpiNowBps, a.inflation.cpi90dAgoBps)}</dd>
+        <dt>Consumer spending (30d)</dt><dd>{ec(a.volumes30d.consumerSpendMinor)}</dd><dt>Commodity trades (30d)</dt><dd>{a.volumes30d.commodityTrades} · {ec(a.volumes30d.commodityValueMinor)}</dd><dt>Share trades (30d)</dt><dd>{a.volumes30d.shareTrades} · {ec(a.volumes30d.shareValueMinor)}</dd></dl></div>
+      <div className="pe-card pe-card--wide"><h2>Profitability by industry (30-day average per company)</h2><div className="pe-table-wrap"><table className="pe-table"><thead><tr><th>Industry</th><th>Companies</th><th>Operating</th><th>Failed</th><th>Revenue/day</th><th>Profit/day</th><th>Cash held</th></tr></thead><tbody>
+        {a.industries.map((i) => <tr key={i.industry}><td>{i.industry}</td><td>{i.companies}</td><td>{i.operating}</td><td>{i.failures}</td><td>{ec(i.revenue)}</td><td className={i.profit >= 0 ? 'pe-pos' : 'pe-neg'}>{ec(i.profit)}</td><td>{ec(i.cash)}</td></tr>)}
+      </tbody></table></div></div>
+      <div className="pe-card"><h2>NPCs, failures and credit</h2><dl className="pe-kv"><dt>NPC cash</dt><dd>{ec(a.npcFinances.cash)}</dd><dt>NPC firms operating</dt><dd>{a.npcFinances.operating}</dd><dt>NPC firms struggling</dt><dd>{a.npcFinances.losing}</dd><dt>Bankruptcies</dt><dd>{a.bankruptcies.total} ({a.bankruptcies.last30d} in 30 days)</dd>
+        <dt>Active loans</dt><dd>{a.credit.active} · {ec(a.credit.outstanding)} owed</dd><dt>Defaults</dt><dd>{a.credit.defaults} · {ec(a.credit.writtenOff)} written off</dd></dl></div>
+      <div className="pe-card"><h2>State treasuries</h2><dl className="pe-kv">{a.stateTreasuries.map((t) => <div key={t.id} style={{ display: 'contents' }}><dt>{t.name}</dt><dd>{ec(t.cash)}</dd></div>)}</dl>
+        <h3>Simulated wallets <span className="pe-pill">SIMULATED</span></h3><p>Owed to players: £{(a.walletLiabilitiesPence / 100).toFixed(2)}</p>
+        <p className="pe-hint">Scenario and stress results: run <code>npm run audit:scenarios</code> (reports in docs/audit/).</p></div>
     </div>
   );
 }

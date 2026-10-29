@@ -8,6 +8,7 @@ import { liquidateCompany } from './lifecycle';
 import { cancelOrder, placeOrder } from './market';
 import { linesOf, recipeInputs, type CompanyRow } from './operations';
 import { stock } from './inventory';
+import { currentMods } from './economyState';
 import { logEvent } from './stats';
 import { HOUSEHOLDS, CITY_ID } from '../seed/bristol';
 
@@ -128,8 +129,12 @@ export function runNpcDecisions(db: Sql, ctx: TickCtx, cfg: EngineConfig, lastEx
     }
 
     // ── 6. exit: a struggling company that keeps losing and has no debts winds down; the state buys its stock at a discount, debts are settled first ──
-    if (strategy === 'struggling' && losing >= 6 && c.unpaid_minor === 0 && ctx.tick - lastExit.tick >= cfg.npcExitEveryTicks && c.owner_kind === 'npc') {
-      act('close', `Lost money in ${losing} consecutive reviews; closing down and returning what is left to its shareholders.`, true, true);
+    //    A rational owner only quits when the losses are eating the last of the money, and not in the middle of a temporary, announced shock to its
+    //    own industry (a disruption or demand slump that will end): closing a healthy producer then would wreck the supply chain for good.
+    const shockedNow = (() => { const m = currentMods(db); const outs = lines.map((l) => db.get<{ o: string }>('SELECT output_commodity_id o FROM recipes WHERE id = ?', l.recipe_id)?.o).filter(Boolean) as string[]; return (m.productionByIndustry[c.industry_id] ?? 10_000) < 10_000 || outs.some((o) => (m.demandByCommodity[o] ?? 10_000) < 10_000) || m.demandShockBps > 0; })();
+    const runwayShort = cash < cfg.npcExitRunwayDays * dailyFixed;
+    if (strategy === 'struggling' && losing >= 6 && c.unpaid_minor === 0 && runwayShort && !shockedNow && ctx.tick - lastExit.tick >= cfg.npcExitEveryTicks && c.owner_kind === 'npc') {
+      act('close', `Lost money in ${losing} consecutive reviews with only ${(cash / Math.max(1, dailyFixed)).toFixed(0)} days of costs left; closing down and returning what is left to its shareholders.`, true, true);
       logEvent(db, ctx.tick, 'company_closed', 'warning', c.id, `${c.name} closed after months of losses`, { reason: 'voluntary', losingReviews: losing });
       liquidateCompany(db, ctx, cfg, c); lastExit.tick = ctx.tick; closed.push(c.id);
       db.run('UPDATE npc_profiles SET losing_decisions = ?, last_decision_tick = ?, next_decision_tick = ? WHERE company_id = ?', losing, ctx.tick, ctx.tick + 9999, c.id);

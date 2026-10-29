@@ -95,7 +95,7 @@ try {
   await page.getByTestId('open-contract').click();
   await page.getByTestId('contract-form').waitFor();
   await page.getByTestId('contract-form').getByLabel('Your company').selectOption({ label: 'Quay Pizza' });
-  await page.getByTestId('contract-qty').fill('20'); await page.getByTestId('contract-price').fill('3.40');
+  await page.getByTestId('contract-qty').fill('20'); await page.getByTestId('contract-price').fill('4.50');   // above the NPC mill's asking price after the balance-v1 flour rebalance
   await page.getByTestId('contract-submit').click();
   await page.getByTestId('contract-msg').waitFor({ timeout: 5000 });
   const msg = await page.getByTestId('contract-msg').textContent();

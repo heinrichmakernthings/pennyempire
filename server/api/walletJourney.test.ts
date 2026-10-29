@@ -30,7 +30,7 @@ describe('the final gameplay journey (every system, end to end, through the real
     // 3. temporary production upgrade (disclosed boost) that changes real output
     const boost = cmd(db, { type: 'boost.buy', offerId: 'boost-production-3' }); expect(boost.status).toBe(200); advance(db, 3);
     expect(get(db, '/api/prestige').boosts.active[0]).toMatchObject({ kind: 'production', bps: 300 });
-    expect(db.get<{ n: number }>("SELECT COUNT(*) n FROM inventory_movements WHERE reason = 'production_output' AND ref LIKE '%:boost'")!.n).toBeGreaterThanOrEqual(0);
+    expect(db.get<{ n: number }>("SELECT COUNT(*) n FROM inventory_movements WHERE reason = 'production_output' AND ref LIKE '%:boost'")!.n).toBe(0);   // boosts add capacity, never input-free output
     // 4. watches a simulated rewarded ad: a frontend claim without proof gets nothing, the provider-attested completion pays once
     const start = cmd(db, { type: 'ad.reward.start', rewardId: 'ad-coins' }); expect(start.status).toBe(200); const sessionId = (start.body as any).data.sessionId;
     const cheat = cmd(db, { type: 'ad.reward.complete', sessionId, token: 'i-totally-watched-it' }); expect(cheat.status).toBe(422);
