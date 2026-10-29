@@ -7,7 +7,7 @@ import type { EngineConfig } from './engine/config';
 
 export interface MonthRow { day: number; circulating: number; issued: number; destroyed: number; households: number; state: number; companies: number; players: number; goodsAtCost: number; consumerSpend: number; unitsProduced: number; insolvent: number; failures: number }
 export interface SimReport {
-  days: number; startCirculating: number; endCirculating: number; changeBps: number; totalIssued: number; totalDestroyed: number; genesisIssued: number; npcIssued: number;
+  days: number; startCirculating: number; endCirculating: number; changeBps: number; totalIssued: number; totalDestroyed: number; genesisIssued: number; npcIssued: number; liquidityIssued: number;
   monthly: MonthRow[]; anomalies: string[]; reconciliation: { ok: boolean; problems: string[] };
   companies: { id: string; avgProfit: number; avgRevenue: number; status: string; finalCash: number }[];
   minHouseholds: number; maxCirculatingDeviationBps: number;
@@ -41,9 +41,10 @@ export function runSimulation(days: number, opts: { db?: Sql; config?: Partial<E
     return { day: tick, circulating: sn.circulating_minor!, issued: sn.issued_total_minor!, destroyed: sn.destroyed_total_minor!, households: sn.households_minor!, state: sn.state_minor!, companies: sn.companies_minor!, players: sn.players_minor!, goodsAtCost: sn.goods_value_minor!, consumerSpend: sm.consumerSpendMinor, unitsProduced: sm.unitsProduced, insolvent: db.get<{ n: number }>("SELECT COUNT(*) n FROM company_tick_stats WHERE tick = ? AND status = 'insolvent'", tick)!.n, failures: sm.failures };
   });
   const genesis = db.get<{ s: number }>("SELECT COALESCE(SUM(p.amount_minor),0) s FROM ledger_postings p JOIN ledger_transactions t ON t.id = p.tx_id WHERE t.idempotency_key LIKE 'seed:%' AND p.amount_minor > 0 AND t.kind = 'issuance'")!.s;
+  const liq = db.get<{ s: number }>("SELECT COALESCE(SUM(amount_minor),0) s FROM monetary_ops WHERE kind = 'liquidity_issue'")!.s;   // rule-based central bank issuance, reported separately
   const window = Math.max(0, days - 30);
   return {
-    days, startCirculating: start, endCirculating: s.circulating, changeBps: Math.round(((s.circulating - start) * 10_000) / start), totalIssued: s.issued, totalDestroyed: s.destroyed, genesisIssued: genesis, npcIssued: s.issued - genesis,
+    days, startCirculating: start, endCirculating: s.circulating, changeBps: Math.round(((s.circulating - start) * 10_000) / start), totalIssued: s.issued, totalDestroyed: s.destroyed, genesisIssued: genesis, npcIssued: s.issued - genesis - liq, liquidityIssued: liq,
     monthly, anomalies, reconciliation: { ok: rec.ok, problems: rec.problems }, minHouseholds: minHh, maxCirculatingDeviationBps: maxDev,
     companies: db.all<{ company_id: string; p: number; r: number }>('SELECT company_id, AVG(net_profit_minor) p, AVG(revenue_minor) r FROM company_tick_stats WHERE tick > ? GROUP BY company_id ORDER BY company_id', window).map((c) => ({
       id: c.company_id, avgProfit: Math.round(c.p), avgRevenue: Math.round(c.r), status: db.get<{ status: string }>('SELECT status FROM companies WHERE id = ?', c.company_id)!.status,

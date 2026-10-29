@@ -7,6 +7,7 @@ export const ROUTES: RouteDef[] = [
   { path: '/bristol', label: 'News & Rankings', short: 'News', icon: 'ranking', mobile: 'more' },
   { path: '/companies', label: 'My Companies', short: 'Companies', icon: 'companies', mobile: 'primary' },
   { path: '/commodities', label: 'Commodity Exchange', short: 'Market', icon: 'marketplace', mobile: 'primary' },
+  { path: '/state', label: 'State Services', short: 'State', icon: 'city', mobile: 'more' },
   { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
   { path: '/portfolio', label: 'Portfolio', short: 'Portfolio', icon: 'portfolio', mobile: 'primary' },
   { path: '/prestige', label: 'Prestige', short: 'Prestige', icon: 'prestige', mobile: 'more' },

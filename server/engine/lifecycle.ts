@@ -8,6 +8,7 @@ import { cancelShares, companyInvestorId, security } from './capital';
 import { cancelAllOrders } from './shareMarket';
 import { cancelOpenDividends } from './dividends';
 import type { CompanyRow } from './operations';
+import { settleLoansAtLiquidation } from './bank';
 import { PLAYER_WALLET, TREASURY } from '../seed/bristol';
 
 export interface LiquidationResult { stockProceedsMinor: number; arrearsPaidMinor: number; writtenOffMinor: number; returnedToOwnerMinor: number; unitsSold: number }
@@ -34,6 +35,7 @@ export function liquidateCompany(db: Sql, ctx: TickCtx, cfg: EngineConfig, c: Co
       if (provisions) addStock(db, ctx, provisions.id, inv.commodity_id, inv.qty, pay, 'trade_in', `liquidation:${c.id}`);
       proceeds += pay; units += inv.qty;
     }
+    settleLoansAtLiquidation(db, ctx, c.id, acct);   // the National Bank is a senior creditor
     const arrearsPaid = Math.min(c.unpaid_minor, Math.max(0, balance(db, acct) - 0));
     if (arrearsPaid > 0) transfer(db, ctx, `liq:${c.id}:arrears`, acct, TREASURY, arrearsPaid, 'state_payment', `administrator: arrears of ${c.name}`);
     const writtenOff = c.unpaid_minor - arrearsPaid;

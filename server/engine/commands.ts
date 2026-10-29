@@ -14,7 +14,7 @@ export type CommandOk<T = unknown> = { ok: true; revision: number; transactionId
 export type CommandErr = { ok: false; error: ApiError };
 export type CommandResponse<T = unknown> = CommandOk<T> | CommandErr;
 
-const err = (code: ApiError['code'], message: string, fieldErrors?: Record<string, string>): CommandErr => ({ ok: false, error: { code, message, ...(fieldErrors ? { fieldErrors } : {}) } });
+export const err = (code: ApiError['code'], message: string, fieldErrors?: Record<string, string>): CommandErr => ({ ok: false, error: { code, message, ...(fieldErrors ? { fieldErrors } : {}) } });
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 const ctxNow = (db: Sql, actor: string): TickCtx => { const t = lastTick(db); return { tick: t, gameDate: gameDate(loadConfig(db), t), actor }; };
 
@@ -42,13 +42,13 @@ export function runCommand(db: Sql, key: string, name: string, fn: (ctx: TickCtx
 }
 
 interface OwnedCompany { retail_commodity_id: string | null; bankrupt_tick: number | null; hires_in_tick: number; dismissals_in_tick: number; staff_change_tick: number; id: string; name: string; treasury_account_id: string; revision: number; status: string; owner_kind: string; owner_id: string; employees: number; max_employees: number; capacity_batches: number; min_price_minor: number; max_price_minor: number; wage_minor: number; property_minor: number; marketing_minor: number; unpaid_minor: number; storage_cap_units: number }
-const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
+export const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => {
   const c = db.get<OwnedCompany>('SELECT * FROM companies WHERE id = ?', companyId);
   if (!c) return err('VALIDATION', `Unknown company ${companyId}`);
   if (c.owner_kind !== 'player' || c.owner_id !== PLAYER_ID) return err('FORBIDDEN', 'You do not own this company.');
   return c;
 };
-const isErr = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;
+export const isErr = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;
 
 export interface ConfigurePatch { priceMinor?: number; employees?: number; quality?: 'basic' | 'standard' | 'premium'; plannedUnitsPerTick?: number; marketingMinorPerTick?: number; askPriceMinor?: number; autoProcure?: boolean }
 

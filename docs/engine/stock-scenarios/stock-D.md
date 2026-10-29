@@ -7,20 +7,20 @@
 
 ## Headline
 - realisedGainEC: 0
-- dividendIncomeEC: 5551.41
+- dividendIncomeEC: 6110.16
 - positions: 5
-- walletChangeEC: -2461.16
-- markedValueEC: 13482.6
-- npcInvestorShareOfVolumePct: 65
+- walletChangeEC: -2582.74
+- markedValueEC: 14967.1
+- npcInvestorShareOfVolumePct: 75
 
-Circulating supply 145500.00 EC → 144872.01 EC (changes only by explicit scenario grants and recorded sinks).
+Circulating supply 173500.00 EC → 172127.55 EC (changes only by explicit scenario grants and recorded sinks).
 
 ## Timeline
 | day | last price | estimate | 7-day volume | index | note |
 |---|---|---|---|---|---|
-| 14 | 1.42 EC | 1.66 EC | 55 | 104.9 |  |
-| 28 | 1.57 EC | 1.73 EC | 0 | 118.3 |  |
-| 42 | 1.85 EC | 1.77 EC | 48 | 128.4 |  |
-| 56 | 2.03 EC | 1.77 EC | 10 | 136.8 |  |
-| 70 | 1.93 EC | 1.77 EC | 55 | 138.9 |  |
-| 84 | 2.03 EC | 1.74 EC | 43 | 148.2 |  |
+| 14 | 1.42 EC | 1.66 EC | 48 | 103.7 |  |
+| 28 | 1.57 EC | 1.01 EC | 0 | 114.7 |  |
+| 42 | 1.57 EC | 0.61 EC | 0 | 121.4 |  |
+| 56 | 1.57 EC | 0.45 EC | 0 | 128.7 |  |
+| 70 | 1.57 EC | 0.44 EC | 0 | 132.9 |  |
+| 84 | 1.57 EC | 0.38 EC | 0 | 139.3 |  |

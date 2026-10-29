@@ -1,0 +1,226 @@
+[
+  {
+    "id": "executive-car-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/vehicles.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a deep charcoal executive saloon, elongated four-door body, restrained chrome grille, cream leather visible through blue-grey glass; front points diagonally DOWN LEFT. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 68x62 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "sports-car-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/vehicles.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a British racing green two-seat sports coupe with a long sculpted bonnet and compact cabin; front points diagonally DOWN LEFT. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 68x62 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "supercar-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/vehicles.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated an amber-gold exotic supercar, low wedge profile, broad rear haunches and dark canopy; front points diagonally DOWN LEFT. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 68x62 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "luxury-suv-sw",
+    "kind": "vehicle",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/vehicles.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated an ivory luxury SUV, upright prestigious body, dark windows and subtle gold trim; front points diagonally DOWN LEFT. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 68x62 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "penthouse",
+    "kind": "property",
+    "logicalSize": [
+      224,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a compact Bristol four-storey brick apartment building topped by an elegant glass penthouse and private roof terrace, slate and warm limestone details; same floor and doorway scale as reference, not a tall tower. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 224x285 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "luxury-townhouse",
+    "kind": "property",
+    "logicalSize": [
+      224,
+      234
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a single luxurious Bristol Georgian townhouse, three storeys, honey limestone facade, slate roof, teal double door, iron railings and two neat entrance planters. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 224x234 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "mansion",
+    "kind": "property",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a compact urban mansion, wide two-storey warm limestone residence with a recessed grand entrance, slate mansard roof, small symmetrical front garden contained within the footprint; no vast estate. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 288x283 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "corporate-hq",
+    "kind": "property",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a prestigious four-storey corporate headquarters converted from a Bristol red-brick warehouse, limestone entrance, restrained dark teal glass extension and one blank facade branding plaque; same doorway scale as reference. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 288x283 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "luxury-boat-sw",
+    "kind": "waterfront",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      2,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a small elegant 10-metre luxury motor launch, cream hull, teak deck, low blue-grey windscreen and cream cabin; bow points diagonally DOWN LEFT, no water or wake. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 128x91 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "trophy-display",
+    "kind": "collectible",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a single rare gold trophy cup displayed inside a small glass case on a dark teal square plinth, compact sculptural game prop; no lettering. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 32x39 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "exclusive-sculpture",
+    "kind": "collectible",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a polished bronze abstract spiral sculpture on a low limestone plinth, elegant prestige decoration for a Bristol business forecourt. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 64x81 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "prestige-monument",
+    "kind": "collectible",
+    "logicalSize": [
+      80,
+      89
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a freestanding company prestige monument: golden laurel ring around a simple coin medallion on a substantial limestone column with a blank dark teal owner plaque; no text. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 80x89 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "national-bank-branch",
+    "kind": "state",
+    "logicalSize": [
+      224,
+      194
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a smaller National Bank branch, two-storey compact Bristol limestone corner bank with an arched teal entrance, small gold coin emblem and dark slate roof; no text. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 224x194 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "shopfront-display",
+    "kind": "advertising",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a single freestanding shopfront A-board, dark teal wooden frame around a completely blank warm cream advertising surface, front face at the reference isometric angle, small pavement prop, no floor. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 32x39 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "wall-advert",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a single detached building-mounted advertising sign, warm cream blank rectangular panel, dark teal iron border and two small mounting brackets, front face follows a 2:1 isometric facade plane, no wall or building. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 64x49 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  },
+  {
+    "id": "promotion-kiosk",
+    "kind": "advertising",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "reference": "assets/art/phase2/source/state-infrastructure.png",
+    "prompt": "Use case: stylized-concept. Asset type: ONE production sprite for Penny Empire. Reference image is style and isometric lighting reference only, NOT a target to edit. Create ONE isolated a small luxury promotional street kiosk, dark teal frame, cream canopy, one completely blank rectangular advertising face and small gold trim, no text and no people. Follow approved detailed Bristol pixel-art: 2:1 orthographic isometric, no converging perspective, warm upper-left light, darker right face, crisp pixel clusters, brick/limestone/slate/teal/amber palette. Entire silhouette visible and tightly framed, southern visible edge at bottom. Intended runtime logical box 64x81 pixels, consistent detail hierarchy at that gameplay size; preserve recognisable silhouette over tiny ornament. Transparent alpha background, no ground tile, no scene, no text, no labels, no logos, no cast shadow outside silhouette, no glow, no image border, no extra objects, no multiple views. Keep the exact approved visual direction, no photorealism or smooth 3D render."
+  }
+]

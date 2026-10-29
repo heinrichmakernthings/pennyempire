@@ -1,3 +1,4 @@
+import { depositsTotal } from './bank';
 import type { Sql } from '../db/sql';
 import type { EngineConfig } from './config';
 import {
@@ -23,20 +24,19 @@ export const INVESTOR_BLURB: Record<string, string> = {
 };
 
 /** Penny Exchange opening listings: established NPC firms and the three state enterprises that earn real revenue. */
-export const LISTED_AT_OPENING: Record<string, string> = { 'co-bristol-energy': 'BENR', 'co-bristol-estates': 'BEST', 'co-bristol-provisions': 'BPRV', 'co-clifton-slice': 'CSLC', 'co-bean-there': 'BNTH', 'co-severn-farm': 'SVFM', 'co-brunel-mill': 'BRML', 'co-clifton-dairy': 'CLDY', 'co-avon-timber': 'AVTM' };
+export const LISTED_AT_OPENING: Record<string, string> = { 'co-bristol-energy': 'BENR', 'co-bristol-estates': 'BEST', 'co-bristol-provisions': 'BPRV', 'co-bristol-media': 'PADS', 'co-penny-logistics': 'PLOG', 'co-national-bank': 'NBNK', 'co-penny-exchange': 'PEXC', 'co-clifton-slice': 'CSLC', 'co-bean-there': 'BNTH', 'co-severn-farm': 'SVFM', 'co-brunel-mill': 'BRML', 'co-clifton-dairy': 'CLDY', 'co-avon-timber': 'AVTM' };
 
 /** Opens the exchange once: each opening company is listed at its fundamental estimate (an opening reference only; every later price comes from orders). */
 function openExchange(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
-  if (ctx.tick < cfg.exchangeOpensTick || db.get("SELECT 1 FROM meta WHERE key = 'exchange_opened'")) return;
+  if (ctx.tick < cfg.exchangeOpensTick) return;
   for (const company of Object.keys(LISTED_AT_OPENING)) {
     const sec = db.get<{ status: string }>('SELECT status FROM securities WHERE company_id = ?', company);
     const c = db.get<CompanyRow>('SELECT * FROM companies WHERE id = ?', company);
-    if (!sec || sec.status !== 'unlisted' || !c || c.bankrupt_tick !== null) continue;
+    if (!sec || sec.status !== 'unlisted' || !c || c.bankrupt_tick !== null || db.get('SELECT 1 FROM securities WHERE company_id = ? AND (listed_tick IS NOT NULL OR delisted_tick IS NOT NULL)', company)) continue;
     const v = computeValuation(db, cfg, company, ctx.tick);
     db.run("UPDATE securities SET status = 'open', listed_tick = ?, listing_price_minor = ? WHERE company_id = ?", ctx.tick, v?.fairValuePerShareMinor ?? 100, company);
     logEvent(db, ctx.tick, 'ipo', 'info', company, `${c.name} listed on the Penny Exchange at an opening reference of ${((v?.fairValuePerShareMinor ?? 100) / 100).toFixed(2)} EC a share`, { opening: true });
   }
-  db.run("INSERT INTO meta (key, value) VALUES ('exchange_opened', ?)", String(ctx.tick));
 }
 
 /** Start of day: stale orders expire and declared dividends reach their payment day. */
@@ -179,7 +179,9 @@ function runDividendPolicy(db: Sql, ctx: TickCtx, cfg: EngineConfig) {
     const cap = dividendCapacity(db, cfg, s.company_id); if (cap.eligibleShares <= 0) continue;
     const reserveDays = db.get<{ r: number }>('SELECT reserve_days r FROM npc_profiles WHERE company_id = ?', s.company_id)?.r ?? cfg.npcReserveTicks;
     const extra = Math.max(0, reserveDays - cfg.dividendReserveDays) * (c.employees * c.wage_minor + c.property_minor + c.marketing_minor) + (c.owner_kind === 'state' ? cfg.enterpriseReserveMinor : 200_000);
-    const spendable = Math.max(0, cap.capacityMinor - extra);
+    // The National Bank's lending capital and its depositors' money are never distributed: only cash above them (i.e. real earnings) can be paid out.
+    const bankHold = s.company_id === 'co-national-bank' ? cfg.bankSeedMinor + depositsTotal(db) : 0;
+    const spendable = Math.max(0, cap.capacityMinor - extra - bankHold);
     const per = Math.floor((spendable * cfg.holderPayoutBps) / 10_000 / cap.eligibleShares);
     if (per < 1) continue;
     try { declareDividend(db, ctx, cfg, `divpol:${s.company_id}:${ctx.tick}`, s.company_id, per, `policy:${c.owner_kind}`); } catch { /* not eligible today */ }

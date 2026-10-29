@@ -13,7 +13,7 @@ export interface CompanyRow {
   staff_change_tick: number; hires_in_tick: number; dismissals_in_tick: number; auto_procure: number; insolvent_tick: number | null; bankrupt_tick: number | null; written_off_minor: number; plot_id: string | null; lot_id: string | null; asset_id: string | null;
 }
 export interface Line { company_id: string; recipe_id: string; planned_batches: number; ask_price_minor: number; output_commodity_id: string; output_units: number; energy_units: number; ref_price: number }
-export type LimitReason = 'plan' | 'staff' | 'storage' | 'inputs' | 'cash' | 'supply' | 'condition' | 'closed';
+export type LimitReason = 'plan' | 'staff' | 'storage' | 'inputs' | 'cash' | 'supply' | 'condition' | 'closed' | 'energy' | 'disruption';
 
 export const linesOf = (db: Sql, id: string) => db.all<Line>('SELECT l.company_id, l.recipe_id, l.planned_batches, l.ask_price_minor, r.output_commodity_id, r.output_units, r.energy_units, cm.reference_price_minor ref_price FROM production_lines l JOIN recipes r ON r.id = l.recipe_id JOIN commodities cm ON cm.id = r.output_commodity_id WHERE l.company_id = ? ORDER BY l.recipe_id', id);
 export const recipeInputs = (db: Sql, recipe: string) => db.all<{ commodity_id: string; units: number }>('SELECT commodity_id, units FROM recipe_inputs WHERE recipe_id = ? ORDER BY commodity_id', recipe);

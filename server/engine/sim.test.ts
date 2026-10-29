@@ -8,7 +8,7 @@ describe('multi-month economic simulation', () => {
     console.log(`\n${formatReport(r)}\n`);
     expect(r.anomalies).toEqual([]);
     expect(r.reconciliation.ok).toBe(true);
-    expect(r.npcIssued).toBe(r.totalIssued - r.genesisIssued);
+    expect(r.npcIssued).toBe(r.totalIssued - r.genesisIssued - r.liquidityIssued);   // everything else issued is rule-based central bank liquidity, reported separately
     expect(Math.abs(r.changeBps)).toBeLessThan(1_500);                    // within ±15% of the genesis supply after a year
     expect(r.maxCirculatingDeviationBps).toBeLessThan(1_500);
     expect(r.companies.filter((c) => c.id.startsWith('co-bristol')).every((c) => c.status === 'operating')).toBe(true);   // state enterprises never fail

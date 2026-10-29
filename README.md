@@ -15,6 +15,7 @@ Penny Empire is a browser-first, mobile-friendly multiplayer economic simulation
 - [Architecture and safeguards](docs/ARCHITECTURE.md)
 - [Visual and art brief](docs/VISUAL-BRIEF.md)
 - [Milestones](docs/ROADMAP.md)
+- [State enterprises, monetary policy, inflation and events](docs/STATE-ECONOMY.md)
 
 ## Suggested build approach
 - React + TypeScript + Vite for the browser UI.

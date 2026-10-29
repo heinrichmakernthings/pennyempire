@@ -1,35 +1,45 @@
+(node:5327) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
 Simulated 730 in-game days (24.3 months)
-Circulating supply: 97,000 EC → 105,296 EC (8.55%), max deviation from target 8.55%
-Issued 111,743 EC (genesis 97,000 EC + NPC income grants 14,743 EC); destroyed 6,447 EC
-Lowest household liquidity 862 EC
+Circulating supply: 137,000 EC → 153,036 EC (11.71%), max deviation from target 11.87%
+Issued 162,061 EC (genesis 137,000 EC + NPC income grants 19,061 EC); destroyed 9,025 EC
+Lowest household liquidity 17,376 EC
 
 month  supply      households  state      companies  players  goods   consumer-spend/day  insolvent
-   30  98,174 EC   24,843 EC   23,764 EC  34,566 EC  15,000 EC 2,590 EC 2,593 EC            0
-   90  100,284 EC  6,839 EC    24,190 EC  54,255 EC  15,000 EC 2,501 EC 2,478 EC            0
-  150  101,820 EC  1,066 EC    22,825 EC  62,928 EC  15,000 EC 3,499 EC 1,849 EC            0
-  210  102,918 EC  1,163 EC    22,428 EC  64,327 EC  15,000 EC 3,200 EC 1,877 EC            0
-  270  103,684 EC  1,114 EC    22,440 EC  65,131 EC  15,000 EC 2,990 EC 1,838 EC            0
-  330  104,212 EC  1,087 EC    22,467 EC  65,657 EC  15,000 EC 2,987 EC 1,858 EC            0
-  390  104,575 EC  1,072 EC    22,478 EC  66,025 EC  15,000 EC 3,013 EC 1,788 EC            0
-  450  104,824 EC  1,115 EC    22,460 EC  66,250 EC  15,000 EC 3,010 EC 1,798 EC            0
-  510  104,996 EC  1,092 EC    22,469 EC  66,436 EC  15,000 EC 3,016 EC 1,788 EC            0
-  570  105,117 EC  1,067 EC    22,485 EC  66,565 EC  15,000 EC 3,016 EC 1,798 EC            0
-  630  105,202 EC  1,062 EC    22,485 EC  66,654 EC  15,000 EC 2,996 EC 1,788 EC            0
-  690  105,257 EC  1,061 EC    22,552 EC  66,644 EC  15,000 EC 3,030 EC 1,808 EC            0
-  720  105,280 EC  1,319 EC    22,495 EC  66,465 EC  15,000 EC 2,788 EC 1,895 EC            0
+   30  138,054 EC  26,562 EC   57,652 EC  38,840 EC  15,000 EC 3,934 EC 2,938 EC            0
+   90  139,979 EC  21,312 EC   56,757 EC  46,910 EC  15,000 EC 4,246 EC 2,121 EC            0
+  150  141,475 EC  22,267 EC   54,130 EC  50,077 EC  15,000 EC 3,124 EC 2,231 EC            2
+  210  142,461 EC  25,620 EC   60,907 EC  40,933 EC  15,000 EC 1,657 EC 1,915 EC            4
+  270  143,125 EC  44,900 EC   59,337 EC  23,888 EC  15,000 EC 684 EC  1,995 EC            7
+  330  144,412 EC  67,040 EC   46,431 EC  15,942 EC  15,000 EC 629 EC  2,081 EC            8
+  390  145,500 EC  70,099 EC   43,204 EC  17,197 EC  15,000 EC 657 EC  2,019 EC            8
+  450  146,334 EC  75,002 EC   39,302 EC  17,029 EC  15,000 EC 260 EC  2,177 EC            8
+  510  146,973 EC  76,383 EC   37,778 EC  17,812 EC  15,000 EC 462 EC  1,965 EC            8
+  570  147,470 EC  83,235 EC   32,363 EC  16,872 EC  15,000 EC 669 EC  1,909 EC            8
+  630  149,666 EC  82,457 EC   34,514 EC  17,695 EC  15,000 EC 727 EC  1,974 EC            8
+  690  151,311 EC  88,301 EC   30,698 EC  17,312 EC  15,000 EC 667 EC  1,995 EC            8
+  720  153,102 EC  88,889 EC   33,094 EC  16,119 EC  15,000 EC 475 EC  651 EC              8
 
 company                avg daily profit   avg daily revenue   cash        status
-co-avon-timber         52 EC              180 EC              3,033 EC    operating
-co-bean-there          92 EC              288 EC              3,517 EC    operating
-co-bristol-energy      84 EC              164 EC              3,000 EC    operating
-co-bristol-estates     466 EC             526 EC              3,000 EC    operating
-co-bristol-media       29 EC              49 EC               3,000 EC    operating
-co-bristol-provisions  0 EC               0 EC                3,000 EC    operating
-co-brunel-mill         11 EC              257 EC              3,055 EC    operating
-co-clifton-dairy       9 EC               282 EC              3,320 EC    operating
-co-clifton-slice       141 EC             863 EC              3,903 EC    operating
-co-harbour-bean        86 EC              211 EC              46,418 EC   operating
-co-mad-slices          -53 EC             261 EC              275 EC      operating
-co-severn-farm         19 EC              234 EC              3,485 EC    operating
+co-avon-timber         50 EC              179 EC              3,313 EC    operating
+co-bean-there          0 EC               0 EC                0 EC        insolvent
+co-bristol-energy      -14 EC             66 EC               34 EC       operating
+co-bristol-estates     210 EC             270 EC              4,633 EC    operating
+co-bristol-media       -6 EC              14 EC               679 EC      operating
+co-bristol-provisions  1,053 EC           1,071 EC            8,080 EC    operating
+co-bristol-works       0 EC               0 EC                3,000 EC    operating
+co-brunel-mill         0 EC               0 EC                0 EC        insolvent
+co-clifton-dairy       0 EC               0 EC                0 EC        insolvent
+co-clifton-slice       168 EC             1,301 EC            4,557 EC    operating
+co-harbour-bean        6 EC               135 EC              5,346 EC    operating
+co-mad-slices          0 EC               0 EC                0 EC        insolvent
+co-national-bank       -40 EC             0 EC                1,834 EC    operating
+co-npc-cafe-1          32 EC              324 EC              3,270 EC    operating
+co-npc-cafe-2          0 EC               0 EC                0 EC        insolvent
+co-npc-dairy-3         0 EC               0 EC                0 EC        insolvent
+co-npc-dairy-4         0 EC               0 EC                0 EC        insolvent
+co-penny-exchange      -20 EC             0 EC                0 EC        operating
+co-penny-logistics     -32 EC             8 EC                0 EC        operating
+co-severn-farm         0 EC               0 EC                0 EC        insolvent
 
 No accounting anomalies: Δsupply == issued − destroyed on every tick; ledger reconciles.

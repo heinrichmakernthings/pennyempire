@@ -13,6 +13,16 @@ import { runNpcDecisions, runNpcEntry, type Profile } from './npc';
 import { npcStaffTo } from './staffing';
 import { STATE_SUPPLIED, energyPerBatch, inputUnitsPerBatch, linesOf as opsLinesOf, planCompany, procureInputs, recipeInputs, refPriceOf, staffNeeded, staffedCapacity, type CompanyRow, type LimitReason } from './operations';
 import { logEvent, logFailure, takeSnapshot } from './stats';
+import { closeEnergyDay, drawEnergy, startEnergyDay } from './energy';
+import { currentMods } from './economyState';
+import { runEvents } from './events';
+import { runLogistics } from './logistics';
+import { payDepositInterest, runLoans, runNpcCredit } from './bank';
+import { liquidityOps, reviewPolicy } from './centralBank';
+import { recordCpi, recordMonetaryStats } from './inflation';
+import { awarenessTarget, runCampaigns } from './ads';
+import { rentCharge, syncLease } from './property';
+import { burnServiceWear, recordPaidService, type ServiceKind } from './stateServices';
 
 type Co = CompanyRow;
 interface Stat { maintenance: number; tax: number; revenue: number; cogs: number; labour: number; property: number; marketing: number; fees: number; energyPaid: number; inputPurchases: number; unitsProduced: number; unitsSold: number; energyDue: number; demanded: number; stockedOut: boolean }
@@ -51,6 +61,9 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     };
     const pay = (kind: Exclude<LedgerKind, 'issuance' | 'sink' | 'sink_fee'>, from: string, to: string, amount: number, memo: string) => { if (amount > 0) transfer(db, ctx, key(kind), from, to, amount, kind, memo); };
 
+    /* 0. Economic events: expire, (deterministically) start, one-shots, and today's derived modifiers. */
+    runEvents(db, ctx, cfg);
+
     const all = db.all<Co>('SELECT * FROM companies ORDER BY id');
     const profiles = new Map(db.all<Profile>('SELECT * FROM npc_profiles').map((p) => [p.company_id, p]));
     const rot = n % Math.max(1, all.length);
@@ -61,7 +74,9 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const refPrice = (c: string) => refPriceOf(db, c);
     const stateCo = (industry: string) => all.find((c) => c.owner_kind === 'state' && c.industry_id === industry);
     const energyCo = stateCo('utility'), estatesCo = stateCo('property'), mediaCo = stateCo('media'), provisions = stateCo('wholesale');
-    const energyPrice = refPrice(cfg.energyCommodityId);
+    const mods = currentMods(db);
+    const energy = startEnergyDay(db, cfg, refPrice(cfg.energyCommodityId));
+    const energyPrice = energy.tariff;           // the day's tariff: base price, loaded-grid surcharge, event modifier
     const worksCo = stateCo('works');
     const city = db.get<{ id: string; population: number; households_account_id: string; treasury_account_id: string }>('SELECT id, population, households_account_id, treasury_account_id FROM cities ORDER BY id LIMIT 1')!;
     const listedIds = new Set(db.all<{ company_id: string }>("SELECT company_id FROM securities WHERE status IN ('open','suspended')").map((r) => r.company_id));   // listed companies pay dividends through the dividend engine, not the automatic sweeps
@@ -79,6 +94,10 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const stipend = Math.floor((baseStipend * factorBps) / 10_000);
     if (stipend > 0) issue(db, ctx, key('stipend'), city.households_account_id, stipend, 'NPC citizen income grant');
     pay('state_payment', city.treasury_account_id, city.households_account_id, Math.floor((available(db, city.treasury_account_id) * cfg.civilPayrollBps) / 10_000), 'civil service payroll');
+
+    /* A1. Penny Central Bank: rule-based rate review and liquidity operations, each logged with the data it used. */
+    phase('central_bank');
+    safe('central_bank', 'penny-central-bank', () => { reviewPolicy(db, ctx, cfg); liquidityOps(db, ctx, cfg); });
 
     /* B. State provisioner: bounded fallback stock, created from nothing but sold for coins that go to the treasury. */
     phase('state_supply');
@@ -131,6 +150,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     safe('npc_decisions', 'npc', () => { runNpcDecisions(db, ctx, cfg, exitMark); });
     db.run("INSERT INTO meta (key, value) VALUES ('npc_last_exit', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(exitMark.tick));
     safe('npc_entry', 'npc', () => { runNpcEntry(db, ctx, cfg); });
+    safe('npc_credit', 'npc', () => { runNpcCredit(db, ctx, cfg, safe); });
     phase('share_decisions');
     safe('share_decisions', 'shares', () => { runShareDecisions(db, ctx, cfg); });
 
@@ -169,6 +189,10 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       });
     }
 
+    /* E2. Logistics: today's trades and contract deliveries become shipments; sellers pay delivery fees to Penny Logistics; goods are held in transit only under capacity limits or events. */
+    phase('logistics');
+    safe('logistics', 'penny-logistics', () => { runLogistics(db, ctx, cfg, { onFee: (seller, amount) => { st(seller).fees += amount; st('co-penny-logistics').revenue += amount; } }); });
+
     /* F. Production: batches limited by plan, staffing, equipment condition, storage and inputs. Inputs are consumed from real stock (quality sets
      *    how much per batch); output cost basis = inputs consumed + energy (capitalised). Every line writes a production-log row saying what limited it. */
     phase('production');
@@ -179,9 +203,18 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         for (const { line, batches, wanted, reason } of planCompany(db, c, cfg)) {
           const inputs = inputsOf(line.recipe_id).map((i) => ({ ...i, need: inputUnitsPerBatch(cfg, c.quality, i.units) }));
           const byInputs = Math.min(batches, ...inputs.map((i) => Math.floor(freeStock(db, c.id, i.commodity_id) / i.need)));
-          const b = Math.max(0, byInputs);
+          let b = Math.max(0, byInputs);
           let limited: LimitReason = reason;
           if (b < batches) limited = procLimit.get(c.id) ?? 'inputs';
+          // Events can throttle a whole industry (strike, supply disruption): a recorded 'disruption', never a hidden penalty.
+          const ind = mods.productionByIndustry[c.industry_id];
+          if (ind !== undefined && ind < 10_000 && b > 0) { const cut = Math.floor((b * ind) / 10_000); if (cut < b) { b = cut; limited = 'disruption'; } }
+          // The grid: production draws electricity from what is left today. A shortfall limits the line; it is 'disruption' when an event (not growth) caused it.
+          const perBatch = energyPerBatch(c, line.energy_units);
+          if (perBatch > 0 && b > 0) {
+            const got = Math.floor(drawEnergy(energy, b * perBatch) / perBatch);
+            if (got < b) { limited = energy.baseCapacity > 0 && mods.energyCapacityBps < 10_000 && energy.demand <= energy.baseCapacity ? 'disruption' : 'energy'; b = got; }
+          }
           let basis = 0; const used: Record<string, number> = {};
           if (b > 0) {
             for (const i of inputs) { basis += removeStock(db, ctx, c.id, i.commodity_id, b * i.need, 'production_input', line.recipe_id); used[i.commodity_id] = b * i.need; }
@@ -194,6 +227,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         }
       });
     }
+
+    closeEnergyDay(db, n, energy);
 
     /* F2. Wear: producing wears equipment; at low condition output drops. NPC firms service equipment automatically (paying Bristol Works); players decide. */
     for (const c of order) {
@@ -215,12 +250,13 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
 
     /* H. Operating expenses (accrual): wages → households; energy, rent, advertising → state enterprises. Unpaid amounts become arrears. */
     phase('expenses');
+    for (const c of order) if (c.owner_kind !== 'state') syncLease(db, ctx, cfg, c.id);   // keeps the lease record in step with the premises (new, upgraded, closed)
     for (const c of order) {
       if (c.status !== 'operating') continue;
       const s = st(c.id);
       const payroll = c.employees * c.wage_minor;
       // One-off staffing costs (hiring fees, severance) and equipment servicing were paid in cash when the player acted; they are recognised in this day's profit here.
-      s.labour = payroll + c.pending_labour_minor; s.property = c.property_minor; s.marketing = c.marketing_minor; s.maintenance += c.pending_maintenance_minor;
+      s.labour = payroll + c.pending_labour_minor; s.property = rentCharge(db, cfg, c).totalMinor; s.marketing = Math.ceil((c.marketing_minor * mods.adCostBps) / 10_000); s.maintenance += c.pending_maintenance_minor;
       const due: { to: string; amount: number; bucket: 'labour' | 'energy' | 'property' | 'marketing'; payee: Co | null }[] = [
         { to: city.households_account_id, amount: payroll, bucket: 'labour', payee: null },
         { to: energyCo?.treasury_account_id ?? city.treasury_account_id, amount: s.energyDue, bucket: 'energy', payee: energyCo ?? null },
@@ -242,12 +278,22 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         if (p > 0) {
           safe('operating_cost', c.id, () => { pay('operating_cost', c.treasury_account_id, d.to, p, `${d.bucket} for ${c.name}`); });
           cash -= p; if (d.bucket === 'energy') s.energyPaid += p; if (d.payee) st(d.payee.id).revenue += p;
+          const svc: ServiceKind | null = d.bucket === 'energy' ? 'energy' : d.bucket === 'property' ? 'property' : d.bucket === 'marketing' ? 'advertising' : null;
+          if (svc) recordPaidService(db, n, svc, c.id, p, d.bucket === 'energy' ? Math.max(1, Math.round(p / Math.max(1, energy.tariff))) : 1, `${d.bucket} ${c.name}`);
         }
         unpaid += d.amount - p;
       }
       db.run('UPDATE companies SET unpaid_minor = unpaid_minor + ?, shortfall_ticks = ?, pending_labour_minor = 0, pending_maintenance_minor = 0 WHERE id = ?', unpaid, unpaid > 0 ? c.shortfall_ticks + 1 : 0, c.id);
       if (unpaid > 0) logEvent(db, n, 'unpaid_expenses', 'warning', c.id, `${c.name} could not pay ${unpaid / 100} EC of operating costs`);
     }
+    // Penny Ads campaigns: billed after wages, energy and rent; each one is paid in full or skipped for the day.
+    const rivalSpendFor = (industry: string, exclude: string) => rivalSpend(industry, exclude);
+    const rivalSpend = (industry: string, exclude: string) => db.get<{ s: number }>('SELECT COALESCE(SUM(t.marketing_minor),0) s FROM company_tick_stats t JOIN companies c ON c.id = t.company_id WHERE t.tick = ? AND c.industry_id = ? AND t.company_id <> ?', n - 1, industry, exclude)!.s;
+    const ads = runCampaigns(db, ctx, cfg, rivalSpend);
+    for (const [id, amount] of ads.spent) { st(id).marketing += amount; st('co-bristol-media').revenue += amount; }
+    // National Bank: instalments (interest and principal separately), late fees, defaults, then savings interest.
+    safe('loans', 'national-bank', () => { runLoans(db, ctx, cfg, { onInterest: (b, amt) => { st(b).fees += amt; st('co-national-bank').revenue += amt; } }); });
+    safe('deposit_interest', 'national-bank', () => { payDepositInterest(db, ctx, cfg, { onBankCost: (amt) => { st('co-national-bank').maintenance += amt; } }); });
     // Corporation tax on positive net profit and an idle-cash levy above the operating reserve: both are transfers to the treasury (which the state
     // pays back out as civil payroll). They recycle money that would otherwise pool in company accounts and starve consumer demand.
     for (const c of order) {
@@ -271,10 +317,12 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     }
     // State enterprises hold a working reserve; surplus returns to the treasury as a transfer (NOT destroyed).
     for (const c of order) {
-      if (c.owner_kind !== 'state' || c.status !== 'operating' || listedIds.has(c.id)) continue;
+      if (c.owner_kind !== 'state' || c.status !== 'operating' || listedIds.has(c.id) || c.id === 'co-national-bank' || c.id === 'co-penny-exchange') continue;   // the bank's capital and the exchange's revenue are not swept
       const surplus = available(db, c.treasury_account_id) - cfg.enterpriseReserveMinor;
       if (surplus > 0) safe('sweep', c.id, () => pay('transfer', c.treasury_account_id, city.treasury_account_id, surplus, `${c.name} surplus to treasury`));
     }
+    phase('state_wear');
+    for (const svc of ['energy', 'advertising', 'property', 'logistics'] as const) safe('service_wear', svc, () => { burnServiceWear(db, ctx, cfg, svc); });
     phase('exchange');
     safe('exchange_sweep', 'penny-exchange', () => { sweepExchange(db, ctx, cfg, city.treasury_account_id); });
     phase('state_sink');
@@ -296,8 +344,13 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
       }
       if (c.owner_kind !== 'state') {
         // Awareness: advertising earns a saturating bonus (half of the maximum at `awarenessHalfSpend` a day) that fades 5% a day — it must be sustained, and has a hard ceiling.
-        const m = s.marketing > 0 && (db.get<{ s: number }>('SELECT shortfall_ticks s FROM companies WHERE id = ?', c.id)!.s === 0) ? c.marketing_minor : 0;
-        const target = Math.floor((cfg.awarenessMaxBps * m) / (m + cfg.awarenessHalfSpendMinor));
+        // Base marketing (standing daily spend) and every paid campaign feed ONE saturating curve, so stacking spend has diminishing returns and the ceiling holds.
+        const paidBase = c.marketing_minor > 0 && (db.get<{ s: number }>('SELECT shortfall_ticks s FROM companies WHERE id = ?', c.id)!.s === 0) ? c.marketing_minor : 0;
+        const rival = paidBase > 0 ? rivalSpendFor(c.industry_id, c.id) : 0;
+        const baseDilution = Math.min(5_000, Math.floor((5_000 * rival) / (rival + paidBase + cfg.awarenessHalfSpendMinor)));
+        const baseEff = Math.floor((((paidBase * mods.adReachBps) / 10_000) * (10_000 - baseDilution)) / 10_000);
+        const m = baseEff + (ads.effective.get(c.id) ?? 0) + Math.max(0, (ads.industryPool.get(c.industry_id) ?? 0) - (ads.ownPool.get(c.id) ?? 0));
+        const target = awarenessTarget(cfg, m);
         const next = Math.floor((c.awareness_bps * (10_000 - cfg.awarenessDecayBps)) / 10_000) + Math.floor((target * cfg.awarenessDecayBps) / 10_000);
         if (next !== c.awareness_bps) db.run('UPDATE companies SET awareness_bps = ? WHERE id = ?', Math.min(cfg.awarenessMaxBps, next), c.id);
       }
@@ -325,6 +378,8 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         n, c.id, s.revenue, s.cogs, s.labour, s.property, s.marketing, s.fees, s.tax, s.energyPaid, s.inputPurchases, gross, net, balance(db, c.treasury_account_id), invValue, s.unitsProduced, s.unitsSold, row.unpaid_minor, row.status, s.maintenance);
     }
     takeSnapshot(db, n);
+    recordCpi(db, n);
+    recordMonetaryStats(db, ctx, cfg, { consumerSpend, tradeValue, creditIssued: db.get<{ a: number }>("SELECT COALESCE(SUM(amount_minor),0) a FROM monetary_ops WHERE tick = ? AND kind = 'liquidity_issue'", n)!.a });
     phase('share_closing');
     safe('share_closing', 'shares', () => { runShareClosing(db, ctx, cfg); });
     phase('standings');

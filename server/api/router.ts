@@ -15,11 +15,15 @@ import { cancelPlayerShareOrder, declarePlayerDividend, listPlayerCompany, place
 import { listingQuote } from '../engine/listing';
 import { PLAYER_ID } from '../seed/bristol';
 import { economyDashboard } from './dashboard';
+import { companyServices, loanQuote, stateOverview } from './stateApi';
+import { adminLog, authorised, cancelEventAdmin, logDenied, setBaseRate, setCentralBankRule, setParam, triggerEvent, ADMIN_PARAMS } from '../engine/admin';
+import { bankDeposit, bankWithdraw, buyPremisesCmd, cancelAd, repayBankLoan, startAd, takeBankLoan } from '../engine/stateCommands';
+import { stateDashboard } from './stateDashboard';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
-export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown }
+export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown; headers?: Record<string, string> }
 export interface ApiResponse { status: number; body: unknown }
-export interface ApiOptions { devEndpoints: boolean; now?: () => number }
+export interface ApiOptions { devEndpoints: boolean; now?: () => number; adminToken?: string }
 
 const json = (status: number, body: unknown): ApiResponse => ({ status, body });
 const apiErr = (status: number, code: ApiError['code'], message: string): ApiResponse => json(status, { ok: false, error: { code, message } });
@@ -98,10 +102,30 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
       const c = out.quote; const cur = (m: number) => ({ currency: 'EC' as const, minor: m });
       return json(200, { ok: true, quote: { id: c.id, expiresAt: new Date(nextTickAtMs(db)).toISOString(), revision: c.revision, kind: c.kind, limitPriceMinor: c.limitPriceMinor, reserveMinor: c.reserveMinor, slippageBps: c.slippageBps, quantity: c.quantity, subtotal: cur(c.subtotalMinor), fee: cur(c.feeMinor), total: cur(c.totalMinor), availableUnits: c.availableUnits } });
     }
+    if (method === 'GET' && seg[0] === 'state') {
+      if (seg[1] === 'overview') return json(200, { authority: 'server', ...stateOverview(db) });
+      if (seg[1] === 'company' && seg[2]) { const r = companyServices(db, seg[2]); return r ? json(200, { authority: 'server', services: r }) : apiErr(404, 'VALIDATION', `Unknown company ${seg[2]}`); }
+      if (seg[1] === 'loan-quote') return json(200, { authority: 'server', quote: loanQuote(db, q.companyId ?? '', Number(q.amountMinor ?? 0), Number(q.termDays ?? 30)) });
+      if (seg[1] === 'events') return json(200, { authority: 'server', events: stateOverview(db).events });
+    }
+    if (seg[0] === 'admin') {
+      const token = req.headers?.['x-admin-token'];
+      if (!authorised(token, opts.adminToken)) { logDenied(db, `${method} ${path}`, { reason: opts.adminToken ? 'bad token' : 'administration disabled' }); return apiErr(403, 'FORBIDDEN', 'Administrator permission required.'); }
+      const actor = 'admin'; const b = (req.body ?? {}) as Record<string, unknown>; const reason = String(b.reason ?? '');
+      const wrap = (r: { ok: boolean; message: string; detail?: unknown }) => json(r.ok ? 200 : 422, r.ok ? { ok: true, message: r.message, detail: r.detail } : { ok: false, error: { code: 'VALIDATION', message: r.message } });
+      if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db), params: ADMIN_PARAMS, log: adminLog(db) });
+      if (method === 'POST' && seg[1] === 'param') return wrap(setParam(db, actor, String(b.key ?? ''), Number(b.value), reason));
+      if (method === 'POST' && seg[1] === 'base-rate') return wrap(setBaseRate(db, actor, Number(b.rateBps), reason));
+      if (method === 'POST' && seg[1] === 'event') return wrap(triggerEvent(db, actor, String(b.type ?? ''), Number(b.severity ?? 1), b.days === undefined ? undefined : Number(b.days), reason));
+      if (method === 'POST' && seg[1] === 'event-cancel') return wrap(cancelEventAdmin(db, actor, String(b.eventId ?? ''), reason));
+      if (method === 'POST' && seg[1] === 'cb-rule') return wrap(setCentralBankRule(db, actor, b.enabled === true, reason));
+      return apiErr(404, 'UNAVAILABLE', `No admin route ${method} ${path}`);
+    }
     if (method === 'POST' && seg[0] === 'command') return runApiCommand(db, req.body as Command & Record<string, unknown>);
     if (seg[0] === 'dev') {
       if (!opts.devEndpoints) return apiErr(404, 'FORBIDDEN', 'Developer endpoints are disabled');
       if (method === 'GET' && seg[1] === 'economy') return json(200, economyDashboard(db));
+      if (method === 'GET' && seg[1] === 'state') return json(200, { authority: 'server', dashboard: stateDashboard(db) });
       if (method === 'POST' && seg[1] === 'tick') {
         const count = Math.max(1, Math.min(400, Number((req.body as { count?: number } | undefined)?.count ?? 1)));
         const results = [];
@@ -138,6 +162,13 @@ function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>): ApiResp
     case 'company.upgrade': res = upgradeCompany(db, key, cmd.companyId as string, cmd.upgradeId as string); break;
     case 'company.service': res = serviceEquipment(db, key, cmd.companyId as string); break;
     case 'company.procure': res = procureNow(db, key, cmd.companyId as string, cmd.batches as number); break;
+    case 'ad.start': res = startAd(db, key, { companyId: cmd.companyId as string, kind: cmd.kind as 'local', tier: Number(cmd.tier ?? 1), days: Number(cmd.days) }); break;
+    case 'ad.cancel': res = cancelAd(db, key, cmd.companyId as string, String(cmd.campaignId)); break;
+    case 'loan.take': res = takeBankLoan(db, key, { companyId: cmd.companyId as string, amountMinor: Number(cmd.amountMinor), termDays: Number(cmd.termDays) }); break;
+    case 'loan.repay': res = repayBankLoan(db, key, { companyId: cmd.companyId as string, loanId: String(cmd.loanId), amountMinor: Number(cmd.amountMinor) }); break;
+    case 'bank.deposit': res = bankDeposit(db, key, { companyId: cmd.companyId as string, amountMinor: Number(cmd.amountMinor) }); break;
+    case 'bank.withdraw': res = bankWithdraw(db, key, { companyId: cmd.companyId as string, amountMinor: Number(cmd.amountMinor) }); break;
+    case 'property.buy': res = buyPremisesCmd(db, key, cmd.companyId as string); break;
     default: res = { ok: false, error: { code: 'UNAVAILABLE', message: UNAVAILABLE_TYPES.has(cmd?.type as string) ? 'This action is not available on the server yet.' : `Unknown command ${String(cmd?.type)}` } };
   }
   return json(res.ok ? 200 : res.error.code === 'UNAVAILABLE' ? 501 : 422, res);

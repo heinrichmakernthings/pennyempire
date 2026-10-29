@@ -301,7 +301,7 @@ describe('migration 0001 → 0002 on an existing world', () => {
     advance(db, 4);
     const cash = balance(db, PLAYER_WALLET), n = db.get<{ n: number }>('SELECT COUNT(*) n FROM companies')!.n;
     expect(db.get<{ n: number }>('SELECT COUNT(*) n FROM industry_specs')!.n).toBeGreaterThanOrEqual(6);
-    expect(cash).toBeGreaterThan(0); expect(n).toBe(13);
+    expect(cash).toBeGreaterThan(0); expect(n).toBe(16);
     expect(reconcile(db).ok).toBe(true);
   });
 });

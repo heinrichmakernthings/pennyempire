@@ -4,7 +4,7 @@ import type { Camera } from './camera';
 import { screenToWorld, worldToScreen } from './camera';
 import { pointInPolygon, project, type Vec } from './geometry';
 import type { Scene, SceneBuilding, SceneLot } from './scene';
-import { uiIconUrl } from '@/assets/artAssets';
+import { phase5Url, uiIconUrl } from '@/assets/artAssets';
 import type { CompanyActivity } from '@/shared/living';
 
 export const PALETTE = { water: '#23606b', waterHi: '#377887', road: '#343c40', grass: '#64724b', paving: '#80796b', seam: 'rgba(20,28,32,.18)', quay: '#b3a48b', dash: '#d6c8a6', amber: '#ffc45e', mint: '#62dbaf', cream: '#f0e8d7', bg: '#17252a' };
@@ -60,13 +60,22 @@ export interface ViewState { cam: Camera; width: number; height: number; dpr: nu
 export interface UiState { hoverId: string | null; selectedId: string | null; selectedLotId?: string | null; activity?: Map<string, CompanyActivity>; redraw?: () => void }
 
 /** Approved Phase 2/3 state icons, loaded once. Missing icons simply don't draw. */
-const BADGE: Record<string, string> = { closed: 'state-closed', construction: 'state-construction', 'missing-inputs': 'state-missing-inputs', 'high-demand': 'state-high-demand', delivery: 'state-delivery', customers: 'state-customer-entry', production: 'state-production' };
+const BADGE: Record<string, string> = { energy: 'energy-crisis', closed: 'state-closed', construction: 'state-construction', 'missing-inputs': 'state-missing-inputs', 'high-demand': 'state-high-demand', delivery: 'state-delivery', customers: 'state-customer-entry', production: 'state-production' };
 const badgeImgs = new Map<string, HTMLImageElement | null>();
 function badgeImg(state: string, redraw?: () => void): HTMLImageElement | null {
   const name = BADGE[state]; if (!name) return null;
   if (badgeImgs.has(name)) return badgeImgs.get(name)!;
   const url = uiIconUrl(name); if (!url || typeof Image === 'undefined') { badgeImgs.set(name, null); return null; }
   const img = new Image(); badgeImgs.set(name, null); img.onload = () => { badgeImgs.set(name, img); redraw?.(); }; img.src = url; return null;
+}
+/** Approved Phase 5 advertising sprites (static, native size), loaded once. An active Penny Ads campaign shows as the matching sign on the company's building. */
+const AD_SPRITE: Record<string, string> = { billboard: 'roof-billboard', digital: 'digital-sign', local: 'street-ad', industry: 'wall-advert', contract: 'roof-billboard' };
+const signImgs = new Map<string, HTMLImageElement | null>();
+function signImg(kind: string, redraw?: () => void): HTMLImageElement | null {
+  const name = AD_SPRITE[kind]; if (!name) return null;
+  if (signImgs.has(name)) return signImgs.get(name)!;
+  const url = phase5Url(name); if (!url || typeof Image === 'undefined') { signImgs.set(name, null); return null; }
+  const img = new Image(); signImgs.set(name, null); img.onload = () => { signImgs.set(name, img); redraw?.(); }; img.src = url; return null;
 }
 const FACING = ['se', 'sw', 'ne', 'nw'] as const;
 /** Residents, vans and workers around a building; positions are a fixed function of the company and the count, so nothing jitters between frames. */
@@ -78,7 +87,15 @@ function drawActivity(ctx: CanvasRenderingContext2D, atlas: ArtAtlas | null, b: 
   for (let i = 0; i < a.customers; i++) { const [x, y] = foot(i, 70); drawFrame(ctx, atlas, `resident-${FACING[(seed + i) % 4]}`, ox + x * k, oy + y * k, k); }
   for (let i = 0; i < a.workers; i++) { const [x, y] = foot(10 + i, 40); drawFrame(ctx, atlas, `worker-${FACING[(seed + i + 1) % 4]}`, ox + (x - 20) * k, oy + (y - 8) * k, k); }
   for (let i = 0; i < a.vans; i++) drawFrame(ctx, atlas, i % 2 ? 'van-sw' : 'van-se', ox + (b.anchor[0] + 52 + i * 26) * k, oy + (b.anchor[1] + 24 + i * 6) * k, k);
-  const img = badgeImg(a.state, redraw);
+  if (a.ad) {
+    const sign = signImg(a.ad, redraw);
+    if (sign) {   // roof-mounted for billboard campaigns, kerbside for the rest; native sprite size, never rescaled except by camera zoom
+      const roof = a.ad === 'billboard' || a.ad === 'contract' || a.ad === 'industry';
+      const sx = ox + (b.anchor[0] + (roof ? 0 : -52)) * k, sy = oy + (roof ? b.anchor[1] - f.pivot[1] + 14 : b.anchor[1] + 22) * k;
+      ctx.save(); ctx.imageSmoothingEnabled = false; ctx.drawImage(sign, Math.round(sx - (sign.width * k) / 2), Math.round(sy - sign.height * k), Math.round(sign.width * k), Math.round(sign.height * k)); ctx.restore();
+    }
+  }
+  const img = badgeImg(a.energy && a.state !== 'closed' ? 'energy' : a.state, redraw);
   if (img) { const sz = 30 * k; const sx = ox + b.anchor[0] * k, sy = oy + (b.anchor[1] - f.pivot[1] - 6) * k; ctx.save(); ctx.imageSmoothingEnabled = true; if (a.state === 'closed') ctx.globalAlpha = .95; ctx.drawImage(img, Math.round(sx - sz / 2), Math.round(sy - sz), sz, sz); ctx.restore(); }
 }
 

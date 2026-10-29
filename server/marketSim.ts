@@ -14,7 +14,7 @@ export interface MarketSimReport {
   days: number; anomalies: string[]; reconciliation: boolean; supplyStart: number; supplyEnd: number; supplyChangeBps: number;
   bots: BotResult[];
   commodities: { id: string; vwapFirst: number | null; vwapLast: number | null; minVwap: number | null; maxVwap: number | null; reference: number; volatilityBps: number; volume: number; shortageDays: number; avgSpreadBps: number | null; hhiBps: number; topSupplier: string; topShareBps: number }[];
-  exchange: { feesCollected: number; burned: number; swept: number; trades: number; value: number; contractDeliveries: number; contractMisses: number; failedSettlements: number };
+  exchange: { feesCollected: number; burned: number; swept: number; retained: number; trades: number; value: number; contractDeliveries: number; contractMisses: number; failedSettlements: number };
   failures: { kind: string; reason: string; n: number }[]; contractOffers: string[];
   npc: { minStateStock: { commodity: string; units: number }[]; insolventNpc: string[]; bankruptcies: string[] };
 }
@@ -111,7 +111,7 @@ export function runMarketSim(days: number): MarketSimReport {
   return {
     world: db, days, anomalies, reconciliation: rec.ok, supplyStart, supplyEnd: supply(db).circulating, supplyChangeBps: Math.round(((supply(db).circulating - supplyStart) * 10_000) / supplyStart), bots, commodities: comm,
     failures: db.all<{ kind: string; reason: string; n: number }>('SELECT kind, reason, COUNT(*) n FROM failed_transactions GROUP BY kind, reason ORDER BY n DESC LIMIT 8'), contractOffers,
-    exchange: { feesCollected: fee, burned: sumTx('Penny Exchange fee burn%', 'acct:burn'), swept: sumTx('Penny Exchange fee income%', 'acct:state:bristol-treasury'), trades: db.get<{ n: number }>('SELECT COUNT(*) n FROM trades')!.n, value: db.get<{ v: number }>('SELECT COALESCE(SUM(qty*price_minor),0) v FROM trades')!.v, contractDeliveries: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status = 'delivered'")!.n, contractMisses: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status <> 'delivered'")!.n, failedSettlements: db.get<{ n: number }>('SELECT COUNT(*) n FROM failed_transactions')!.n },
+    exchange: { feesCollected: fee, burned: sumTx('Penny Exchange fee burn%', 'acct:burn'), swept: 0, retained: db.get<{ b: number }>("SELECT COALESCE(SUM(amount_minor),0) b FROM ledger_postings WHERE account_id = 'acct:state:penny-exchange'")!.b, trades: db.get<{ n: number }>('SELECT COUNT(*) n FROM trades')!.n, value: db.get<{ v: number }>('SELECT COALESCE(SUM(qty*price_minor),0) v FROM trades')!.v, contractDeliveries: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status = 'delivered'")!.n, contractMisses: db.get<{ n: number }>("SELECT COUNT(*) n FROM contract_deliveries WHERE status <> 'delivered'")!.n, failedSettlements: db.get<{ n: number }>('SELECT COUNT(*) n FROM failed_transactions')!.n },
   npc: { minStateStock: [...stateMin].map(([commodity, units]) => ({ commodity, units })), insolventNpc: db.all<{ id: string }>("SELECT id FROM companies WHERE owner_kind = 'npc' AND status = 'insolvent' AND bankrupt_tick IS NULL").map((x) => x.id), bankruptcies: db.all<{ id: string }>('SELECT id FROM companies WHERE bankrupt_tick IS NOT NULL').map((x) => x.id) },
   };
 }
@@ -126,7 +126,7 @@ export function formatMarketReport(r: MarketSimReport): string {
   L.push('', 'Commodity markets');
   L.push('  commodity     first VWAP   last VWAP    min–max VWAP            ref      volat.  volume  shortage-days  spread  HHI    top seller (share)');
   for (const c of r.commodities) L.push(`  ${c.id.padEnd(12)} ${ec(c.vwapFirst).padStart(11)} ${ec(c.vwapLast).padStart(11)}  ${(ec(c.minVwap) + '–' + ec(c.maxVwap)).padEnd(22)} ${ec(c.reference).padStart(9)}  ${(c.volatilityBps / 100).toFixed(1).padStart(5)}%  ${String(c.volume).padStart(6)}  ${String(c.shortageDays).padStart(13)}  ${c.avgSpreadBps === null ? '   —' : (c.avgSpreadBps / 100).toFixed(1).padStart(4) + '%'}  ${String(c.hhiBps).padStart(5)}  ${c.topSupplier} (${(c.topShareBps / 100).toFixed(0)}%)`);
-  L.push('', `Exchange: ${r.exchange.trades} trades worth ${ec(r.exchange.value)} · fees ${ec(r.exchange.feesCollected)} (burned ${ec(r.exchange.burned)}, swept to treasury ${ec(r.exchange.swept)}) · contract deliveries ${r.exchange.contractDeliveries} ok / ${r.exchange.contractMisses} missed · failed settlements ${r.exchange.failedSettlements}`);
+  L.push('', `Exchange: ${r.exchange.trades} trades worth ${ec(r.exchange.value)} · fees ${ec(r.exchange.feesCollected)} (burned ${ec(r.exchange.burned)}, retained ${ec(r.exchange.retained)}) · contract deliveries ${r.exchange.contractDeliveries} ok / ${r.exchange.contractMisses} missed · failed settlements ${r.exchange.failedSettlements}`);
   for (const c of r.contractOffers) L.push(`  contract offer — ${c}`);
   for (const f of r.failures) L.push(`  refused ×${f.n}: ${f.kind} — ${f.reason}`);
   L.push(`State provisioner lowest stock: ${r.npc.minStateStock.map((m) => `${m.commodity} ${m.units}`).join(', ')}`);

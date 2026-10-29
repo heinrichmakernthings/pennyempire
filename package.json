@@ -18,7 +18,8 @@
     "db:seed": "tsx server/cli.ts seed",
     "db:reset": "tsx server/cli.ts reset",
     "sim": "tsx server/cli.ts sim",
-    "sim:market": "tsx server/cli.ts sim-market"
+    "sim:market": "tsx server/cli.ts sim-market",
+    "eco-scenarios": "tsx server/cli.ts eco-scenarios all 150"
   },
   "dependencies": {
     "react": "^19.3.1",

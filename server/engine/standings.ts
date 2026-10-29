@@ -76,13 +76,20 @@ export function recordLeaderboards(db: Sql, n: number) {
 
 /** The Penny Post: every article is generated from a recorded economic event (`event_id` is unique, so re-running a tick never duplicates a story) and states only what the event says. */
 export function recordNews(db: Sql, n: number) {
-  const events = db.all<{ id: number; kind: string; subject: string | null; message: string; data_json: string | null }>("SELECT id, kind, subject, message, data_json FROM economic_events WHERE tick = ? AND kind IN ('company_opened','company_created','company_closed','bankruptcy','title_changed','company_upgraded','ipo','follow_on','dividend_declared','dividend_paid','trading_suspended','trading_resumed','delisted','control_change','large_holder','record_profit','major_loss','market_crash') ORDER BY id", n);
+  const events = db.all<{ id: number; kind: string; subject: string | null; message: string; data_json: string | null }>("SELECT id, kind, subject, message, data_json FROM economic_events WHERE tick = ? AND kind IN ('company_opened','company_created','company_closed','bankruptcy','title_changed','company_upgraded','ipo','follow_on','dividend_declared','dividend_paid','trading_suspended','trading_resumed','delisted','control_change','large_holder','record_profit','major_loss','market_crash','eco_event_start','eco_event_end','rate_decision','loan_default','loan_loss','stimulus_paid','eco_scandal') ORDER BY id", n);
   const put = (e: { id: number }, kind: string, headline: string, body: string, importance: number, subject: string | null, industry: string | null, data: unknown) =>
     db.run('INSERT OR IGNORE INTO news_articles (tick, kind, headline, body, importance, subject_company_id, industry_id, event_id, data_json) VALUES (?,?,?,?,?,?,?,?,?)', n, kind, headline, body, importance, subject, industry, e.id, JSON.stringify(data));
   for (const e of events) {
     const co = e.subject ? db.get<{ name: string; industry_id: string; owner_kind: string }>('SELECT name, industry_id, owner_kind FROM companies WHERE id = ?', e.subject) : undefined;
     const ind = co ? (db.get<{ label: string }>('SELECT label FROM industry_specs WHERE industry_id = ?', co.industry_id)?.label ?? co.industry_id).toLowerCase() : '';
     const data = e.data_json ? JSON.parse(e.data_json) : {};
+    // Macro stories: each one restates a recorded event (event engine, central bank, bank) and nothing else.
+    if (e.kind === 'eco_event_start') { const sev = Number(data.severity ?? 1); put(e, 'economy', String(e.message.split('. ')[0]), `${e.message}.`, sev >= 3 ? 3 : 2, null, null, data); continue; }
+    if (e.kind === 'eco_event_end') { put(e, 'economy', 'Conditions ease', `${e.message}.`, 1, null, null, data); continue; }
+    if (e.kind === 'rate_decision') { put(e, 'policy', 'Penny Central Bank changes the base rate', `${e.message}`, 3, null, null, data); continue; }
+    if (e.kind === 'stimulus_paid') { put(e, 'policy', 'Treasury pays out stimulus', `${e.message}.`, 2, null, null, data); continue; }
+    if (e.kind === 'loan_default' || e.kind === 'loan_loss') { put(e, 'credit', e.kind === 'loan_default' ? 'A borrower defaults on its bank loan' : 'National Bank books a loan loss', `${e.message}.`, 2, e.subject, null, data); continue; }
+    if (e.kind === 'eco_scandal') { put(e, 'scandal', e.message.split(':')[0]!, `${e.message}.`, 2, e.subject, null, data); continue; }
     if (e.kind === 'market_crash') { put(e, 'market', 'Penny Exchange index tumbles', `${e.message}.`, 3, null, null, data); continue; }
     if (!co) continue;
     const MARKET: Record<string, [string, string, number]> = { ipo: ['ipo', `${co.name} lists on the Penny Exchange`, 2], follow_on: ['ipo', `${co.name} offers more shares`, 1], dividend_declared: ['dividend', `${co.name} declares a dividend`, 1], dividend_paid: ['dividend', `${co.name} pays its dividend`, 1], trading_suspended: ['suspension', `Trading in ${co.name} suspended`, 3], trading_resumed: ['suspension', `Trading in ${co.name} resumes`, 2], delisted: ['delisting', `${co.name} delisted`, 3], control_change: ['control', `${co.name} changes hands`, 3], large_holder: ['holder', `New large shareholder in ${co.name}`, 1], record_profit: ['earnings', `${co.name} reports record profit`, 2], major_loss: ['earnings', `${co.name} reports a major loss`, 2] };

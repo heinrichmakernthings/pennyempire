@@ -1,19 +1,33 @@
 import type { Sql } from '../db/sql';
 import { gameDate, loadConfig, type EngineConfig } from './config';
-import { available, destroy, transfer, type TickCtx } from './ledger';
+import { available, destroy, type TickCtx } from './ledger';
 import { EXCHANGE_ACCOUNT } from '../seed/bristol';
 import type { BookLevel, CommodityDetail, DirectoryRow, SupplierRow } from '../../src/shared/exchange';
 
 const CITY = 'city-bristol';
 
 /** Penny Exchange income: a share is destroyed in one explicit, auditable burn; the rest is swept to the state treasury as a transfer. */
-export function sweepExchange(db: Sql, ctx: TickCtx, cfg: EngineConfig, treasury: string): { burned: number; swept: number } {
-  const bal = available(db, EXCHANGE_ACCOUNT);
-  if (bal <= 0) return { burned: 0, swept: 0 };
-  const burned = Math.floor((bal * cfg.exchangeBurnBps) / 10_000), swept = bal - burned;
+/** Every fee the exchange has ever been owed: commodity trades, contract deliveries, share trades and listing fees. Read from the trade tables, never estimated. */
+export function totalExchangeFees(db: Sql): number {
+  const one = (sql: string) => db.get<{ f: number }>(sql)!.f;
+  return one('SELECT COALESCE(SUM(fee_minor),0) f FROM trades') + one("SELECT COALESCE(SUM(fee_minor),0) f FROM contract_deliveries") + one('SELECT COALESCE(SUM(fee_minor),0) f FROM share_trades') + one('SELECT COALESCE(SUM(listing_fee_minor),0) f FROM share_offerings');
+}
+
+/**
+ * Penny Exchange is a company: fees arrive in its treasury as TRANSFERS and are its revenue. Each day a configured share of the NEWLY earned fees is burned (an explicit, separate
+ * `sink_fee` transaction, the exchange's only currency destruction) and the rest is retained in its treasury, where it pays costs and funds dividends. Fees are counted once:
+ * the cursor `exchange_fees_processed` remembers how much has already been recognised.
+ */
+export function sweepExchange(db: Sql, ctx: TickCtx, cfg: EngineConfig, _treasury?: string): { burned: number; swept: number; retained: number; fees: number } {
+  const total = totalExchangeFees(db);
+  const done = Number(db.get<{ value: string }>("SELECT value FROM meta WHERE key = 'exchange_fees_processed'")?.value ?? 0);
+  const fresh = Math.max(0, total - done);
+  if (fresh > 0) db.run("INSERT INTO meta (key, value) VALUES ('exchange_fees_processed', ?) ON CONFLICT(key) DO UPDATE SET value = excluded.value", String(total));
+  if (fresh <= 0) return { burned: 0, swept: 0, retained: 0, fees: 0 };
+  const burned = Math.min(Math.floor((fresh * cfg.exchangeBurnBps) / 10_000), Math.max(0, available(db, EXCHANGE_ACCOUNT)));
   if (burned > 0) destroy(db, ctx, `t${ctx.tick}:exchange:burn`, EXCHANGE_ACCOUNT, burned, 'Penny Exchange fee burn (explicit)', 'sink_fee');
-  if (swept > 0) transfer(db, ctx, `t${ctx.tick}:exchange:sweep`, EXCHANGE_ACCOUNT, treasury, swept, 'state_payment', 'Penny Exchange fee income to state treasury');
-  return { burned, swept };
+  db.run('INSERT INTO service_charges (tick, service, provider_id, payer_id, quantity, unit_price_minor, amount_minor, ref) VALUES (?,?,?,NULL,1,?,?,?)', ctx.tick, 'exchange', 'co-penny-exchange', fresh, fresh, 'trading and listing fees recognised');
+  return { burned, swept: 0, retained: fresh - burned, fees: fresh };
 }
 
 /** Units per day the city wants of a commodity: consumers (funded budgets) + what production lines plan to consume. Estimates, labelled as such in the UI. */

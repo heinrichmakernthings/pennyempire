@@ -7,6 +7,7 @@ import { NotFound } from './screens/NotFound';
 // City is the landing screen and stays in the main bundle; management/market screens are split.
 const Companies = lazy(() => import('./screens/CompaniesScreen').then((m) => ({ default: m.CompaniesScreen })));
 const Commodities = lazy(() => import('./screens/CommodityScreen').then((m) => ({ default: m.CommodityScreen })));
+const State = lazy(() => import('./screens/StateScreen').then((m) => ({ default: m.StateScreen })));
 const Stocks = lazy(() => import('./screens/shares/SharesScreen').then((m) => ({ default: m.SharesRoute })));
 const Ipo = lazy(() => import('./screens/shares/IpoScreen').then((m) => ({ default: m.IpoScreen })));
 const Portfolio = lazy(() => import('./screens/PortfolioScreen').then((m) => ({ default: m.PortfolioScreen })));
@@ -30,6 +31,7 @@ export function App() {
         <Route path="/start" element={<StartCompany />} />
         <Route path="/companies" element={<Companies />} />
         <Route path="/commodities" element={<Commodities />} />
+        <Route path="/state" element={<State />} />
         <Route path="/stocks" element={<Stocks />} />
         <Route path="/stocks/list/:companyId" element={<Ipo />} />
         <Route path="/portfolio" element={<Portfolio />} />
