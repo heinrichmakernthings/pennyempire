@@ -1,0 +1,22 @@
+PASS  the exchange lists the opening companies
+PASS  market summary shows the index and the fiction notice
+PASS  the purchase appears in the portfolio at its cost basis — 40 shares
+PASS  coins left the wallet exactly once (price × shares) — 5840 vs 5840
+PASS  the IPO review shows every requirement met
+PASS  the company is listed with 13,000 shares, 3,000 in the treasury
+PASS  NPC investors bought part of the offering (proceeds went to the company) — 51 shares sold
+PASS  ownership percentages add up to the outstanding shares — 1 NPC holders
+PASS  the dividend was declared and then paid from the company treasury — paid
+PASS  the founder received exactly per-share × shares held at the record date — 90560 (expected about 90000)
+PASS  a sale order was placed and is on the book or filled
+PASS  the share register and ledger are consistent (developer dashboard)
+PASS  dividends and issuance are audited
+PASS  portfolio separates estimated value from realised results and dividends
+PASS  portfolio screen shows the share panel
+PASS  developer dashboard shows the share market
+PASS  no console errors across the journey
+PASS  mobile /stocks: no horizontal overflow
+PASS  mobile /portfolio: no horizontal overflow
+PASS  mobile /stocks/list/co-pl-pizza-1: no horizontal overflow
+
+20/20 checks passed

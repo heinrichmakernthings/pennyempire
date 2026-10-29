@@ -1,0 +1,20 @@
+export interface RouteDef { path: string; label: string; short: string; icon: string; mobile: 'primary' | 'more' }
+
+/** The game navigation sections. `icon` names a file in assets/art/ui. */
+export const ROUTES: RouteDef[] = [
+  { path: '/city', label: 'City', short: 'City', icon: 'city', mobile: 'primary' },
+  { path: '/opportunities', label: 'Opportunities', short: 'Ideas', icon: 'startup', mobile: 'more' },
+  { path: '/bristol', label: 'News & Rankings', short: 'News', icon: 'ranking', mobile: 'more' },
+  { path: '/companies', label: 'My Companies', short: 'Companies', icon: 'companies', mobile: 'primary' },
+  { path: '/commodities', label: 'Commodity Exchange', short: 'Market', icon: 'marketplace', mobile: 'primary' },
+  { path: '/state', label: 'State Services', short: 'State', icon: 'city', mobile: 'more' },
+  { path: '/stocks', label: 'Stock Exchange', short: 'Stocks', icon: 'stocks', mobile: 'more' },
+  { path: '/portfolio', label: 'Portfolio', short: 'Portfolio', icon: 'portfolio', mobile: 'primary' },
+  { path: '/world', label: 'Beyond Bristol', short: 'World', icon: 'globe', mobile: 'more' },
+  { path: '/prestige', label: 'Prestige', short: 'Prestige', icon: 'prestige', mobile: 'more' },
+  { path: '/rewards', label: 'Rewards & Lottery', short: 'Rewards', icon: 'prestige', mobile: 'more' },
+  { path: '/membership', label: 'Premium', short: 'Premium', icon: 'prestige', mobile: 'more' },
+  { path: '/wallet', label: 'Wallet (simulated)', short: 'Wallet', icon: 'wallet', mobile: 'more' },
+  { path: '/notifications', label: 'Notifications', short: 'Alerts', icon: 'notification', mobile: 'more' },
+  { path: '/account', label: 'Account', short: 'Account', icon: 'portfolio', mobile: 'more' },
+];

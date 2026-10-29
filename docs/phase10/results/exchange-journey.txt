@@ -1,0 +1,23 @@
+PASS  exchange terminal lists every commodity incl. coffee and packaging
+PASS  market shows executed, best-bid/ask and estimated-demand figures
+PASS  ticket shows the company's free stock separately from reservations — Free to sell: 240 sacks (0 reserved by your open sell orders)
+PASS  review shows reservation, fee and fillable units before anything is committed
+PASS  sell order exists on the server with its reservation
+PASS  contextual purchasing opens a supplier comparison from the missing ingredient
+PASS  the player farm appears among the mill's suppliers at its own price
+PASS  purchase settles at once against the farm — 100 sacks filled at once. The order is complete.
+PASS  trade is recorded with the farm as counterparty, price and no fee for the buyer — {"id":67,"tick":5,"gameDate":"2026-11-03T00:00:00.000Z","commodityId":"wheat","role":"bought","counterparty":"Avon Wheat","companyId":"co-pl-mill-2","qty":100,"priceMinor":60,"grossMinor":6000,"feeMinor":0,"netMinor":-6000,"ledgerTxId":520}
+PASS  the supplier answers with its reasoning (accepts or explains why not) — Bristol Provisions accepts: price covers its costs and volume is within its capacity.
+PASS  the contract exists, is active and delivered real goods on schedule — {"status":"active","delivered":4,"missed":0,"history":[{"tick":12,"gameDate":"2026-11-10T00:00:00.000Z","status":"delivered","qty":20,"grossMinor":6800,"feeMinor":68},{"tick":10,"gameDate":"2026-11-08T00:00:00.000Z","status":"delivered","qty":20,"grossMinor":6800,"feeMinor":68},{"tick":8,"gameDate":"2026-11-06T00:00:00.000Z","status":"delivered","qty":20,"grossMinor":6800,"feeMinor":68}]}
+PASS  ledger reconciles
+PASS  order reservations match account and inventory reservations
+PASS  no self-trades, crossed books or reservation anomalies — []
+PASS  exchange fee income is tracked separately from burns
+PASS  the mill's statement shows wheat purchases
+PASS  opportunity finder reports market shortages from live state
+PASS  opportunities screen shows the market-gaps table
+PASS  no console errors
+PASS  mobile exchange: no horizontal overflow — B TABLE.pe-table w498 p=pe-table-wrap; B THEAD. w498 p=pe-table; B TR. w498 p=; B TBODY. w498 p=pe-table; B TR. w498 p=; B TR. w498 p=
+PASS  mobile: the ticket opens in a sheet
+
+21/21 checks passed

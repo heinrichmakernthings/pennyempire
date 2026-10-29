@@ -1,0 +1,17 @@
+PASS  weekly leaderboards are published — board day 63
+PASS  titles are held by named companies, NPC or player
+PASS  the Penny Post has stories drawn from recorded events — 40 stories
+PASS  city activity reports a state for every non-state company — 8 activity entries for 8 companies
+PASS  every opportunity carries derived labels and metrics
+PASS  NPC companies are alive with logged strategy reviews — 7 NPCs
+PASS  city canvas renders
+PASS  Penny Post lists articles
+PASS  leaderboards show ranked companies
+PASS  titles tab lists current holders
+PASS  competitor profile shows public data only — Severn Valley Farm
+PASS  opportunity cards show market-condition labels
+PASS  no console errors across the journey
+PASS  mobile /bristol: no horizontal overflow
+PASS  mobile /city: no horizontal overflow
+
+15/15 checks passed

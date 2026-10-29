@@ -1,0 +1,28 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> pennyempire@0.1.0 test
+> vitest run
+
+
+ RUN  v5.0.5 /workspace/scratch/1b1c5633b6ae/pennyempire-combined
+
+
+farm wheat after 3 days: 320
+direct buy: {"orderId":56,"filled":40,"remaining":0,"status":"filled"}
+mill flour after 3 days: 120
+flour direct buy: {"orderId":118,"filled":60,"remaining":0,"status":"filled"}
+cheese buy: {"orderId":119,"filled":0,"remaining":60,"status":"open"}
+pizza after 16 days: 960 pizzas sold, revenue 9600 EC, status operating
+listing: eligible=false failing=[{"id":"price","ok":false,"label":"Offer price between 0.47 and 1.88 EC","detail":"Fundamental estimate 0.94 EC a share; allowed 50%–200%."}] range={"lowMinor":47,"highMinor":188,"fairValueMinor":94}
+list: {"offeringId":1,"orderId":318}
+B share buy: {"orderId":334,"status":"filled","filled":300,"remaining":0,"averagePriceMinor":94,"feeMinor":0}
+B holds 300 shares of co-pl-pizza-3
+dividend: {"dividendId":15,"totalMinor":20600}
+B dividend received: 6 EC
+prestige: {"ownedId":"veh-executive#1","serial":1}
+award: {"ok":true,"message":"Awarded £5.00.","detail":{"awardId":1,"ledgerTxId":3,"amountPence":500,"duplicate":false}}
+
+ Test Files  48 passed (48)
+      Tests  525 passed (525)
+   Start at  10:51:49
+   Duration  109.44s (tests 81%, import 16%, environment 2%, transform 1%, setup 1%)

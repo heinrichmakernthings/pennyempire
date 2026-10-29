@@ -7,7 +7,9 @@
 Penny Empire is a browser-first, mobile-friendly multiplayer economic simulation. Players establish local businesses, produce and trade goods, compete for city market share, own fictional company shares, and expand internationally.
 
 ## Status
-**Pre-alpha / design foundation.** Bristol is the first playable city. All currencies and payment flows are **simulation-only**. There are no live deposits, cash withdrawals, cash-convertible game assets, or real-money gambling.
+**Private multiplayer alpha / combined release candidate.** Bristol is the first playable city. All currencies and payment flows are **simulation-only**. There are no live deposits, cash withdrawals, cash-convertible game assets, or real-money gambling.
+
+See [combined release and QA](docs/combined-alpha/README.md) for the integrated branches, verified journeys, screenshots and deployment blockers.
 
 ## Read first
 - [Product brief](docs/PRODUCT-BRIEF.md)
@@ -15,6 +17,8 @@ Penny Empire is a browser-first, mobile-friendly multiplayer economic simulation
 - [Architecture and safeguards](docs/ARCHITECTURE.md)
 - [Visual and art brief](docs/VISUAL-BRIEF.md)
 - [Milestones](docs/ROADMAP.md)
+- [State enterprises, monetary policy, inflation and events](docs/STATE-ECONOMY.md)
+- [Prestige, simulated GBP wallet, rewards and treasury](docs/PRESTIGE-WALLET.md)
 
 ## Suggested build approach
 - React + TypeScript + Vite for the browser UI.
@@ -25,6 +29,18 @@ Penny Empire is a browser-first, mobile-friendly multiplayer economic simulation
 
 ## First slice
 A player starts in Bristol, sees demand for flour, creates a flour mill or pizza shop, buys inputs from NPC/state or other players, sells outputs to local buyers, and watches profits, inventory and market share update.
+
+## Run the game locally
+```bash
+npm install && npm run dev      # http://localhost:5173
+npm run typecheck && npm test && npm run build
+```
+See [docs/FRONTEND.md](docs/FRONTEND.md) and [docs/ECONOMIC-ENGINE.md](docs/ECONOMIC-ENGINE.md).
+```bash
+npm run dev:all    # persistent economic engine (SQLite) + web UI; data is live simulation
+npm run sim -- 360 # audit a 12-month simulation
+```
+If the engine is not running, the UI shows a connection recovery screen. An illustrative preview is available through an explicit link; it cannot save gameplay changes. Internal economy dashboard: `/dev/economy`.
 
 ## Project rules
 See [AGENTS.md](AGENTS.md). Work on feature branches and submit pull requests. Never enable live financial transfers merely by changing a feature flag.

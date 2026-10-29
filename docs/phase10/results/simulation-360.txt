@@ -1,0 +1,37 @@
+Simulated 360 in-game days (12.0 months)
+Circulating supply: 109,000 EC → 117,196 EC (7.52%), max deviation from target 7.52%
+Issued 120,245 EC (genesis 109,000 EC + NPC income grants 11,245 EC); destroyed 3,050 EC
+Lowest household liquidity 13,830 EC
+
+month  supply      households  state      companies  players  goods   consumer-spend/day  insolvent
+   30  110,243 EC  24,014 EC   32,264 EC  38,965 EC  15,000 EC 3,819 EC 2,754 EC            0
+   60  111,425 EC  20,139 EC   32,757 EC  43,530 EC  15,000 EC 3,746 EC 2,249 EC            0
+   90  112,431 EC  18,707 EC   35,780 EC  42,944 EC  15,000 EC 4,086 EC 2,075 EC            1
+  120  113,373 EC  19,791 EC   34,694 EC  43,888 EC  15,000 EC 3,004 EC 2,360 EC            2
+  150  114,167 EC  18,389 EC   33,645 EC  47,133 EC  15,000 EC 3,613 EC 2,217 EC            2
+  180  114,846 EC  17,811 EC   33,400 EC  48,635 EC  15,000 EC 4,165 EC 1,979 EC            2
+  210  115,425 EC  15,934 EC   34,647 EC  49,844 EC  15,000 EC 4,250 EC 1,805 EC            2
+  240  115,893 EC  16,018 EC   35,621 EC  49,254 EC  15,000 EC 2,781 EC 2,528 EC            2
+  270  116,288 EC  14,610 EC   34,812 EC  51,866 EC  15,000 EC 3,729 EC 2,049 EC            2
+  300  116,635 EC  14,668 EC   34,573 EC  52,394 EC  15,000 EC 4,372 EC 1,887 EC            2
+  330  116,937 EC  15,833 EC   34,296 EC  51,808 EC  15,000 EC 3,993 EC 2,797 EC            2
+  360  117,196 EC  14,434 EC   33,317 EC  54,445 EC  15,000 EC 3,842 EC 2,173 EC            2
+
+company                avg daily profit   avg daily revenue   cash        status
+co-avon-timber         50 EC              179 EC              3,322 EC    operating
+co-bean-there          0 EC               0 EC                0 EC        insolvent
+co-bristol-energy      119 EC             199 EC              4,466 EC    operating
+co-bristol-estates     497 EC             557 EC              6,561 EC    operating
+co-bristol-media       15 EC              35 EC               3,000 EC    operating
+co-bristol-provisions  107 EC             108 EC              3,597 EC    operating
+co-bristol-works       0 EC               0 EC                3,000 EC    operating
+co-brunel-mill         56 EC              507 EC              4,158 EC    operating
+co-clifton-dairy       46 EC              416 EC              4,237 EC    operating
+co-clifton-slice       126 EC             1,019 EC            4,757 EC    operating
+co-harbour-bean        -13 EC             97 EC               2,172 EC    operating
+co-mad-slices          55 EC              551 EC              24,495 EC   operating
+co-npc-cafe-1          58 EC              320 EC              3,602 EC    operating
+co-npc-cafe-2          0 EC               0 EC                0 EC        insolvent
+co-severn-farm         85 EC              368 EC              7,703 EC    operating
+
+No accounting anomalies: Δsupply == issued − destroyed on every tick; ledger reconciles.
