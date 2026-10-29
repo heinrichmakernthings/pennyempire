@@ -123,11 +123,13 @@ try {
       check(`${vp.name} nav: More sheet reaches Wallet`, await page.getByText('SIMULATED').first().waitFor({ timeout: 4000 }).then(() => true, () => false));
     } else {
       await page.getByRole('navigation', { name: 'Main' }).getByRole('link', { name: /Stock Exchange/ }).click();
-      await page.waitForURL(/\/stocks/); check(`${vp.name} nav: sidebar/rail navigates`, await page.getByRole('heading', { name: 'Stock Exchange', level: 1 }).waitFor({ timeout: 4000 }).then(() => true, () => false));
+      await page.waitForURL(/\/stocks/); check(`${vp.name} nav: sidebar/rail navigates`, await page.getByRole('heading', { name: 'Penny Exchange', level: 1 }).waitFor({ timeout: 4000 }).then(() => true, () => false));
     }
     // ad slot placement
-    const ad = await page.getByRole('complementary', { name: /Sponsored space/ }).isVisible();
-    check(`${vp.name}: ad slot ${vp.width >= 1200 ? 'visible' : 'hidden'} per breakpoint`, ad === (vp.width >= 1200));
+    // desktop shows the top banner and sidebar placements; narrower screens show only the in-flow mobile placement
+    const shown = async (p) => page.locator(`[data-placement="${p}"]`).first().isVisible().catch(() => false);
+    const wide = vp.width >= 1200;
+    check(`${vp.name}: ad placements per breakpoint`, (await shown('top')) === wide && (await shown('sidebar')) === wide && (await shown('mobile')) === !wide);
     check(`${vp.name}: no console errors/warnings or failed requests`, problems.length === 0, problems.slice(0, 3).join(' | '));
     await ctx.close();
   }
@@ -163,9 +165,9 @@ try {
   await lp.getByRole('tab', { name: 'Financials' }).click();
   check('financials show the stored daily operating statement', await lp.getByRole('region', { name: 'Daily operating statement' }).locator('tbody tr').first().waitFor({ timeout: 5000 }).then(() => true, () => false));
   await lp.goto(BASE + '/wallet', { waitUntil: 'networkidle' });
-  check('screens without server data (wallet) stay explicitly illustrative', (await lp.getByText('Illustrative data').count()) > 0 && (await lp.getByText('SIMULATED').count()) > 0);
+  check('the test wallet is server-backed and labelled SIMULATED everywhere', (await lp.getByText(/SIMULATED/).count()) > 0 && (await lp.getByText('Illustrative data').count()) === 0);
   await lp.goto(BASE + '/dev/economy', { waitUntil: 'networkidle' });
-  check('developer economy dashboard shows live ledger statistics', await lp.getByText('Ledger reconciles').waitFor({ timeout: 6000 }).then(() => true, () => false) && (await lp.getByText('Circulating supply').count()) > 0);
+  check('developer economy dashboard shows live ledger statistics', await lp.getByText('Ledger reconciles').first().waitFor({ timeout: 6000 }).then(() => true, () => false) && (await lp.getByText('Circulating supply').count()) > 0);
   await lp.screenshot({ path: `${OUT}/dev-economy.png`, fullPage: false });
   check('live pages produced no console errors or warnings', lproblems.length === 0, lproblems.slice(0, 3).join(' | '));
   await live.close();

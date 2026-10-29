@@ -17,12 +17,17 @@ export function OnboardingCard() {
   if (!data || user?.settings.hideOnboarding || data.complete >= data.total) return null;
   const next = data.steps.find((s) => !s.done);
   return (
-    <aside className="pe-card pe-onboard" aria-label="Getting started">
-      <div className="pe-card-head"><h2>Getting started</h2><span className="pe-pill">{data.complete}/{data.total}</span></div>
-      <div className="pe-meter" role="progressbar" aria-valuemin={0} aria-valuemax={data.total} aria-valuenow={data.complete} aria-label="Getting started progress"><span style={{ width: `${(data.complete / data.total) * 100}%` }} /></div>
-      <ol className="pe-onboard-list">
-        {data.steps.map((s) => <li key={s.id} className={s.done ? 'is-done' : s.id === next?.id ? 'is-next' : ''}><span aria-hidden="true">{s.done ? '✓' : '○'}</span> {s.done ? s.label : <Link to={s.link}>{s.label}</Link>}{s.id === next?.id && <p className="pe-hint">{s.detail}</p>}</li>)}
-      </ol>
+    <aside className="pe-onboard" aria-label="Getting started">
+      <details>
+        <summary>
+          <span className="pe-pill">{data.complete}/{data.total}</span>
+          <strong>Getting started</strong>
+          {next && <span className="pe-onboard-next">Next: <Link to={next.link}>{next.label}</Link><span className="pe-hint"> — {next.detail}</span></span>}
+        </summary>
+        <ol className="pe-onboard-list">
+          {data.steps.map((s) => <li key={s.id} className={s.done ? 'is-done' : ''}><span aria-hidden="true">{s.done ? '✓' : '○'}</span> {s.done ? <><span className="pe-sr-only">Done: </span>{s.label}</> : <Link to={s.link}>{s.label}</Link>}</li>)}
+        </ol>
+      </details>
     </aside>
   );
 }

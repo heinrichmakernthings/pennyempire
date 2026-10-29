@@ -12,6 +12,7 @@
     "test": "vitest run",
     "art:validate": "node tools/art-review/validate.mjs",
     "qa:browser": "node scripts/qa/browser-check.mjs",
+    "qa:alpha": "node scripts/qa/alpha-journey.mjs",
     "server": "tsx server/node.ts",
     "dev:all": "node scripts/dev-all.mjs",
     "db:migrate": "tsx server/cli.ts migrate",
