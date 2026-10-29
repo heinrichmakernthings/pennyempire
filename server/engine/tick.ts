@@ -381,8 +381,19 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
         logEvent(db, n, 'insolvency', 'error', c.id, `${c.name} is insolvent after ${shortfall} consecutive ticks of unpaid operating costs`);
       }
     }
-    for (const c of db.all<Co>("SELECT * FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL AND insolvent_tick IS NOT NULL AND insolvent_tick <= ? ORDER BY id", n - cfg.bankruptcyAfterTicks)) {
+    // State enterprises run essential services (energy, advertising, logistics, property, banking, the exchange) and keep receiving their service
+    // income, so they are never liquidated: they stay under administration and reopen once that income covers their arrears plus a day of costs.
+    for (const c of db.all<Co>("SELECT * FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL AND insolvent_tick IS NOT NULL AND insolvent_tick <= ? AND owner_kind <> 'state' ORDER BY id", n - cfg.bankruptcyAfterTicks)) {
       safe('bankruptcy', c.id, () => { liquidateCompany(db, ctx, cfg, c); });
+    }
+    for (const c of db.all<Co>("SELECT * FROM companies WHERE status = 'insolvent' AND bankrupt_tick IS NULL AND owner_kind = 'state' ORDER BY id")) {
+      const need = c.unpaid_minor + c.employees * c.wage_minor + c.property_minor + c.marketing_minor;
+      if (available(db, c.treasury_account_id) < need) continue;
+      safe('state_reopen', c.id, () => {
+        pay('state_payment', c.treasury_account_id, city.treasury_account_id, c.unpaid_minor, `administration: arrears of ${c.name} settled from its own income`);
+        db.run("UPDATE companies SET status = 'operating', insolvent_tick = NULL, unpaid_minor = 0, shortfall_ticks = 0, revision = revision + 1 WHERE id = ?", c.id);
+        logEvent(db, n, 'company_reopened', 'info', c.id, `${c.name} left administration after its income covered its arrears`);
+      });
     }
 
     /* K. History + snapshot. */

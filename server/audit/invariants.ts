@@ -84,7 +84,7 @@ export function deepAudit(db: Sql): AuditResult {
   check('bank.stranded_deposits', 'P1', db.all("SELECT d.company_id, d.balance_minor FROM bank_deposits d JOIN companies c ON c.id = d.company_id WHERE d.balance_minor > 0 AND c.bankrupt_tick IS NOT NULL LIMIT 5"), 'Savings of a liquidated company left behind at the bank');
 
   // 7. Liquidated companies hold nothing.
-  check('bankrupt.assets', 'P1', db.all("SELECT c.id, a.balance_minor FROM companies c JOIN accounts a ON a.id = c.treasury_account_id WHERE c.bankrupt_tick IS NOT NULL AND (a.balance_minor <> 0 OR EXISTS (SELECT 1 FROM orders o WHERE o.company_id = c.id AND o.status = 'open')) LIMIT 5"), 'Liquidated company still holds coins or open orders');
+  check('bankrupt.assets', 'P1', db.all("SELECT c.id, c.bankrupt_tick, a.balance_minor, (SELECT GROUP_CONCAT(o.id || ':' || o.side || ':' || o.created_tick) FROM orders o WHERE o.company_id = c.id AND o.status = 'open') open FROM companies c JOIN accounts a ON a.id = c.treasury_account_id WHERE c.bankrupt_tick IS NOT NULL AND (a.balance_minor <> 0 OR EXISTS (SELECT 1 FROM orders o WHERE o.company_id = c.id AND o.status = 'open')) LIMIT 5"), 'Liquidated company still holds coins or open orders');
 
   // 8. Prestige and lotteries.
   check('prestige.supply', 'P0', db.all('SELECT i.id, i.minted, i.supply_cap, (SELECT COUNT(*) FROM prestige_owned o WHERE o.item_id = i.id) owned FROM prestige_items i WHERE owned <> i.minted OR (i.supply_cap IS NOT NULL AND owned > i.supply_cap) LIMIT 5'), 'Collectibles exceed their minted count or supply cap');

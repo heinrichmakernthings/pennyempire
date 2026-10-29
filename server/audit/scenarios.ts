@@ -182,7 +182,7 @@ export function runScenario(spec: RunSpec): ScenarioReport {
     markets: { commodityTrades: one<{ n: number }>(db, 'SELECT COUNT(*) n FROM trades').n, commodityValueEC: ec(one<{ v: number }>(db, 'SELECT COALESCE(SUM(qty * price_minor),0) v FROM trades').v), shareTrades: one<{ n: number }>(db, 'SELECT COUNT(*) n FROM share_trades').n, shareValueEC: ec(one<{ v: number }>(db, 'SELECT COALESCE(SUM(qty * price_minor),0) v FROM share_trades').v) },
     wallet: { liabilitiesPence: -(g.totals.walletLiabilities + g.totals.pendingLiabilities), reconciles: g.ok },
     performance: { msPerTickAvg: Math.round(ticks.reduce((x, y) => x + y, 0) / Math.max(1, ticks.length)), msPerTickMax: Math.round(Math.max(0, ...ticks)), msPerCommand: Math.round((pop.cmdMs / Math.max(1, pop.commands)) * 100) / 100, commands: pop.commands },
-    audit: { ok: a.ok, findings: a.findings.map((f) => `${f.severity} ${f.id}: ${f.detail} (${f.count})`) },
+    audit: { ok: a.ok, findings: a.findings.map((f) => `${f.severity} ${f.id}: ${f.detail} (${f.count}) e.g. ${JSON.stringify(f.sample).slice(0, 300)}`) },
     outcome: { ...outcome, playersStillOperating: checkpoints.at(-1)?.playerOperating ?? 0, finalOperating: checkpoints.at(-1)?.operating ?? 0, finalUnmetUnitsPerDay: checkpoints.at(-1)?.unmetUnitsPerDay ?? 0 },
   };
   void setParam;
