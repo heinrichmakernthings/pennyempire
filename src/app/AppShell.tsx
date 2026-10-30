@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { OnboardingCard } from './Onboarding';
+import { AwayCard } from './AwayCard';
 import { AdSlot } from './AdSlot';
 import { FinancialHUD } from './FinancialHUD';
 import { NotificationRegion } from './NotificationRegion';
@@ -15,6 +16,7 @@ export function AppShell() {
       <FinancialHUD />
       <PrimaryNavigation />
       <main id="main" className="pe-main" tabIndex={-1}>
+        <AwayCard />
         {(pathname === '/city' || pathname === '/companies' || pathname === '/start') && <div className="pe-onboard-wrap"><OnboardingCard /></div>}
         <Suspense fallback={<Skeleton lines={5} label="Loading screen" />}><Outlet /></Suspense>
         <div className="pe-main-ad"><AdSlot placement="mobile" /></div>

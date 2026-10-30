@@ -28,3 +28,5 @@ The existing `pennyempire` Worker was created from the dashboard "Hello world" t
 - `main` currently holds only docs; the app lives on the stacked PR branches (#5 → #17). Merge those in order (or point Workers Builds at this branch) for the production branch to contain the app.
 - The Durable Object world starts fresh per deployment name; there is no persistent backup yet.
 - No custom domain or Cloudflare Access is configured; keep `DEV_ENDPOINTS=false` on public environments.
+
+**World pace.** One in-game day takes 10 real minutes (`realMsPerTick` 600 000). A world created before Prompt 12 on the old one-minute pace is moved by seed patch `pace-v1` on its next start, and the clock is re-anchored so no day is skipped or replayed. Change it with `POST /api/admin/param` (key `realMsPerTick`, 1 minute to 24 hours); see `docs/PLAYABILITY.md`.
