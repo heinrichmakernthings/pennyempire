@@ -18,7 +18,7 @@ function duel(play: Play, days = 60) {
   if (!r.ok) throw new Error(r.error.message);
   const id = (r.data as { companyId: string }).companyId;
   const c = db.get<{ revision: number; max_employees: number; min_price_minor: number; max_price_minor: number }>('SELECT revision, max_employees, min_price_minor, max_price_minor FROM companies WHERE id = ?', id)!;
-  const res = configureCompany(db, 'duel-cfg', id, c.revision, { priceMinor: Math.min(c.max_price_minor, Math.max(c.min_price_minor, play.price)), quality: play.quality, employees: Math.max(1, Math.round(c.max_employees * play.staffFrac)), marketingMinorPerTick: play.marketing });
+  const res = configureCompany(db, 'duel-cfg', id, c.revision, { priceMinor: Math.min(c.max_price_minor, Math.max(c.min_price_minor, play.price)), quality: play.quality, employees: Math.max(1, Math.round(c.max_employees * play.staffFrac)), marketingMinorPerTick: play.marketing, ownerCover: false });   // wallet cover off: the duel measures the restaurant on its own
   if (!res.ok) throw new Error(res.error.message);
   advance(db, days);
   const share = (co: string) => db.get<{ u: number }>('SELECT COALESCE(SUM(units_sold),0) u FROM company_tick_stats WHERE company_id = ? AND tick > ?', co, days - 20)!.u;

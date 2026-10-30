@@ -12,6 +12,7 @@ import { logEvent } from './stats';
 import { TREASURY } from '../seed/bristol';
 import { feeFromBps } from '../../src/domain/money';
 import { outstandingDebt } from './bank';
+import { settingWarnings } from './advice';
 
 export type CommandOk<T = unknown> = { ok: true; revision: number; transactionId: string; refreshScreens: string[]; data?: T };
 export type CommandErr = { ok: false; error: ApiError };
@@ -54,7 +55,7 @@ export const owned = (db: Sql, companyId: string): OwnedCompany | CommandErr => 
 };
 export const isErr = (x: unknown): x is CommandErr => typeof x === 'object' && x !== null && (x as CommandErr).ok === false;
 
-export interface ConfigurePatch { priceMinor?: number; employees?: number; quality?: 'basic' | 'standard' | 'premium'; plannedUnitsPerTick?: number; marketingMinorPerTick?: number; askPriceMinor?: number; autoProcure?: boolean }
+export interface ConfigurePatch { priceMinor?: number; employees?: number; quality?: 'basic' | 'standard' | 'premium'; plannedUnitsPerTick?: number; marketingMinorPerTick?: number; askPriceMinor?: number; autoProcure?: boolean; ownerCover?: boolean }
 
 /** company.configure — validated against the company's own bounds; bumps the revision; optimistic-concurrency checked. */
 export function configureCompany(db: Sql, key: string, companyId: string, expectedRevision: number, p: ConfigurePatch): CommandResponse {
@@ -74,6 +75,8 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     if (fires > 0 && (sameDay ? c.dismissals_in_tick : 0) + fires > cfg.staffChangesPerDay) fe.employees = `You can dismiss at most ${cfg.staffChangesPerDay} people per day (${sameDay ? c.dismissals_in_tick : 0} already today).`;
     if (p.askPriceMinor !== undefined && (!isInt(p.askPriceMinor) || p.askPriceMinor < c.min_price_minor || p.askPriceMinor > c.max_price_minor)) fe.askPriceMinor = 'Wholesale price is outside the allowed range.';
     if (p.marketingMinorPerTick !== undefined && !isInt(p.marketingMinorPerTick)) fe.marketingMinorPerTick = 'Marketing must be a non-negative integer.';
+    // Advertising builds awareness among households; a wholesale producer's buyers are businesses on the exchange, so the spend would win nothing.
+    else if (p.marketingMinorPerTick !== undefined && p.marketingMinorPerTick > 0 && c.retail_commodity_id === null) fe.marketingMinorPerTick = 'Your customers are businesses buying on the exchange. Advertising only reaches households, so it would cost money and win no sales.';
     if (p.quality !== undefined && !['basic', 'standard', 'premium'].includes(p.quality)) fe.quality = 'Unknown quality.';
     const lines = db.all<{ recipe_id: string; output_units: number }>('SELECT l.recipe_id, r.output_units FROM production_lines l JOIN recipes r ON r.id = l.recipe_id WHERE l.company_id = ?', companyId);
     let batches: number | undefined;
@@ -87,6 +90,7 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     const add = (col: string, v: string | number | undefined) => { if (v !== undefined) { sets.push(`${col} = ?`); vals.push(v); } };
     add('price_minor', p.priceMinor); add('quality', p.quality); add('marketing_minor', p.marketingMinorPerTick);
     add('auto_procure', p.autoProcure === undefined ? undefined : p.autoProcure ? 1 : 0);
+    add('owner_cover', p.ownerCover === undefined ? undefined : p.ownerCover ? 1 : 0);
     if (hires + fires > 0) {
       try { applyStaffChange(db, ctx, cfg, c as never, p.employees!, `cmd:${key}`); } catch (e) { if (e instanceof LedgerError) return err('INSUFFICIENT_FUNDS', e.message); throw e; }
     }
@@ -97,7 +101,7 @@ export function configureCompany(db: Sql, key: string, companyId: string, expect
     if (batches !== undefined) db.run('UPDATE production_lines SET planned_batches = ? WHERE company_id = ?', batches, companyId);
     db.run('UPDATE companies SET revision = revision + 1 WHERE id = ?', companyId);
     logEvent(db, lastTick(db), 'company_configured', 'info', companyId, `Player reconfigured ${c.name}`, p);
-    return { ok: true, revision: c.revision + 1, transactionId: key, refreshScreens: ['companies', 'city'] };
+    return { ok: true, revision: c.revision + 1, transactionId: key, refreshScreens: ['companies', 'city'], data: { warnings: settingWarnings(db, cfg, companyId) } };
   });
 }
 
@@ -219,3 +223,4 @@ export function cancelPlayerOrder(db: Sql, key: string, orderId: number): Comman
 
 /** Developer/test hook: raw reconcile. */
 export const audit = (db: Sql) => reconcile(db);
+

@@ -237,7 +237,7 @@ describe('failure and recovery', () => {
     const wc = q0.workingCapitalMinMinor, q = startupQuote(db, { industry: 'pizza', plotId: 'plot-pizza', tier: 1, name: 'Doomed Pizza', workingCapitalMinor: wc });
     const id = (createCompany(db, 'doom', { industry: 'pizza', plotId: 'plot-pizza', tier: 1, name: 'Doomed Pizza', workingCapitalMinor: wc, expectedTotalMinor: q.totalMinor }) as { data: { companyId: string } }).data.companyId;
     // an unsellable price (the maximum) and a full payroll: costs run, revenue does not
-    configureCompany(db, 'x', id, 1, { priceMinor: 1_600, employees: 5, marketingMinorPerTick: 0, autoProcure: false });
+    configureCompany(db, 'x', id, 1, { priceMinor: 1_600, employees: 5, marketingMinorPerTick: 0, autoProcure: false, ownerCover: false });   // wallet cover off: this test is about a company left to fail
     const w = wallet(db);
     advance(db, 120);
     const row = db.get<{ bankrupt_tick: number | null; status: string }>('SELECT bankrupt_tick, status FROM companies WHERE id = ?', id)!;

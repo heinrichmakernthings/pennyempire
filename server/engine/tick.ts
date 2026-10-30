@@ -85,6 +85,24 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     const linesOf = (id: string) => opsLinesOf(db, id);
     const inputsOf = (recipe: string) => recipeInputs(db, recipe);
     const refPrice = (c: string) => refPriceOf(db, c);
+    /**
+     * Owner cover: a player's company is a sole trader's business, not a stranger's. When its till cannot pay for today's ingredients or
+     * bills, the owner's wallet pays the gap (a recorded capital injection — a transfer, never issuance) instead of the company stalling
+     * with no stock or sliding into arrears while its owner sits on thousands of coins. Players can switch it off per company; with it off,
+     * or with an empty wallet, the old rules apply. One warning a week per company, not one a day.
+     */
+    const ownerCover = (c: Co, shortfall: number, what: string): number => {
+      if (c.owner_kind !== 'player' || c.owner_cover !== 1 || shortfall <= 0) return 0;
+      let help = 0;
+      safe('owner_cover', c.id, () => {
+        const wallet = db.get<{ w: string }>('SELECT wallet_account_id w FROM players WHERE id = ?', c.owner_id)?.w; if (!wallet) return;
+        help = Math.min(shortfall, available(db, wallet)); if (help <= 0) { help = 0; return; }
+        pay('capital_injection', wallet, c.treasury_account_id, help, `owner cover: ${c.name}'s ${what} paid from the owner's wallet`);
+        if (!db.get("SELECT 1 FROM economic_events WHERE kind = 'owner_cover' AND subject = ? AND tick > ?", c.id, n - 7))
+          logEvent(db, n, 'owner_cover', 'warning', c.id, `${c.name} ran out of cash, so your wallet paid ${(help / 100).toFixed(2)} EC of ${what}. It is spending more than it earns: check its price, staff and marketing.`, { help });
+      });
+      return help;
+    };
     const stateCo = (industry: string) => all.find((c) => c.owner_kind === 'state' && c.industry_id === industry);
     const energyCo = stateCo('utility'), estatesCo = stateCo('property'), mediaCo = stateCo('media'), provisions = stateCo('wholesale');
     const mods = currentMods(db);
@@ -200,6 +218,12 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
     for (const c of order) {
       if (c.status !== 'operating' || (c.owner_kind === 'player' && c.auto_procure === 0)) continue;
       safe('procurement', c.id, () => {
+        if (c.owner_kind === 'player' && c.owner_cover === 1) {   // enough for tomorrow's missing ingredients (at reference prices, +20% headroom) on top of today's fixed costs
+          let inputs = 0;
+          for (const l of linesOf(c.id)) for (const i of inputsOf(l.recipe_id)) inputs += Math.max(0, l.planned_batches * inputUnitsPerBatch(cfg, c.quality, i.units) - freeStock(db, c.id, i.commodity_id)) * refPrice(i.commodity_id);
+          const need = c.employees * c.wage_minor + c.property_minor + c.marketing_minor + Math.ceil(inputs * 1.2);
+          ownerCover(c, need - available(db, c.treasury_account_id), 'ingredients');
+        }
         const budget = Math.max(0, available(db, c.treasury_account_id) - c.employees * c.wage_minor - c.property_minor - c.marketing_minor);
         const r = procureInputs(db, ctx, cfg, c, budget, energyPrice, onFill);
         if (r.limit) procLimit.set(c.id, r.limit);
@@ -292,6 +316,7 @@ export function runTick(db: Sql, n: number, hooks: { phase?: (name: string) => v
           if (help > 0) { pay('capital_injection', city.treasury_account_id, c.treasury_account_id, help, `state liquidity support for ${c.name}`); cash += help; support += help; logEvent(db, n, 'state_support', 'warning', c.id, `State gave ${c.name} ${help / 100} EC liquidity support`); }
         }
       });
+      if (cash < total) cash += ownerCover(c, total - cash, "today's wages and bills");
       let unpaid = 0;
       for (const d of due) {
         const p = Math.min(d.amount, cash);

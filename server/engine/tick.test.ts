@@ -173,6 +173,7 @@ describe('company financials come from real state', () => {
 describe('insolvency boundaries', () => {
   const brokeWorld = (cashMinor: number) => {
     const db = memWorld({ npcPayoutBps: 0 });
+    db.run("UPDATE companies SET owner_cover = 0 WHERE id = 'co-harbour-bean'");   // wallet cover off: these tests are about a company left short
     const acct = companyAccount('co-harbour-bean');
     // Move all but `cashMinor` out of the café (to the player's wallet) so the starting point is exact and the ledger still balances.
     transfer(db, { tick: 0, gameDate: 'x', actor: 't' }, 'drain', acct, 'acct:player:demo', balance(db, acct) - cashMinor, 'owner_withdrawal', 'test');

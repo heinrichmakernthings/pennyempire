@@ -197,6 +197,7 @@ describe('National Bank', () => {
   });
   it('a borrower that cannot pay misses instalments, is charged a late fee and defaults; the bank takes the loss at liquidation, and nothing goes negative', () => {
     const db = world({ loanDefaultAfterMisses: 3 }); const id = found(db, 'pizza', 'lot-1', 'Default Pizza'); profitable(db, id);
+    db.run('UPDATE companies SET owner_cover = 0 WHERE id = ?', id);   // wallet cover off: the borrower is left unable to pay
     takeBankLoan(db, 'd1', { companyId: id, amountMinor: 60_000, termDays: 30 });
     const drain = () => { const c = balance(db, companyAccount(id)); if (c > 0) transfer(db, now(db), `drain:${now(db).tick}:${c}`, companyAccount(id), TREASURY, c, 'state_payment', 'test: money leaves the company'); };
     drain(); advance(db, 1); drain(); advance(db, 1); drain(); advance(db, 1); drain(); advance(db, 1);

@@ -29,6 +29,7 @@ import { runScheduledServices } from '../engine/services';
 import { treasuryAction } from '../engine/treasuryAdmin';
 import { leaderboard } from '../engine/prestige';
 import { adminHealth, economyAudit, onboarding } from './alpha';
+import { awaySummary, markAwaySeen } from './away';
 import { asOf, cityScreen, companiesScreen, companyDto, commoditiesScreen, financials, portfolioScreen } from './dto';
 
 export interface ApiRequest { method: string; path: string; query?: Record<string, string>; body?: unknown; headers?: Record<string, string> }
@@ -91,6 +92,8 @@ export function handleApi(db: Sql, req: ApiRequest, opts: ApiOptions): ApiRespon
     if (method === 'GET' && seg[0] === 'standings') return json(200, { authority: 'server', standings: standings(db) });
     if (method === 'GET' && seg[0] === 'news') return json(200, { authority: 'server', articles: news(db, Number(q.limit ?? 30)) });
     if (method === 'GET' && seg[0] === 'competitors' && seg[1]) { const p = competitorProfile(db, seg[1]); return p ? json(200, { authority: 'server', profile: p }) : apiErr(404, 'VALIDATION', `Unknown competitor ${seg[1]}`); }
+    if (method === 'GET' && seg[0] === 'away') return json(200, { authority: 'server', summary: awaySummary(db) });
+    if (method === 'POST' && seg[0] === 'away' && seg[1] === 'seen') { markAwaySeen(db, Number((req.body as { upTo?: unknown } | undefined)?.upTo ?? -1)); return json(200, { ok: true }); }
     if (method === 'GET' && seg[0] === 'onboarding') return json(200, { authority: 'server', ...onboarding(db) });
     if (method === 'GET' && seg[0] === 'rankings') return json(200, { authority: 'server', rankings: rankings(db) });
     if (method === 'GET' && seg[0] === 'startup-quote') {
@@ -183,7 +186,7 @@ function runApiCommand(db: Sql, cmd: Command & Record<string, unknown>, nowMs: n
   let res: CommandResponse;
   const wc = walletCommand(db, nowMs, key, cmd as Record<string, unknown>); if (wc) return json(wc.ok ? 200 : wc.error.code === 'UNAVAILABLE' ? 501 : 422, wc);
   switch (cmd?.type as string) {
-    case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined, askPriceMinor: cmd.askPriceMinor as number | undefined, autoProcure: cmd.autoProcure as boolean | undefined }); break;
+    case 'company.configure': res = configureCompany(db, key, cmd.companyId as string, cmd.expectedRevision as number, { priceMinor: cmd.priceMinor as number | undefined, employees: cmd.employees as number | undefined, quality: cmd.quality as 'basic' | undefined, plannedUnitsPerTick: cmd.plannedUnitsPerTick as number | undefined, marketingMinorPerTick: cmd.marketingMinorPerTick as number | undefined, askPriceMinor: cmd.askPriceMinor as number | undefined, autoProcure: cmd.autoProcure as boolean | undefined, ownerCover: cmd.ownerCover as boolean | undefined }); break;
     case 'commodity.order': res = placePlayerOrder(db, key, { companyId: cmd.companyId as string, commodityId: cmd.commodityId as string, side: cmd.side as 'buy', quantity: cmd.quantity as number, limitPriceMinor: cmd.limitPriceMinor as number, quoteId: cmd.quoteId as string, kind: cmd.orderKind as 'limit' | 'market' | 'direct' | undefined, fromCompanyId: cmd.fromCompanyId as string | undefined, slippageBps: cmd.slippageBps as number | undefined, expiresInTicks: cmd.expiresInTicks as number | null | undefined }); break;
     case 'order.cancel': res = cancelPlayerOrder(db, key, Number(cmd.orderId)); break;
     case 'company.fund': res = fundCompany(db, key, cmd.companyId as string, cmd.amountMinor as number); break;

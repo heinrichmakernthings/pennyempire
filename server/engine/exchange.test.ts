@@ -323,6 +323,7 @@ describe('supply contracts', () => {
   it('a buyer without funds misses the delivery; nothing moves', () => {
     const { db, mill } = setup();
     const r = offer(db, mill); const id = cid(r);
+    db.run('UPDATE companies SET owner_cover = 0 WHERE id = ?', mill);   // wallet cover off: the buyer is left without funds
     // drain buyer cash into the treasury-side account via an ordinary transfer-out (withdrawal to the wallet where permitted)
     db.run("UPDATE accounts SET balance_minor = 0, reserved_minor = 0 WHERE id = ?", companyAccount(mill));
     const stock0 = stock(db, mill, 'wheat').qty;

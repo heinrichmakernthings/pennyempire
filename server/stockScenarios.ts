@@ -105,7 +105,7 @@ export function runStockScenario(id: StockScenarioId, days: number): StockScenar
     headline.playerStakePct = Number(((holding(db, co, PLAYER_ID).shares * 100) / Math.max(1, outstanding(db, co))).toFixed(1));
   } else {
     name = 'F — Bankruptcy'; setup.push('A listed pizza restaurant loses its supply chain (state supply stops, every mill, dairy and farm closes). It cannot produce, cannot pay its bills, is declared insolvent, suspended, then liquidated. Shareholders (NPC and scripted) lose money.');
-    co = found(db, 'pizza', 'lot-1', 'Quay Pizza'); step(db, 16); listAt(co, 3_000, 0.9); const holders = [trader(db, 'bag-1', 1_000_000), trader(db, 'bag-2', 1_000_000)];
+    co = found(db, 'pizza', 'lot-1', 'Quay Pizza'); db.run('UPDATE companies SET owner_cover = 0 WHERE id = ?', co); step(db, 16); listAt(co, 3_000, 0.9); const holders = [trader(db, 'bag-1', 1_000_000), trader(db, 'bag-2', 1_000_000)];
     step(db, 6, () => { for (const h of holders) { const b = buyBand(db, co); order(db, co, h.id, 'buy', b.high, 600); } }); sample('before');
     const cashBefore = holders.map((h) => cashNow(db, h.account_id)); const held = holders.map((h) => holding(db, co, h.id).shares);
     // The collapse: the state stops supplying raw materials and every mill and dairy shuts, so the restaurant cannot get flour or cheese while wages and rent keep running.

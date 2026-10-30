@@ -66,6 +66,7 @@ describe('moving coins between player and company', () => {
   });
   it('an insolvent company can be reopened only after arrears are paid to the state', () => {
     const db = memWorld({ npcPayoutBps: 0 });
+    db.run("UPDATE companies SET owner_cover = 0 WHERE id = 'co-harbour-bean'");   // wallet cover off: the café is left to fail
     withdrawFromCompany(db, 'drain', 'co-harbour-bean', 240_000);
     db.run("UPDATE demand_rules SET amount = 0 WHERE commodity_id = 'cafe-drink'"); db.run("UPDATE production_lines SET planned_batches = 0 WHERE company_id = 'co-harbour-bean'");
     advance(db, 4);

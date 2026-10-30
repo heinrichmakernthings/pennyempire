@@ -10,7 +10,7 @@ export interface CompanyRow {
   retail_commodity_id: string | null; price_minor: number; min_price_minor: number; max_price_minor: number; quality: 'basic' | 'standard' | 'premium'; employees: number; max_employees: number; wage_minor: number; capacity_batches: number;
   storage_cap_units: number; property_minor: number; marketing_minor: number; reputation_bps: number; unpaid_minor: number; shortfall_ticks: number; revision: number;
   premises_tier: number; productivity_bps: number; energy_saving_bps: number; condition_bps: number; awareness_bps: number; equipment_cost_minor: number; pending_labour_minor: number; pending_maintenance_minor: number;
-  staff_change_tick: number; hires_in_tick: number; dismissals_in_tick: number; auto_procure: number; insolvent_tick: number | null; bankrupt_tick: number | null; written_off_minor: number; plot_id: string | null; lot_id: string | null; asset_id: string | null;
+  staff_change_tick: number; hires_in_tick: number; dismissals_in_tick: number; auto_procure: number; owner_cover: number; insolvent_tick: number | null; bankrupt_tick: number | null; written_off_minor: number; plot_id: string | null; lot_id: string | null; asset_id: string | null;
 }
 export interface Line { company_id: string; recipe_id: string; planned_batches: number; ask_price_minor: number; output_commodity_id: string; output_units: number; energy_units: number; ref_price: number }
 export type LimitReason = 'plan' | 'staff' | 'storage' | 'inputs' | 'cash' | 'supply' | 'condition' | 'closed' | 'energy' | 'disruption';

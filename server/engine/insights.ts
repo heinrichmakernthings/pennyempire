@@ -9,6 +9,7 @@ import type { LotInfo, Management, Opportunity, RankRow, Ranking } from '../../s
 import { directory as directoryRows } from './exchange';
 import { washSql } from './standings';
 import { feeFromBps } from '../../src/domain/money';
+import { settingWarnings } from './advice';
 
 const lastTick = (db: Sql) => db.get<{ t: number }>('SELECT last_tick t FROM engine_state WHERE id = 1')!.t;
 const WINDOW = 7;                                         // days of history behind every estimate
@@ -194,6 +195,8 @@ export function management(db: Sql, companyId: string): Management | null {
   if (c.condition_bps < 5_000 && live) diag.push({ kind: 'warn', text: `Equipment is at ${Math.round(c.condition_bps / 100)}% condition; output is reduced until it is serviced.` });
   if (line && live && c.employees > 1 && c.employees > staffNeeded(line.planned_batches)) diag.push({ kind: 'warn', text: `You employ ${c.employees} people but ${staffNeeded(line.planned_batches)} would run today’s production target. Extra wages add no output.` });
   if (rk && mineRow && rk.total > 1 && live) diag.push({ kind: mineRow.rank === 1 ? 'good' : 'warn', text: `Ranked #${mineRow.rank} of ${rk.total} ${rk.label.toLowerCase()}s in Bristol with a ${Math.round(mineRow.shareBps / 100)}% share.` });
+  if (live) for (const w of settingWarnings(db, cfg, companyId)) diag.push({ kind: 'bad', text: w });
+  if (live && c.marketing_minor > 0 && c.retail_commodity_id === null) diag.push({ kind: 'bad', text: `You spend ${(c.marketing_minor / 100).toFixed(2)} EC a day on advertising, but your customers are businesses on the exchange: it wins no sales. Set marketing to 0.` });
   const ownedSet = new Set(db.all<{ upgrade_id: string }>('SELECT upgrade_id FROM company_upgrades WHERE company_id = ?', companyId).map((r) => r.upgrade_id));
   const cash = db.get<{ a: number }>('SELECT balance_minor - reserved_minor a FROM accounts WHERE id = ?', c.treasury_account_id)!.a;
   const effect = (u: UpgradeRow) => u.kind === 'tier' ? 'Moves you to the next premises tier: more capacity, staff and storage, but higher rent.' : [u.d_capacity_batches ? `+${u.d_capacity_batches} batches/day` : '', u.d_storage ? `+${u.d_storage} storage` : '', u.d_productivity_bps ? `+${u.d_productivity_bps / 100}% staff productivity` : '', u.d_energy_saving_bps ? `−${u.d_energy_saving_bps / 100}% energy use` : ''].filter(Boolean).join(', ');
@@ -207,7 +210,7 @@ export function management(db: Sql, companyId: string): Management | null {
     supplyChain: chain,
     advertising: { spendPerDayMinor: c.marketing_minor, awarenessBps: c.awareness_bps, maxAwarenessBps: cfg.awarenessMaxBps },
     quality: { current: c.quality, inputMultiplierBps: cfg.qualityInputBps },
-    upgrades, autoProcure: c.auto_procure === 1, premisesTier: c.premises_tier, tierName: tier?.name ?? '', assetId: c.asset_id ?? tier?.asset_id ?? c.industry_id,
+    upgrades, autoProcure: c.auto_procure === 1, ownerCover: c.owner_cover === 1, premisesTier: c.premises_tier, tierName: tier?.name ?? '', assetId: c.asset_id ?? tier?.asset_id ?? c.industry_id,
     closed: live ? null : { bankrupt: true, writtenOffMinor: c.written_off_minor },
   };
 }

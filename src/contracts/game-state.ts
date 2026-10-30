@@ -46,7 +46,7 @@ export interface ScreenState {
 export interface CommandMeta {idempotencyKey:string;expectedRevision:number}
 export type Command = CommandMeta & (
  {type:'company.create';plotId:ID;industry:Industry;name:string;tier:number;workingCapitalMinor?:number;expectedTotalMinor:number} |
- {type:'company.configure';companyId:ID;priceMinor?:number;employees?:number;quality?:Company['quality'];plannedUnitsPerTick?:number;marketingMinorPerTick?:number;askPriceMinor?:number;autoProcure?:boolean} |
+ {type:'company.configure';companyId:ID;priceMinor?:number;employees?:number;quality?:Company['quality'];plannedUnitsPerTick?:number;marketingMinorPerTick?:number;askPriceMinor?:number;autoProcure?:boolean;ownerCover?:boolean} |
  {type:'company.service';companyId:ID} |
  {type:'company.reopen';companyId:ID} |
  {type:'company.fund'|'company.withdraw';companyId:ID;amountMinor:number} |

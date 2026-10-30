@@ -31,7 +31,7 @@ export interface Management {
   advertising: { spendPerDayMinor: number; awarenessBps: number; maxAwarenessBps: number };
   quality: { current: string; inputMultiplierBps: Record<string, number> };
   upgrades: { id: string; name: string; description: string; kind: string; costMinor: number; effect: string; installed: boolean; blocker: string | null; affordable: boolean }[];
-  autoProcure: boolean; premisesTier: number; tierName: string; assetId: string; closed: { bankrupt: boolean; writtenOffMinor: number } | null;
+  autoProcure: boolean; ownerCover: boolean; premisesTier: number; tierName: string; assetId: string; closed: { bankrupt: boolean; writtenOffMinor: number } | null;
 }
 
 export interface StartupLine { kind: 'licence' | 'premises' | 'equipment' | 'working_capital'; label: string; amountMinor: number; paidTo: string; note: string }
