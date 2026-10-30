@@ -146,7 +146,7 @@ export interface EngineConfig {
 }
 
 export const DEFAULT_CONFIG: EngineConfig = {
-  seed: 20261029, epochDate: '2026-10-29', realMsPerTick: 60_000, maxCatchupTicks: 48,
+  seed: 20261029, epochDate: '2026-10-29', realMsPerTick: 600_000, maxCatchupTicks: 48,
   exchangeFeeBps: 100, procurementLimitBps: 15_000, stateSupplyMarkupBps: 14_000, stateSupplyPerTick: 120, stateSupplyCap: 400,
   stipendPerThousandMinor: 120, civilPayrollBps: 500, corporationTaxBps: 1_500, idleCashLevyBps: 10, stateBurnBps: 100, stateReserveMinor: 2_000_000, enterpriseReserveMinor: 300_000,
   insolvencyAfterTicks: 3, npcPriceStepBps: 150, npcSupportMinor: 0, npcPayoutBps: 8_000, npcReserveTicks: 10, supplyTargetMinor: 0, stipendGainBps: 100_000, energyCommodityId: 'energy',

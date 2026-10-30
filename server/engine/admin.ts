@@ -3,6 +3,7 @@ import { loadConfig, saveConfig, validateConfig, type EngineConfig } from './con
 import { cancelEvent, createEvent, EVENT_DEFS } from './events';
 import { logPolicy } from './centralBank';
 import { logEvent } from './stats';
+import { setPace } from './clock';
 import { LedgerError, type TickCtx } from './ledger';
 
 /**
@@ -19,6 +20,7 @@ export const ADMIN_PARAMS: Partial<Record<keyof EngineConfig, [number, number]>>
   cbTargetBps: [0, 1_000], cbReviewEveryTicks: [3, 90], cbRateStepBps: [5, 200], cbRateMaxBps: [100, 5_000], cbBandBps: [10, 500], cbReserveReqBps: [0, 5_000], cbLiquidityStepMinor: [0, 1_000_000], cbDrainStepMinor: [0, 1_000_000],
   eventsEnabled: [0, 1], eventsStartTick: [0, 1_000], eventCheckEveryTicks: [1, 30], eventMaxActive: [0, 4], eventCooldownTicks: [0, 200], eventProbabilityScaleBps: [0, 30_000],
   stateBurnBps: [0, 2_000], corporationTaxBps: [0, 5_000], awarenessMaxBps: [0, 6_000],
+  realMsPerTick: [60_000, 86_400_000],   // world pace: one in-game day takes 1 minute to 24 hours of real time
 };
 
 export interface AdminResult { ok: boolean; message: string; detail?: unknown }
@@ -38,7 +40,8 @@ export function setParam(db: Sql, actor: string, key: string, value: number, rea
   const cfg = loadConfig(db); const old = cfg[key as keyof EngineConfig];
   const next = { ...cfg, [key]: value } as EngineConfig; const errs = validateConfig(next);
   if (errs.length) { logAdmin(db, actor, 'param.set', { ...detail, refused: errs }, false); return { ok: false, message: errs.join('; ') }; }
-  saveConfig(db, next, `admin ${actor}: ${key} ${String(old)} → ${value} (${reason})`);
+  const note = `admin ${actor}: ${key} ${String(old)} → ${value} (${reason})`;
+  if (key === 'realMsPerTick') setPace(db, value, Date.now(), note); else saveConfig(db, next, note);
   logAdmin(db, actor, 'param.set', { ...detail, old }, true);
   return { ok: true, message: `${key}: ${String(old)} → ${value}`, detail: { old, value } };
 }

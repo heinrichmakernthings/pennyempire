@@ -3,6 +3,7 @@ import { ensureLotteries } from '../engine/lottery';
 import { ensureGbpBooks } from '../engine/gbpLedger';
 import type { Sql } from '../db/sql';
 import { loadConfig, saveConfig } from '../engine/config';
+import { setPace } from '../engine/clock';
 import { createAccount, issue, type TickCtx } from '../engine/ledger';
 import { VACANT_LOTS, mapTiles } from '../../src/shared/bristolMap';
 import { INDUSTRY_SEEDS } from './industries';
@@ -135,7 +136,19 @@ const balanceV1: Patch = { id: 'balance-v1', run(db) {
   return 0;
 } };
 
-export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1, balanceV1];
+/**
+ * Prompt 12 pace: the alpha world ran one in-game day per real minute — about four game years every real day — so a company left alone
+ * overnight lived through hundreds of unattended days, recessions included, and three unpaid minutes made it insolvent. One day now takes
+ * ten real minutes (six a real hour, 144 a real day). Only a world still on the old one-minute default is changed; a pace an administrator
+ * chose is kept. The clock is re-anchored so no day is skipped or replayed.
+ */
+export const PACE_V1_MS = 600_000;
+const paceV1: Patch = { id: 'pace-v1', run(db) {
+  if (loadConfig(db).realMsPerTick === 60_000) setPace(db, PACE_V1_MS, Date.now(), 'pace-v1: one in-game day per 10 real minutes');
+  return 0;
+} };
+
+export const PATCHES: Patch[] = [companyManagement, exchangeV1, consumersV1, npcV1, securitiesV1, stateEconomyV1, prestigeWalletV1, balanceV1, paceV1];
 
 /** Applies any patch this database has not seen. Returns the coins issued (minor) so the caller can keep the supply target in step. */
 export function applySeedPatches(db: Sql, ctx: TickCtx): number {

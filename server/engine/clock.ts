@@ -1,6 +1,6 @@
 import { runScheduledServices } from './services';
 import type { Sql } from '../db/sql';
-import { loadConfig } from './config';
+import { loadConfig, saveConfig } from './config';
 import { logEvent } from './stats';
 import { runTick, type TickResult } from './tick';
 
@@ -54,3 +54,14 @@ export const nextTickAtMs = (db: Sql): number => {
   const cfg = loadConfig(db); const st = db.get<{ last_tick: number; clock_anchor_ms: number | null }>('SELECT last_tick, clock_anchor_ms FROM engine_state WHERE id = 1')!;
   return (st.clock_anchor_ms ?? Date.now()) + (st.last_tick + 1) * cfg.realMsPerTick;
 };
+
+/**
+ * Changes how much real time one in-game day takes, without jumping the world forward or freezing it: the clock is re-anchored so the
+ * current day stays the current day and the next one is due one new interval from now. (Changing `realMsPerTick` alone would move the
+ * wall-clock target: a slower pace would stall the world until real time caught up, a faster one would trigger a catch-up burst.)
+ */
+export function setPace(db: Sql, msPerTick: number, nowMs: number, note: string) {
+  const st = db.get<{ last_tick: number }>('SELECT last_tick FROM engine_state WHERE id = 1')!;
+  saveConfig(db, { ...loadConfig(db), realMsPerTick: msPerTick }, note);
+  db.run('UPDATE engine_state SET clock_anchor_ms = ? WHERE id = 1', nowMs - st.last_tick * msPerTick);
+}
