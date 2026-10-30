@@ -1,0 +1,23 @@
+name: deploy
+# Deploys the Worker (static SPA + economy Durable Object) to Cloudflare. Needs two repository secrets:
+#   CLOUDFLARE_API_TOKEN  (template "Edit Cloudflare Workers"), CLOUDFLARE_ACCOUNT_ID
+# Without them the job is skipped, so forks and PRs never fail.
+on:
+  push:
+    branches: [main, deploy/cloudflare-test-link]
+  workflow_dispatch:
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ vars.CLOUDFLARE_DEPLOY == 'true' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run build
+      - run: npx wrangler deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

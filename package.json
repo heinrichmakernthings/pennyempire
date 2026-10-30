@@ -1,0 +1,49 @@
+{
+  "name": "pennyempire",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Penny Empire browser client (pre-alpha, fixture-backed foundation)",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc -b --noEmit",
+    "test": "vitest run",
+    "art:validate": "node tools/art-review/validate.mjs",
+    "qa:browser": "node scripts/qa/browser-check.mjs",
+    "qa:alpha": "node scripts/qa/alpha-journey.mjs",
+    "server": "tsx server/node.ts",
+    "dev:all": "node scripts/dev-all.mjs",
+    "db:migrate": "tsx server/cli.ts migrate",
+    "db:seed": "tsx server/cli.ts seed",
+    "db:reset": "tsx server/cli.ts reset",
+    "sim": "tsx server/cli.ts sim",
+    "sim:market": "tsx server/cli.ts sim-market",
+    "audit:scenarios": "tsx server/cli.ts audit-scenarios",
+    "audit:bench": "tsx server/cli.ts bench",
+    "audit:fuzz": "tsx server/cli.ts fuzz 1 20 150 60",
+    "alpha-stress": "SCENARIO_OUT=docs/scenarios tsx server/cli.ts alpha-stress",
+    "eco-scenarios": "tsx server/cli.ts eco-scenarios all 150"
+  },
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-router-dom": "^7.18.5",
+    "zustand": "^5.0.16"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "jsdom": "^29.1.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5",
+    "vitest": "^5.0.5"
+  }
+}

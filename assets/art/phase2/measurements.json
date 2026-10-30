@@ -1,0 +1,1832 @@
+[
+  {
+    "id": "pizza-t2",
+    "source": "assets/art/phase2/source/retail-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      123,
+      71,
+      431,
+      515
+    ],
+    "logicalSize": [
+      224,
+      265
+    ],
+    "pivot": [
+      112,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "pizza",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "pizza-t3",
+    "source": "assets/art/phase2/source/retail-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      724,
+      63,
+      453,
+      532
+    ],
+    "logicalSize": [
+      224,
+      265
+    ],
+    "pivot": [
+      112,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "pizza",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "cafe-t2",
+    "source": "assets/art/phase2/source/retail-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      129,
+      670,
+      433,
+      521
+    ],
+    "logicalSize": [
+      224,
+      285
+    ],
+    "pivot": [
+      112,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "cafe",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "cafe-t3",
+    "source": "assets/art/phase2/source/retail-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      733,
+      683,
+      454,
+      535
+    ],
+    "logicalSize": [
+      224,
+      285
+    ],
+    "pivot": [
+      112,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "cafe",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "mill-t2",
+    "source": "assets/art/phase2/source/processing-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      60,
+      77,
+      553,
+      550
+    ],
+    "logicalSize": [
+      288,
+      285
+    ],
+    "pivot": [
+      144,
+      285
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "mill",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "mill-t3",
+    "source": "assets/art/phase2/source/processing-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      645,
+      77,
+      582,
+      574
+    ],
+    "logicalSize": [
+      288,
+      285
+    ],
+    "pivot": [
+      144,
+      285
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "mill",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "dairy-t2",
+    "source": "assets/art/phase2/source/processing-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      53,
+      741,
+      538,
+      455
+    ],
+    "logicalSize": [
+      256,
+      225
+    ],
+    "pivot": [
+      128,
+      225
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "dairy",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "dairy-t3",
+    "source": "assets/art/phase2/source/processing-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      636,
+      739,
+      577,
+      460
+    ],
+    "logicalSize": [
+      256,
+      225
+    ],
+    "pivot": [
+      128,
+      225
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "dairy",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "farm-t2",
+    "source": "assets/art/phase2/source/resource-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      35,
+      124,
+      569,
+      467
+    ],
+    "logicalSize": [
+      256,
+      222
+    ],
+    "pivot": [
+      128,
+      222
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "farm",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "farm-t3",
+    "source": "assets/art/phase2/source/resource-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      661,
+      95,
+      557,
+      493
+    ],
+    "logicalSize": [
+      256,
+      222
+    ],
+    "pivot": [
+      128,
+      222
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "farm",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "timber-t2",
+    "source": "assets/art/phase2/source/resource-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      40,
+      714,
+      564,
+      444
+    ],
+    "logicalSize": [
+      256,
+      209
+    ],
+    "pivot": [
+      128,
+      209
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "timber",
+    "tier": 2,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "timber-t3",
+    "source": "assets/art/phase2/source/resource-upgrades.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      659,
+      708,
+      560,
+      450
+    ],
+    "logicalSize": [
+      256,
+      209
+    ],
+    "pivot": [
+      128,
+      209
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "building",
+    "dimensionReference": "timber",
+    "tier": 3,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "penny-energy",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      54,
+      126,
+      449,
+      356
+    ],
+    "logicalSize": [
+      224,
+      194
+    ],
+    "pivot": [
+      112,
+      194
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "utility",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "penny-ads",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      553,
+      60,
+      442,
+      437
+    ],
+    "logicalSize": [
+      288,
+      283
+    ],
+    "pivot": [
+      144,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "warehouse",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "penny-logistics",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      1034,
+      94,
+      460,
+      408
+    ],
+    "logicalSize": [
+      288,
+      283
+    ],
+    "pivot": [
+      144,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "warehouse",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "central-property",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      54,
+      536,
+      413,
+      453
+    ],
+    "logicalSize": [
+      224,
+      285
+    ],
+    "pivot": [
+      112,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "cafe",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "national-bank",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      581,
+      551,
+      376,
+      415
+    ],
+    "logicalSize": [
+      224,
+      285
+    ],
+    "pivot": [
+      112,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "cafe",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "penny-exchange",
+    "source": "assets/art/phase2/source/state-infrastructure.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      1053,
+      535,
+      433,
+      459
+    ],
+    "logicalSize": [
+      288,
+      283
+    ],
+    "pivot": [
+      144,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "state",
+    "dimensionReference": "warehouse",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "shop-module",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      51,
+      21,
+      303,
+      403
+    ],
+    "logicalSize": [
+      224,
+      265
+    ],
+    "pivot": [
+      112,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "environment",
+    "dimensionReference": "pizza",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "warehouse-module",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      432,
+      29,
+      368,
+      398
+    ],
+    "logicalSize": [
+      288,
+      283
+    ],
+    "pivot": [
+      144,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "usage": "environment",
+    "dimensionReference": "warehouse",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "terrace-module",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      816,
+      14,
+      360,
+      430
+    ],
+    "logicalSize": [
+      224,
+      234
+    ],
+    "pivot": [
+      112,
+      234
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "usage": "environment",
+    "dimensionReference": "terraces",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "park-tree",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      1234,
+      64,
+      264,
+      345
+    ],
+    "logicalSize": [
+      80,
+      89
+    ],
+    "pivot": [
+      40,
+      89
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "tree",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "street-ad",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      116,
+      444,
+      157,
+      283
+    ],
+    "logicalSize": [
+      22,
+      83
+    ],
+    "pivot": [
+      11,
+      83
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "lamp",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "roof-billboard",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      458,
+      444,
+      315,
+      307
+    ],
+    "logicalSize": [
+      64,
+      49
+    ],
+    "pivot": [
+      32,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "railing",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "digital-sign",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      905,
+      493,
+      115,
+      220
+    ],
+    "logicalSize": [
+      22,
+      83
+    ],
+    "pivot": [
+      11,
+      83
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "lamp",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "park-gate",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      1199,
+      465,
+      307,
+      265
+    ],
+    "logicalSize": [
+      64,
+      49
+    ],
+    "pivot": [
+      32,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "railing",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "rail-a",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      22,
+      776,
+      358,
+      218
+    ],
+    "logicalSize": [
+      128,
+      64
+    ],
+    "pivot": [
+      64,
+      64
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "tile",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "bus-shelter",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      843,
+      732,
+      240,
+      257
+    ],
+    "logicalSize": [
+      64,
+      81
+    ],
+    "pivot": [
+      32,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "parasol",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "skip",
+    "source": "assets/art/phase2/source/environment.png",
+    "sourceSize": [
+      1536,
+      1024
+    ],
+    "crop": [
+      1186,
+      771,
+      318,
+      215
+    ],
+    "logicalSize": [
+      32,
+      39
+    ],
+    "pivot": [
+      16,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "environment",
+    "dimensionReference": "crates",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "delivery-van-sw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      47,
+      115,
+      222,
+      192
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "delivery-van-se",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      368,
+      109,
+      219,
+      196
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "delivery-van-ne",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      677,
+      108,
+      227,
+      185
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "delivery-van-nw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      972,
+      114,
+      229,
+      180
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "lorry-sw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      28,
+      382,
+      261,
+      233
+    ],
+    "logicalSize": [
+      128,
+      91
+    ],
+    "pivot": [
+      64,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "boat",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "lorry-se",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      368,
+      378,
+      249,
+      239
+    ],
+    "logicalSize": [
+      128,
+      91
+    ],
+    "pivot": [
+      64,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "boat",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "lorry-ne",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      669,
+      389,
+      257,
+      218
+    ],
+    "logicalSize": [
+      128,
+      91
+    ],
+    "pivot": [
+      64,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "boat",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "lorry-nw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      966,
+      396,
+      246,
+      220
+    ],
+    "logicalSize": [
+      128,
+      91
+    ],
+    "pivot": [
+      64,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "boat",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "car-sw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      39,
+      725,
+      253,
+      181
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "car-se",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      342,
+      729,
+      248,
+      180
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "car-ne",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      668,
+      746,
+      247,
+      162
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "car-nw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      969,
+      745,
+      240,
+      165
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "bicycle-sw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      78,
+      1061,
+      154,
+      127
+    ],
+    "logicalSize": [
+      48,
+      43
+    ],
+    "pivot": [
+      24,
+      43
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "bench",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "bicycle-se",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      406,
+      1064,
+      146,
+      127
+    ],
+    "logicalSize": [
+      48,
+      43
+    ],
+    "pivot": [
+      24,
+      43
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "bench",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "forklift-sw",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      647,
+      991,
+      220,
+      204
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "service-van-se",
+    "source": "assets/art/phase2/source/vehicles.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      958,
+      989,
+      254,
+      212
+    ],
+    "logicalSize": [
+      68,
+      62
+    ],
+    "pivot": [
+      34,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "vehicle",
+    "dimensionReference": "van-sw",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "owner-sw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      86,
+      66,
+      141,
+      287
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "owner-se",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      404,
+      66,
+      137,
+      287
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "owner-ne",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      715,
+      66,
+      128,
+      284
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "owner-nw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      1035,
+      66,
+      129,
+      287
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "office-worker-sw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      86,
+      380,
+      144,
+      286
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "office-worker-se",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      401,
+      380,
+      143,
+      286
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "office-worker-ne",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      715,
+      380,
+      134,
+      285
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "office-worker-nw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      1031,
+      379,
+      138,
+      287
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "customer-sw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      72,
+      687,
+      160,
+      272
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "customer-se",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      396,
+      687,
+      157,
+      272
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "customer-ne",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      702,
+      688,
+      149,
+      271
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "customer-nw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      1035,
+      688,
+      145,
+      271
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "construction-worker-sw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      95,
+      971,
+      137,
+      263
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "construction-worker-se",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      397,
+      971,
+      135,
+      263
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "construction-worker-ne",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      718,
+      972,
+      133,
+      262
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  },
+  {
+    "id": "construction-worker-nw",
+    "source": "assets/art/phase2/source/additional-actors.png",
+    "sourceSize": [
+      1254,
+      1254
+    ],
+    "crop": [
+      1036,
+      972,
+      135,
+      262
+    ],
+    "logicalSize": [
+      24,
+      40
+    ],
+    "pivot": [
+      12,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "usage": "actor",
+    "dimensionReference": "actor",
+    "tier": null,
+    "status": "pending-scale-review"
+  }
+]

@@ -1,0 +1,1198 @@
+{
+  "version": 1,
+  "files": [
+    {
+      "file": "assets/art/phase3/animations.json",
+      "dimensions": null,
+      "bytes": 21372,
+      "sha256": "16259be2bfad23451b1743d5b3d516d4a8736bd22cbe60b62d4dfd99db80b362",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/business-states.json",
+      "dimensions": null,
+      "bytes": 2481,
+      "sha256": "de92b3c3db7f4c1b844e190d92109b98a3f6e8b8892783cfb871f2b5447e3140",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/commodity-map.csv",
+      "dimensions": null,
+      "bytes": 2124,
+      "sha256": "6deda71596c681a7d67be159342e6902673a8863e6fa0a8caef4c4f5bdf4a8bd",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/manifest.json",
+      "dimensions": null,
+      "bytes": 16324,
+      "sha256": "be144a05e54da1ae133da86303f10235cfe9f10214f800e767ed361e170437e2",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/market-activity.json",
+      "dimensions": null,
+      "bytes": 4301,
+      "sha256": "07c574865a7eea3afa84d50c6859ec2ac9f6db5554f9e5e75bb0ecbe97f9365a",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/measurements.json",
+      "dimensions": null,
+      "bytes": 1773,
+      "sha256": "2254333e0f96cf50af9076aa7c86c74e1bb0ad443d62b5bb9de80e646ab783d4",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/campaign.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1644,
+      "sha256": "ffb9bb8882a0937df7db71264b2bc9c633fe92b44486dd45cbde82d37f81f521",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/collection.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 825,
+      "sha256": "9e9d7d047ddf2c2f2928a1179bf1a2a69025bafee6f0b5f27398cd8400267d58",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/loss.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1614,
+      "sha256": "94bc91659e28e8a5f1f0c4716fc0d8ee265b1e5eae3892fb0319bf99972c1104",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/major-success.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1468,
+      "sha256": "cbe5cf39516cb366f01a28e4364496ff1f95a5ada47b0c78f030877fc49ea1c2",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/missing-inputs.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1158,
+      "sha256": "9fb99e297a684db9594c59fe2b0cd8b7af1af61cd1ec35e8819c24e6f9d1b622",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/new-ownership.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1700,
+      "sha256": "17b06dbdf53537f7d361f2d17c5ad06a18f19d0e2e80ca973143ad4ce13662b2",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/overproduction.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 898,
+      "sha256": "97fda838de9a19f099113c3719e65044b2e39b132bc57c6eef96961e6484105a",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-cafe.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 522,
+      "sha256": "45d27c264900c862d93d0ef2a2ca961a9acbae52d13f7c22df24dbfbfe0bfef9",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-dairy.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 428,
+      "sha256": "64638f4ca2c6de2b548dc0f5ed745fd0f6bb33c8b72e7170c129a4ba00054d92",
+      "alpha": [
+        0,
+        243
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-farm.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 704,
+      "sha256": "09a046106b41b307818a08b111a346919b298f5f49d1bff46e416761324c8a7f",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-mill.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1185,
+      "sha256": "fb05f30549d2a7ab115235e22c5040bd72ca337378742ea5388c225e8ce401c5",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-pizza.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1289,
+      "sha256": "2b5b9a53dda24be279871c9276575de7e4e750dd724edc6817103f97d95bea57",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/production-timber.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 397,
+      "sha256": "54624b8a37572625bd3faad6a9d07acd046d16b31dd754409dd24f43b0549cdb",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/profit.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1212,
+      "sha256": "a54700ac5d20be8d44ce0cf051f536d662be4dbee6d9c81290f027e590b9d1ab",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/shipment.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1214,
+      "sha256": "900f12e23a4e89fbc0db5491f16cfbdf98a0ffaa208b5ab6c51b60217d50813a",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/startup.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1845,
+      "sha256": "ce67fd64fa4961e4cfd46f5578fa151d7e0b2df0b2de8fa180da00adb24048de",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/animations/warehouse-arrival.png",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 1629,
+      "sha256": "5ed7a95cb044665d5cdafa1acf6c177e8b2a4ae380b251543795e8d5a2c75386",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/animal-feed.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5802,
+      "sha256": "fcf883726dac272018291c2b5c8892c8854885494fc8ec74c63de9b60f1199e7",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/bakery-products.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 3644,
+      "sha256": "3c5b8c80c4621d48b33a0969ced2491e05a0d4c14f7c96744d343e403bbed1c9",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/building-materials.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5016,
+      "sha256": "e05d2fe2c32c8103dde8d73b59621cc1793cdc302fdbea367ceb549036fe23e1",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/cheese.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 4413,
+      "sha256": "a61f2594d9c886c06e2dd628885e302dcead5f1d665c076e69122c365338cf5b",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/coffee-drinks.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 4629,
+      "sha256": "0ddbe36e25964d4acf0da30dbacc80654409baf01369c010f36108ba7a0d62eb",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/coffee.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5858,
+      "sha256": "20b8c4eda61a3c254e5f2021c894628cd25116c0b84e183dd9c46e5ba0702bff",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/energy.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 2879,
+      "sha256": "01895f6ef81c00dcf86f02af84d3079d2318082ca09c26d74c92f842ef29ba38",
+      "alpha": [
+        0,
+        253
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/flour.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5583,
+      "sha256": "483e5cf5a922bc8bf1a306b7e7fc65e36da0da66cecde8a0bd2426594a6cf836",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/furniture.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 3302,
+      "sha256": "471e0aa4f8a01a088cf169747fa1d1005505f79d12ca4eac600e05cd36fc38e6",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/milk.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 2284,
+      "sha256": "d4aa2b11b8b708d77d316888736294030d25addd098fbf144e7918b79af38741",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/packaging.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 4491,
+      "sha256": "65791337d037a8356c08a050fae8e1b84449096bae295f9201abaca4290b9f9d",
+      "alpha": [
+        0,
+        253
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/pizza.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5525,
+      "sha256": "f226ff8650a1b502584f8b4bd4d86c664cfe0cd26d70cc9c076baf9a2df3209e",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/timber.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5149,
+      "sha256": "5abba1531db7bdc60e5cbab5f675a1b470493cb179759a8dce36480c985bbf69",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/water.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 5106,
+      "sha256": "9036c3ef7c1251a7bb87c69aa75e2d0f9c205d40871072b764b6ec2dbdfb5b28",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodities/wheat.png",
+      "dimensions": [
+        48,
+        48
+      ],
+      "bytes": 4330,
+      "sha256": "0a8f49a70161fc7af706e3aa46703e21db38ceb7cb69fafa491648ff904ef189",
+      "alpha": [
+        0,
+        253
+      ],
+      "usage": "commodity UI icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/runtime/commodity-atlas.png",
+      "dimensions": [
+        260,
+        156
+      ],
+      "bytes": 67131,
+      "sha256": "e84bfa256b02cddc1bb0d670561aeb4e2d3ea8a631f6e8c2b2430816882a7800",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "commodity atlas",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/animal-feed.png",
+      "dimensions": [
+        1312,
+        1199
+      ],
+      "bytes": 898267,
+      "sha256": "2130b84937f98ebb307fdec0cb941fa68bc13985f9c2850a4dd4ea1fe4e951a9",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/bakery-products.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1324933,
+      "sha256": "391a0325458be1b7c1feb0e14db6e73ccb368ecbcabdbd0527e95fcc8139bf4c",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/building-materials.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1158757,
+      "sha256": "4b7c8cec19ca59b61c2a81d2cf12dd4dc23998e2033c44424007b794b175b265",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/coffee-drinks.png",
+      "dimensions": [
+        1536,
+        1024
+      ],
+      "bytes": 1096620,
+      "sha256": "3cc1d76aec43e9762e8538bd7cadaa236a031acd9c37ce1329100791376c2d32",
+      "alpha": [
+        0,
+        254
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/coffee.png",
+      "dimensions": [
+        1374,
+        1145
+      ],
+      "bytes": 710071,
+      "sha256": "b67bb7e7ad287de5fa6bb96f609e1db2bb3f44b6cd620c3c1ff4d774d3449688",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/furniture.png",
+      "dimensions": [
+        1254,
+        1254
+      ],
+      "bytes": 806389,
+      "sha256": "b85c22edf53c6e6def82eca4ea8186c9fb6598d3ab366c6f430b81cbb81d16d5",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/source/water.png",
+      "dimensions": [
+        1334,
+        1179
+      ],
+      "bytes": 766008,
+      "sha256": "86c989080bf30bdf93fd483acb5f0d6289e425882d39bf20e07203eee30c16b2",
+      "alpha": [
+        0,
+        255
+      ],
+      "usage": "source artwork (do not load at runtime)",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/terminal-icons.json",
+      "dimensions": null,
+      "bytes": 6323,
+      "sha256": "7ad9ca9c9c68e09d9ea9c49e241f1544319fdc4393212b51ae70b92d158699e4",
+      "alpha": null,
+      "usage": "metadata",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/campaign.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 251,
+      "sha256": "0facf5c17d29e5feb85e3efe60d1c57a4e7f710654b94c8b45f3b4129d2252e0",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/cargo.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 242,
+      "sha256": "17a14073494f188ea3fcd90a0f6cf3730e2e0108c0b7ee434930b00e498adc7e",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/collection.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 235,
+      "sha256": "517745bee5dcca226400e4a12ceab18174f1cda3f93a8d82e7f3639b57685b75",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/inventory.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 240,
+      "sha256": "46e09fff9011fa8103c484a33c31564f6d4f8a547425c71926850122246e6e3a",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/loss.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 235,
+      "sha256": "63995dc76fab41d4a1cd1453b5a41b9aa41c8ea991883f88bb7ec2d0ac53d366",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/major-success.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 287,
+      "sha256": "0993272dc6518231f59c0ba5fc560f7fa2147812dfacc2c83c7b9df8b2930db8",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/missing-inputs.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 251,
+      "sha256": "ef86740ff7db2ffd8f53b922279c4270e5aab7a3c7691b27655f080075cb7ad3",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/new-ownership.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 261,
+      "sha256": "29995dcfd31b80aaf56f3597fbac6b7340e94f2ba29b169cf3106582f6c284cd",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/notification-economic.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 253,
+      "sha256": "69b302d5ab4fd234506c1cbe88b4006437b613b0b3afc0aefd69c80c6af95e73",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-buy.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 235,
+      "sha256": "dd5fd6954ac24fed4685b10f84aa8dd21a3e072a878f906c9d5cdeb1c502be40",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-cancelled.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 221,
+      "sha256": "a5bd9668e1daded6c18250186b946f5227e530ce6e83ef7006b60b64c7d078e1",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-filled.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 215,
+      "sha256": "25839fac4d82c80cf7218b3ef1d64d1bd245b19f13ed17d3d6d39d7b7324184d",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-open.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 234,
+      "sha256": "67ed03b179709b15289c8e27dcd16f29d900f6da97a3833e54d5de0e60834df4",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-partial.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 232,
+      "sha256": "21e638096566cf3274f89fd66cdfff016dffd0d5d56859d9b331271ee0580239",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/order-sell.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 235,
+      "sha256": "be2128479185795cb089571ce5abf5c28ffc06848eeab8a906bfd366308a5f62",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/overproduction.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 257,
+      "sha256": "db3c6cc72336add51c309d94617ff4b826d257c860f39f9d4cf49d08d82eeb6d",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/price-down.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 222,
+      "sha256": "dca10d154fe6e8958fd635cb336ff05be5dc8bc295dca7a2fc88f1e0ea074e80",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/price-flat.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 222,
+      "sha256": "6989e9332c6420719af7e93e661b98ecceb0543bbe986aaaf11749c618be76c8",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/price-up.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 222,
+      "sha256": "59978d3fcb555aa3ce695685dbb73c068f63f40379719f4190069226f533057f",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-cafe.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 645,
+      "sha256": "17b9aace5de8b0f085ff52efa896f56aee9e649dedaed17da9ed8f408961a935",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-dairy.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 599,
+      "sha256": "4abbb09126abe85033e8eb6ccb104b5e280dc5112ad3a646938b737032f0271c",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-farm.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 601,
+      "sha256": "85f69cdb9f9fb2e16b5d3135b195e92d3ae755976c46b6ee18e0cdb320bff48e",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-mill.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 815,
+      "sha256": "45faa1e19d50f04ca44ff36cfadd4358ae8c449641fdf87dc7eda17eb6fd32b6",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-pizza.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 667,
+      "sha256": "7a5df3d787cd1a651658965ef21b380d5882f5e0d6a2f6764577d0a7bfa62f4b",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/production-timber.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 699,
+      "sha256": "a89cc8609a461f0ef137b40be4cac36a1161e5b1079a645beee22bdc2b4da48f",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/profit.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 237,
+      "sha256": "52fad399735b149598db0ff007bc778a79a9d987ac6c35a3f820ad8054e4ac96",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/queue.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 236,
+      "sha256": "970d7afb559d53eaf4b1ff2cd08e60a4fe7838d1a48738ef39f4831e7fc8ac0b",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/ranking.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 238,
+      "sha256": "6116faa8e5247305ff49b9577986a619f157fcc0685dd25bc8192aadf11815c1",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/shipment.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 264,
+      "sha256": "21ef1adfcaaa791238fb75897447395c22812345ac8a0d7d05486b9bcb03b52e",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/startup.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 264,
+      "sha256": "0df8e30c7dfc7e529d4a9fc9bf8a714a0bc8e4e55166e3bbbeed2f038e69ad9b",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-campaign.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 628,
+      "sha256": "f77b5ecc1c415904539bbe99784526e6fabb4432bf6aa07a6faf27ac46ffbc70",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-collection.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 564,
+      "sha256": "980eacbbe8184bd110ded2bb6b8eeb7287c93d3d63beb90348619950cb530d46",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-loss.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 564,
+      "sha256": "529ce477d69148ce68ee860c1471326928cec4d9bcf2068b2a0abd10ce31c364",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-major-success.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 772,
+      "sha256": "2ad1483e60c121b06530003a65a1202af95d3dbe9ea9bba03d97b5ca5aff011f",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-missing-inputs.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 628,
+      "sha256": "c6f0ee7166b54a8eac38a8223e55ead632b9da23df5d56475d207d85c419abd0",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-new-ownership.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 668,
+      "sha256": "d9e535fc91ede416e4446182f9394634200654e6637f875fb6dc3947372b0496",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-overproduction.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 652,
+      "sha256": "1c73572715177b246836fc58fe653b0e6b3796327e7ef2d8f1b26f424cead1ed",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-profit.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 572,
+      "sha256": "1fbada506ff1b24e2e6b5b6887246b4fd6d68226e6e250e25fa659ec7b642217",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-shipment.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 680,
+      "sha256": "3ef66d95414c3d992734e3fd0d31444585df83fa197949225a27c7a6d66aec33",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-startup.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 680,
+      "sha256": "98f5e9d4537ff7928c0fde21af8c837b28debca197799c3dd349024434772036",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/state-warehouse-arrival.svg",
+      "dimensions": [
+        96,
+        24
+      ],
+      "bytes": 644,
+      "sha256": "3f3fe1781b98691b86775bd0816ccaaa35968f7403887e26cdfa8638342df00c",
+      "alpha": "transparent SVG canvas",
+      "usage": "animation sheet",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/supplier.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 259,
+      "sha256": "527e4161ce2a8c5a9f4d7c7f04f588529706a294c4b1069012d5fa85de711678",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/supply-chain.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 245,
+      "sha256": "a4f74a3c8f251d7f4974e39ed4dcd8bfda0fd26c600cc45eb3dc534714d35cf8",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    },
+    {
+      "file": "assets/art/phase3/ui/warehouse-arrival.svg",
+      "dimensions": [
+        24,
+        24
+      ],
+      "bytes": 255,
+      "sha256": "75c3e4a513965f0a2e5ede593b358f4acf74383dd4d96ee715f1b09c97725df9",
+      "alpha": "transparent SVG canvas",
+      "usage": "terminal icon",
+      "status": "finished-file; visual approval pending"
+    }
+  ],
+  "missingReport": "docs/art/phase3/MISSING-ASSETS.md",
+  "note": "Inventory excludes itself to avoid recursive hashes. Phase 1/2 reused sources are inventoried in their own manifests."
+}

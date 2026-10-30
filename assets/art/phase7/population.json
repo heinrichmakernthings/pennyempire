@@ -1,0 +1,134 @@
+{
+  "version": 1,
+  "note": "Appearance reuse only. No named-person identity or demographic spending rule is assigned to a consumer. New appearances SW only; generic earlier actors supply four-direction idle views.",
+  "variants": [
+    {
+      "id": "student",
+      "appearanceSource": "maya-reed-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "office",
+      "appearanceSource": "imogen-shaw-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "hospitality",
+      "appearanceSource": "leo-marsh-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "commuter",
+      "appearanceSource": "dev-patel-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "tourist",
+      "appearanceSource": "evelyn-park-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "shopper",
+      "appearanceSource": "nora-bell-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "industrial",
+      "appearanceSource": "farah-ali-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    },
+    {
+      "id": "premium-dressed",
+      "appearanceSource": "rafael-costa-world-neutral",
+      "frameSize": [
+        24,
+        40
+      ],
+      "direction": "sw",
+      "behaviours": [
+        "queue",
+        "wait",
+        "visit",
+        "leave"
+      ],
+      "motion": "held pose; path translation is not authored walking"
+    }
+  ]
+}

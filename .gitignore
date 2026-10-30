@@ -1,0 +1,11 @@
+node_modules
+dist
+.wrangler
+*.local
+.DS_Store
+qa-output
+tsconfig.tsbuildinfo
+/data/
+*.db
+*.db-*
+.dev.vars

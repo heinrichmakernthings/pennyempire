@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "attachmentProfile": "shop-module-demonstration-only",
+  "states": {
+    "prosperous": {
+      "description": "Confirmed demand and delivery activity: customer queue, arriving stock and a van. Static figures are not walking animation.",
+      "badge": "high-demand",
+      "props": [
+        [
+          "customer-sw",
+          -55,
+          30
+        ],
+        [
+          "customer-sw",
+          -30,
+          45
+        ],
+        [
+          "customer-sw",
+          -5,
+          60
+        ],
+        [
+          "delivery-van-sw",
+          150,
+          30
+        ],
+        [
+          "crates",
+          100,
+          45
+        ]
+      ]
+    },
+    "quiet": {
+      "description": "Reduced confirmed footfall: no customer queue or delivery activity. Quiet premises alone do not imply insolvency.",
+      "badge": null,
+      "props": []
+    },
+    "low-stock": {
+      "description": "Reported low inventory: an empty stock rack and low-stock indicator. The base building is unchanged.",
+      "badge": "low-stock",
+      "props": [
+        [
+          "empty-stock-rack",
+          105,
+          35
+        ]
+      ]
+    },
+    "maintenance": {
+      "description": "A reported maintenance issue adds a small repair prop and warning. This is not inferred from a city-wide recession.",
+      "badge": "construction",
+      "props": [
+        [
+          "maintenance-crate",
+          -85,
+          30
+        ]
+      ]
+    },
+    "closed": {
+      "description": "Temporary closure: no activity, explicit closure badge and dynamic notice. Reopening follows the server status.",
+      "badge": "closed",
+      "props": []
+    },
+    "bankrupt": {
+      "description": "Confirmed bankruptcy: boarded panel, empty rack, no customers and an explicit notice. Abandonment is a separate presentation policy.",
+      "badge": "bankrupt",
+      "props": [
+        [
+          "boarded-window-panel",
+          -42,
+          -35
+        ],
+        [
+          "empty-stock-rack",
+          105,
+          35
+        ]
+      ]
+    },
+    "acquired": {
+      "description": "Only a confirmed ownership-transfer event changes the owner label. The physical business remains the same.",
+      "badge": "new-ownership",
+      "props": []
+    },
+    "expanding": {
+      "description": "Confirmed upgrade job: construction worker and existing crane. A proposal or available upgrade is not construction.",
+      "badge": "construction",
+      "props": [
+        [
+          "construction-worker-sw",
+          95,
+          45
+        ],
+        [
+          "crane",
+          165,
+          10
+        ]
+      ]
+    },
+    "celebrating": {
+      "description": "Confirmed success milestone: small customer gathering and a success badge. No invented profit multiplier or permanent confetti.",
+      "badge": "major-success",
+      "props": [
+        [
+          "customer-sw",
+          -45,
+          35
+        ],
+        [
+          "customer-sw",
+          -15,
+          50
+        ],
+        [
+          "customer-sw",
+          20,
+          35
+        ]
+      ]
+    }
+  }
+}

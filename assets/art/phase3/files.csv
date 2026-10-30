@@ -1,0 +1,92 @@
+filename,width,height,bytes,usage,status
+assets/art/phase3/animations.json,,,21372,metadata,finished-file; visual approval pending
+assets/art/phase3/business-states.json,,,2481,metadata,finished-file; visual approval pending
+assets/art/phase3/commodity-map.csv,,,2124,metadata,finished-file; visual approval pending
+assets/art/phase3/manifest.json,,,16324,metadata,finished-file; visual approval pending
+assets/art/phase3/market-activity.json,,,4301,metadata,finished-file; visual approval pending
+assets/art/phase3/measurements.json,,,1773,metadata,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/campaign.png,96,24,1644,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/collection.png,96,24,825,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/loss.png,96,24,1614,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/major-success.png,96,24,1468,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/missing-inputs.png,96,24,1158,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/new-ownership.png,96,24,1700,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/overproduction.png,96,24,898,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-cafe.png,96,24,522,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-dairy.png,96,24,428,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-farm.png,96,24,704,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-mill.png,96,24,1185,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-pizza.png,96,24,1289,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/production-timber.png,96,24,397,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/profit.png,96,24,1212,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/shipment.png,96,24,1214,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/startup.png,96,24,1845,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/animations/warehouse-arrival.png,96,24,1629,animation sheet,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/animal-feed.png,48,48,5802,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/bakery-products.png,48,48,3644,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/building-materials.png,48,48,5016,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/cheese.png,48,48,4413,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/coffee-drinks.png,48,48,4629,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/coffee.png,48,48,5858,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/energy.png,48,48,2879,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/flour.png,48,48,5583,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/furniture.png,48,48,3302,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/milk.png,48,48,2284,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/packaging.png,48,48,4491,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/pizza.png,48,48,5525,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/timber.png,48,48,5149,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/water.png,48,48,5106,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodities/wheat.png,48,48,4330,commodity UI icon,finished-file; visual approval pending
+assets/art/phase3/runtime/commodity-atlas.png,260,156,67131,commodity atlas,finished-file; visual approval pending
+assets/art/phase3/source/animal-feed.png,1312,1199,898267,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/bakery-products.png,1536,1024,1324933,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/building-materials.png,1536,1024,1158757,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/coffee-drinks.png,1536,1024,1096620,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/coffee.png,1374,1145,710071,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/furniture.png,1254,1254,806389,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/source/water.png,1334,1179,766008,source artwork (do not load at runtime),finished-file; visual approval pending
+assets/art/phase3/terminal-icons.json,,,6323,metadata,finished-file; visual approval pending
+assets/art/phase3/ui/campaign.svg,24,24,251,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/cargo.svg,24,24,242,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/collection.svg,24,24,235,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/inventory.svg,24,24,240,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/loss.svg,24,24,235,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/major-success.svg,24,24,287,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/missing-inputs.svg,24,24,251,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/new-ownership.svg,24,24,261,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/notification-economic.svg,24,24,253,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-buy.svg,24,24,235,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-cancelled.svg,24,24,221,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-filled.svg,24,24,215,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-open.svg,24,24,234,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-partial.svg,24,24,232,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/order-sell.svg,24,24,235,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/overproduction.svg,24,24,257,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/price-down.svg,24,24,222,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/price-flat.svg,24,24,222,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/price-up.svg,24,24,222,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/production-cafe.svg,96,24,645,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/production-dairy.svg,96,24,599,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/production-farm.svg,96,24,601,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/production-mill.svg,96,24,815,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/production-pizza.svg,96,24,667,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/production-timber.svg,96,24,699,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/profit.svg,24,24,237,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/queue.svg,24,24,236,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/ranking.svg,24,24,238,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/shipment.svg,24,24,264,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/startup.svg,24,24,264,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/state-campaign.svg,96,24,628,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-collection.svg,96,24,564,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-loss.svg,96,24,564,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-major-success.svg,96,24,772,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-missing-inputs.svg,96,24,628,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-new-ownership.svg,96,24,668,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-overproduction.svg,96,24,652,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-profit.svg,96,24,572,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-shipment.svg,96,24,680,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-startup.svg,96,24,680,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/state-warehouse-arrival.svg,96,24,644,animation sheet,finished-file; visual approval pending
+assets/art/phase3/ui/supplier.svg,24,24,259,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/supply-chain.svg,24,24,245,terminal icon,finished-file; visual approval pending
+assets/art/phase3/ui/warehouse-arrival.svg,24,24,255,terminal icon,finished-file; visual approval pending

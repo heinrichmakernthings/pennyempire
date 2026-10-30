@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "checks": [
+    "Unsaved operation draft survives tab change; Discard restores saved values",
+    "Arrow-key tab navigation selects corresponding panel",
+    "Insufficient funds blocks quote review without losing draft",
+    "Sell review shows seller fee; Escape closes and restores trigger focus",
+    "Expired quote disables confirmation and names recovery",
+    "Market order proposal states required capability and IOC",
+    "No page overflow at 360px across four main routes",
+    "No page overflow at 768px across four main routes",
+    "No page overflow at 1199px across four main routes",
+    "F1: all five tablet rail links retain explicit accessible names",
+    "F2: skip link focuses existing main without changing creation/exchange route or market draft",
+    "DPR2 / reduced-motion mobile trading controls are at least44px tall"
+  ]
+}

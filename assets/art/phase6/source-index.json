@@ -1,0 +1,444 @@
+[
+  {
+    "id": "london-commercial",
+    "kind": "city-london",
+    "logicalSize": [
+      224,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase6/source/london-commercial.png"
+  },
+  {
+    "id": "london-office",
+    "kind": "city-london",
+    "logicalSize": [
+      224,
+      285
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase6/source/london-office.png"
+  },
+  {
+    "id": "lisbon-tiled-shop",
+    "kind": "city-lisbon",
+    "logicalSize": [
+      224,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase6/source/lisbon-tiled-shop.png"
+  },
+  {
+    "id": "lisbon-waterfront-store",
+    "kind": "city-lisbon",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase6/source/lisbon-waterfront-store.png"
+  },
+  {
+    "id": "lisbon-retaining-wall",
+    "kind": "city-lisbon",
+    "logicalSize": [
+      64,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase6/source/lisbon-retaining-wall.png"
+  },
+  {
+    "id": "mexico-city-shop",
+    "kind": "city-mexico-city",
+    "logicalSize": [
+      224,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase6/source/mexico-city-shop.png"
+  },
+  {
+    "id": "mexico-city-market-stall",
+    "kind": "city-mexico-city",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase6/source/mexico-city-market-stall.png"
+  },
+  {
+    "id": "mexico-city-workshop",
+    "kind": "city-mexico-city",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase6/source/mexico-city-workshop.png"
+  },
+  {
+    "id": "freight-container",
+    "kind": "logistics",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      2,
+      1
+    ],
+    "source": "assets/art/phase6/source/freight-container.png"
+  },
+  {
+    "id": "customs-office",
+    "kind": "logistics",
+    "logicalSize": [
+      224,
+      194
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase6/source/customs-office.png"
+  },
+  {
+    "id": "air-freight-terminal",
+    "kind": "logistics",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase6/source/air-freight-terminal.png"
+  },
+  {
+    "id": "boarded-window-panel",
+    "kind": "business-state",
+    "logicalSize": [
+      64,
+      49
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase6/source/boarded-window-panel.png"
+  },
+  {
+    "id": "empty-stock-rack",
+    "kind": "business-state",
+    "logicalSize": [
+      64,
+      81
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase6/source/empty-stock-rack.png"
+  },
+  {
+    "id": "maintenance-crate",
+    "kind": "business-state",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase6/source/maintenance-crate.png"
+  },
+  {
+    "id": "warehouse-module",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "warehouse-module",
+    "reuseFrame": [
+      294,
+      2,
+      288,
+      283
+    ]
+  },
+  {
+    "id": "terrace-module",
+    "kind": "reused-environment",
+    "logicalSize": [
+      224,
+      234
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "terrace-module",
+    "reuseFrame": [
+      586,
+      2,
+      224,
+      234
+    ]
+  },
+  {
+    "id": "shop-module",
+    "kind": "reused-environment",
+    "logicalSize": [
+      224,
+      265
+    ],
+    "footprint": [
+      2,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/environment-atlas.png",
+    "reusedFrom": "shop-module",
+    "reuseFrame": [
+      2,
+      2,
+      224,
+      265
+    ]
+  },
+  {
+    "id": "lorry-sw",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+    "reusedFrom": "lorry-sw",
+    "reuseFrame": [
+      2,
+      97,
+      128,
+      91
+    ]
+  },
+  {
+    "id": "lorry-se",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+    "reusedFrom": "lorry-se",
+    "reuseFrame": [
+      134,
+      97,
+      128,
+      91
+    ]
+  },
+  {
+    "id": "lorry-ne",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+    "reusedFrom": "lorry-ne",
+    "reuseFrame": [
+      266,
+      97,
+      128,
+      91
+    ]
+  },
+  {
+    "id": "lorry-nw",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      128,
+      91
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+    "reusedFrom": "lorry-nw",
+    "reuseFrame": [
+      398,
+      97,
+      128,
+      91
+    ]
+  },
+  {
+    "id": "forklift-sw",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      68,
+      62
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/vehicle-atlas.png",
+    "reusedFrom": "forklift-sw",
+    "reuseFrame": [
+      266,
+      287,
+      68,
+      62
+    ]
+  },
+  {
+    "id": "penny-logistics",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      288,
+      283
+    ],
+    "footprint": [
+      3,
+      2
+    ],
+    "source": "assets/art/phase2/runtime/state-atlas.png",
+    "reusedFrom": "penny-logistics",
+    "reuseFrame": [
+      586,
+      2,
+      288,
+      283
+    ]
+  },
+  {
+    "id": "customer-sw",
+    "kind": "reused-environment",
+    "logicalSize": [
+      24,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/actor-atlas.png",
+    "reusedFrom": "customer-sw",
+    "reuseFrame": [
+      2,
+      90,
+      24,
+      40
+    ]
+  },
+  {
+    "id": "construction-worker-sw",
+    "kind": "reused-environment",
+    "logicalSize": [
+      24,
+      40
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/phase2/runtime/actor-atlas.png",
+    "reusedFrom": "construction-worker-sw",
+    "reuseFrame": [
+      2,
+      134,
+      24,
+      40
+    ]
+  },
+  {
+    "id": "crane",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      96,
+      146
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/source/props-sheet.png",
+    "reusedFrom": "crane",
+    "reuseFrame": [
+      1268,
+      640,
+      239,
+      364
+    ]
+  },
+  {
+    "id": "crates",
+    "kind": "reused-logistics",
+    "logicalSize": [
+      32,
+      39
+    ],
+    "footprint": [
+      1,
+      1
+    ],
+    "source": "assets/art/source/props-sheet.png",
+    "reusedFrom": "crates",
+    "reuseFrame": [
+      59,
+      702,
+      235,
+      290
+    ]
+  }
+]

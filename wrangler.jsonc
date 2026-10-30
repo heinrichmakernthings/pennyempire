@@ -1,0 +1,11 @@
+{
+  // Static SPA (Workers Assets) + the economic engine as a SQLite-backed Durable Object. API requests go to the Worker first.
+  "name": "pennyempire",
+  "main": "server/worker.ts",
+  "compatibility_date": "2026-10-01",
+  "assets": { "directory": "./dist", "not_found_handling": "single-page-application", "run_worker_first": ["/api/*"] },
+  "durable_objects": { "bindings": [{ "name": "ECONOMY", "class_name": "EconomyDO" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["EconomyDO"] }],
+  // Developer endpoints (/api/dev/*) are OFF in deployment. Never enable them on a public environment.
+  "vars": { "DEV_ENDPOINTS": "false", "REQUIRE_AUTH": "true" }
+}

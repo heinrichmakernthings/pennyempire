@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {resolveCompanyVisual,frameAt,createEventGate,progressFraction} from './presentation.js';
+const operating={status:'operating',industry:'farm',dailyProfit:{minor:1}};
+assert.equal(resolveCompanyVisual(operating).animation,null,'operating does not prove production');
+assert.equal(resolveCompanyVisual(operating,{producing:true}).animation,'production-farm');
+assert.equal(resolveCompanyVisual({...operating,status:'insolvent'},{producing:true,'missing-inputs':true}).primary,'bankrupt');
+assert.equal(resolveCompanyVisual(operating,{'missing-inputs':true,'high-demand':true}).primary,'missing-inputs');
+assert.equal(resolveCompanyVisual({...operating,status:'paused'}, {upgrading:true}).primary,'closed');
+const a={frames:[0,1,2,3],frameDurationMs:200,loop:false,reducedMotionFrame:2};
+assert.equal(frameAt(a,799),3);assert.equal(frameAt(a,800),null);assert.equal(frameAt(a,800,true),null);assert.equal(frameAt(a,50,true),2);assert.equal(frameAt(a,-1),null);
+const g=createEventGate({initialSeen:['old']});const e={id:'new',type:'delivery.arrived',at:'2026-10-28T12:00:00Z',companyId:'c'};const now=Date.parse(e.at)+100;
+assert.equal(g.accept({...e,id:'old'},now),null);assert.equal(g.accept(e,now).animation,'warehouse-arrival');assert.equal(g.accept(e,now),null);assert.equal(g.accept({...e,id:'stale'},now+6000),null);assert.equal(g.accept({...e,id:'future'},now-1000),null);assert.equal(g.accept({...e,id:'bad',type:'random'},now),null);
+assert.equal(progressFraction(20,10),1);assert.equal(progressFraction(2,0),null);
+console.log('Presentation tests passed: priority, no fabricated activity, event dedup/expiry, reduced motion, progress.');

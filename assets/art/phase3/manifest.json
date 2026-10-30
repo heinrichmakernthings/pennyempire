@@ -1,0 +1,724 @@
+{
+  "version": 3,
+  "tile": [
+    128,
+    64
+  ],
+  "dependencies": [
+    "assets/art/runtime/manifest.json",
+    "assets/art/phase2/manifest.json"
+  ],
+  "assets": [
+    {
+      "id": "commodity-wheat",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        2,
+        2,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        5,
+        0,
+        38,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/wheat.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        39,
+        87,
+        349,
+        441
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "wheat",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-milk",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        54,
+        2,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        14,
+        0,
+        19,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/milk.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        1266,
+        87,
+        175,
+        437
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "milk",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-timber",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        106,
+        2,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        5,
+        48,
+        43
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/timber.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        431,
+        591,
+        397,
+        354
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "timber-item",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-water",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        158,
+        2,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        1,
+        0,
+        46,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/water.png",
+      "sourceArtwork": "assets/art/phase3/source/water.png",
+      "sourceCrop": [
+        233,
+        139,
+        892,
+        935
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-energy",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        210,
+        2,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        8,
+        0,
+        32,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/energy.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        878,
+        578,
+        232,
+        345
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "energy",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-animal-feed",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        2,
+        54,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        2,
+        48,
+        46
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/animal-feed.png",
+      "sourceArtwork": "assets/art/phase3/source/animal-feed.png",
+      "sourceCrop": [
+        172,
+        146,
+        986,
+        946
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-flour",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        54,
+        54,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        2,
+        0,
+        43,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/flour.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        414,
+        121,
+        353,
+        398
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "flour",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-cheese",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        106,
+        54,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        1,
+        0,
+        46,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/cheese.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        814,
+        168,
+        332,
+        350
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "cheese",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-coffee",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        158,
+        54,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        0,
+        47,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/coffee.png",
+      "sourceArtwork": "assets/art/phase3/source/coffee.png",
+      "sourceCrop": [
+        276,
+        163,
+        820,
+        839
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-packaging",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        210,
+        54,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        2,
+        0,
+        44,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/packaging.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        1176,
+        583,
+        326,
+        357
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "delivery",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-building-materials",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        2,
+        106,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        5,
+        48,
+        43
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/building-materials.png",
+      "sourceArtwork": "assets/art/phase3/source/building-materials.png",
+      "sourceCrop": [
+        351,
+        143,
+        839,
+        745
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-pizza",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        54,
+        106,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        7,
+        48,
+        41
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/pizza.png",
+      "sourceArtwork": "assets/art/source/commodities-sheet.png",
+      "sourceCrop": [
+        30,
+        590,
+        387,
+        327
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": "pizza-item",
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-coffee-drinks",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        106,
+        106,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        0,
+        47,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/coffee-drinks.png",
+      "sourceArtwork": "assets/art/phase3/source/coffee-drinks.png",
+      "sourceCrop": [
+        374,
+        97,
+        797,
+        821
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-bakery-products",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        158,
+        106,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        0,
+        16,
+        48,
+        32
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/bakery-products.png",
+      "sourceArtwork": "assets/art/phase3/source/bakery-products.png",
+      "sourceCrop": [
+        187,
+        121,
+        1220,
+        816
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    },
+    {
+      "id": "commodity-furniture",
+      "source": "assets/art/phase3/runtime/commodity-atlas.png",
+      "sourceSize": [
+        260,
+        156
+      ],
+      "frame": [
+        210,
+        106,
+        48,
+        48
+      ],
+      "logicalSize": [
+        48,
+        48
+      ],
+      "pivot": [
+        24,
+        48
+      ],
+      "contentRect": [
+        8,
+        0,
+        32,
+        48
+      ],
+      "individualFile": "assets/art/phase3/runtime/commodities/furniture.png",
+      "sourceArtwork": "assets/art/phase3/source/furniture.png",
+      "sourceCrop": [
+        271,
+        51,
+        770,
+        1157
+      ],
+      "usage": "inventory/trade/recipe icon; not world-scale cargo",
+      "status": "native-scale-reviewed; approval-pending",
+      "reusedFrom": null,
+      "scaleMode": "nearest",
+      "productionCertified": false
+    }
+  ],
+  "commodities": [
+    {
+      "commodityId": "wheat",
+      "iconAssetId": "commodity-wheat",
+      "legacyIconAssetId": "wheat",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "milk",
+      "iconAssetId": "commodity-milk",
+      "legacyIconAssetId": "milk",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "timber",
+      "iconAssetId": "commodity-timber",
+      "legacyIconAssetId": "timber-item",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "water",
+      "iconAssetId": "commodity-water",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "energy",
+      "iconAssetId": "commodity-energy",
+      "legacyIconAssetId": "energy",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "animal-feed",
+      "iconAssetId": "commodity-animal-feed",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "flour",
+      "iconAssetId": "commodity-flour",
+      "legacyIconAssetId": "flour",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "cheese",
+      "iconAssetId": "commodity-cheese",
+      "legacyIconAssetId": "cheese",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "coffee",
+      "iconAssetId": "commodity-coffee",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "packaging",
+      "iconAssetId": "commodity-packaging",
+      "legacyIconAssetId": "delivery",
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "building-materials",
+      "iconAssetId": "commodity-building-materials",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "pizza",
+      "iconAssetId": "commodity-pizza",
+      "legacyIconAssetId": "pizza-item",
+      "contractStatus": "existing fixture ID"
+    },
+    {
+      "commodityId": "coffee-drinks",
+      "iconAssetId": "commodity-coffee-drinks",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "bakery-products",
+      "iconAssetId": "commodity-bakery-products",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    },
+    {
+      "commodityId": "furniture",
+      "iconAssetId": "commodity-furniture",
+      "legacyIconAssetId": null,
+      "contractStatus": "proposed commodity ID; map engine aliases explicitly"
+    }
+  ],
+  "animations": "assets/art/phase3/animations.json",
+  "terminalIcons": "assets/art/phase3/terminal-icons.json",
+  "businessStates": "assets/art/phase3/business-states.json",
+  "marketActivity": "assets/art/phase3/market-activity.json"
+}
